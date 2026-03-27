@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Exam Board · Landing</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<link rel="stylesheet" href="public/css/Admin-style.css" />
+<style>
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--cream);
+}
+.landing-container {
+  max-width: 480px;
+  width: 90%;
+  background: var(--white);
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border-gold);
+  box-shadow: var(--shadow-md);
+  padding: 32px 28px;
+  text-align: center;
+}
+.icon-circle {
+  background: var(--gold-light);
+  width: 70px;
+  height: 70px;
+  border-radius: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+.icon-circle i {
+  font-size: 36px;
+  color: var(--gold-dark);
+}
+h2 {
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--ink);
+}
+p {
+  color: var(--ink-mid);
+  margin: 12px 0 24px;
+}
+.btn-get-started {
+  padding: 12px 24px;
+  width: 100%;
+}
+.footer-text {
+  margin-top: 24px;
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+</style>
+</head>
+<body>
+<div class="landing-container">
+  <div class="icon-circle">
+    <i class="fas fa-graduation-cap"></i>
+  </div>
+  <h2>Admin Area Exam Board</h2>
+  <p>Centralized examination administration · Seamless workflow</p>
+  <button id="getStartedBtn" class="btn btn-primary btn-get-started">
+    <i class="fas fa-arrow-right"></i> Get Started
+  </button>
+  <div class="footer-text">Secure platform for educators & administrators</div>
+</div>
+
+<script>
+  document.getElementById('getStartedBtn').addEventListener('click', () => {
+    window.location.href = '/cbt/ansofra/ilease/login';
+  });
+</script>
+</body>
+</html>

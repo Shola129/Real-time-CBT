@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Exam Board · Admin</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<style>
+
+:root {
+  --cream:       #faf8f2;
+  --white:       #ffffff;
+  --gold-light:  #fef3d0;
+  --gold-mid:    #f5d472;
+  --gold:        #e8b832;
+  --gold-dark:   #b8901e;
+  --gold-deep:   #8a6a12;
+  --ink:         #2a3440;
+  --ink-mid:     #4a5a68;
+  --ink-soft:    #7a8a96;
+  --border:      #ede8d8;
+  --border-gold: #f0d898;
+  --sidebar-w:   230px;
+  --topbar-h:    58px;
+  --r-sm:  6px;
+  --r-md:  10px;
+  --r-lg:  16px;
+  --r-xl:  24px;
+  --r-pill:99px;
+  --shadow-md: 0 4px 24px rgba(0,0,0,.14);
+  --shadow-modal: 0 8px 40px rgba(0,0,0,.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════
+   APP SHELL
+══════════════════════════════════════ */
+.app { display: flex; min-height: 100vh; }
+
+/* ══════════════════════════════════════
+   OVERLAY — sidebar backdrop
+══════════════════════════════════════ */
+.sidebar-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.38);
+  z-index: 90;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s ease;
+}
+.sidebar-overlay.visible { opacity: 1; pointer-events: all; }
+
+/* ══════════════════════════════════════
+   SIDEBAR
+══════════════════════════════════════ */
+.sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  position: sticky; top: 0;
+  height: 100vh;
+  overflow-y: auto; overflow-x: hidden;
+  flex-shrink: 0;
+  transition: transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s ease;
+  z-index: 100;
+}
+
+.sidebar-brand {
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0; position: relative;
+}
+
+.brand-icon {
+  width: 38px; height: 38px;
+  background: var(--gold-mid);
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink); font-size: 17px; flex-shrink: 0;
+}
+
+.brand-text { line-height: 1.2; overflow: hidden; }
+.brand-name { font-size: 15px; font-weight: 700; color: var(--ink); white-space: nowrap; }
+.brand-sub  { font-size: 11px; color: var(--ink-soft); font-family: sans-serif; font-style: italic; white-space: nowrap; }
+
+.sidebar-close {
+  display: none;
+  width: 28px; height: 28px;
+  border: none; background: var(--gold-light);
+  border-radius: var(--r-pill);
+  cursor: pointer; font-size: 13px; color: var(--ink-mid);
+  align-items: center; justify-content: center;
+  flex-shrink: 0; margin-left: auto;
+  transition: background .15s;
+}
+.sidebar-close:hover { background: var(--gold-mid); }
+
+.sidebar-nav { padding: 10px 8px; flex: 1; }
+
+.nav-section-label {
+  font-size: 10px; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--ink-soft);
+  font-family: sans-serif; font-weight: 700;
+  padding: 10px 10px 5px; white-space: nowrap;
+}
+
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 12px;
+  border-radius: var(--r-md);
+  cursor: pointer; font-size: 13.5px;
+  color: var(--ink-mid); font-family: sans-serif; font-weight: 500;
+  transition: background .15s, color .15s, transform .1s;
+  margin-bottom: 2px; user-select: none; white-space: nowrap;
+}
+.nav-item .ni { width: 20px; font-size: 15px; text-align: center; color: var(--ink-soft); flex-shrink: 0; transition: color .15s; }
+.nav-item .nl { flex: 1; overflow: hidden; text-overflow: ellipsis; }
+.nav-item:hover            { background: var(--gold-light); color: var(--gold-deep); transform: translateX(3px); }
+.nav-item:hover .ni        { color: var(--gold-dark); }
+.nav-item.active           { background: var(--gold-mid); color: var(--ink); font-weight: 700; }
+.nav-item.active .ni       { color: var(--ink); }
+
+.sidebar-footer {
+  padding: 14px 18px; border-top: 1px solid var(--border);
+  font-size: 11px; color: var(--ink-soft);
+  font-family: sans-serif; font-style: italic;
+  flex-shrink: 0; white-space: nowrap; overflow: hidden;
+}
+
+/* ══════════════════════════════════════
+   MAIN
+══════════════════════════════════════ */
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+
+.topbar {
+  background: var(--white); border-bottom: 1px solid var(--border);
+  padding: 0 20px; height: var(--topbar-h);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; position: sticky; top: 0; z-index: 50; flex-shrink: 0;
+}
+
+.topbar-left { display: flex; align-items: center; gap: 10px; }
+
+.hamburger {
+  display: none;
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--border-gold); border-radius: var(--r-md);
+  background: var(--white); cursor: pointer;
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 5px; flex-shrink: 0; transition: background .15s;
+}
+.hamburger:hover { background: var(--gold-light); }
+.hamburger span { display: block; width: 16px; height: 2px; background: var(--ink-mid); border-radius: 2px; }
+
+.page-title { font-size: 17px; font-weight: 700; color: var(--ink); white-space: nowrap; }
+
+.topbar-badge {
+  background: var(--gold-light); border: 1px solid var(--border-gold);
+  color: var(--gold-deep); font-size: 11px; font-family: sans-serif;
+  font-weight: 600; padding: 3px 10px; border-radius: var(--r-pill); white-space: nowrap;
+}
+
+.topbar-right { display: flex; align-items: center; gap: 8px; }
+
+.content { padding: 24px; flex: 1; overflow-y: auto; }
+
+/* ══════════════════════════════════════
+   PAGES
+══════════════════════════════════════ */
+.page { display: none; }
+.page.active { display: block; animation: fadeIn .2s ease; }
+@keyframes fadeIn { from { opacity: .6; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+
+/* ══════════════════════════════════════
+   BUTTONS
+══════════════════════════════════════ */
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 16px; font-size: 13px; font-family: sans-serif; font-weight: 600;
+  border-radius: var(--r-pill); border: 1.5px solid var(--border-gold);
+  background: var(--white); color: var(--ink-mid);
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.btn:hover { background: var(--gold-light); border-color: var(--gold-mid); color: var(--gold-deep); }
+.btn-primary { background: var(--gold-mid); border-color: var(--gold); color: var(--ink); }
+.btn-primary:hover { background: var(--gold); border-color: var(--gold-dark); }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+.btn-danger { border-color: #f0caca; color: #a03030; }
+.btn-danger:hover { background: #fff0f0; border-color: #e09090; }
+
+/* ══════════════════════════════════════
+   STAT CARDS
+══════════════════════════════════════ */
+.stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; margin-bottom: 22px; }
+.stat-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 18px 16px; display: flex; flex-direction: column; gap: 8px; transition: border-color .15s; }
+.stat-card:hover { border-color: var(--border-gold); }
+.stat-icon { width: 36px; height: 36px; border-radius: var(--r-md); background: var(--gold-light); display: flex; align-items: center; justify-content: center; font-size: 15px; color: var(--gold-dark); }
+.stat-value { font-size: 24px; font-weight: 700; color: var(--ink); line-height: 1; }
+.stat-label { font-size: 12px; color: var(--ink-soft); font-family: sans-serif; }
+
+/* ══════════════════════════════════════
+   PANEL
+══════════════════════════════════════ */
+.panel { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); overflow: hidden; margin-bottom: 20px; }
+.panel-header { padding: 13px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.panel-title { font-size: 13.5px; font-weight: 700; color: var(--ink); font-family: sans-serif; display: flex; align-items: center; gap: 8px; }
+.panel-title i { color: var(--gold-dark); }
+.panel-body { padding: 18px; }
+
+/* ══════════════════════════════════════
+   SECTION HEADER
+══════════════════════════════════════ */
+.section-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
+.section-title { font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+.section-title i { color: var(--gold-dark); font-size: 13px; }
+
+/* ══════════════════════════════════════
+   TABLE
+══════════════════════════════════════ */
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+table { width: 100%; border-collapse: collapse; font-family: sans-serif; font-size: 13px; min-width: 480px; }
+thead { background: var(--cream); }
+th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-soft); border-bottom: 1px solid var(--border); white-space: nowrap; }
+td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--ink-mid); vertical-align: middle; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: #fefdf8; }
+
+/* ══════════════════════════════════════
+   BADGES
+══════════════════════════════════════ */
+.badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: var(--r-pill); font-size: 11px; font-family: sans-serif; font-weight: 600; }
+.badge-dept     { background: var(--gold-light); color: var(--gold-deep); border: 1px solid var(--border-gold); }
+.badge-score    { background: #f0f9ec; color: #3a7a28; border: 1px solid #c4e6b8; }
+.badge-duration { background: #f4f0fc; color: #6650a4; border: 1px solid #d4c8f4; }
+
+/* ══════════════════════════════════════
+   FORM
+══════════════════════════════════════ */
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-label { font-size: 11px; font-family: sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--gold-deep); }
+.form-control {
+  padding: 9px 14px; border: 1.5px solid var(--border);
+  border-radius: var(--r-pill); font-size: 13px; font-family: sans-serif;
+  background: var(--white); color: var(--ink);
+  transition: border-color .15s, box-shadow .15s; width: 100%;
+}
+.form-control:focus { outline: none; border-color: var(--gold-mid); box-shadow: 0 0 0 3px rgba(245,212,114,.25); }
+textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height: 88px; }
+.form-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px,1fr)); gap: 14px; align-items: end; }
+
+/* ══════════════════════════════════════
+   SEARCH BAR
+══════════════════════════════════════ */
+.search-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 10px 14px; margin-bottom: 20px; }
+.search-field { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 130px; background: var(--cream); border: 1px solid var(--border); border-radius: var(--r-pill); padding: 6px 14px; }
+.search-field i { color: var(--gold-dark); font-size: 12px; flex-shrink: 0; }
+.search-field input, .search-field select { border: none; background: transparent; font-size: 13px; font-family: sans-serif; color: var(--ink); width: 100%; padding: 3px 0; }
+.search-field input:focus, .search-field select:focus { outline: none; }
+.search-field input::placeholder { color: var(--ink-soft); }
+
+/* ══════════════════════════════════════
+   ENROLMENT BAR
+══════════════════════════════════════ */
+.enrolment-bar { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 13px 18px; margin-bottom: 22px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: sans-serif; font-size: 13px; color: var(--ink-mid); }
+.enrolment-bar i { color: var(--gold-dark); font-size: 15px; }
+.enrolment-bar strong { color: var(--gold-deep); }
+
+/* ══════════════════════════════════════
+   DEPT GRID (Dashboard)
+══════════════════════════════════════ */
+.dept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 14px; }
+.dept-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 16px 18px; transition: border-color .15s; }
+.dept-card:hover { border-color: var(--border-gold); }
+.dept-card-title { font-size: 13px; font-weight: 700; color: var(--gold-dark); margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed var(--border-gold); display: flex; align-items: center; gap: 8px; font-family: sans-serif; }
+.dept-card-title i { color: var(--gold-mid); font-size: 12px; }
+.subject-tags { display: flex; flex-wrap: wrap; gap: 7px; }
+.subject-tag { background: var(--gold-light); border: 1px solid var(--border-gold); color: var(--gold-deep); font-size: 11.5px; font-family: sans-serif; font-weight: 500; padding: 3px 11px; border-radius: var(--r-pill); display: inline-flex; align-items: center; gap: 5px; }
+.subject-tag i { font-size: 10px; }
+
+/* ══════════════════════════════════════
+   SUBJECT CARDS
+══════════════════════════════════════ */
+.subjects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 14px; margin-bottom: 20px; }
+.subject-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; transition: border-color .15s, box-shadow .15s; }
+.subject-card:hover { border-color: var(--border-gold); box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+.subject-card-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
+.subject-card-name { font-size: 15px; font-weight: 700; color: var(--ink); }
+.subject-card-meta { font-size: 12px; font-family: sans-serif; color: var(--ink-soft); display: flex; flex-wrap: wrap; gap: 12px; }
+.subject-card-meta span { display: flex; align-items: center; gap: 5px; }
+.subject-card-meta i { color: var(--gold-dark); }
+.subject-card-actions { display: flex; gap: 8px; padding-top: 6px; border-top: 1px solid var(--border); flex-wrap: wrap; }
+
+/* ══════════════════════════════════════
+   STEP / INFO BAR
+══════════════════════════════════════ */
+.step-badge { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; background: var(--gold-mid); border: 1.5px solid var(--gold); border-radius: var(--r-pill); font-size: 12px; font-weight: 700; font-family: sans-serif; color: var(--ink); flex-shrink: 0; }
+.step-title { font-size: 13px; font-weight: 700; color: var(--gold-dark); font-family: sans-serif; display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.info-bar { background: var(--gold-light); border: 1px solid var(--border-gold); border-radius: var(--r-xl); padding: 11px 16px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.info-tag { background: var(--white); border: 1px solid var(--border-gold); border-radius: var(--r-pill); padding: 4px 12px; font-size: 12px; font-family: sans-serif; font-weight: 600; color: var(--gold-deep); display: flex; align-items: center; gap: 5px; }
+
+/* ══════════════════════════════════════
+   NOTICE
+══════════════════════════════════════ */
+.notice { background: var(--cream); border: 1.5px dashed var(--border-gold); border-radius: var(--r-xl); padding: 28px; text-align: center; color: var(--ink-soft); font-family: sans-serif; font-size: 13px; }
+.notice i { font-size: 22px; color: var(--border-gold); margin-bottom: 8px; display: block; }
+
+.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+
+/* ══════════════════════════════════════
+   EDIT SUBJECT MODAL
+══════════════════════════════════════ */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(30, 24, 10, .45);
+  z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s ease;
+}
+.modal-backdrop.open {
+  opacity: 1; pointer-events: all;
+}
+
+.modal {
+  background: var(--white);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-modal);
+  width: 100%;
+  max-width: 540px;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: translateY(18px) scale(.97);
+  transition: transform .25s cubic-bezier(.4,0,.2,1);
+}
+.modal-backdrop.open .modal {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  position: sticky; top: 0; background: var(--white); z-index: 2;
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+}
+
+.modal-title {
+  font-size: 15px; font-weight: 700; color: var(--ink);
+  display: flex; align-items: center; gap: 9px;
+}
+.modal-title i { color: var(--gold-dark); }
+
+.modal-close {
+  width: 30px; height: 30px;
+  border: 1.5px solid var(--border-gold);
+  border-radius: var(--r-pill);
+  background: var(--gold-light);
+  cursor: pointer; font-size: 13px; color: var(--ink-mid);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all .15s;
+}
+.modal-close:hover { background: var(--gold-mid); border-color: var(--gold); color: var(--ink); }
+
+.modal-body { padding: 22px; display: flex; flex-direction: column; gap: 16px; }
+
+.modal-divider {
+  height: 1px; background: var(--border);
+  margin: 2px 0;
+}
+
+.modal-section-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .08em;
+  font-family: sans-serif; font-weight: 700; color: var(--ink-soft);
+  margin-bottom: -4px;
+}
+
+.modal-footer {
+  padding: 14px 22px 18px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: flex-end;
+  gap: 10px; flex-wrap: wrap;
+  position: sticky; bottom: 0; background: var(--white); z-index: 2;
+  border-radius: 0 0 var(--r-xl) var(--r-xl);
+}
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 900px) {
+  .sidebar { position: fixed; left: 0; top: 0; bottom: 0; height: 100%; transform: translateX(calc(-1 * var(--sidebar-w) - 10px)); box-shadow: none; }
+  .sidebar.open { transform: translateX(0); box-shadow: var(--shadow-md); }
+  .sidebar-close { display: flex; }
+  .hamburger { display: flex; }
+  .main { width: 100%; }
+  .content { padding: 18px 16px; }
+  .stat-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+@media (max-width: 560px) {
+  :root { --sidebar-w: 260px; }
+  .topbar { padding: 0 12px; }
+  .page-title { font-size: 15px; }
+  .topbar-badge { display: none; }
+  .content { padding: 14px 10px; }
+  .stat-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+  .stat-value { font-size: 20px; }
+  .stat-card { padding: 14px 12px; }
+  .options-grid { grid-template-columns: 1fr; }
+  .search-bar { flex-direction: column; border-radius: var(--r-lg); padding: 10px; }
+  .search-field { min-width: 0; width: 100%; }
+  .subjects-grid, .dept-grid { grid-template-columns: 1fr; }
+  .panel-body { padding: 14px; }
+  .info-bar { flex-direction: column; align-items: flex-start; }
+  .info-tag { width: 100%; }
+  .form-row { grid-template-columns: 1fr; }
+  .btn-label { display: none; }
+  .modal-body { padding: 16px; }
+  .modal-header, .modal-footer { padding-left: 16px; padding-right: 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+<!-- ══════════════════════════
+     EDIT SUBJECT MODAL
+══════════════════════════ -->
+<div class="modal-backdrop" id="editModal" onclick="handleBackdropClick(event)">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">
+        <i class="fas fa-pen-to-square"></i> Edit Subject
+      </div>
+      <button class="modal-close" onclick="closeEditModal()" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+
+      <!-- Department -->
+      <div class="form-group">
+        <label class="form-label" for="edit-dept">
+          <i class="fas fa-building-columns" style="color:var(--gold-dark);margin-right:4px;"></i>
+          Department
+        </label>
+        <input class="form-control" type="text" id="edit-dept" placeholder="e.g. Computer Science" />
+      </div>
+
+      <!-- Subject Name -->
+      <div class="form-group">
+        <label class="form-label" for="edit-name">
+          <i class="fas fa-book" style="color:var(--gold-dark);margin-right:4px;"></i>
+          Subject Name
+        </label>
+        <input class="form-control" type="text" id="edit-name" placeholder="e.g. Algorithms" />
+      </div>
+
+      <div class="modal-divider"></div>
+      <div class="modal-section-label">Exam details</div>
+
+      <!-- Duration + Total Questions (2-col) -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="form-group">
+          <label class="form-label" for="edit-duration">
+            <i class="far fa-clock" style="color:var(--gold-dark);margin-right:4px;"></i>
+            Duration (min)
+          </label>
+          <input class="form-control" type="number" id="edit-duration" placeholder="90" min="1" />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="edit-totalqs">
+            <i class="fas fa-circle-question" style="color:var(--gold-dark);margin-right:4px;"></i>
+            Total Questions
+          </label>
+          <input class="form-control" type="number" id="edit-totalqs" placeholder="0" min="0" />
+        </div>
+      </div>
+
+      <!-- Created Date -->
+      <div class="form-group">
+        <label class="form-label" for="edit-date">
+          <i class="fas fa-calendar-alt" style="color:var(--gold-dark);margin-right:4px;"></i>
+          Created Date
+        </label>
+        <input class="form-control" type="date" id="edit-date"
+               style="border-radius:var(--r-pill);" />
+      </div>
+
+    </div><!-- /modal-body -->
+
+    <div class="modal-footer">
+      <button class="btn btn-sm" onclick="closeEditModal()">
+        <i class="fas fa-times"></i> Cancel
+      </button>
+      <button class="btn btn-primary btn-sm" id="saveEditBtn" onclick="saveEditSubject()">
+        <i class="fas fa-save"></i> Save Changes
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="app">
+
+  <!-- ══════════════════════════
+       SIDEBAR
+  ══════════════════════════ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon"><i class="fas fa-pen-nib"></i></div>
+      <div class="brand-text">
+        <div class="brand-name">Exam Board</div>
+        <div class="brand-sub">Admin Portal</div>
+      </div>
+      <button class="sidebar-close" onclick="closeSidebar()"><i class="fas fa-times"></i></button>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navigation</div>
+      <div class="nav-item active" onclick="showSection('dashboard',this)">
+        <i class="fas fa-chart-pie ni"></i><span class="nl">Dashboard</span>
+      </div>
+      <div class="nav-item" onclick="showSection('students',this)">
+        <i class="fas fa-users ni"></i><span class="nl">Students</span>
+      </div>
+      <div class="nav-item" onclick="showSection('subjects',this)">
+        <i class="fas fa-book-open ni"></i><span class="nl">Subjects</span>
+      </div>
+      <div class="nav-item" onclick="showSection('questions',this)">
+        <i class="fas fa-circle-question ni"></i><span class="nl">Questions</span>
+      </div>
+      <div class="nav-item" onclick="showSection('results',this)">
+        <i class="fas fa-file-lines ni"></i><span class="nl">Results</span>
+      </div>
+    </nav>
+    <div class="sidebar-footer">Academic Year 2025 / 26</div>
+  </aside>
+
+  <!-- ══════════════════════════
+       MAIN
+  ══════════════════════════ -->
+  <div class="main">
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="hamburger" onclick="openSidebar()">
+          <span></span><span></span><span></span>
+        </button>
+        <span class="page-title" id="pageTitle">Dashboard</span>
+        <span class="topbar-badge" id="topbarBadge">Overview</span>
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-sm"><i class="fas fa-bell"></i></button>
+        <button class="btn btn-sm btn-primary">
+          <i class="fas fa-user-circle"></i><span class="btn-label"> Admin</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="content">
+
+      <!-- ─── DASHBOARD ─── -->
+      <div id="dashboard" class="page active">
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-graduation-cap"></i></div>
+            <div class="stat-value" id="stat-students">7</div>
+            <div class="stat-label">Total Students</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-book"></i></div>
+            <div class="stat-value" id="stat-subjects">10</div>
+            <div class="stat-label">Subjects</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-pen-to-square"></i></div>
+            <div class="stat-value">5</div>
+            <div class="stat-label">Active Exams</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-building-columns"></i></div>
+            <div class="stat-value" id="stat-depts">5</div>
+            <div class="stat-label">Departments</div>
+          </div>
+        </div>
+        <div class="enrolment-bar">
+          <i class="fas fa-arrow-trend-up"></i>
+          New enrolments: <strong>+23 this month</strong>
+          &nbsp;·&nbsp;
+          Next session: <strong>April 2026</strong>
+        </div>
+        <div class="section-header">
+          <div class="section-title">
+            <i class="fas fa-building-columns"></i> Departments &amp; Subjects
+          </div>
+        </div>
+        <div id="dashDeptGrid" class="dept-grid"></div>
+      </div>
+
+      <!-- ─── STUDENTS ─── -->
+      <div id="students" class="page">
+        <div class="search-bar">
+          <div class="search-field">
+            <i class="fas fa-id-card"></i>
+            <input type="text" id="regSearch" placeholder="Reg. number…" />
+          </div>
+          <div class="search-field">
+            <i class="fas fa-user"></i>
+            <input type="text" id="nameSearch" placeholder="Student name…" />
+          </div>
+          <div class="search-field">
+            <i class="fas fa-building"></i>
+            <select id="deptFilter">
+              <option value="all">All departments</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Mathematics">Mathematics</option>
+              <option value="Physics">Physics</option>
+              <option value="Chemistry">Chemistry</option>
+              <option value="Literature">Literature</option>
+            </select>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fas fa-users"></i> Student Register</span>
+            <span id="studentCount" style="font-size:12px;color:var(--ink-soft);font-family:sans-serif;"></span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Reg. No.</th><th>Name</th><th>Department</th><th>Email</th><th></th></tr>
+              </thead>
+              <tbody id="studentTableBody"></tbody>
+            </table>
+          </div>
+          <div id="noResultMsg" class="notice" style="display:none;border-radius:0;border:none;border-top:1px solid var(--border);">
+            <i class="fas fa-user-slash"></i>No students match your search.
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── SUBJECTS ─── -->
+      <div id="subjects" class="page">
+        <div class="search-bar">
+          <div class="search-field" style="flex:1;">
+            <i class="fas fa-sitemap"></i>
+            <input type="text" id="deptSearchInput" placeholder="Filter by department…" />
+          </div>
+          <button id="searchSubjectBtn" class="btn btn-primary btn-sm">
+            <i class="fas fa-magnifying-glass"></i> Search
+          </button>
+        </div>
+
+        <div id="subjectCardsContainer" class="subjects-grid"></div>
+        <div id="noSubjectsMsg" class="notice" style="display:none;">
+          <i class="fas fa-book-open"></i>No subjects found for this department.
+        </div>
+
+        <!-- Add Subject Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fas fa-plus-circle"></i> Add New Subject</span>
+          </div>
+          <div class="panel-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Department</label>
+                <input class="form-control" type="text" id="newDept" placeholder="e.g. Computer Science" value="Computer Science" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Subject Name</label>
+                <input class="form-control" type="text" id="newSubject" placeholder="e.g. Algorithms" value="Algorithms" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Duration (min)</label>
+                <input class="form-control" type="number" id="newDuration" placeholder="90" value="90" />
+              </div>
+              <div class="form-group" style="justify-content:flex-end;">
+                <label class="form-label">&nbsp;</label>
+                <button id="saveSubjectBtn" class="btn btn-primary">
+                  <i class="fas fa-save"></i> Save Subject
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── QUESTIONS ─── -->
+      <div id="questions" class="page">
+        <div id="questionStep1" class="panel">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fas fa-sliders"></i> Exam Setup</span>
+          </div>
+          <div class="panel-body">
+            <div class="step-title"><span class="step-badge">1</span> Choose exam details</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Department</label>
+                <input class="form-control" type="text" id="questionDept" placeholder="Computer Science" value="Computer Science" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Subject</label>
+                <input class="form-control" type="text" id="questionSubject" placeholder="Algorithms" value="Algorithms" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Duration (min)</label>
+                <input class="form-control" type="number" id="questionDuration" placeholder="90" value="90" />
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:18px;">
+              <button id="nextToQuestionBtn" class="btn btn-primary">
+                Next: Add Questions <i class="fas fa-arrow-right"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div id="questionStep2" style="display:none;">
+          <div class="info-bar">
+            <div class="info-tag"><i class="fas fa-sitemap"></i> <span id="displayDept"></span></div>
+            <div class="info-tag"><i class="fas fa-book"></i> <span id="displaySubject"></span></div>
+            <div class="info-tag"><i class="far fa-clock"></i> <span id="displayDuration"></span> min</div>
+            <button id="changeDetailsBtn" class="btn btn-sm" style="margin-left:auto;">
+              <i class="fas fa-pencil"></i> Change
+            </button>
+          </div>
+          <div class="panel">
+            <div class="panel-header">
+              <span class="panel-title"><i class="fas fa-circle-question"></i> Enter Question</span>
+            </div>
+            <div class="panel-body">
+              <div class="step-title"><span class="step-badge">2</span> Question details</div>
+              <div class="form-group" style="margin-bottom:14px;">
+                <label class="form-label">Question Text</label>
+                <textarea class="form-control" id="questionText" placeholder="Type the question here…"></textarea>
+              </div>
+              <div class="form-group" style="margin-bottom:6px;">
+                <label class="form-label">Answer Options</label>
+              </div>
+              <div class="options-grid">
+                <input class="form-control" type="text" id="optionA" placeholder="Option A" />
+                <input class="form-control" type="text" id="optionB" placeholder="Option B" />
+                <input class="form-control" type="text" id="optionC" placeholder="Option C" />
+                <input class="form-control" type="text" id="optionD" placeholder="Option D" />
+              </div>
+              <div class="form-group" style="max-width:260px;margin-bottom:20px;">
+                <label class="form-label">Correct Answer</label>
+                <select class="form-control" id="correctAnswer">
+                  <option value="">Select correct answer…</option>
+                  <option value="A">A</option>
+                  <option value="B">B</option>
+                  <option value="C">C</option>
+                  <option value="D">D</option>
+                </select>
+              </div>
+              <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
+                <button id="addAnotherQuestionBtn" class="btn"><i class="fas fa-plus"></i> Add Another</button>
+                <button id="saveQuestionBtn" class="btn btn-primary"><i class="fas fa-cloud-upload-alt"></i> Save Question</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── RESULTS ─── -->
+      <div id="results" class="page">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fas fa-chart-simple"></i> Exam Results</span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Student</th><th>Subject</th><th>Department</th><th>Score</th><th>Date</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>John Doe</td><td>Mathematics</td>
+                  <td><span class="badge badge-dept">Mathematics</span></td>
+                  <td><span class="badge badge-score">85%</span></td>
+                  <td style="color:var(--ink-soft);font-family:sans-serif;">Mar 2026</td>
+                </tr>
+                <tr>
+                  <td>Emily Clarke</td><td>Physics</td>
+                  <td><span class="badge badge-dept">Physics</span></td>
+                  <td><span class="badge badge-score">92%</span></td>
+                  <td style="color:var(--ink-soft);font-family:sans-serif;">Mar 2026</td>
+                </tr>
+                <tr>
+                  <td>Michael Chen</td><td>Chemistry</td>
+                  <td><span class="badge badge-dept">Chemistry</span></td>
+                  <td><span class="badge badge-score">78%</span></td>
+                  <td style="color:var(--ink-soft);font-family:sans-serif;">Mar 2026</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+(function () {
+
+  /* ═══════════════════════════════
+     SIDEBAR
+  ═══════════════════════════════ */
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('sidebarOverlay');
+
+  window.openSidebar = function () {
+    sidebar.classList.add('open');
+    overlay.classList.add('visible');
+    document.body.style.overflow = 'hidden';
+  };
+  window.closeSidebar = function () {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('visible');
+    document.body.style.overflow = '';
+  };
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') { closeSidebar(); closeEditModal(); }
+  });
+  function maybeCloseSidebar () {
+    if (window.innerWidth <= 900) closeSidebar();
+  }
+
+  /* ═══════════════════════════════
+     PAGE NAVIGATION
+  ═══════════════════════════════ */
+  const pageMeta = {
+    dashboard: ['Dashboard', 'Overview'],
+    students:  ['Students',  'Register'],
+    subjects:  ['Subjects',  'Manage'],
+    questions: ['Questions', 'Add'],
+    results:   ['Results',   'Scores'],
+  };
+
+  window.showSection = function (id, navEl) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id)?.classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    if (navEl) navEl.classList.add('active');
+    const [title, badge] = pageMeta[id] || [id, ''];
+    document.getElementById('pageTitle').textContent   = title;
+    document.getElementById('topbarBadge').textContent = badge;
+    if (id === 'students')  setTimeout(filterStudents, 10);
+    if (id === 'subjects')  setTimeout(() => renderSubjects(document.getElementById('deptSearchInput')?.value || ''), 10);
+    if (id === 'dashboard') setTimeout(() => { renderDashDeptGrid(); updateStats(); }, 10);
+    if (id === 'questions') {
+      document.getElementById('questionStep1').style.display = '';
+      document.getElementById('questionStep2').style.display = 'none';
+    }
+    maybeCloseSidebar();
+  };
+
+  /* ═══════════════════════════════
+     DATA
+  ═══════════════════════════════ */
+  const studentsData = [
+    { reg:'REG1001', name:'John Doe',        dept:'Computer Science', email:'john.doe@uni.edu' },
+    { reg:'REG1002', name:'Emily Clarke',    dept:'Mathematics',      email:'e.clarke@uni.edu' },
+    { reg:'REG1003', name:'Michael Chen',    dept:'Physics',          email:'m.chen@uni.edu' },
+    { reg:'REG1004', name:'Sophia Dubois',   dept:'Literature',       email:'s.dubois@uni.edu' },
+    { reg:'REG1005', name:'James Kumar',     dept:'Computer Science', email:'j.kumar@uni.edu' },
+    { reg:'REG1006', name:'Fatima Al-Sayed', dept:'Chemistry',        email:'f.al@uni.edu' },
+    { reg:'REG1007', name:'Liam Brown',      dept:'Mathematics',      email:'liam.b@uni.edu' },
+  ];
+
+  let subjects = [
+    { dept:'Computer Science', name:'Algorithms',        duration:120, created: new Date(2025,2,10), totalQs:12 },
+    { dept:'Computer Science', name:'Data Structures',   duration:90,  created: new Date(2025,4,1),  totalQs:7  },
+    { dept:'Computer Science', name:'Operating Systems', duration:110, created: new Date(2025,3,12), totalQs:10 },
+    { dept:'Mathematics',      name:'Calculus I',        duration:90,  created: new Date(2025,3,5),  totalQs:8  },
+    { dept:'Mathematics',      name:'Linear Algebra',    duration:80,  created: new Date(2025,1,20), totalQs:9  },
+    { dept:'Physics',          name:'Mechanics',         duration:110, created: new Date(2025,3,18), totalQs:15 },
+    { dept:'Physics',          name:'Electromagnetism',  duration:130, created: new Date(2025,2,28), totalQs:12 },
+    { dept:'Chemistry',        name:'Organic Chem',      duration:100, created: new Date(2025,2,22), totalQs:10 },
+    { dept:'Chemistry',        name:'Physical Chem',     duration:95,  created: new Date(2025,0,15), totalQs:6  },
+    { dept:'Literature',       name:'Shakespeare',       duration:75,  created: new Date(2025,3,2),  totalQs:5  },
+  ];
+
+  /* ═══════════════════════════════
+     EDIT SUBJECT MODAL
+  ═══════════════════════════════ */
+  let editingIndex = -1;
+  const editModal = document.getElementById('editModal');
+
+  // Helper: format Date → "YYYY-MM-DD" for <input type="date">
+  function toDateValue (d) {
+    if (!(d instanceof Date) || isNaN(d)) return '';
+    const y  = d.getFullYear();
+    const mo = String(d.getMonth() + 1).padStart(2, '0');
+    const dy = String(d.getDate()).padStart(2, '0');
+    return `${y}-${mo}-${dy}`;
+  }
+
+  window.openEditModal = function (idx) {
+    const sub = subjects[idx];
+    if (!sub) return;
+    editingIndex = idx;
+
+    document.getElementById('edit-dept').value     = sub.dept;
+    document.getElementById('edit-name').value     = sub.name;
+    document.getElementById('edit-duration').value = sub.duration;
+    document.getElementById('edit-totalqs').value  = sub.totalQs;
+    document.getElementById('edit-date').value     = toDateValue(sub.created);
+
+    editModal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    // focus first field
+    setTimeout(() => document.getElementById('edit-dept').focus(), 80);
+  };
+
+  window.closeEditModal = function () {
+    editModal.classList.remove('open');
+    document.body.style.overflow = '';
+    editingIndex = -1;
+  };
+
+  // Close when clicking the dark backdrop (not the modal itself)
+  window.handleBackdropClick = function (e) {
+    if (e.target === editModal) closeEditModal();
+  };
+
+  window.saveEditSubject = function () {
+    if (editingIndex < 0) return;
+
+    const dept     = document.getElementById('edit-dept').value.trim();
+    const name     = document.getElementById('edit-name').value.trim();
+    const duration = parseInt(document.getElementById('edit-duration').value, 10);
+    const totalQs  = parseInt(document.getElementById('edit-totalqs').value,  10);
+    const dateVal  = document.getElementById('edit-date').value;
+
+    if (!dept || !name) { alert('Department and Subject Name are required.'); return; }
+    if (isNaN(duration) || duration < 1) { alert('Please enter a valid duration.'); return; }
+
+    subjects[editingIndex].dept     = dept;
+    subjects[editingIndex].name     = name;
+    subjects[editingIndex].duration = duration;
+    subjects[editingIndex].totalQs  = isNaN(totalQs) ? 0 : totalQs;
+    if (dateVal) subjects[editingIndex].created = new Date(dateVal);
+
+    closeEditModal();
+    renderSubjects(document.getElementById('deptSearchInput')?.value || '');
+  };
+
+  /* ═══════════════════════════════
+     STUDENTS
+  ═══════════════════════════════ */
+  function filterStudents () {
+    const tbody    = document.getElementById('studentTableBody');
+    const noResult = document.getElementById('noResultMsg');
+    const regVal   = document.getElementById('regSearch')?.value.trim().toLowerCase()  || '';
+    const nameVal  = document.getElementById('nameSearch')?.value.trim().toLowerCase() || '';
+    const deptVal  = document.getElementById('deptFilter')?.value || 'all';
+
+    const filtered = studentsData.filter(s => {
+      if (regVal  && !s.reg.toLowerCase().includes(regVal))   return false;
+      if (nameVal && !s.name.toLowerCase().includes(nameVal)) return false;
+      if (deptVal !== 'all' && s.dept !== deptVal)            return false;
+      return true;
+    });
+
+    document.getElementById('studentCount').textContent =
+      filtered.length + ' student' + (filtered.length !== 1 ? 's' : '');
+    noResult.style.display = filtered.length ? 'none' : 'block';
+
+    tbody.innerHTML = filtered.map(s => `
+      <tr>
+        <td style="font-family:sans-serif;font-weight:600;color:var(--ink)">${s.reg}</td>
+        <td>${s.name}</td>
+        <td><span class="badge badge-dept">${s.dept}</span></td>
+        <td style="font-family:sans-serif;color:var(--ink-soft)">${s.email}</td>
+        <td>
+          <button class="btn btn-sm btn-danger" onclick="alert('demo delete')">
+            <i class="fas fa-trash"></i>
+          </button>
+        </td>
+      </tr>
+    `).join('');
+  }
+
+  document.getElementById('regSearch')?.addEventListener('input',   filterStudents);
+  document.getElementById('nameSearch')?.addEventListener('input',  filterStudents);
+  document.getElementById('deptFilter')?.addEventListener('change', filterStudents);
+
+  /* ═══════════════════════════════
+     SUBJECTS
+  ═══════════════════════════════ */
+  function renderSubjects (filterDept) {
+    const container = document.getElementById('subjectCardsContainer');
+    const noMsg     = document.getElementById('noSubjectsMsg');
+    if (!container) return;
+
+    const filtered = filterDept
+      ? subjects.filter(s => s.dept.toLowerCase().includes(filterDept.toLowerCase()))
+      : subjects;
+
+    if (!filtered.length) {
+      container.innerHTML = '';
+      noMsg.style.display = 'block';
+      return;
+    }
+    noMsg.style.display = 'none';
+
+    container.innerHTML = filtered.map(sub => {
+      const idx     = subjects.indexOf(sub);
+      const dateStr = sub.created instanceof Date && !isNaN(sub.created)
+        ? sub.created.toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })
+        : '—';
+      return `
+        <div class="subject-card">
+          <div class="subject-card-top">
+            <span class="badge badge-dept">${sub.dept}</span>
+            <span class="badge badge-duration"><i class="far fa-clock"></i> ${sub.duration} min</span>
+          </div>
+          <div class="subject-card-name">${sub.name}</div>
+          <div class="subject-card-meta">
+            <span><i class="fas fa-calendar-alt"></i> ${dateStr}</span>
+            <span><i class="fas fa-circle-question"></i> ${sub.totalQs} questions</span>
+          </div>
+          <div class="subject-card-actions">
+            <button class="btn btn-sm" onclick="openEditModal(${idx})">
+              <i class="fas fa-pen"></i> Edit
+            </button>
+            <button class="btn btn-sm btn-danger" onclick="deleteSubject(${idx})">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    renderDashDeptGrid();
+    updateStats();
+  }
+
+  window.deleteSubject = function (i) {
+    if (confirm('Remove this subject?')) {
+      subjects.splice(i, 1);
+      renderSubjects(document.getElementById('deptSearchInput')?.value || '');
+    }
+  };
+
+  document.getElementById('searchSubjectBtn')?.addEventListener('click', () =>
+    renderSubjects(document.getElementById('deptSearchInput')?.value || '')
+  );
+
+  document.getElementById('saveSubjectBtn')?.addEventListener('click', () => {
+    const dept = document.getElementById('newDept')?.value.trim();
+    const name = document.getElementById('newSubject')?.value.trim();
+    const dur  = document.getElementById('newDuration')?.value;
+    if (!dept || !name || !dur) { alert('Please fill in all fields.'); return; }
+    subjects.push({ dept, name, duration: +dur, created: new Date(), totalQs: 0 });
+    document.getElementById('newDept').value     = '';
+    document.getElementById('newSubject').value  = '';
+    document.getElementById('newDuration').value = '60';
+    renderSubjects(document.getElementById('deptSearchInput')?.value || '');
+  });
+
+  /* ═══════════════════════════════
+     DASHBOARD DEPT GRID
+  ═══════════════════════════════ */
+  function renderDashDeptGrid () {
+    const grid = document.getElementById('dashDeptGrid');
+    if (!grid) return;
+    const map = new Map();
+    subjects.forEach(s => {
+      if (!map.has(s.dept)) map.set(s.dept, []);
+      map.get(s.dept).push(s.name);
+    });
+    const sortedDepts = Array.from(map.keys()).sort();
+    grid.innerHTML = sortedDepts.map(dept => `
+      <div class="dept-card">
+        <div class="dept-card-title"><i class="fas fa-building"></i> ${dept}</div>
+        <div class="subject-tags">
+          ${map.get(dept).map(sub =>
+            `<span class="subject-tag"><i class="fas fa-book"></i> ${sub}</span>`
+          ).join('')}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  /* ═══════════════════════════════
+     STATS
+  ═══════════════════════════════ */
+  function updateStats () {
+    const depts = new Set(subjects.map(s => s.dept));
+    document.getElementById('stat-subjects').textContent  = subjects.length;
+    document.getElementById('stat-depts').textContent     = depts.size;
+    document.getElementById('stat-students').textContent  = studentsData.length;
+  }
+
+  /* ═══════════════════════════════
+     QUESTIONS
+  ═══════════════════════════════ */
+  document.getElementById('nextToQuestionBtn')?.addEventListener('click', () => {
+    const dept = document.getElementById('questionDept')?.value.trim();
+    const subj = document.getElementById('questionSubject')?.value.trim();
+    const dur  = document.getElementById('questionDuration')?.value;
+    if (!dept || !subj || !dur) { alert('Please complete all fields.'); return; }
+    document.getElementById('displayDept').textContent     = dept;
+    document.getElementById('displaySubject').textContent  = subj;
+    document.getElementById('displayDuration').textContent = dur;
+    document.getElementById('questionStep1').style.display = 'none';
+    document.getElementById('questionStep2').style.display = '';
+  });
+
+  document.getElementById('changeDetailsBtn')?.addEventListener('click', () => {
+    document.getElementById('questionDept').value     = document.getElementById('displayDept').textContent;
+    document.getElementById('questionSubject').value  = document.getElementById('displaySubject').textContent;
+    document.getElementById('questionDuration').value = document.getElementById('displayDuration').textContent;
+    document.getElementById('questionStep2').style.display = 'none';
+    document.getElementById('questionStep1').style.display = '';
+  });
+
+  function clearQuestion () {
+    ['questionText','optionA','optionB','optionC','optionD'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = '';
+    });
+    document.getElementById('correctAnswer').value = '';
+  }
+
+  document.getElementById('saveQuestionBtn')?.addEventListener('click', () => {
+    if (!document.getElementById('questionText')?.value.trim()) { alert('Please enter a question.'); return; }
+    alert('Question saved (demo).');
+    clearQuestion();
+  });
+
+  document.getElementById('addAnotherQuestionBtn')?.addEventListener('click', () => {
+    if (!document.getElementById('questionText')?.value.trim()) { alert('Please enter a question first.'); return; }
+    alert('Saved. Add another question.');
+    clearQuestion();
+  });
+
+  /* ═══════════════════════════════
+     INIT
+  ═══════════════════════════════ */
+  filterStudents();
+  renderSubjects('');
+  renderDashDeptGrid();
+  updateStats();
+
+})();
+</script>
+</body>
+</html>

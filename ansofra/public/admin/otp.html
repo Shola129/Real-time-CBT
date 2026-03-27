@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Exam Board · Verify Email</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+<style>
+  /* Base Styles */
+  :root {
+    --cream: #fef9e8;
+    --white: #ffffff;
+    --gold-dark: #c97e0a;
+    --gold-deep: #b56a0c;
+    --border-gold: #f3d9a4;
+    --ink-mid: #6b5a4a;
+    --ink-dark: #2d2b2b;
+    --r-md: 12px;
+    --r-xl: 24px;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #2a2765 0%, #1e1c4a 100%);
+    font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
+    padding: 1.5rem;
+  }
+
+  .otp-container {
+    max-width: 440px;
+    width: 100%;
+    background: var(--white);
+    border-radius: var(--r-xl);
+    border: 1px solid rgba(201, 126, 10, 0.25);
+    padding: 32px 28px;
+    text-align: center;
+    box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.35);
+    transition: transform 0.2s ease;
+  }
+
+  .otp-container i.fa-envelope-open-text {
+    font-size: 48px;
+    color: var(--gold-dark);
+    background: #fff5e6;
+    padding: 12px;
+    border-radius: 60px;
+    margin-bottom: 8px;
+  }
+
+  h3 {
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin: 12px 0 8px;
+    color: #1e1c4a;
+    letter-spacing: -0.3px;
+  }
+
+  .email-display {
+    color: var(--ink-mid);
+    font-size: 14px;
+    margin-bottom: 24px;
+    background: #f8f7fc;
+    padding: 8px 12px;
+    border-radius: 40px;
+    display: inline-block;
+  }
+
+  .form-group {
+    text-align: left;
+    margin-bottom: 20px;
+  }
+
+  .form-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #2d2b2b;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 6px;
+    border: 2px solid #e2e4f0;
+    border-radius: 16px;
+    background-color: #fefefe;
+    color: #1e1c4a;
+    font-family: monospace;
+    transition: all 0.2s ease;
+    outline: none;
+  }
+
+  .form-control:focus {
+    border-color: #242254;
+    box-shadow: 0 0 0 3px rgba(36, 34, 84, 0.2);
+  }
+
+  .btn {
+    width: 100%;
+    padding: 14px 20px;
+    border-radius: 40px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: inherit;
+  }
+
+  .btn-primary {
+    background: #242254;
+    color: white;
+    box-shadow: 0 6px 14px rgba(36, 34, 84, 0.25);
+  }
+
+  .btn-primary:hover {
+    background: #2f2c70;
+    transform: translateY(-1px);
+  }
+
+  .btn-primary:active {
+    transform: translateY(1px);
+  }
+
+  .btn-primary:disabled {
+    background-color: #9b99c0;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .links {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .links a {
+    font-size: 12px;
+    color: var(--gold-deep);
+    text-decoration: none;
+    font-weight: 500;
+    transition: opacity 0.2s;
+  }
+
+  .links a:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+  }
+
+  .error-message {
+    color: #dc3545;
+    font-size: 11px;
+    margin-top: 6px;
+    display: none;
+    font-weight: 500;
+  }
+
+  .error-message.visible {
+    display: block;
+  }
+
+  .input-error {
+    border-color: #dc3545 !important;
+  }
+
+  .input-success {
+    border-color: #28a745 !important;
+  }
+
+  .general-error {
+    background-color: #fef2f0;
+    border-left: 4px solid #dc3545;
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    display: none;
+    color: #b91c1c;
+    text-align: left;
+  }
+
+  .general-error.visible {
+    display: block;
+  }
+
+  .timer-card {
+    background: linear-gradient(135deg, #f8f9ff 0%, #f0f1fa 100%);
+    border-radius: 16px;
+    padding: 12px 16px;
+    margin: 20px 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .timer-label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #5a5a7a;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .timer-label i {
+    color: var(--gold-dark);
+    font-size: 13px;
+  }
+
+  .countdown-box {
+    background: white;
+    padding: 4px 14px;
+    border-radius: 40px;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: #242254;
+    font-family: monospace;
+    letter-spacing: 1px;
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 30px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    background: #e0f2e8;
+    color: #0a6b3f;
+  }
+
+  .status-badge.expired {
+    background: #ffe5e5;
+    color: #c2410c;
+  }
+
+  .resend-disabled {
+    pointer-events: none;
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .success-toast {
+    background-color: #d4edda;
+    color: #155724;
+    padding: 10px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    animation: fadeInOut 3s ease forwards;
+  }
+
+  @keyframes fadeInOut {
+    0% { opacity: 0; transform: translateY(-5px); }
+    10% { opacity: 1; transform: translateY(0); }
+    90% { opacity: 1; }
+    100% { opacity: 0; display: none; }
+  }
+  
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--cream);
+}
+.otp-container {
+  max-width: 400px;
+  width: 90%;
+  background: var(--white);
+  border-radius: var(--r-xl);
+  border: 1px solid var(--border-gold);
+  padding: 32px 28px;
+  text-align: center;
+}
+.otp-container i {
+  font-size: 42px;
+  color: var(--gold-dark);
+}
+h3 {
+  margin: 12px 0 8px;
+}
+.email-display {
+  color: var(--ink-mid);
+  font-size: 13px;
+  margin-bottom: 20px;
+}
+.btn-verify {
+  width: 100%;
+}
+.links {
+  margin-top: 16px;
+}
+.links a {
+  font-size: 12px;
+  color: var(--gold-deep);
+  text-decoration: none;
+}
+.links a:hover {
+  text-decoration: underline;
+}
+.error-message {
+  color: #dc3545;
+  font-size: 11px;
+  margin-top: 4px;
+  display: none;
+  font-family: sans-serif;
+}
+.error-message.visible {
+  display: block;
+}
+.input-error {
+  border-color: #dc3545 !important;
+}
+.input-success {
+  border-color: #28a745 !important;
+}
+.general-error {
+  background-color: #f8d7da;
+  color: #721c24;
+  padding: 10px;
+  border-radius: var(--r-md);
+  margin-bottom: 15px;
+  font-size: 13px;
+  font-family: sans-serif;
+  display: none;
+}
+.general-error.visible {
+  display: block;
+}
+.timer-text {
+  font-size: 12px;
+  color: var(--ink-mid);
+  margin-top: 10px;
+  font-family: sans-serif;
+}
+.timer-text i {
+  font-size: 12px;
+  color: var(--gold-dark);
+}
+.countdown {
+  font-weight: bold;
+  color: var(--gold-deep);
+}
+.resend-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+:root {
+  --cream:       #faf8f2;
+  --white:       #ffffff;
+  --gold-light:  #fef3d0;
+  --gold-mid:    #f5d472;
+  --gold:        #e8b832;
+  --gold-dark:   #b8901e;
+  --gold-deep:   #8a6a12;
+  --ink:         #2a3440;
+  --ink-mid:     #4a5a68;
+  --ink-soft:    #7a8a96;
+  --border:      #ede8d8;
+  --border-gold: #f0d898;
+  --sidebar-w:   230px;
+  --topbar-h:    58px;
+  --r-sm:  6px;
+  --r-md:  10px;
+  --r-lg:  16px;
+  --r-xl:  24px;
+  --r-pill:99px;
+  --shadow-md: 0 4px 24px rgba(0,0,0,.14);
+  --shadow-modal: 0 8px 40px rgba(0,0,0,.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* app shell & sidebar etc (existing) */
+.app { display: flex; min-height: 100vh; }
+.sidebar-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.38);
+  z-index: 90;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s ease;
+}
+.sidebar-overlay.visible { opacity: 1; pointer-events: all; }
+.sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  position: sticky; top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  flex-shrink: 0;
+  transition: transform .3s cubic-bezier(.4,0,.2,1);
+  z-index: 100;
+}
+.sidebar-brand {
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.brand-icon {
+  width: 38px; height: 38px;
+  background: var(--gold-mid);
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink); font-size: 17px;
+}
+.brand-name { font-size: 15px; font-weight: 700; color: var(--ink); }
+.brand-sub  { font-size: 11px; color: var(--ink-soft); font-family: sans-serif; font-style: italic; }
+.sidebar-close {
+  display: none;
+  width: 28px; height: 28px;
+  border: none; background: var(--gold-light);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  margin-left: auto;
+}
+.sidebar-nav { padding: 10px 8px; flex: 1; }
+.nav-section-label {
+  font-size: 10px; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--ink-soft);
+  font-family: sans-serif; font-weight: 700;
+  padding: 10px 10px 5px;
+}
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 12px;
+  border-radius: var(--r-md);
+  cursor: pointer;
+  color: var(--ink-mid);
+  font-family: sans-serif; font-weight: 500;
+  transition: all .15s;
+}
+.nav-item .ni { width: 20px; font-size: 15px; color: var(--ink-soft); }
+.nav-item:hover { background: var(--gold-light); color: var(--gold-deep); transform: translateX(3px); }
+.nav-item.active { background: var(--gold-mid); color: var(--ink); font-weight: 700; }
+.sidebar-footer {
+  padding: 14px 18px; border-top: 1px solid var(--border);
+  font-size: 11px; color: var(--ink-soft);
+  font-family: sans-serif; font-style: italic;
+}
+.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.topbar {
+  background: var(--white); border-bottom: 1px solid var(--border);
+  padding: 0 20px; height: var(--topbar-h);
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 50;
+}
+.hamburger {
+  display: none;
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--border-gold);
+  border-radius: var(--r-md);
+  background: var(--white);
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 5px;
+}
+.hamburger span { width: 16px; height: 2px; background: var(--ink-mid); }
+.page-title { font-size: 17px; font-weight: 700; }
+.topbar-badge { background: var(--gold-light); border: 1px solid var(--border-gold); color: var(--gold-deep); font-size: 11px; padding: 3px 10px; border-radius: var(--r-pill); }
+.content { padding: 24px; flex: 1; overflow-y: auto; }
+.page { display: none; }
+.page.active { display: block; animation: fadeIn .2s ease; }
+@keyframes fadeIn { from { opacity: .6; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 16px; font-size: 13px; font-family: sans-serif; font-weight: 600;
+  border-radius: var(--r-pill); border: 1.5px solid var(--border-gold);
+  background: var(--white); cursor: pointer;
+}
+.btn-primary { background: var(--gold-mid); border-color: var(--gold); color: var(--ink); }
+.btn-primary:hover { background: var(--gold); }
+.form-control {
+  padding: 9px 14px; border: 1.5px solid var(--border);
+  border-radius: var(--r-pill); font-size: 13px; font-family: sans-serif;
+  background: var(--white); width: 100%;
+}
+.form-control:focus { outline: none; border-color: var(--gold-mid); }
+.form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
+.form-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--gold-deep); font-family: sans-serif; }
+.panel { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); overflow: hidden; margin-bottom: 20px; }
+.panel-header { padding: 13px 18px; border-bottom: 1px solid var(--border); }
+.panel-title { font-size: 13.5px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.panel-body { padding: 18px; }
+.badge { display: inline-flex; padding: 3px 10px; border-radius: var(--r-pill); font-size: 11px; font-weight: 600; background: var(--gold-light); color: var(--gold-deep); }
+.stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; margin-bottom: 22px; }
+.stat-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 18px 16px; }
+.dept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 14px; }
+@media (max-width: 900px) {
+  .sidebar { position: fixed; transform: translateX(calc(-1 * var(--sidebar-w) - 10px)); }
+  .sidebar.open { transform: translateX(0); }
+  .sidebar-close { display: flex; }
+  .hamburger { display: flex; }
+  .stat-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+</style>
+</head>
+<body>
+<div class="otp-container">
+  <i class="fas fa-envelope-open-text"></i>
+  <h3>Verify your email</h3>
+  <p class="email-display">We've sent a 6-digit code to <strong id="otpEmailDisplay"></strong></p>
+  
+  <div id="generalError" class="general-error"></div>
+  <div id="successMessage" style="display: none;"></div>
+  
+  <div class="form-group">
+    <label class="form-label">Verification Code *</label>
+    <input type="text" id="otpCode" class="form-control" placeholder="000000" maxlength="6" autocomplete="off">
+    <div class="error-message" id="otpError">Please enter a valid 6-digit verification code</div>
+  </div>
+  
+  <div class="timer-card">
+    <div class="timer-label">
+      <!-- <i class="fas fa-hourglass-half"></i> -->
+       Code validity
+    </div>
+    <div class="countdown-box" id="countdownDisplay">02:00</div>
+    <div class="status-badge" id="statusBadge">Active</div>
+  </div>
+  
+  <button id="verifyBtn" class="btn btn-primary">
+    Verify
+  </button>
+  
+  <div class="links">
+    <a href="#" id="resendLink">Resend code</a>
+    <a href="#" id="backLink">Back to login</a>
+  </div>
+</div>
+
+<script>
+  
+   const email = localStorage.getItem('cbt-email');
+   const fullname = localStorage.getItem('cbt-name');
+  let userEmail = localStorage.getItem('cbt-email');
+  
+  // Fallback for Exam Board style: check URL param or sessionStorage
+  // if (!userEmail) {
+  //    window.location.href="/cbt/ansofra/ilease";
+  // }
+  
+  // DOM Elements
+  const otpInput = document.getElementById('otpCode');
+  const verifyBtn = document.getElementById('verifyBtn');
+  const resendLink = document.getElementById('resendLink');
+  const backLink = document.getElementById('backLink');
+  const generalError = document.getElementById('generalError');
+  const otpError = document.getElementById('otpError');
+  const countdownDisplay = document.getElementById('countdownDisplay');
+  const statusBadge = document.getElementById('statusBadge');
+  
+  // Timer variables (using seconds for countdown, default 120 seconds = 2 minutes)
+  let timeLeftSeconds = 120;
+  let timerInterval = null;
+  let isTimerActive = true;
+  let resendInProgress = false;
+  
+  // Display email
+  if (userEmail) {
+    document.getElementById('otpEmailDisplay').innerText = userEmail;
+  } else {
+    document.getElementById('otpEmailDisplay').innerText = 'your email';
+  }
+  
+  // Helper: Show error message
+  function showError(message) {
+    generalError.textContent = message;
+    generalError.classList.add('visible');
+    setTimeout(() => {
+      generalError.classList.remove('visible');
+    }, 4000);
+  }
+  
+  // Helper: Hide error
+  function hideError() {
+    generalError.classList.remove('visible');
+    generalError.textContent = '';
+  }
+  
+  // Helper: Show success toast
+  function showSuccessToast(message) {
+    const existingToast = document.querySelector('.success-toast');
+    if (existingToast) existingToast.remove();
+    const toast = document.createElement('div');
+    toast.className = 'success-toast';
+    toast.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
+    const container = document.querySelector('.otp-container');
+    const formGroup = document.querySelector('.form-group');
+    container.insertBefore(toast, formGroup);
+    setTimeout(() => {
+      if (toast) toast.remove();
+    }, 3000);
+  }
+  
+  // Update timer UI (mm:ss format)
+  function updateTimerUI() {
+    const minutes = Math.floor(timeLeftSeconds / 60);
+    const seconds = timeLeftSeconds % 60;
+    countdownDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
+    if (timeLeftSeconds <= 0) {
+      // Timer expired
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+      isTimerActive = false;
+      statusBadge.textContent = 'Expired';
+      statusBadge.classList.add('expired');
+      resendLink.classList.remove('resend-disabled');
+      resendLink.style.pointerEvents = 'auto';
+      resendLink.style.opacity = '1';
+      // Show expiry message once
+      if (!generalError.textContent.includes('expired')) {
+        showError("OTP has expired. Please request a new code.");
+      }
+      // Call delete OTP backend (optional)
+      deleteOTPFromBackend();
+    } else {
+      isTimerActive = true;
+      statusBadge.textContent = 'Active';
+      statusBadge.classList.remove('expired');
+      resendLink.classList.add('resend-disabled');
+      resendLink.style.pointerEvents = 'none';
+      resendLink.style.opacity = '0.5';
+    }
+  }
+  
+  // Start countdown timer (initializes fresh)
+  function startCountdown(initialSeconds = 120) {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+    timeLeftSeconds = initialSeconds;
+    isTimerActive = true;
+    updateTimerUI();
+    
+    timerInterval = setInterval(() => {
+      if (timeLeftSeconds > 0) {
+        timeLeftSeconds--;
+        updateTimerUI();
+        if (timeLeftSeconds === 0) {
+          // expired, delete OTP
+          deleteOTPFromBackend();
+        }
+      } else {
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+        updateTimerUI();
+      }
+    }, 1000);
+  }
+  
+  // Delete OTP from backend (non-blocking)
+  async function deleteOTPFromBackend() {
+    const e = { email: userEmail };
+    if (!userEmail) return;
+      const response = await fetch('/cbt/ansofra/apiadmin/delete/otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(e)
+      });
+      const result = await response.json(e);
+      console.log("OTP cleanup:", result);
+  
+  }
+  
+  // Validate OTP input (6 digits)
+  function validateOtpInput() {
+    const otp = otpInput.value.trim();
+    if (otp === '') {
+      otpInput.classList.add('input-error');
+      otpInput.classList.remove('input-success');
+      otpError.textContent = 'Verification code is required';
+      otpError.classList.add('visible');
+      return false;
+    } else if (!/^\d{6}$/.test(otp)) {
+      otpInput.classList.add('input-error');
+      otpInput.classList.remove('input-success');
+      otpError.textContent = 'Please enter a valid 6-digit numeric code';
+      otpError.classList.add('visible');
+      return false;
+    } else {
+      otpInput.classList.remove('input-error');
+      otpInput.classList.add('input-success');
+      otpError.classList.remove('visible');
+      return true;
+    }
+  }
+  
+  // Process OTP verification
+  async function processOtp() {
+    const code = otpInput.value.trim();
+    
+    if (!validateOtpInput()) {
+      return;
+    }
+    
+    // Check if timer expired
+    if (!isTimerActive || timeLeftSeconds <= 0) {
+      showError("OTP has expired. Please request a new code using 'Resend code'.");
+      return;
+    }
+    
+    if (!userEmail) {
+      showError("Session expired. Please login again.");
+      setTimeout(() => {
+        window.location.href = '/cbt/ansofra/ilease/login';
+      }, 1500);
+      return;
+    }
+    
+    // Disable button during request
+    verifyBtn.disabled = true;
+    verifyBtn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Verifying...';
+    
+    const data = { otpCode: code, email: userEmail, fullname:fullname};
+    
+      const api = await fetch('/cbt/ansofra/apiadmin/process/otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const response = await api.json();    
+      if (response.status === 'success') {
+        // localStorage.clear();
+        if (timerInterval) clearInterval(timerInterval);
+        localStorage.setItem('cbt-email-otp', email);
+        // localStorage.setItem('cbt-name-otp', fullname);
+        deleteOTPFromBackend();
+        window.location.href = '/cbt/ansofra/ilease/2FA/verification';
+      } else {
+        showError(response.response || "Invalid verification code. Please try again.");
+        verifyBtn.disabled = false;
+        verifyBtn.innerHTML = 'Verify';
+        otpInput.value = '';
+        otpInput.classList.remove('input-success');
+        otpInput.classList.add('input-error');
+        otpError.textContent = 'Invalid code. Please try again.';
+        otpError.classList.add('visible');
+        otpInput.focus();
+      }
+  }
+  
+  async function resendOTP() {
+    // Prevent resend if timer is still active
+    if (isTimerActive && timeLeftSeconds > 0) {
+      showError(`Please wait ${timeLeftSeconds} seconds before requesting a new code.`);
+      return;
+    }
+    
+    if (resendInProgress) {
+      showError("Please wait, we are sending a new code...");
+      return;
+    }
+    
+    if (!userEmail) {
+      showError("Session expired. Redirecting...");
+      setTimeout(() => {
+        window.location.href = '/cbt/ansofra/ilease/login';
+      }, 1500);
+      return;
+    }
+    
+    resendInProgress = true;
+    resendLink.style.pointerEvents = 'none';
+    resendLink.textContent = "Sending...";
+    
+    const data = { email: userEmail };
+    
+    try {
+      const api = await fetch('/cbt/ansofra/apiadmin/validateEmail', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const response = await api.json();
+      
+      if (response.status === 'failed') {
+        showSuccessToast("New verification code sent! Check your email.");
+        
+        otpInput.value = '';
+        otpInput.classList.remove('input-success', 'input-error');
+        otpError.classList.remove('visible');
+        hideError();
+        
+        startCountdown(120);
+        
+        verifyBtn.disabled = false;
+        verifyBtn.innerHTML = 'Verify';
+        otpInput.focus();
+      } else {
+        showError(response.response || "Failed to resend code. Please try again.");
+        // If timer already expired, keep resend enabled but revert
+        if (timeLeftSeconds <= 0) {
+          resendLink.classList.remove('resend-disabled');
+          resendLink.style.pointerEvents = 'auto';
+          resendLink.style.opacity = '1';
+        }
+      }
+    } catch (error) {
+      console.error("Resend error:", error);
+      showError("Network error. Please try again.");
+    } finally {
+      resendInProgress = false;
+      resendLink.textContent = "Resend code";
+      if (timeLeftSeconds <= 0) {
+        resendLink.classList.remove('resend-disabled');
+        resendLink.style.pointerEvents = 'auto';
+        resendLink.style.opacity = '1';
+      } else {
+        resendLink.classList.add('resend-disabled');
+        resendLink.style.pointerEvents = 'none';
+        resendLink.style.opacity = '0.5';
+      }
+    }
+  }
+  
+  // Back to login handler
+  function backToLogin() {
+    if (timerInterval) clearInterval(timerInterval);
+    sessionStorage.clear();
+    localStorage.removeItem('cbt-email-otp');
+    window.location.href = '/cbt/ansofra/ilease/login';
+  }
+  
+
+  otpInput.addEventListener('input', function(e) {
+    this.value = this.value.replace(/[^\d]/g, '').slice(0, 6);
+    validateOtpInput();
+    hideError();
+  });
+  
+  otpInput.addEventListener('blur', validateOtpInput);
+  
+  // Enter key support
+  otpInput.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      processOtp();
+    }
+  });
+  
+  verifyBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    processOtp();
+  });
+  
+  resendLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    resendOTP();
+  });
+  
+  backLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    backToLogin();
+  });
+  
+  // Initialize page on DOM load
+  document.addEventListener("DOMContentLoaded", () => {
+    startCountdown(120);
+    
+   
+    if (timeLeftSeconds > 0) {
+      resendLink.classList.add('resend-disabled');
+      resendLink.style.pointerEvents = 'none';
+      resendLink.style.opacity = '0.5';
+    } else {
+      resendLink.classList.remove('resend-disabled');
+      resendLink.style.pointerEvents = 'auto';
+      resendLink.style.opacity = '1';
+    }
+    otpInput.focus();
+  });
+  
+  // Cleanup timer on unload
+  window.addEventListener('beforeunload', () => {
+    if (timerInterval) clearInterval(timerInterval);
+  });
+</script>
+</body>
+</html>
