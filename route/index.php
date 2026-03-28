@@ -110,6 +110,30 @@ elseif($url===$adminArea."/login"){
     require_once __DIR__ . $srcController ."/LoginController.php";
     exit();
 }
+elseif($url===$adminArea."/Details"){
+    require_once __DIR__ . $srcController . "/DetailsController.php";
+    exit();
+}
+elseif($url===$adminArea."/TotalStudents"){
+    require_once __DIR__ . $srcController . "/TotalStudentsController.php";
+    exit();
+}
+elseif($url===$adminArea."/TotalSubjects"){
+    require_once __DIR__ . $srcController . "/TotalSubjectsController.php";
+    exit();
+}
+elseif($url===$adminArea."/Get/LastLogin"){
+    require_once __DIR__ . $srcController. "/GetLastLoginController.php";
+    exit();
+}
+elseif($url===$adminArea."/Set/LastLogin"){
+    require_once __DIR__ . $srcController ."LastLoginController.php";
+    exit();
+}
+elseif($url===$adminArea."/Set/LastSeen"){
+    require_once __DIR__ . $srcController ."LastSeenController.php";
+    exit();
+}
 
 
 // /api endpoints

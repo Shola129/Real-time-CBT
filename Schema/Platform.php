@@ -33,6 +33,7 @@ class Platform{
         "ID VARCHAR(255)",
         "phone VARCHAR(255)",
         "date_created VARCHAR(255)", 
+        "last_login VARCHAR(255)",
         "last_seen VARCHAR(255)",
         "username VARCHAR(255)",
         "role VARCHAR(255) NOT NULL"
@@ -56,11 +57,21 @@ class Platform{
     public const DEPARTMENT_TABLE = "department";
     public const DEPARTMENT_TABLE_COLUMNS = [
         "department_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
-        "department VARCHAR(1000) NOT NULL"
+        "department VARCHAR(1000) NOT NULL",
+        "role VARCHAR(255) NOT NULL"
     ];
 
     public const SETSUBJECTS_TABLE = "subject_sets";
     public const SETSUBJECTS_TABLE_COLUMNS = [
+        "subject_sets_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
+        "department VARCHAR(2550) NOT NULL",
+        "subject VARCHAR(2550) NOT NULL",
+        "subjectID VARCHAR(255) NOT NULL",
+        "role VARCHAR(255) NOT NULL",
+    ];
+
+    public const QUESTIONS_TABLE = "questions";
+    public const QUESTIONS_TABLE_COLUMNS = [
         "subject_sets_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
         "department VARCHAR(2550) NOT NULL",
         "subject VARCHAR(2550) NOT NULL",
@@ -71,7 +82,8 @@ class Platform{
         "optionC VARCHAR(255) NOT NULL",
         "optionD VARCHAR(255) NOT NULL",
         "optionE VARCHAR(255) NOT NULL",
-        "correctAss VARCHAR(255) NOT NULL"
+        "correctAss VARCHAR(255) NOT NULL",
+        "role VARCHAR(255) NOT NULL"
     ];
 
     //you can have as many tables as you want

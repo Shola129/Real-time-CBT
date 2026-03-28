@@ -443,9 +443,6 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-<!-- ══════════════════════════
-     EDIT SUBJECT MODAL
-══════════════════════════ -->
 <div class="modal-backdrop" id="editModal" onclick="handleBackdropClick(event)">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal-header">
@@ -529,12 +526,19 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
       <!-- DASHBOARD -->
       <div id="dashboard" class="page active">
         <div class="stat-grid">
-          <div class="stat-card"><div class="stat-icon"><i class="fas fa-graduation-cap"></i></div><div class="stat-value" id="stat-students">7</div><div class="stat-label">Total Students</div></div>
-          <div class="stat-card"><div class="stat-icon"><i class="fas fa-book"></i></div><div class="stat-value" id="stat-subjects">10</div><div class="stat-label">Subjects</div></div>
-          <div class="stat-card"><div class="stat-icon"><i class="fas fa-pen-to-square"></i></div><div class="stat-value">5</div><div class="stat-label">Active Exams</div></div>
-          <div class="stat-card"><div class="stat-icon"><i class="fas fa-building-columns"></i></div><div class="stat-value" id="stat-depts">5</div><div class="stat-label">Departments</div></div>
+          <div class="stat-card">
+            <div class="stat-icon">
+              <i class="fas fa-pen-to-square"></i>
+            </div><div class="stat-value">Personal Info</div>
+              <div><strong>ID: </strong><span id="profile-id">ADMIN/00CBT/123456</span></div>
+              <div><strong>Name: </strong><span id="profile-name">John Fin</span></div>
+              <div><strong>Email: </strong><span id="profile-email">johnfin@gmail.com</span></div>
+          </div>
+          <div class="stat-card"><div class="stat-icon"><i class="fas fa-graduation-cap"></i></div><div class="stat-value" id="stat-students"></div><div class="stat-label">Total Students</div></div>
+          <div class="stat-card"><div class="stat-icon"><i class="fas fa-book"></i></div><div class="stat-value" id="stat-subjects"></div><div class="stat-label">Subjects</div></div>
+          <div class="stat-card"><div class="stat-icon"><i class="fas fa-building-columns"></i></div><div class="stat-value" id="stat-depts"></div><div class="stat-label">Departments</div></div>
         </div>
-        <div class="enrolment-bar"><i class="fas fa-arrow-trend-up"></i> New enrolments: <strong>+23 this month</strong> &nbsp;·&nbsp; Next session: <strong>April 2026</strong></div>
+        <div" class="enrolment-bar"><i class="fas fa-arrow-trend-up"></i> Last Login : <strong id="last-login"></strong> &nbsp; &nbsp;   Last seen: <strong id="last-seen-display">00:00</strong> </div>
         <div class="section-header"><div class="section-title"><i class="fas fa-building-columns"></i> Departments &amp; Subjects</div></div>
         <div id="dashDeptGrid" class="dept-grid"></div>
       </div>
@@ -605,7 +609,148 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 </div>
 
 <script>
-// ==================== DATA ====================
+const getID = localStorage.getItem('cbt-admin-email');
+const getEmail = localStorage.getItem('cbt-admin-ID');
+if(!getID && !getEmail){
+  //  window.location.href="/cbt/ansofra/ilease";
+}
+
+document.addEventListener("DOMContentLoaded", async ()=>{
+  getDetail();
+  await getTotslStudent();
+  await getTotalSubject();
+  await getDepartment();
+  await getLastLogin();
+  await setTimeLogin();
+})
+
+async function getDetail(){
+  const email = getEmail;
+  const ID = getID;
+  
+  const e = {email:email, ID:ID};
+  
+  const api = await fetch('/cbt/ansofra/apiadmin/Details', {
+      method:'POST',
+      body:e
+  });
+
+  const result = await api.json();
+  const response = result.response;
+  if(result.status==="success"){
+    document.getElementById("profile-id").textContent=response.ID;
+    document.getElementById("profile-email").textContent=response.email;
+    document.getElementById("profile-name").textContent=response.fullname;
+  }
+  else{
+    // document.location.href="/cbt/ansofra/ilease";
+  }
+}
+
+async function getTotslStudent(){
+  const e ={role:'user'};
+  const api = await fetch('/cbt/ansofra/apiadmin/TotalStudents', {
+      method:'POST',
+      body:e
+  });
+
+  const result = await api.json();
+  const response = result.response;
+  if(result.status === "success"){
+    document.getElementById("stat-students").textContent=response;
+  }
+  else{
+    console.log(result);
+     document.getElementById("stat-students").textContent= "00";
+  }
+}
+
+async function getTotalSubject(){
+  const e = {role:'set'};
+  const api = await fetch('/cbt/ansofra/apiadmin/TotalSubjects', {
+      method:'POST',
+      body:e
+  });
+
+  const result = await api.json();
+  const response = result.response;
+
+  if(result.status==="success"){
+    document.getElementById("stat-subjects").textContent=response;
+  }
+  else{
+    document.getElementById("stat-subjects").textContent="00";
+  }
+}
+
+async function getDepartment(){
+  const e = {role:'set'};
+  const api = await fetch('/cbt/ansofra/apiadmin/TotalSubjects', {
+      method:'POST',
+      body:e
+  });
+
+  const result = await api.json();
+  const response = result.response;
+
+  if(result.status==="success"){
+    document.getElementById("stat-depts").textContent=response;
+  }
+  else{
+    document.getElementById("stat-depts").textContent="00";
+  }
+}
+
+async function getLastLogin(){
+  const e = {email:getEmail, ID:getID};
+  const api = await fetch("/cbt/ansofra/apiadmin/Get/LastLogin", {
+      method:"POST",
+      body:e
+  });
+
+  const result = await api.json();
+  const response = result.response;
+  if(result.status==="success"){
+    document.getElementById('last-seen-display').textContent=response.last_seen;
+    document.getElementById('last-login').textContent=response.last_login;
+  }
+  else{
+    // window.location.href="/cbt/ansofra/ilease";
+  }
+}
+
+
+function  setTimeLogin(){
+  setTimeout(
+    setLastLogin(),
+  2000);
+}
+
+async function setLastLogin(){//set time out after inilization dashboard
+  const time = new Date().toLocaleTimeString();
+  const e = {email:getEmail, ID:getID, lastLogin:time};
+   const api = await fetch("/cbt/ansofra/apiadmin/Set/LastLogin", {
+      method:"POST",
+      body:e
+  });
+  
+  const result = await api.json();
+  console.log(result);
+}
+
+async function setLastSeen(){//to be attarch to logout 
+  const time = new Date().toLocaleTimeString();
+  const e = {email:getEmail, ID:getID, lastSeen:time};
+   const api = await fetch("/cbt/ansofra/apiadmin/Set/LastSeen", {
+      method:"POST",
+      body:e
+  });
+  
+  const result = await api.json();
+  console.log(result);
+}
+
+
 let departmentsList = ["Computer Science", "Mathematics", "Physics", "Chemistry", "Literature"];
 let subjectsList = [
   { dept:'Computer Science', name:'Algorithms', duration:120, created: new Date(2025,2,10), totalQs:12 },
