@@ -27,7 +27,6 @@ class LastSeen{
         return $mig;   
 
 
-
     }
 }
 
