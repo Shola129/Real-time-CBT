@@ -25,6 +25,9 @@ class LastSeen{
         $newMig = new Migration(null, $this->table);
         $mig = $newMig->edit($data, $where);
         return $mig;
+
+
+        
     }
 }
 
