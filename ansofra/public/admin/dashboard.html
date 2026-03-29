@@ -500,7 +500,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
     <nav class="sidebar-nav">
       <div class="nav-section-label">Navigation</div>
       <div class="nav-item active" onclick="showSection('dashboard',this)"><i class="fas fa-chart-pie ni"></i><span class="nl">Dashboard</span></div>
-      <div class="nav-item" onclick="showSection('students',this)"><i class="fas fa-users ni"></i><span class="nl">Students</span></div>
+      <div class="nav-item" onclick="showSection('students',this)"><i class="fas fa-users ni"></i><span class="nl" onclick="getStudentList()">Students</span></div>
       <div class="nav-item" onclick="showSection('subjects',this)"><i class="fas fa-book-open ni"></i><span class="nl">Subjects</span></div>
       <div class="nav-item" onclick="showSection('questions',this)"><i class="fas fa-circle-question ni"></i><span class="nl">Questions</span></div>
       <div class="nav-item" onclick="showSection('results',this)"><i class="fas fa-file-lines ni"></i><span class="nl">Results</span></div>
@@ -539,8 +539,14 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           <div class="stat-card"><div class="stat-icon"><i class="fas fa-building-columns"></i></div><div class="stat-value" id="stat-depts"></div><div class="stat-label">Departments</div></div>
         </div>
         <div" class="enrolment-bar"><i class="fas fa-arrow-trend-up"></i> Last Login : <strong id="last-login"></strong> &nbsp; &nbsp;   Last seen: <strong id="last-seen-display">00:00</strong> </div>
-        <div class="section-header"><div class="section-title"><i class="fas fa-building-columns"></i> Departments &amp; Subjects</div></div>
-        <div id="dashDeptGrid" class="dept-grid"></div>
+        <div class="section-header"><div class="section-title"><i class="fas fa-building-columns"></i> Gallery</div></div>
+        <div id="dashDeptGrid" class="dept-grid">
+         <img src="public/assets/logo.jpg" alt="">
+         <img src="assets/1969-Ford-Mustang-Fastback-3.jpg" alt="">
+         <img src="assets/2025-bmw-m5-fire-red-09.jpg" alt="">
+         <img src="assets/157598.jpg" alt="">
+          <!-- <div class="dept-card"><div class="dept-card-title"><i class="fas fa-building"></i>Software</div><div class="subject-tags"><span class="subject-tag"><i class="fas fa-book"></i>Shola</span></div></div> -->
+        </div>
       </div>
 
       <!-- STUDENTS (unchanged) -->
@@ -550,7 +556,28 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           <div class="search-field"><i class="fas fa-user"></i><input type="text" id="nameSearch" placeholder="Student name…" /></div>
           <div class="search-field"><i class="fas fa-building"></i><select id="deptFilter"><option value="all">All departments</option><option value="Computer Science">Computer Science</option><option value="Mathematics">Mathematics</option><option value="Physics">Physics</option><option value="Chemistry">Chemistry</option><option value="Literature">Literature</option></select></div>
         </div>
-        <div class="panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-users"></i> Student Register</span><span id="studentCount"></span></div><div class="table-wrap"><table><thead><tr><th>Reg. No.</th><th>Name</th><th>Department</th><th>Email</th><th></th></tr></thead><tbody id="studentTableBody"></tbody></table></div><div id="noResultMsg" class="notice" style="display:none;"><i class="fas fa-user-slash"></i>No students match your search.</div></div>
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">
+              <i class="fas fa-users"></i> Student Register
+            </span>
+            <span id="studentCount"></span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Reg. No.</th>
+                  <th>Name</th>
+                  <th>Department</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Del</th>
+                </tr></thead>
+                <tbody id="studentTableBody"></tbody>
+              </table>
+            </div>
+            <div id="noResultMsg" class="notice" style="display:none;"><i class="fas fa-user-slash"></i>No students match your search.</div></div>
       </div>
 
       <!-- SUBJECTS: ADDED "enter subject name and display" feature (additional) while keeping existing -->
@@ -603,7 +630,6 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 
       <!-- RESULTS (unchanged) -->
       <div id="results" class="page"><div class="panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-chart-simple"></i> Exam Results</span></div><div class="table-wrap"><table><thead><tr><th>Student</th><th>Subject</th><th>Department</th><th>Score</th><th>Date</th></tr></thead><tbody><tr><td>John Doe</td><td>Mathematics</td><td><span class="badge badge-dept">Mathematics</span></td><td><span class="badge badge-score">85%</span></td><td>Mar 2026</td></tr><tr><td>Emily Clarke</td><td>Physics</td><td><span class="badge badge-dept">Physics</span></td><td><span class="badge badge-score">92%</span></td><td>Mar 2026</td></tr><tr><td>Michael Chen</td><td>Chemistry</td><td><span class="badge badge-dept">Chemistry</span></td><td><span class="badge badge-score">78%</span></td><td>Mar 2026</td></tr></tbody></table></div></div></div>
-
     </div>
   </div>
 </div>
@@ -751,19 +777,19 @@ async function setLastSeen(){//to be attarch to logout
 }
 
 
-let departmentsList = ["Computer Science", "Mathematics", "Physics", "Chemistry", "Literature"];
-let subjectsList = [
-  { dept:'Computer Science', name:'Algorithms', duration:120, created: new Date(2025,2,10), totalQs:12 },
-  { dept:'Computer Science', name:'Data Structures', duration:90, created: new Date(2025,4,1), totalQs:7 },
-  { dept:'Computer Science', name:'Operating Systems', duration:110, created: new Date(2025,3,12), totalQs:10 },
-  { dept:'Mathematics', name:'Calculus I', duration:90, created: new Date(2025,3,5), totalQs:8 },
-  { dept:'Mathematics', name:'Linear Algebra', duration:80, created: new Date(2025,1,20), totalQs:9 },
-  { dept:'Physics', name:'Mechanics', duration:110, created: new Date(2025,3,18), totalQs:15 },
-  { dept:'Physics', name:'Electromagnetism', duration:130, created: new Date(2025,2,28), totalQs:12 },
-  { dept:'Chemistry', name:'Organic Chem', duration:100, created: new Date(2025,2,22), totalQs:10 },
-  { dept:'Chemistry', name:'Physical Chem', duration:95, created: new Date(2025,0,15), totalQs:6 },
-  { dept:'Literature', name:'Shakespeare', duration:75, created: new Date(2025,3,2), totalQs:5 }
-];
+// let departmentsList = ["Computer Science", "Mathematics", "Physics", "Chemistry", "Literature"];
+// let subjectsList = [
+//   { dept:'Computer Science', name:'Algorithms', duration:120, created: new Date(2025,2,10), totalQs:12 },
+//   { dept:'Computer Science', name:'Data Structures', duration:90, created: new Date(2025,4,1), totalQs:7 },
+//   { dept:'Computer Science', name:'Operating Systems', duration:110, created: new Date(2025,3,12), totalQs:10 },
+//   { dept:'Mathematics', name:'Calculus I', duration:90, created: new Date(2025,3,5), totalQs:8 },
+//   { dept:'Mathematics', name:'Linear Algebra', duration:80, created: new Date(2025,1,20), totalQs:9 },
+//   { dept:'Physics', name:'Mechanics', duration:110, created: new Date(2025,3,18), totalQs:15 },
+//   { dept:'Physics', name:'Electromagnetism', duration:130, created: new Date(2025,2,28), totalQs:12 },
+//   { dept:'Chemistry', name:'Organic Chem', duration:100, created: new Date(2025,2,22), totalQs:10 },
+//   { dept:'Chemistry', name:'Physical Chem', duration:95, created: new Date(2025,0,15), totalQs:6 },
+//   { dept:'Literature', name:'Shakespeare', duration:75, created: new Date(2025,3,2), totalQs:5 }
+// ];
 
 // Question sets data (for the new search feature)
 let questionSetsData = [
@@ -782,41 +808,41 @@ let questionSetsData = [
   ]}
 ];
 
-const studentsData = [
-  { reg:'REG1001', name:'John Doe', dept:'Computer Science', email:'john.doe@uni.edu' },
-  { reg:'REG1002', name:'Emily Clarke', dept:'Mathematics', email:'e.clarke@uni.edu' },
-  { reg:'REG1003', name:'Michael Chen', dept:'Physics', email:'m.chen@uni.edu' },
-  { reg:'REG1004', name:'Sophia Dubois', dept:'Literature', email:'s.dubois@uni.edu' },
-  { reg:'REG1005', name:'James Kumar', dept:'Computer Science', email:'j.kumar@uni.edu' },
-  { reg:'REG1006', name:'Fatima Al-Sayed', dept:'Chemistry', email:'f.al@uni.edu' },
-  { reg:'REG1007', name:'Liam Brown', dept:'Mathematics', email:'liam.b@uni.edu' }
-];
+// const studentsData = [
+//   { reg:'REG1001', name:'John Doe', dept:'Computer Science', email:'john.doe@uni.edu' },
+//   { reg:'REG1002', name:'Emily Clarke', dept:'Mathematics', email:'e.clarke@uni.edu' },
+//   { reg:'REG1003', name:'Michael Chen', dept:'Physics', email:'m.chen@uni.edu' },
+//   { reg:'REG1004', name:'Sophia Dubois', dept:'Literature', email:'s.dubois@uni.edu' },
+//   { reg:'REG1005', name:'James Kumar', dept:'Computer Science', email:'j.kumar@uni.edu' },
+//   { reg:'REG1006', name:'Fatima Al-Sayed', dept:'Chemistry', email:'f.al@uni.edu' },
+//   { reg:'REG1007', name:'Liam Brown', dept:'Mathematics', email:'liam.b@uni.edu' }
+// ];
 
 // Helper functions
-function renderDashDeptGrid() {
-  const grid = document.getElementById('dashDeptGrid');
-  if(!grid) return;
-  const map = new Map();
-  subjectsList.forEach(s => { if(!map.has(s.dept)) map.set(s.dept, []); map.get(s.dept).push(s.name); });
-  grid.innerHTML = Array.from(map.keys()).sort().map(dept => `<div class="dept-card"><div class="dept-card-title"><i class="fas fa-building"></i> ${dept}</div><div class="subject-tags">${map.get(dept).map(sub => `<span class="subject-tag"><i class="fas fa-book"></i> ${sub}</span>`).join('')}</div></div>`).join('');
-}
+// function renderDashDeptGrid() {
+//   const grid = document.getElementById('dashDeptGrid');
+//   if(!grid) return;
+//   const map = new Map();
+//   subjectsList.forEach(s => { if(!map.has(s.dept)) map.set(s.dept, []); map.get(s.dept).push(s.name); });
+//   grid.innerHTML = Array.from(map.keys()).sort().map(dept => `<div class="dept-card"><div class="dept-card-title"><i class="fas fa-building"></i> ${dept}</div><div class="subject-tags">${map.get(dept).map(sub => `<span class="subject-tag"><i class="fas fa-book"></i> ${sub}</span>`).join('')}</div></div>`).join('');
+// }
 
-function updateStats() {
-  const depts = new Set(subjectsList.map(s => s.dept));
-  document.getElementById('stat-subjects').textContent = subjectsList.length;
-  document.getElementById('stat-depts').textContent = depts.size;
-  document.getElementById('stat-students').textContent = studentsData.length;
-}
+// function updateStats() {
+//   const depts = new Set(subjectsList.map(s => s.dept));
+//   document.getElementById('stat-subjects').textContent = subjectsList.length;
+//   document.getElementById('stat-depts').textContent = depts.size;
+//   document.getElementById('stat-students').textContent = studentsData.length;
+// }
 
-function renderSubjects(filterDept) {
-  const container = document.getElementById('subjectCardsContainer');
-  const noMsg = document.getElementById('noSubjectsMsg');
-  const filtered = filterDept ? subjectsList.filter(s => s.dept.toLowerCase().includes(filterDept.toLowerCase())) : subjectsList;
-  if(!filtered.length) { container.innerHTML = ''; noMsg.style.display = 'block'; return; }
-  noMsg.style.display = 'none';
-  container.innerHTML = filtered.map((sub, idx) => `<div class="subject-card"><div class="subject-card-top"><span class="badge badge-dept">${sub.dept}</span><span class="badge badge-duration"><i class="far fa-clock"></i> ${sub.duration} min</span></div><div class="subject-card-name">${sub.name}</div><div class="subject-card-meta"><span><i class="fas fa-calendar-alt"></i> ${sub.created.toLocaleDateString()}</span><span><i class="fas fa-circle-question"></i> ${sub.totalQs} questions</span></div><div class="subject-card-actions"><button class="btn btn-sm" onclick="openEditModal(${idx})"><i class="fas fa-pen"></i> Edit</button><button class="btn btn-sm btn-danger" onclick="deleteSubject(${idx})"><i class="fas fa-trash"></i> Delete</button></div></div>`).join('');
-  renderDashDeptGrid(); updateStats();
-}
+// function renderSubjects(filterDept) {
+//   const container = document.getElementById('subjectCardsContainer');
+//   const noMsg = document.getElementById('noSubjectsMsg');
+//   const filtered = filterDept ? subjectsList.filter(s => s.dept.toLowerCase().includes(filterDept.toLowerCase())) : subjectsList;
+//   if(!filtered.length) { container.innerHTML = ''; noMsg.style.display = 'block'; return; }
+//   noMsg.style.display = 'none';
+//   container.innerHTML = filtered.map((sub, idx) => `<div class="subject-card"><div class="subject-card-top"><span class="badge badge-dept">${sub.dept}</span><span class="badge badge-duration"><i class="far fa-clock"></i> ${sub.duration} min</span></div><div class="subject-card-name">${sub.name}</div><div class="subject-card-meta"><span><i class="fas fa-calendar-alt"></i> ${sub.created.toLocaleDateString()}</span><span><i class="fas fa-circle-question"></i> ${sub.totalQs} questions</span></div><div class="subject-card-actions"><button class="btn btn-sm" onclick="openEditModal(${idx})"><i class="fas fa-pen"></i> Edit</button><button class="btn btn-sm btn-danger" onclick="deleteSubject(${idx})"><i class="fas fa-trash"></i> Delete</button></div></div>`).join('');
+//   renderDashDeptGrid(); updateStats();
+// }
 
 // NEW: Subject search by name (additional feature)
 function renderSubjectsByName(searchName) {
@@ -843,18 +869,36 @@ function renderQuestionSetsByDeptSubj(deptFilter, subjFilter) {
 }
 
 // Existing functions
-function filterStudents() {
+async function getStudentList() {
   const tbody = document.getElementById('studentTableBody');
   const noResult = document.getElementById('noResultMsg');
   const regVal = document.getElementById('regSearch')?.value.trim().toLowerCase() || '';
   const nameVal = document.getElementById('nameSearch')?.value.trim().toLowerCase() || '';
   const deptVal = document.getElementById('deptFilter')?.value || 'all';
-  const filtered = studentsData.filter(s => { if(regVal && !s.reg.toLowerCase().includes(regVal)) return false; if(nameVal && !s.name.toLowerCase().includes(nameVal)) return false; if(deptVal !== 'all' && s.dept !== deptVal) return false; return true; });
-  document.getElementById('studentCount').textContent = filtered.length + ' student' + (filtered.length !== 1 ? 's' : '');
-  noResult.style.display = filtered.length ? 'none' : 'block';
-  tbody.innerHTML = filtered.map(s => `<tr><td style="font-weight:600">${s.reg}</td><td>${s.name}</td><td><span class="badge badge-dept">${s.dept}</span></td><td>${s.email}</td><td><button class="btn btn-sm btn-danger" onclick="alert('demo delete')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
-}
+  const e = {role:'user'};
+  const api = await fetch('/cbt/ansofra/apiadmin/GET/students', {
+      method:"POST",
+      body:e
+  });
+  const result = await api.json();
+  const response = result.response;
+  let display = '';
+  for(let i=0; i<response.length; i++){
+      display+=`
+          <tr>
+            <td style="font-weight:600">${response[i].regNo}</td>
+            <td>${response[i].fullname}</td>
+            <td><span class="badge badge-dept">${response[i].department}</span></td>
+            <td>${response[i].email}</td>
+            <td>${response[i].role}</td>
+            <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
+          </tr>
+      `
+  }
 
+  tbody.innerHTML = display;
+
+}
 let editingIndex = -1;
 window.openEditModal = function(idx) { const sub = subjectsList[idx]; if(!sub) return; editingIndex = idx; document.getElementById('edit-dept').value = sub.dept; document.getElementById('edit-name').value = sub.name; document.getElementById('edit-duration').value = sub.duration; document.getElementById('edit-totalqs').value = sub.totalQs; document.getElementById('edit-date').value = sub.created ? sub.created.toISOString().split('T')[0] : ''; document.getElementById('editModal').classList.add('open'); document.body.style.overflow = 'hidden'; };
 window.closeEditModal = function() { document.getElementById('editModal').classList.remove('open'); document.body.style.overflow = ''; editingIndex = -1; };
@@ -870,9 +914,9 @@ window.showSection = function(id, navEl) {
   if(navEl) navEl.classList.add('active');
   const titles = { dashboard:'Dashboard', students:'Students', subjects:'Subjects', questions:'Questions', results:'Results' };
   document.getElementById('pageTitle').textContent = titles[id];
-  if(id === 'students') filterStudents();
-  if(id === 'subjects') { renderSubjects(''); renderSubjectsByName(''); }
-  if(id === 'dashboard') { renderDashDeptGrid(); updateStats(); }
+  if(id === 'students') getStudentList();
+  // if(id === 'subjects') { renderSubjects(''); renderSubjectsByName(''); }
+  // if(id === 'dashboard') { renderDashDeptGrid(); updateStats(); }
   if(id === 'questions') { document.getElementById('questionStep1').style.display = ''; document.getElementById('questionStep2').style.display = 'none'; renderQuestionSetsByDeptSubj('',''); }
   closeSidebar();
 };
@@ -882,7 +926,7 @@ window.openSidebar = function() { document.getElementById('sidebar').classList.a
 window.closeSidebar = function() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('visible'); document.body.style.overflow = ''; };
 
 // Event listeners
-document.getElementById('searchSubjectBtn')?.addEventListener('click', () => renderSubjects(document.getElementById('deptSearchInput')?.value || ''));
+// document.getElementById('searchSubjectBtn')?.addEventListener('click', () => renderSubjects(document.getElementById('deptSearchInput')?.value || ''));
 document.getElementById('searchSubjectByNameBtn')?.addEventListener('click', () => renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value || ''));
 document.getElementById('searchQuestionSetsBtn')?.addEventListener('click', () => renderQuestionSetsByDeptSubj(document.getElementById('qsSearchDept')?.value || '', document.getElementById('qsSearchSubject')?.value || ''));
 document.getElementById('saveSubjectBtn')?.addEventListener('click', () => { const dept = document.getElementById('newDept')?.value.trim(); const name = document.getElementById('newSubject')?.value.trim(); const dur = document.getElementById('newDuration')?.value; if(!dept || !name || !dur) { alert('Fill all fields'); return; } subjectsList.push({ dept, name, duration: +dur, created: new Date(), totalQs: 0 }); renderSubjects(document.getElementById('deptSearchInput')?.value || ''); renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value || ''); document.getElementById('newSubject').value = ''; });
@@ -890,17 +934,17 @@ document.getElementById('nextToQuestionBtn')?.addEventListener('click', () => { 
 document.getElementById('changeDetailsBtn')?.addEventListener('click', () => { document.getElementById('questionStep2').style.display = 'none'; document.getElementById('questionStep1').style.display = ''; });
 document.getElementById('saveQuestionBtn')?.addEventListener('click', () => { if(!document.getElementById('questionText')?.value.trim()) { alert('Enter question'); return; } alert('Question saved (demo).'); document.getElementById('questionText').value = ''; document.getElementById('optionA').value = ''; document.getElementById('optionB').value = ''; document.getElementById('optionC').value = ''; document.getElementById('optionD').value = ''; document.getElementById('correctAnswer').value = ''; });
 document.getElementById('addAnotherQuestionBtn')?.addEventListener('click', () => { if(!document.getElementById('questionText')?.value.trim()) { alert('Enter question first'); return; } alert('Saved. Add another.'); document.getElementById('questionText').value = ''; document.getElementById('optionA').value = ''; document.getElementById('optionB').value = ''; document.getElementById('optionC').value = ''; document.getElementById('optionD').value = ''; document.getElementById('correctAnswer').value = ''; });
-document.getElementById('regSearch')?.addEventListener('input', filterStudents);
-document.getElementById('nameSearch')?.addEventListener('input', filterStudents);
-document.getElementById('deptFilter')?.addEventListener('change', filterStudents);
+document.getElementById('regSearch')?.addEventListener('input', getStudentList);
+document.getElementById('nameSearch')?.addEventListener('input', getStudentList);
+document.getElementById('deptFilter')?.addEventListener('change', getStudentList);
 
 // Initialize
-filterStudents();
-renderSubjects('');
+getStudentList();
+// renderSubjects('');
 renderSubjectsByName('');
 renderQuestionSetsByDeptSubj('', '');
-renderDashDeptGrid();
-updateStats();
+// renderDashDeptGrid();
+// updateStats();
 </script>
 </body>
 </html>

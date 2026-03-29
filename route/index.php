@@ -127,11 +127,16 @@ elseif($url===$adminArea."/Get/LastLogin"){
     exit();
 }
 elseif($url===$adminArea."/Set/LastLogin"){
-    require_once __DIR__ . $srcController ."LastLoginController.php";
+    require_once __DIR__ . $srcController ."/LastLoginController.php";
     exit();
 }
 elseif($url===$adminArea."/Set/LastSeen"){
-    require_once __DIR__ . $srcController ."LastSeenController.php";
+    require_once __DIR__ . $srcController ."/LastSeenController.php";
+    exit();
+}
+
+elseif($url===$adminArea."/GET/students"){
+    require_once __DIR__ . $srcController . "/StudentInfoController.php";
     exit();
 }
 
