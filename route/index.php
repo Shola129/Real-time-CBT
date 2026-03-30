@@ -140,6 +140,16 @@ elseif($url===$adminArea."/GET/students"){
     exit();
 }
 
+elseif($url===$adminArea."/search/regNum"){
+    require_once __DIR__ . $srcController . "/SearchRegNoController.php";
+    exit();
+}
+
+elseif($url===$adminArea."/selected/department"){
+    require_once __DIR__ . $srcController . "/SelectedDeptController.php";
+    exit();
+}
+
 
 // /api endpoints
 elseif($url === $docRoot . $rootDir . $usersArea."/register" || $url === $usersArea."/register"."/"){

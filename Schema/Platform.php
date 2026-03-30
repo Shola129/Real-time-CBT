@@ -86,6 +86,22 @@ class Platform{
         "role VARCHAR(255) NOT NULL"
     ];
 
+    public const USERS_TABLE = "users";
+    public const USERS_TABLE_COLUMNS = [
+        "users_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
+        "email VARCHAR(255) NOT NULL",
+        "fullname VARCHAR(255) NOT NULL",
+        "password VARCHAR(255) NOT NULL",
+        "regNum VARCHAR(255)",
+        "phone VARCHAR(255)",
+        "date_created VARCHAR(255)", 
+        "last_login VARCHAR(255)",
+        "last_seen VARCHAR(255)",
+        "username VARCHAR(255)",
+        "role VARCHAR(255) NOT NULL",
+        "department VARCHAR(255) NOT NULL"
+    ];
+
     //you can have as many tables as you want
 }
 ?>

@@ -4,22 +4,22 @@ use NewdichDto\AnsofraDto;
 use NewdichSchema\Platform;
 use NewdichSchema\Migration;
 
-class StudentInfo{
+class SelectedDept{
     private $dto;
-    private $table = Platform::USERS_TABLE;
-
-    public function __construct(AnsofraDto $dto){
+     private $table = Platform::USERS_TABLE;
+     
+     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
-    }
+     }
 
-    public function process(){
+     public function process(){
         $where = [
-            'role'=>$this->dto->role
+            'regNum'=>$this->dto->regNum
         ];
 
         $newMig = new Migration(null, $this->table);
         $mig = $newMig->get($where, 0, 20);
         return $mig;
-    }
+     }
 }
 ?>

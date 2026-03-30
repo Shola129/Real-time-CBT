@@ -553,8 +553,19 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
       <div id="students" class="page">
         <div class="search-bar">
           <div class="search-field"><i class="fas fa-id-card"></i><input type="text" id="regSearch" placeholder="Reg. number…" /></div>
-          <div class="search-field"><i class="fas fa-user"></i><input type="text" id="nameSearch" placeholder="Student name…" /></div>
-          <div class="search-field"><i class="fas fa-building"></i><select id="deptFilter"><option value="all">All departments</option><option value="Computer Science">Computer Science</option><option value="Mathematics">Mathematics</option><option value="Physics">Physics</option><option value="Chemistry">Chemistry</option><option value="Literature">Literature</option></select></div>
+          <button id="searchStudentRegNo">Search</button>
+          <!-- <div class="search-field"><i class="fas fa-user"></i><input type="text" id="nameSearch" placeholder="Student name…" /></div> -->
+          <div class="search-field">
+            <i class="fas fa-building"></i>
+            <select id="deptFilter">
+              <option selected>Choose department</option>
+              <option value="Computer Science">Computer Science</option>
+              <option value="Mathematics">Mathematics</option>
+              <option value="Physics">Physics</option>
+              <option value="Chemistry">Chemistry</option>
+              <option value="Literature">Literature</option>
+            </select>
+          </div>
         </div>
         <div class="panel">
           <div class="panel-header">
@@ -884,23 +895,102 @@ async function getStudentList() {
   });
   const result = await api.json();
   const response = result.response;
-  let display = '';
-  for(let i=0; i<response.length; i++){
-      display+=`
-          <tr>
-            <td style="font-weight:600">${response[i].regNo}</td>
-            <td>${response[i].fullname}</td>
-            <td><span class="badge badge-dept">${response[i].department}</span></td>
-            <td>${response[i].email}</td>
-            <td>${response[i].role}</td>
-            <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
-          </tr>
-      `
+  console.log(response);
+  if(result.status==="success"){
+      let display = '';
+      for(let i=0; i <response.length; i++){
+          display+=`
+              <tr>
+                <td style="font-weight:600">${response[i].regNum}</td>
+                <td>${response[i].fullname}</td>
+                <td><span class="badge badge-dept">${response[i].department}</span></td>
+                <td>${response[i].email}</td>
+                <td>${response[i].role}</td>
+                <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
+              </tr>
+          `
+      }
+      tbody.innerHTML = display;
   }
-
-  tbody.innerHTML = display;
-
+  else{
+      tbody.textContent="No student found";
+  }
 }
+
+document.getElementById("searchStudentRegNo").addEventListener("click", async function(){
+   const tbody = document.getElementById('studentTableBody');
+  const regNo = document.getElementById('regSearch').value.trim();
+  if(regNo===''){
+    alert("you have not entered reg number of the student");
+  }
+  else{
+    const e = {regNum:regNo};
+    const api = await fetch('/cbt/ansofra/apiadmin/search/regNum', {
+        method:"POST",
+        body:e
+    });
+
+    const result = await api.json();
+    const response = result.response;
+     if(result.status==="success"){
+        let output ='';
+        for (let i = 0; i < response.length; i++) {
+          output += `
+              <tr>
+                <td style="font-weight:600">${response[i].regNum}</td>
+                <td>${response[i].fullname}</td>
+                <td><span class="badge badge-dept">${response[i].department}</span></td>
+                <td>${response[i].email}</td>
+                <td>${response[i].role}</td>
+                <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
+              </tr>
+       `;
+        }
+         tbody.innerHTML = output;
+      }
+      else{
+        tbody.textContent="No Users found"; 
+      }
+  }
+})
+
+document.getElementById("deptFilter").addEventListener("change", async ()=>{
+     const tbody = document.getElementById('studentTableBody');
+  const seletedValue = document.getElementById('deptFilter').value.trim();
+  if(seletedValue===''){
+    alert("Select department");
+  }
+  else{
+     const e = {department:seletedValue};
+     console.log(e);
+     const api = await fetch('/cbt/ansofra/apiadmin/selected/department', {
+        method:"POST",
+        body:e
+     });
+
+     const result = await api.json();
+     const response = result.response;
+     if(result.status==="success"){
+          let output ='';
+        for (let i = 0; i < response.length; i++) {
+          output += `
+              <tr>
+                <td style="font-weight:600">${response[i].regNum}</td>
+                <td>${response[i].fullname}</td>
+                <td><span class="badge badge-dept">${response[i].department}</span></td>
+                <td>${response[i].email}</td>
+                <td>${response[i].role}</td>
+                <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
+              </tr>
+          `;
+        }
+        tbody.innerHTML = output;
+     }
+     else{
+      tbody.textContent="No record of user found in that department";
+     }
+  }
+})
 let editingIndex = -1;
 window.openEditModal = function(idx) { const sub = subjectsList[idx]; if(!sub) return; editingIndex = idx; document.getElementById('edit-dept').value = sub.dept; document.getElementById('edit-name').value = sub.name; document.getElementById('edit-duration').value = sub.duration; document.getElementById('edit-totalqs').value = sub.totalQs; document.getElementById('edit-date').value = sub.created ? sub.created.toISOString().split('T')[0] : ''; document.getElementById('editModal').classList.add('open'); document.body.style.overflow = 'hidden'; };
 window.closeEditModal = function() { document.getElementById('editModal').classList.remove('open'); document.body.style.overflow = ''; editingIndex = -1; };
@@ -936,12 +1026,12 @@ document.getElementById('nextToQuestionBtn')?.addEventListener('click', () => { 
 document.getElementById('changeDetailsBtn')?.addEventListener('click', () => { document.getElementById('questionStep2').style.display = 'none'; document.getElementById('questionStep1').style.display = ''; });
 document.getElementById('saveQuestionBtn')?.addEventListener('click', () => { if(!document.getElementById('questionText')?.value.trim()) { alert('Enter question'); return; } alert('Question saved (demo).'); document.getElementById('questionText').value = ''; document.getElementById('optionA').value = ''; document.getElementById('optionB').value = ''; document.getElementById('optionC').value = ''; document.getElementById('optionD').value = ''; document.getElementById('correctAnswer').value = ''; });
 document.getElementById('addAnotherQuestionBtn')?.addEventListener('click', () => { if(!document.getElementById('questionText')?.value.trim()) { alert('Enter question first'); return; } alert('Saved. Add another.'); document.getElementById('questionText').value = ''; document.getElementById('optionA').value = ''; document.getElementById('optionB').value = ''; document.getElementById('optionC').value = ''; document.getElementById('optionD').value = ''; document.getElementById('correctAnswer').value = ''; });
-document.getElementById('regSearch')?.addEventListener('input', getStudentList);
-document.getElementById('nameSearch')?.addEventListener('input', getStudentList);
-document.getElementById('deptFilter')?.addEventListener('change', getStudentList);
+// document.getElementById('regSearch')?.addEventListener('input', getStudentList);
+// document.getElementById('nameSearch')?.addEventListener('input', getStudentList);
+// document.getElementById('deptFilter')?.addEventListener('change', getStudentList);
 
 // Initialize
-getStudentList();
+// getStudentList();
 // renderSubjects('');
 renderSubjectsByName('');
 renderQuestionSetsByDeptSubj('', '');

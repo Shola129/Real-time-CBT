@@ -23,6 +23,8 @@ class AnsofraDto{
     public $otp;
     public $lastSeen;
     public $lastLogin;
+    public $department;
+    public $regNum;
 
     public function __construct(array $inData){
         $allProp = get_object_vars($this);
