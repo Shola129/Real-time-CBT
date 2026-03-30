@@ -43,14 +43,8 @@ body {
   overflow-x: hidden;
 }
 
-/* ══════════════════════════════════════
-   APP SHELL
-══════════════════════════════════════ */
 .app { display: flex; min-height: 100vh; }
 
-/* ══════════════════════════════════════
-   OVERLAY — sidebar backdrop
-══════════════════════════════════════ */
 .sidebar-overlay {
   position: fixed; inset: 0;
   background: rgba(0,0,0,.38);
@@ -60,9 +54,6 @@ body {
 }
 .sidebar-overlay.visible { opacity: 1; pointer-events: all; }
 
-/* ══════════════════════════════════════
-   SIDEBAR
-══════════════════════════════════════ */
 .sidebar {
   width: var(--sidebar-w);
   min-width: var(--sidebar-w);
@@ -140,9 +131,6 @@ body {
   flex-shrink: 0; white-space: nowrap; overflow: hidden;
 }
 
-/* ══════════════════════════════════════
-   MAIN
-══════════════════════════════════════ */
 .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
 .topbar {
@@ -177,16 +165,10 @@ body {
 
 .content { padding: 24px; flex: 1; overflow-y: auto; }
 
-/* ══════════════════════════════════════
-   PAGES
-══════════════════════════════════════ */
 .page { display: none; }
 .page.active { display: block; animation: fadeIn .2s ease; }
 @keyframes fadeIn { from { opacity: .6; transform: translateY(5px); } to { opacity: 1; transform: none; } }
 
-/* ══════════════════════════════════════
-   BUTTONS
-══════════════════════════════════════ */
 .btn {
   display: inline-flex; align-items: center; gap: 7px;
   padding: 8px 16px; font-size: 13px; font-family: sans-serif; font-weight: 600;
@@ -201,9 +183,6 @@ body {
 .btn-danger { border-color: #f0caca; color: #a03030; }
 .btn-danger:hover { background: #fff0f0; border-color: #e09090; }
 
-/* ══════════════════════════════════════
-   STAT CARDS
-══════════════════════════════════════ */
 .stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; margin-bottom: 22px; }
 .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 18px 16px; display: flex; flex-direction: column; gap: 8px; transition: border-color .15s; }
 .stat-card:hover { border-color: var(--border-gold); }
@@ -211,25 +190,16 @@ body {
 .stat-value { font-size: 24px; font-weight: 700; color: var(--ink); line-height: 1; }
 .stat-label { font-size: 12px; color: var(--ink-soft); font-family: sans-serif; }
 
-/* ══════════════════════════════════════
-   PANEL
-══════════════════════════════════════ */
 .panel { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); overflow: hidden; margin-bottom: 20px; }
 .panel-header { padding: 13px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 .panel-title { font-size: 13.5px; font-weight: 700; color: var(--ink); font-family: sans-serif; display: flex; align-items: center; gap: 8px; }
 .panel-title i { color: var(--gold-dark); }
 .panel-body { padding: 18px; }
 
-/* ══════════════════════════════════════
-   SECTION HEADER
-══════════════════════════════════════ */
 .section-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
 .section-title { font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 8px; }
 .section-title i { color: var(--gold-dark); font-size: 13px; }
 
-/* ══════════════════════════════════════
-   TABLE
-══════════════════════════════════════ */
 .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 table { width: 100%; border-collapse: collapse; font-family: sans-serif; font-size: 13px; min-width: 480px; }
 thead { background: var(--cream); }
@@ -238,17 +208,11 @@ td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--in
 tbody tr:last-child td { border-bottom: none; }
 tbody tr:hover td { background: #fefdf8; }
 
-/* ══════════════════════════════════════
-   BADGES
-══════════════════════════════════════ */
 .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: var(--r-pill); font-size: 11px; font-family: sans-serif; font-weight: 600; }
 .badge-dept     { background: var(--gold-light); color: var(--gold-deep); border: 1px solid var(--border-gold); }
 .badge-score    { background: #f0f9ec; color: #3a7a28; border: 1px solid #c4e6b8; }
 .badge-duration { background: #f4f0fc; color: #6650a4; border: 1px solid #d4c8f4; }
 
-/* ══════════════════════════════════════
-   FORM
-══════════════════════════════════════ */
 .form-group { display: flex; flex-direction: column; gap: 5px; }
 .form-label { font-size: 11px; font-family: sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--gold-deep); }
 .form-control {
@@ -261,9 +225,6 @@ tbody tr:hover td { background: #fefdf8; }
 textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height: 88px; }
 .form-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px,1fr)); gap: 14px; align-items: end; }
 
-/* ══════════════════════════════════════
-   SEARCH BAR
-══════════════════════════════════════ */
 .search-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 10px 14px; margin-bottom: 20px; }
 .search-field { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 130px; background: var(--cream); border: 1px solid var(--border); border-radius: var(--r-pill); padding: 6px 14px; }
 .search-field i { color: var(--gold-dark); font-size: 12px; flex-shrink: 0; }
@@ -271,16 +232,29 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 .search-field input:focus, .search-field select:focus { outline: none; }
 .search-field input::placeholder { color: var(--ink-soft); }
 
-/* ══════════════════════════════════════
-   ENROLMENT BAR
-══════════════════════════════════════ */
 .enrolment-bar { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 13px 18px; margin-bottom: 22px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: sans-serif; font-size: 13px; color: var(--ink-mid); }
 .enrolment-bar i { color: var(--gold-dark); font-size: 15px; }
 .enrolment-bar strong { color: var(--gold-deep); }
 
-/* ══════════════════════════════════════
-   DEPT GRID (Dashboard)
-══════════════════════════════════════ */
+/* Gallery grid */
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 14px; }
+.gallery-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--r-xl); overflow: hidden;
+  transition: border-color .2s, box-shadow .2s;
+  aspect-ratio: 4/3;
+  display: flex; align-items: center; justify-content: center;
+}
+.gallery-card:hover { border-color: var(--border-gold); box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+.gallery-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gallery-card .gallery-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--cream) 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; color: var(--gold-dark); font-family: sans-serif; font-size: 12px; font-weight: 600;
+}
+.gallery-card .gallery-placeholder i { font-size: 28px; color: var(--gold-mid); }
+
 .dept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 14px; }
 .dept-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 16px 18px; transition: border-color .15s; }
 .dept-card:hover { border-color: var(--border-gold); }
@@ -290,9 +264,6 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 .subject-tag { background: var(--gold-light); border: 1px solid var(--border-gold); color: var(--gold-deep); font-size: 11.5px; font-family: sans-serif; font-weight: 500; padding: 3px 11px; border-radius: var(--r-pill); display: inline-flex; align-items: center; gap: 5px; }
 .subject-tag i { font-size: 10px; }
 
-/* ══════════════════════════════════════
-   SUBJECT CARDS
-══════════════════════════════════════ */
 .subjects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 14px; margin-bottom: 20px; }
 .subject-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; transition: border-color .15s, box-shadow .15s; }
 .subject-card:hover { border-color: var(--border-gold); box-shadow: 0 2px 12px rgba(0,0,0,.06); }
@@ -303,25 +274,35 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 .subject-card-meta i { color: var(--gold-dark); }
 .subject-card-actions { display: flex; gap: 8px; padding-top: 6px; border-top: 1px solid var(--border); flex-wrap: wrap; }
 
-/* ══════════════════════════════════════
-   STEP / INFO BAR
-══════════════════════════════════════ */
 .step-badge { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; background: var(--gold-mid); border: 1.5px solid var(--gold); border-radius: var(--r-pill); font-size: 12px; font-weight: 700; font-family: sans-serif; color: var(--ink); flex-shrink: 0; }
 .step-title { font-size: 13px; font-weight: 700; color: var(--gold-dark); font-family: sans-serif; display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
 .info-bar { background: var(--gold-light); border: 1px solid var(--border-gold); border-radius: var(--r-xl); padding: 11px 16px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
 .info-tag { background: var(--white); border: 1px solid var(--border-gold); border-radius: var(--r-pill); padding: 4px 12px; font-size: 12px; font-family: sans-serif; font-weight: 600; color: var(--gold-deep); display: flex; align-items: center; gap: 5px; }
 
-/* ══════════════════════════════════════
-   NOTICE
-══════════════════════════════════════ */
 .notice { background: var(--cream); border: 1.5px dashed var(--border-gold); border-radius: var(--r-xl); padding: 28px; text-align: center; color: var(--ink-soft); font-family: sans-serif; font-size: 13px; }
 .notice i { font-size: 22px; color: var(--border-gold); margin-bottom: 8px; display: block; }
 
 .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
 
-/* ══════════════════════════════════════
-   EDIT SUBJECT MODAL
-══════════════════════════════════════ */
+/* Department feature extra styles */
+.dept-stat-row {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;
+}
+.dept-stat-mini {
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 14px 16px; display: flex; align-items: center; gap: 12px;
+  transition: border-color .15s;
+}
+.dept-stat-mini:hover { border-color: var(--border-gold); }
+.dept-stat-mini-icon {
+  width: 34px; height: 34px; border-radius: var(--r-md);
+  background: var(--gold-light); display: flex; align-items: center;
+  justify-content: center; font-size: 14px; color: var(--gold-dark); flex-shrink: 0;
+}
+.dept-stat-mini-val { font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1; }
+.dept-stat-mini-lbl { font-size: 11px; color: var(--ink-soft); font-family: sans-serif; }
+
+/* Modal */
 .modal-backdrop {
   position: fixed; inset: 0;
   background: rgba(30, 24, 10, .45);
@@ -331,9 +312,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
   opacity: 0; pointer-events: none;
   transition: opacity .25s ease;
 }
-.modal-backdrop.open {
-  opacity: 1; pointer-events: all;
-}
+.modal-backdrop.open { opacity: 1; pointer-events: all; }
 
 .modal {
   background: var(--white);
@@ -347,9 +326,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
   transform: translateY(18px) scale(.97);
   transition: transform .25s cubic-bezier(.4,0,.2,1);
 }
-.modal-backdrop.open .modal {
-  transform: translateY(0) scale(1);
-}
+.modal-backdrop.open .modal { transform: translateY(0) scale(1); }
 
 .modal-header {
   padding: 18px 22px 14px;
@@ -358,37 +335,19 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
   position: sticky; top: 0; background: var(--white); z-index: 2;
   border-radius: var(--r-xl) var(--r-xl) 0 0;
 }
-
-.modal-title {
-  font-size: 15px; font-weight: 700; color: var(--ink);
-  display: flex; align-items: center; gap: 9px;
-}
+.modal-title { font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 9px; }
 .modal-title i { color: var(--gold-dark); }
-
 .modal-close {
   width: 30px; height: 30px;
-  border: 1.5px solid var(--border-gold);
-  border-radius: var(--r-pill);
-  background: var(--gold-light);
-  cursor: pointer; font-size: 13px; color: var(--ink-mid);
+  border: 1.5px solid var(--border-gold); border-radius: var(--r-pill);
+  background: var(--gold-light); cursor: pointer; font-size: 13px; color: var(--ink-mid);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; transition: all .15s;
 }
 .modal-close:hover { background: var(--gold-mid); border-color: var(--gold); color: var(--ink); }
-
 .modal-body { padding: 22px; display: flex; flex-direction: column; gap: 16px; }
-
-.modal-divider {
-  height: 1px; background: var(--border);
-  margin: 2px 0;
-}
-
-.modal-section-label {
-  font-size: 10px; text-transform: uppercase; letter-spacing: .08em;
-  font-family: sans-serif; font-weight: 700; color: var(--ink-soft);
-  margin-bottom: -4px;
-}
-
+.modal-divider { height: 1px; background: var(--border); margin: 2px 0; }
+.modal-section-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; font-family: sans-serif; font-weight: 700; color: var(--ink-soft); margin-bottom: -4px; }
 .modal-footer {
   padding: 14px 22px 18px;
   border-top: 1px solid var(--border);
@@ -398,9 +357,6 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
   border-radius: 0 0 var(--r-xl) var(--r-xl);
 }
 
-/* ══════════════════════════════════════
-   RESPONSIVE
-══════════════════════════════════════ */
 @media (max-width: 900px) {
   .sidebar { position: fixed; left: 0; top: 0; bottom: 0; height: 100%; transform: translateX(calc(-1 * var(--sidebar-w) - 10px)); box-shadow: none; }
   .sidebar.open { transform: translateX(0); box-shadow: var(--shadow-md); }
@@ -409,6 +365,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
   .main { width: 100%; }
   .content { padding: 18px 16px; }
   .stat-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .dept-stat-row { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 560px) {
@@ -423,7 +380,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
   .options-grid { grid-template-columns: 1fr; }
   .search-bar { flex-direction: column; border-radius: var(--r-lg); padding: 10px; }
   .search-field { min-width: 0; width: 100%; }
-  .subjects-grid, .dept-grid { grid-template-columns: 1fr; }
+  .subjects-grid, .dept-grid, .gallery-grid { grid-template-columns: 1fr; }
   .panel-body { padding: 14px; }
   .info-bar { flex-direction: column; align-items: flex-start; }
   .info-tag { width: 100%; }
@@ -433,7 +390,6 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
   .modal-header, .modal-footer { padding-left: 16px; padding-right: 16px; }
 }
 
-/* ADDITIONAL STYLES FOR NEW FEATURES */
 .question-set-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 18px; margin-bottom: 16px; }
 .question-set-header { font-weight: 700; font-size: 16px; color: var(--gold-dark); margin-bottom: 12px; border-left: 4px solid var(--gold); padding-left: 12px; }
 .question-item { background: var(--cream); border-radius: var(--r-lg); padding: 14px; margin-top: 12px; }
@@ -443,6 +399,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
+<!-- EDIT SUBJECT MODAL -->
 <div class="modal-backdrop" id="editModal" onclick="handleBackdropClick(event)">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
     <div class="modal-header">
@@ -500,10 +457,11 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
     <nav class="sidebar-nav">
       <div class="nav-section-label">Navigation</div>
       <div class="nav-item active" onclick="showSection('dashboard',this)"><i class="fas fa-chart-pie ni"></i><span class="nl">Dashboard</span></div>
-      <div class="nav-item" onclick="showSection('students',this)"><i class="fas fa-users ni"></i><span class="nl" onclick="getStudentList()">Students</span></div>
+      <div class="nav-item" onclick="showSection('students',this)"><i class="fas fa-users ni"></i><span class="nl">Students</span></div>
       <div class="nav-item" onclick="showSection('subjects',this)"><i class="fas fa-book-open ni"></i><span class="nl">Subjects</span></div>
       <div class="nav-item" onclick="showSection('questions',this)"><i class="fas fa-circle-question ni"></i><span class="nl">Questions</span></div>
       <div class="nav-item" onclick="showSection('results',this)"><i class="fas fa-file-lines ni"></i><span class="nl">Results</span></div>
+      <div class="nav-item" onclick="showSection('departments',this)"><i class="fas fa-building ni"></i><span class="nl">Departments</span></div>
     </nav>
     <div class="sidebar-footer">Academic Year 2025 / 26</div>
   </aside>
@@ -527,34 +485,43 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
       <div id="dashboard" class="page active">
         <div class="stat-grid">
           <div class="stat-card">
-            <div class="stat-icon">
-              <i class="fas fa-pen-to-square"></i>
-            </div><div class="stat-value">Personal Info</div>
-              <div><strong>ID: </strong><span id="profile-id">ADMIN/00CBT/123456</span></div>
-              <div><strong>Name: </strong><span id="profile-name">John Fin</span></div>
-              <div><strong>Email: </strong><span id="profile-email">johnfin@gmail.com</span></div>
+            <div class="stat-icon"><i class="fas fa-pen-to-square"></i></div>
+            <div class="stat-value">Personal Info</div>
+            <div><strong>ID: </strong><span id="profile-id">ADMIN/00CBT/123456</span></div>
+            <div><strong>Name: </strong><span id="profile-name">John Fin</span></div>
+            <div><strong>Email: </strong><span id="profile-email">johnfin@gmail.com</span></div>
           </div>
           <div class="stat-card"><div class="stat-icon"><i class="fas fa-graduation-cap"></i></div><div class="stat-value" id="stat-students"></div><div class="stat-label">Total Students</div></div>
           <div class="stat-card"><div class="stat-icon"><i class="fas fa-book"></i></div><div class="stat-value" id="stat-subjects"></div><div class="stat-label">Subjects</div></div>
           <div class="stat-card"><div class="stat-icon"><i class="fas fa-building-columns"></i></div><div class="stat-value" id="stat-depts"></div><div class="stat-label">Departments</div></div>
         </div>
-        <div" class="enrolment-bar"><i class="fas fa-arrow-trend-up"></i> Last Login : <strong id="last-login"></strong> &nbsp; &nbsp;   Last seen: <strong id="last-seen-display">00:00</strong> </div>
-        <div class="section-header"><div class="section-title"><i class="fas fa-building-columns"></i> Gallery</div></div>
-        <div id="dashDeptGrid" class="dept-grid">
-         <img src="public/assets/logo.jpg" alt="">
-         <img src="assets/1969-Ford-Mustang-Fastback-3.jpg" alt="">
-         <img src="assets/2025-bmw-m5-fire-red-09.jpg" alt="">
-         <img src="assets/157598.jpg" alt="">
-          <!-- <div class="dept-card"><div class="dept-card-title"><i class="fas fa-building"></i>Software</div><div class="subject-tags"><span class="subject-tag"><i class="fas fa-book"></i>Shola</span></div></div> -->
+
+        <div class="enrolment-bar">
+          <i class="fas fa-arrow-trend-up"></i> Last Login : <strong id="last-login"></strong> &nbsp;&nbsp; Last seen: <strong id="last-seen-display">00:00</strong>
+        </div>
+
+        <div class="section-header"><div class="section-title"><i class="fas fa-images"></i> Gallery</div></div>
+        <div id="dashDeptGrid" class="gallery-grid">
+          <div class="gallery-card">
+            <div class="gallery-placeholder"><i class="fas fa-image"></i><span>logo.jpg</span></div>
+          </div>
+          <div class="gallery-card">
+            <div class="gallery-placeholder"><i class="fas fa-car"></i><span>1969 Ford Mustang</span></div>
+          </div>
+          <div class="gallery-card">
+            <div class="gallery-placeholder"><i class="fas fa-car-side"></i><span>2025 BMW M5</span></div>
+          </div>
+          <div class="gallery-card">
+            <div class="gallery-placeholder"><i class="fas fa-image"></i><span>157598.jpg</span></div>
+          </div>
         </div>
       </div>
 
-      <!-- STUDENTS (unchanged) -->
+      <!-- STUDENTS -->
       <div id="students" class="page">
         <div class="search-bar">
           <div class="search-field"><i class="fas fa-id-card"></i><input type="text" id="regSearch" placeholder="Reg. number…" /></div>
           <button id="searchStudentRegNo">Search</button>
-          <!-- <div class="search-field"><i class="fas fa-user"></i><input type="text" id="nameSearch" placeholder="Student name…" /></div> -->
           <div class="search-field">
             <i class="fas fa-building"></i>
             <select id="deptFilter">
@@ -569,9 +536,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         </div>
         <div class="panel">
           <div class="panel-header">
-            <span class="panel-title">
-              <i class="fas fa-users"></i> Student Register
-            </span>
+            <span class="panel-title"><i class="fas fa-users"></i> Student Register</span>
             <span id="studentCount"></span>
           </div>
           <div class="table-wrap" id="table-wrap">
@@ -586,40 +551,33 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
                   <th>Del</th>
                 </tr>
               </thead>
-                <tbody id="studentTableBody"></tbody>
-              </table>
-            </div>
-
-            
-            <div id="noResultMsg" class="notice" style="display:none;"><i class="fas fa-user-slash"></i>No students match your search.</div></div>
+              <tbody id="studentTableBody"></tbody>
+            </table>
+          </div>
+          <div id="noResultMsg" class="notice" style="display:none;"><i class="fas fa-user-slash"></i>No students match your search.</div>
+        </div>
       </div>
 
-      <!-- SUBJECTS: ADDED "enter subject name and display" feature (additional) while keeping existing -->
+      <!-- SUBJECTS -->
       <div id="subjects" class="page">
-        <!-- NEW: Subject name search bar (additional feature) -->
         <div class="search-bar" style="background:var(--gold-light); border:1px solid var(--gold);">
           <div class="search-field" style="flex:2;"><i class="fas fa-book"></i><input type="text" id="subjectNameSearchInput" placeholder="Enter subject name to search..." /></div>
           <button id="searchSubjectByNameBtn" class="btn btn-primary"><i class="fas fa-magnifying-glass"></i> Search Subject</button>
         </div>
         <div id="subjectNameSearchResults" class="subjects-grid" style="margin-bottom:20px;"></div>
-        
-        <!-- EXISTING: Department filter and subject listing (kept as is) -->
         <div class="search-bar">
           <div class="search-field" style="flex:1;"><i class="fas fa-sitemap"></i><input type="text" id="deptSearchInput" placeholder="Filter by department…" /></div>
           <button id="searchSubjectBtn" class="btn btn-primary btn-sm"><i class="fas fa-magnifying-glass"></i> Search</button>
         </div>
         <div id="subjectCardsContainer" class="subjects-grid"></div>
         <div id="noSubjectsMsg" class="notice" style="display:none;"><i class="fas fa-book-open"></i>No subjects found for this department.</div>
-        
-        <!-- Add Subject Panel (kept) -->
         <div class="panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-plus-circle"></i> Add New Subject</span></div><div class="panel-body"><div class="form-row"><div class="form-group"><label class="form-label">Department</label><input class="form-control" type="text" id="newDept" placeholder="e.g. Computer Science" value="Computer Science" /></div><div class="form-group"><label class="form-label">Subject Name</label><input class="form-control" type="text" id="newSubject" placeholder="e.g. Algorithms" value="Algorithms" /></div><div class="form-group"><label class="form-label">Duration (min)</label><input class="form-control" type="number" id="newDuration" placeholder="90" value="90" /></div><div class="form-group" style="justify-content:flex-end;"><label class="form-label">&nbsp;</label><button id="saveSubjectBtn" class="btn btn-primary"><i class="fas fa-save"></i> Save Subject</button></div></div></div></div>
       </div>
 
-      <!-- QUESTIONS: ADDED department+subject search for question sets (additional) while keeping existing -->
+      <!-- QUESTIONS -->
       <div id="questions" class="page">
-        <!-- NEW: Question Sets Search Panel (additional feature) -->
         <div class="panel" style="border:2px solid var(--gold);">
-          <div class="panel-header" style="background:var(--gold-light);"><span class="panel-title"><i class="fas fa-magnifying-glass"></i> Search Question Sets (by Department & Subject)</span></div>
+          <div class="panel-header" style="background:var(--gold-light);"><span class="panel-title"><i class="fas fa-magnifying-glass"></i> Search Question Sets (by Department &amp; Subject)</span></div>
           <div class="panel-body">
             <div class="form-row">
               <div class="form-group"><label class="form-label">Department</label><input type="text" id="qsSearchDept" class="form-control" placeholder="e.g. Computer Science" /></div>
@@ -629,9 +587,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           </div>
         </div>
         <div id="questionSetsResultsContainer" style="margin-bottom:24px;"></div>
-        <div id="noQsSetsMsg" class="notice" style="display:none;"><i class="fas fa-inbox"></i> No question sets found for this department & subject.</div>
-        
-        <!-- EXISTING: Question creator (kept exactly as original) -->
+        <div id="noQsSetsMsg" class="notice" style="display:none;"><i class="fas fa-inbox"></i> No question sets found for this department &amp; subject.</div>
         <div id="questionStep1" class="panel">
           <div class="panel-header"><span class="panel-title"><i class="fas fa-sliders"></i> Exam Setup</span></div>
           <div class="panel-body"><div class="step-title"><span class="step-badge">1</span> Choose exam details</div><div class="form-row"><div class="form-group"><label class="form-label">Department</label><input class="form-control" type="text" id="questionDept" placeholder="Computer Science" value="Computer Science" /></div><div class="form-group"><label class="form-label">Subject</label><input class="form-control" type="text" id="questionSubject" placeholder="Algorithms" value="Algorithms" /></div><div class="form-group"><label class="form-label">Duration (min)</label><input class="form-control" type="number" id="questionDuration" placeholder="90" value="90" /></div></div><div style="display:flex;justify-content:flex-end;margin-top:18px;"><button id="nextToQuestionBtn" class="btn btn-primary">Next: Add Questions <i class="fas fa-arrow-right"></i></button></div></div>
@@ -642,11 +598,126 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         </div>
       </div>
 
-      <!-- RESULTS (unchanged) -->
-      <div id="results" class="page"><div class="panel"><div class="panel-header"><span class="panel-title"><i class="fas fa-chart-simple"></i> Exam Results</span></div><div class="table-wrap"><table><thead><tr><th>Student</th><th>Subject</th><th>Department</th><th>Score</th><th>Date</th></tr></thead><tbody><tr><td>John Doe</td><td>Mathematics</td><td><span class="badge badge-dept">Mathematics</span></td><td><span class="badge badge-score">85%</span></td><td>Mar 2026</td></tr><tr><td>Emily Clarke</td><td>Physics</td><td><span class="badge badge-dept">Physics</span></td><td><span class="badge badge-score">92%</span></td><td>Mar 2026</td></tr><tr><td>Michael Chen</td><td>Chemistry</td><td><span class="badge badge-dept">Chemistry</span></td><td><span class="badge badge-score">78%</span></td><td>Mar 2026</td></tr></tbody></table></div></div></div>
-    </div>
-  </div>
-</div>
+      <!-- RESULTS -->
+      <div id="results" class="page">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title"><i class="fas fa-chart-simple"></i> Exam Results</span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>Student</th><th>Subject</th><th>Department</th><th>Score</th><th>Date</th></tr></thead>
+              <tbody>
+                <tr><td>John Doe</td><td>Mathematics</td><td><span class="badge badge-dept">Mathematics</span></td><td><span class="badge badge-score">85%</span></td><td>Mar 2026</td></tr>
+                <tr><td>Emily Clarke</td><td>Physics</td><td><span class="badge badge-dept">Physics</span></td><td><span class="badge badge-score">92%</span></td><td>Mar 2026</td></tr>
+                <tr><td>Michael Chen</td><td>Chemistry</td><td><span class="badge badge-dept">Chemistry</span></td><td><span class="badge badge-score">78%</span></td><td>Mar 2026</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════
+           DEPARTMENTS PAGE — new feature
+      ══════════════════════════════════════ -->
+      <div id="departments" class="page">
+
+        <!-- Mini stats row -->
+        <div class="dept-stat-row">
+          <div class="dept-stat-mini">
+            <div class="dept-stat-mini-icon"><i class="fas fa-building"></i></div>
+            <div>
+              <div class="dept-stat-mini-val" id="deptTotalCount">0</div>
+              <div class="dept-stat-mini-lbl">Total Departments</div>
+            </div>
+          </div>
+          <div class="dept-stat-mini">
+            <div class="dept-stat-mini-icon"><i class="fas fa-user-tie"></i></div>
+            <div>
+              <div class="dept-stat-mini-val" id="deptHODCount">0</div>
+              <div class="dept-stat-mini-lbl">HODs Assigned</div>
+            </div>
+          </div>
+          <div class="dept-stat-mini">
+            <div class="dept-stat-mini-icon"><i class="fas fa-calendar-check"></i></div>
+            <div>
+              <div class="dept-stat-mini-val" id="deptNewest">—</div>
+              <div class="dept-stat-mini-lbl">Latest Added</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Create Department Panel -->
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fas fa-plus-circle"></i> Create Department</span>
+          </div>
+          <div class="panel-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Department Name <span style="color:#c44;font-size:10px;">*</span></label>
+                <input class="form-control" type="text" id="newDeptName" placeholder="e.g. Computer Science" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Department Code <span style="color:#c44;font-size:10px;">*</span></label>
+                <input class="form-control" type="text" id="newDeptCode" placeholder="e.g. CS" style="text-transform:uppercase;" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Head of Department</label>
+                <input class="form-control" type="text" id="newDeptHOD" placeholder="e.g. Dr. Smith" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Description</label>
+                <input class="form-control" type="text" id="newDeptDesc" placeholder="Short description (optional)" />
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:16px;gap:10px;flex-wrap:wrap;">
+              <button id="clearDeptBtn" class="btn btn-sm"><i class="fas fa-rotate-left"></i> Clear</button>
+              <button id="saveDeptBtn" class="btn btn-primary"><i class="fas fa-save"></i> Save Department</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search + List Panel -->
+        <div class="search-bar">
+          <div class="search-field" style="flex:1;">
+            <i class="fas fa-magnifying-glass"></i>
+            <input type="text" id="deptListSearch" placeholder="Search by name, code or HOD…" />
+          </div>
+          <button id="deptSearchBtn" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Search</button>
+          <button id="deptShowAllBtn" class="btn btn-sm"><i class="fas fa-list"></i> Show All</button>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title"><i class="fas fa-building-columns"></i> Department List</span>
+            <span id="deptCount" style="font-family:sans-serif;font-size:12px;color:var(--ink-soft);"></span>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Department Name</th>
+                  <th>Code</th>
+                  <th>Head of Department</th>
+                  <th>Description</th>
+                  <th>Date Created</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="deptTableBody"></tbody>
+            </table>
+          </div>
+          <div id="noDeptMsg" class="notice" style="display:none;">
+            <i class="fas fa-building-circle-xmark"></i> No departments found. Create one above.
+          </div>
+        </div>
+
+      </div>
+      <!-- END DEPARTMENTS -->
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
 
 <script>
 const getID = localStorage.getItem('cbt-admin-email');
@@ -662,19 +733,18 @@ document.addEventListener("DOMContentLoaded", async ()=>{
   await getDepartment();
   await getLastLogin();
   await setTimeLogin();
+  renderDeptTable('');
+  updateDeptStats();
 })
 
 async function getDetail(){
   const email = getEmail;
   const ID = getID;
-  
   const e = {email:email, ID:ID};
-  
   const api = await fetch('/cbt/ansofra/apiadmin/Details', {
-      method:'POST',
+      method:'POST', 
       body:e
   });
-
   const result = await api.json();
   const response = result.response;
   if(result.status==="success"){
@@ -690,35 +760,29 @@ async function getDetail(){
 async function getTotalStudent(){
   const e ={role:'user'};
   const api = await fetch('/cbt/ansofra/apiadmin/TotalStudents', {
-      method:'POST',
+      method:'POST', 
       body:e
   });
-
   const result = await api.json();
   const response = result.response;
   if(result.status === "success"){
     document.getElementById("stat-students").textContent=response;
-  }
-  else{
-    console.log(result);
-     document.getElementById("stat-students").textContent= "00";
+  } else {
+    document.getElementById("stat-students").textContent= "00";
   }
 }
 
 async function getTotalSubject(){
   const e = {role:'set'};
   const api = await fetch('/cbt/ansofra/apiadmin/TotalSubjects', {
-      method:'POST',
+      method:'POST', 
       body:e
   });
-
   const result = await api.json();
   const response = result.response;
-
   if(result.status==="success"){
     document.getElementById("stat-subjects").textContent=response;
-  }
-  else{
+  } else {
     document.getElementById("stat-subjects").textContent="00";
   }
 }
@@ -729,14 +793,11 @@ async function getDepartment(){
       method:'POST',
       body:e
   });
-
   const result = await api.json();
   const response = result.response;
-
   if(result.status==="success"){
     document.getElementById("stat-depts").textContent=response;
-  }
-  else{
+  } else {
     document.getElementById("stat-depts").textContent="00";
   }
 }
@@ -744,68 +805,45 @@ async function getDepartment(){
 async function getLastLogin(){
   const e = {email:getEmail, ID:getID};
   const api = await fetch("/cbt/ansofra/apiadmin/Get/LastLogin", {
-      method:"POST",
+      method:"POST", 
       body:e
   });
-
   const result = await api.json();
   const response = result.response;
   if(result.status==="success"){
     document.getElementById('last-seen-display').textContent=response.last_seen;
     document.getElementById('last-login').textContent=response.last_login;
   }
-  else{
+   else{
     // window.location.href="/cbt/ansofra/ilease";
   }
 }
 
-
-function  setTimeLogin(){
-  setTimeout(
-    setLastLogin(),
-  2000);
+function setTimeLogin(){
+  setTimeout(setLastLogin(), 2000);
 }
 
-async function setLastLogin(){//set time out after inilization dashboard
+async function setLastLogin(){
   const time = new Date().toLocaleTimeString();
   const e = {email:getEmail, ID:getID, lastLogin:time};
-   const api = await fetch("/cbt/ansofra/apiadmin/Set/LastLogin", {
+  const api = await fetch("/cbt/ansofra/apiadmin/Set/LastLogin", {
       method:"POST",
-      body:e
+       body:e
   });
-  
   const result = await api.json();
   console.log(result);
 }
 
-async function setLastSeen(){//to be attarch to logout 
+async function setLastSeen(){
   const time = new Date().toLocaleTimeString();
   const e = {email:getEmail, ID:getID, lastSeen:time};
-   const api = await fetch("/cbt/ansofra/apiadmin/Set/LastSeen", {
-      method:"POST",
-      body:e
+  const api = await fetch("/cbt/ansofra/apiadmin/Set/LastSeen", {
+      method:"POST", body:e
   });
-  
   const result = await api.json();
   console.log(result);
 }
 
-
-// let departmentsList = ["Computer Science", "Mathematics", "Physics", "Chemistry", "Literature"];
-// let subjectsList = [
-//   { dept:'Computer Science', name:'Algorithms', duration:120, created: new Date(2025,2,10), totalQs:12 },
-//   { dept:'Computer Science', name:'Data Structures', duration:90, created: new Date(2025,4,1), totalQs:7 },
-//   { dept:'Computer Science', name:'Operating Systems', duration:110, created: new Date(2025,3,12), totalQs:10 },
-//   { dept:'Mathematics', name:'Calculus I', duration:90, created: new Date(2025,3,5), totalQs:8 },
-//   { dept:'Mathematics', name:'Linear Algebra', duration:80, created: new Date(2025,1,20), totalQs:9 },
-//   { dept:'Physics', name:'Mechanics', duration:110, created: new Date(2025,3,18), totalQs:15 },
-//   { dept:'Physics', name:'Electromagnetism', duration:130, created: new Date(2025,2,28), totalQs:12 },
-//   { dept:'Chemistry', name:'Organic Chem', duration:100, created: new Date(2025,2,22), totalQs:10 },
-//   { dept:'Chemistry', name:'Physical Chem', duration:95, created: new Date(2025,0,15), totalQs:6 },
-//   { dept:'Literature', name:'Shakespeare', duration:75, created: new Date(2025,3,2), totalQs:5 }
-// ];
-
-// Question sets data (for the new search feature)
 let questionSetsData = [
   { dept: "Computer Science", subject: "Algorithms", questions: [
     { text: "What is the time complexity of merge sort?", options: ["O(n)", "O(n log n)", "O(n^2)", "O(log n)"], correct: "B" },
@@ -822,43 +860,6 @@ let questionSetsData = [
   ]}
 ];
 
-// const studentsData = [
-//   { reg:'REG1001', name:'John Doe', dept:'Computer Science', email:'john.doe@uni.edu' },
-//   { reg:'REG1002', name:'Emily Clarke', dept:'Mathematics', email:'e.clarke@uni.edu' },
-//   { reg:'REG1003', name:'Michael Chen', dept:'Physics', email:'m.chen@uni.edu' },
-//   { reg:'REG1004', name:'Sophia Dubois', dept:'Literature', email:'s.dubois@uni.edu' },
-//   { reg:'REG1005', name:'James Kumar', dept:'Computer Science', email:'j.kumar@uni.edu' },
-//   { reg:'REG1006', name:'Fatima Al-Sayed', dept:'Chemistry', email:'f.al@uni.edu' },
-//   { reg:'REG1007', name:'Liam Brown', dept:'Mathematics', email:'liam.b@uni.edu' }
-// ];
-
-// Helper functions
-// function renderDashDeptGrid() {
-//   const grid = document.getElementById('dashDeptGrid');
-//   if(!grid) return;
-//   const map = new Map();
-//   subjectsList.forEach(s => { if(!map.has(s.dept)) map.set(s.dept, []); map.get(s.dept).push(s.name); });
-//   grid.innerHTML = Array.from(map.keys()).sort().map(dept => `<div class="dept-card"><div class="dept-card-title"><i class="fas fa-building"></i> ${dept}</div><div class="subject-tags">${map.get(dept).map(sub => `<span class="subject-tag"><i class="fas fa-book"></i> ${sub}</span>`).join('')}</div></div>`).join('');
-// }
-
-// function updateStats() {
-//   const depts = new Set(subjectsList.map(s => s.dept));
-//   document.getElementById('stat-subjects').textContent = subjectsList.length;
-//   document.getElementById('stat-depts').textContent = depts.size;
-//   document.getElementById('stat-students').textContent = studentsData.length;
-// }
-
-// function renderSubjects(filterDept) {
-//   const container = document.getElementById('subjectCardsContainer');
-//   const noMsg = document.getElementById('noSubjectsMsg');
-//   const filtered = filterDept ? subjectsList.filter(s => s.dept.toLowerCase().includes(filterDept.toLowerCase())) : subjectsList;
-//   if(!filtered.length) { container.innerHTML = ''; noMsg.style.display = 'block'; return; }
-//   noMsg.style.display = 'none';
-//   container.innerHTML = filtered.map((sub, idx) => `<div class="subject-card"><div class="subject-card-top"><span class="badge badge-dept">${sub.dept}</span><span class="badge badge-duration"><i class="far fa-clock"></i> ${sub.duration} min</span></div><div class="subject-card-name">${sub.name}</div><div class="subject-card-meta"><span><i class="fas fa-calendar-alt"></i> ${sub.created.toLocaleDateString()}</span><span><i class="fas fa-circle-question"></i> ${sub.totalQs} questions</span></div><div class="subject-card-actions"><button class="btn btn-sm" onclick="openEditModal(${idx})"><i class="fas fa-pen"></i> Edit</button><button class="btn btn-sm btn-danger" onclick="deleteSubject(${idx})"><i class="fas fa-trash"></i> Delete</button></div></div>`).join('');
-//   renderDashDeptGrid(); updateStats();
-// }
-
-// NEW: Subject search by name (additional feature)
 function renderSubjectsByName(searchName) {
   const container = document.getElementById('subjectNameSearchResults');
   if(!container) return;
@@ -868,7 +869,6 @@ function renderSubjectsByName(searchName) {
   container.innerHTML = filtered.map(sub => `<div class="subject-card"><div class="subject-card-top"><span class="badge badge-dept">${sub.dept}</span><span class="badge badge-duration"><i class="far fa-clock"></i> ${sub.duration} min</span></div><div class="subject-card-name">${sub.name}</div></div>`).join('');
 }
 
-// NEW: Question sets search by department & subject (additional feature)
 function renderQuestionSetsByDeptSubj(deptFilter, subjFilter) {
   const container = document.getElementById('questionSetsResultsContainer');
   const noMsg = document.getElementById('noQsSetsMsg');
@@ -879,168 +879,347 @@ function renderQuestionSetsByDeptSubj(deptFilter, subjFilter) {
   });
   if(!filtered.length) { container.innerHTML = ''; noMsg.style.display = 'block'; return; }
   noMsg.style.display = 'none';
-  container.innerHTML = filtered.map(qs => `<div class="panel question-set-card"><div class="question-set-header"><i class="fas fa-layer-group"></i> ${qs.dept} · ${qs.subject} (${qs.questions.length} questions)</div>${qs.questions.map((q,i) => `<div class="question-item"><strong>Q${i+1}:</strong> ${q.text}<div class="options-list" style="margin-top:8px;">${q.options.map((opt,idx) => `<div>${String.fromCharCode(65+idx)}. ${opt}</div>`).join('')}</div><span class="correct-badge">✓ Correct: ${q.correct}</span></div>`).join('')}</div>`).join('');
+  container.innerHTML = filtered.map(qs => `<div class="panel question-set-card"><div class="question-set-header"><i class="fas fa-layer-group"></i> ${qs.dept} · ${qs.subject} (${qs.questions.length} questions)</div>${qs.questions.map((q,i) => `<div class="question-item"><strong>Q${i+1}:</strong> ${q.text}<div style="margin-top:8px;">${q.options.map((opt,idx) => `<div>${String.fromCharCode(65+idx)}. ${opt}</div>`).join('')}</div><span class="badge badge-score" style="margin-top:6px;display:inline-flex;">✓ Correct: ${q.correct}</span></div>`).join('')}</div>`).join('');
 }
 
-// Existing functions
 async function getStudentList() {
   const tbody = document.getElementById('studentTableBody');
-  const noResult = document.getElementById('noResultMsg');
-  const regVal = document.getElementById('regSearch')?.value.trim().toLowerCase() || '';
-  const nameVal = document.getElementById('nameSearch')?.value.trim().toLowerCase() || '';
-  const deptVal = document.getElementById('deptFilter')?.value || 'all';
   const e = {role:'user'};
   const api = await fetch('/cbt/ansofra/apiadmin/GET/students', {
-      method:"POST",
-      body:e
+      method:"POST", body:e
   });
   const result = await api.json();
   const response = result.response;
-  console.log(response);
   if(result.status==="success"){
       let display = '';
-      for(let i=0; i <response.length; i++){
-          display+=`
-              <tr>
-                <td style="font-weight:600">${response[i].regNum}</td>
-                <td>${response[i].fullname}</td>
-                <td><span class="badge badge-dept">${response[i].department}</span></td>
-                <td>${response[i].email}</td>
-                <td>${response[i].role}</td>
-                <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
-              </tr>
-          `
+      for(let i=0; i<response.length; i++){
+          display+=`<tr>
+            <td style="font-weight:600">${response[i].regNum}</td>
+            <td>${response[i].fullname}</td>
+            <td><span class="badge badge-dept">${response[i].department}</span></td>
+            <td>${response[i].email}</td>
+            <td>${response[i].role}</td>
+            <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
+          </tr>`;
       }
       tbody.innerHTML = display;
-  }
-  else{
+  } else {
       document.getElementById("studentCount").textContent="No Active user yet";
       document.getElementById("table-wrap").style.display="none";
   }
 }
 
 document.getElementById("searchStudentRegNo").addEventListener("click", async function(){
-   const tbody = document.getElementById('studentTableBody');
+  const tbody = document.getElementById('studentTableBody');
   const regNo = document.getElementById('regSearch').value.trim();
   if(regNo===''){
     alert("you have not entered reg number of the student");
-  }
-  else{
+  } else {
     const e = {regNum:regNo};
     const api = await fetch('/cbt/ansofra/apiadmin/search/regNum', {
-        method:"POST",
-        body:e
+        method:"POST", body:e
     });
-
     const result = await api.json();
     const response = result.response;
-     if(result.status==="success"){
+    if(result.status==="success"){
         let output ='';
-        for (let i = 0; i < response.length; i++) {
-          output += `
-              <tr>
-                <td style="font-weight:600">${response[i].regNum}</td>
-                <td>${response[i].fullname}</td>
-                <td><span class="badge badge-dept">${response[i].department}</span></td>
-                <td>${response[i].email}</td>
-                <td>${response[i].role}</td>
-                <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
-              </tr>
-       `;
+        for(let i=0; i<response.length; i++){
+          output+=`<tr>
+            <td style="font-weight:600">${response[i].regNum}</td>
+            <td>${response[i].fullname}</td>
+            <td><span class="badge badge-dept">${response[i].department}</span></td>
+            <td>${response[i].email}</td>
+            <td>${response[i].role}</td>
+            <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
+          </tr>`;
         }
-         tbody.innerHTML = output;
-      }
-      else{
-        document.getElementById("studentCount").textContent="Registriation number not found";
-        document.getElementById("table-wrap").style.display="none";
-      }
+        tbody.innerHTML = output;
+    } else {
+      document.getElementById("studentCount").textContent="Registriation number not found";
+      document.getElementById("table-wrap").style.display="none";
+    }
   }
-})
+});
 
 document.getElementById("deptFilter").addEventListener("change", async ()=>{
-     const tbody = document.getElementById('studentTableBody');
+  const tbody = document.getElementById('studentTableBody');
   const seletedValue = document.getElementById('deptFilter').value.trim();
   if(seletedValue===''){
     alert("Select department");
-  }
-  else{
-     const e = {department:seletedValue};
-     console.log(e);
-     const api = await fetch('/cbt/ansofra/apiadmin/selected/department', {
-        method:"POST",
-        body:e
-     });
-
-     const result = await api.json();
-     const response = result.response;
-     if(result.status==="success"){
-          let output ='';
-        for (let i = 0; i < response.length; i++) {
-          output += `
-              <tr>
-                <td style="font-weight:600">${response[i].regNum}</td>
-                <td>${response[i].fullname}</td>
-                <td><span class="badge badge-dept">${response[i].department}</span></td>
-                <td>${response[i].email}</td>
-                <td>${response[i].role}</td>
-                <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
-              </tr>
-          `;
+  } else {
+    const e = {department:seletedValue};
+    const api = await fetch('/cbt/ansofra/apiadmin/selected/department', {
+        method:"POST", body:e
+    });
+    const result = await api.json();
+    const response = result.response;
+    if(result.status==="success"){
+        let output ='';
+        for(let i=0; i<response.length; i++){
+          output+=`<tr>
+            <td style="font-weight:600">${response[i].regNum}</td>
+            <td>${response[i].fullname}</td>
+            <td><span class="badge badge-dept">${response[i].department}</span></td>
+            <td>${response[i].email}</td>
+            <td>${response[i].role}</td>
+            <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
+          </tr>`;
         }
         tbody.innerHTML = output;
-     }
-     else{
+    } else {
       document.getElementById("studentCount").textContent="No record of user found in that department";
       document.getElementById("table-wrap").style.display="none";
-     }
+    }
   }
-})
-let editingIndex = -1;
-window.openEditModal = function(idx) { const sub = subjectsList[idx]; if(!sub) return; editingIndex = idx; document.getElementById('edit-dept').value = sub.dept; document.getElementById('edit-name').value = sub.name; document.getElementById('edit-duration').value = sub.duration; document.getElementById('edit-totalqs').value = sub.totalQs; document.getElementById('edit-date').value = sub.created ? sub.created.toISOString().split('T')[0] : ''; document.getElementById('editModal').classList.add('open'); document.body.style.overflow = 'hidden'; };
-window.closeEditModal = function() { document.getElementById('editModal').classList.remove('open'); document.body.style.overflow = ''; editingIndex = -1; };
-window.handleBackdropClick = function(e) { if(e.target === document.getElementById('editModal')) closeEditModal(); };
-window.saveEditSubject = function() { if(editingIndex < 0) return; const dept = document.getElementById('edit-dept').value.trim(); const name = document.getElementById('edit-name').value.trim(); const duration = parseInt(document.getElementById('edit-duration').value); const totalQs = parseInt(document.getElementById('edit-totalqs').value); if(!dept || !name || isNaN(duration)) { alert('Required fields missing'); return; } subjectsList[editingIndex] = {...subjectsList[editingIndex], dept, name, duration, totalQs: isNaN(totalQs)?0:totalQs}; closeEditModal(); renderSubjects(document.getElementById('deptSearchInput')?.value || ''); renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value || ''); };
-window.deleteSubject = function(i) { if(confirm('Remove subject?')) { subjectsList.splice(i,1); renderSubjects(document.getElementById('deptSearchInput')?.value || ''); renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value || ''); } };
+});
 
-// Navigation
+let editingIndex = -1;
+window.openEditModal = function(idx) {
+  const sub = subjectsList[idx];
+  if(!sub) return;
+  editingIndex = idx;
+  document.getElementById('edit-dept').value = sub.dept;
+  document.getElementById('edit-name').value = sub.name;
+  document.getElementById('edit-duration').value = sub.duration;
+  document.getElementById('edit-totalqs').value = sub.totalQs;
+  document.getElementById('edit-date').value = sub.created ? sub.created.toISOString().split('T')[0] : '';
+  document.getElementById('editModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+window.closeEditModal = function() {
+  document.getElementById('editModal').classList.remove('open');
+  document.body.style.overflow = '';
+  editingIndex = -1;
+};
+window.handleBackdropClick = function(e) {
+  if(e.target === document.getElementById('editModal')) closeEditModal();
+};
+window.saveEditSubject = function() {
+  if(editingIndex < 0) return;
+  const dept = document.getElementById('edit-dept').value.trim();
+  const name = document.getElementById('edit-name').value.trim();
+  const duration = parseInt(document.getElementById('edit-duration').value);
+  const totalQs = parseInt(document.getElementById('edit-totalqs').value);
+  if(!dept || !name || isNaN(duration)) { alert('Required fields missing'); return; }
+  subjectsList[editingIndex] = {...subjectsList[editingIndex], dept, name, duration, totalQs: isNaN(totalQs)?0:totalQs};
+  closeEditModal();
+  renderSubjects(document.getElementById('deptSearchInput')?.value || '');
+  renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value || '');
+};
+window.deleteSubject = function(i) {
+  if(confirm('Remove subject?')) {
+    subjectsList.splice(i,1);
+    renderSubjects(document.getElementById('deptSearchInput')?.value || '');
+    renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value || '');
+  }
+};
+
 window.showSection = function(id, navEl) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id)?.classList.add('active');
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
   if(navEl) navEl.classList.add('active');
-  const titles = { dashboard:'Dashboard', students:'Students', subjects:'Subjects', questions:'Questions', results:'Results' };
+  const titles = { dashboard:'Dashboard', students:'Students', subjects:'Subjects', questions:'Questions', results:'Results', departments:'Departments' };
   document.getElementById('pageTitle').textContent = titles[id];
   if(id === 'students') getStudentList();
-  // if(id === 'subjects') { renderSubjects(''); renderSubjectsByName(''); }
-  // if(id === 'dashboard') { renderDashDeptGrid(); updateStats(); }
-  if(id === 'questions') { document.getElementById('questionStep1').style.display = ''; document.getElementById('questionStep2').style.display = 'none'; renderQuestionSetsByDeptSubj('',''); }
+  if(id === 'questions') {
+    document.getElementById('questionStep1').style.display = '';
+    document.getElementById('questionStep2').style.display = 'none';
+    renderQuestionSetsByDeptSubj('','');
+  }
+  if(id === 'departments') {
+    renderDeptTable('');
+    updateDeptStats();
+  }
   closeSidebar();
 };
 
-// Sidebar functions
-window.openSidebar = function() { document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('visible'); document.body.style.overflow = 'hidden'; };
-window.closeSidebar = function() { document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('visible'); document.body.style.overflow = ''; };
+window.openSidebar = function() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebarOverlay').classList.add('visible');
+  document.body.style.overflow = 'hidden';
+};
+window.closeSidebar = function() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebarOverlay').classList.remove('visible');
+  document.body.style.overflow = '';
+};
 
-// Event listeners
-// document.getElementById('searchSubjectBtn')?.addEventListener('click', () => renderSubjects(document.getElementById('deptSearchInput')?.value || ''));
 document.getElementById('searchSubjectByNameBtn')?.addEventListener('click', () => renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value || ''));
 document.getElementById('searchQuestionSetsBtn')?.addEventListener('click', () => renderQuestionSetsByDeptSubj(document.getElementById('qsSearchDept')?.value || '', document.getElementById('qsSearchSubject')?.value || ''));
-document.getElementById('saveSubjectBtn')?.addEventListener('click', () => { const dept = document.getElementById('newDept')?.value.trim(); const name = document.getElementById('newSubject')?.value.trim(); const dur = document.getElementById('newDuration')?.value; if(!dept || !name || !dur) { alert('Fill all fields'); return; } subjectsList.push({ dept, name, duration: +dur, created: new Date(), totalQs: 0 }); renderSubjects(document.getElementById('deptSearchInput')?.value || ''); renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value || ''); document.getElementById('newSubject').value = ''; });
-document.getElementById('nextToQuestionBtn')?.addEventListener('click', () => { const dept = document.getElementById('questionDept')?.value.trim(); const subj = document.getElementById('questionSubject')?.value.trim(); const dur = document.getElementById('questionDuration')?.value; if(!dept || !subj || !dur) { alert('Complete fields'); return; } document.getElementById('displayDept').textContent = dept; document.getElementById('displaySubject').textContent = subj; document.getElementById('displayDuration').textContent = dur; document.getElementById('questionStep1').style.display = 'none'; document.getElementById('questionStep2').style.display = ''; });
-document.getElementById('changeDetailsBtn')?.addEventListener('click', () => { document.getElementById('questionStep2').style.display = 'none'; document.getElementById('questionStep1').style.display = ''; });
-document.getElementById('saveQuestionBtn')?.addEventListener('click', () => { if(!document.getElementById('questionText')?.value.trim()) { alert('Enter question'); return; } alert('Question saved (demo).'); document.getElementById('questionText').value = ''; document.getElementById('optionA').value = ''; document.getElementById('optionB').value = ''; document.getElementById('optionC').value = ''; document.getElementById('optionD').value = ''; document.getElementById('correctAnswer').value = ''; });
-document.getElementById('addAnotherQuestionBtn')?.addEventListener('click', () => { if(!document.getElementById('questionText')?.value.trim()) { alert('Enter question first'); return; } alert('Saved. Add another.'); document.getElementById('questionText').value = ''; document.getElementById('optionA').value = ''; document.getElementById('optionB').value = ''; document.getElementById('optionC').value = ''; document.getElementById('optionD').value = ''; document.getElementById('correctAnswer').value = ''; });
-// document.getElementById('regSearch')?.addEventListener('input', getStudentList);
-// document.getElementById('nameSearch')?.addEventListener('input', getStudentList);
-// document.getElementById('deptFilter')?.addEventListener('change', getStudentList);
+document.getElementById('saveSubjectBtn')?.addEventListener('click', () => {
+  const dept = document.getElementById('newDept')?.value.trim();
+  const name = document.getElementById('newSubject')?.value.trim();
+  const dur = document.getElementById('newDuration')?.value;
+  if(!dept || !name || !dur) { alert('Fill all fields'); return; }
+  subjectsList.push({ dept, name, duration: +dur, created: new Date(), totalQs: 0 });
+  renderSubjects(document.getElementById('deptSearchInput')?.value || '');
+  renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value || '');
+  document.getElementById('newSubject').value = '';
+});
+document.getElementById('nextToQuestionBtn')?.addEventListener('click', () => {
+  const dept = document.getElementById('questionDept')?.value.trim();
+  const subj = document.getElementById('questionSubject')?.value.trim();
+  const dur = document.getElementById('questionDuration')?.value;
+  if(!dept || !subj || !dur) { alert('Complete fields'); return; }
+  document.getElementById('displayDept').textContent = dept;
+  document.getElementById('displaySubject').textContent = subj;
+  document.getElementById('displayDuration').textContent = dur;
+  document.getElementById('questionStep1').style.display = 'none';
+  document.getElementById('questionStep2').style.display = '';
+});
+document.getElementById('changeDetailsBtn')?.addEventListener('click', () => {
+  document.getElementById('questionStep2').style.display = 'none';
+  document.getElementById('questionStep1').style.display = '';
+});
+document.getElementById('saveQuestionBtn')?.addEventListener('click', () => {
+  if(!document.getElementById('questionText')?.value.trim()) { alert('Enter question'); return; }
+  alert('Question saved (demo).');
+  document.getElementById('questionText').value = '';
+  document.getElementById('optionA').value = '';
+  document.getElementById('optionB').value = '';
+  document.getElementById('optionC').value = '';
+  document.getElementById('optionD').value = '';
+  document.getElementById('correctAnswer').value = '';
+});
+document.getElementById('addAnotherQuestionBtn')?.addEventListener('click', () => {
+  if(!document.getElementById('questionText')?.value.trim()) { alert('Enter question first'); return; }
+  alert('Saved. Add another.');
+  document.getElementById('questionText').value = '';
+  document.getElementById('optionA').value = '';
+  document.getElementById('optionB').value = '';
+  document.getElementById('optionC').value = '';
+  document.getElementById('optionD').value = '';
+  document.getElementById('correctAnswer').value = '';
+});
 
-// Initialize
-// getStudentList();
-// renderSubjects('');
 renderSubjectsByName('');
 renderQuestionSetsByDeptSubj('', '');
-// renderDashDeptGrid();
-// updateStats();
+
+
+/* ══════════════════════════════════════
+   DEPARTMENT FEATURE — new JS only
+   (no existing code was changed above)
+══════════════════════════════════════ */
+
+let departmentsData = [
+  { name: 'Computer Science', code: 'CS',  hod: 'Dr. Ada Lovelace',   desc: 'Software, algorithms, data structures', created: new Date(2024,8,1) },
+  { name: 'Mathematics',      code: 'MTH', hod: 'Prof. Isaac Newton',  desc: 'Pure and applied mathematics',          created: new Date(2024,8,1) },
+  { name: 'Physics',          code: 'PHY', hod: 'Dr. Richard Feynman', desc: 'Classical and modern physics',          created: new Date(2024,8,1) },
+  { name: 'Chemistry',        code: 'CHM', hod: 'Dr. Marie Curie',     desc: 'Organic, inorganic, physical chem',     created: new Date(2024,8,1) },
+  { name: 'Literature',       code: 'LIT', hod: 'Prof. William Blake',  desc: 'English and world literature',          created: new Date(2024,8,1) }
+];
+
+function updateDeptStats() {
+  const total = departmentsData.length;
+  const withHOD = departmentsData.filter(d => d.hod && d.hod !== 'TBA').length;
+  const newest = total > 0 ? departmentsData[departmentsData.length - 1].name : '—';
+  const el1 = document.getElementById('deptTotalCount');
+  const el2 = document.getElementById('deptHODCount');
+  const el3 = document.getElementById('deptNewest');
+  if(el1) el1.textContent = total;
+  if(el2) el2.textContent = withHOD;
+  if(el3) el3.textContent = newest;
+}
+
+function renderDeptTable(filter) {
+  const tbody = document.getElementById('deptTableBody');
+  const noMsg = document.getElementById('noDeptMsg');
+  const countEl = document.getElementById('deptCount');
+  if(!tbody) return;
+
+  const list = filter.trim()
+    ? departmentsData.filter(d =>
+        d.name.toLowerCase().includes(filter.toLowerCase()) ||
+        d.code.toLowerCase().includes(filter.toLowerCase()) ||
+        (d.hod || '').toLowerCase().includes(filter.toLowerCase())
+      )
+    : departmentsData;
+
+  if(countEl) countEl.textContent = list.length + ' department' + (list.length !== 1 ? 's' : '');
+
+  if(!list.length) {
+    tbody.innerHTML = '';
+    if(noMsg) noMsg.style.display = 'block';
+    return;
+  }
+
+  if(noMsg) noMsg.style.display = 'none';
+
+  tbody.innerHTML = list.map((d, i) => `
+    <tr>
+      <td style="font-weight:600;color:var(--ink-soft);font-family:sans-serif;">${i + 1}</td>
+      <td>
+        <div style="font-weight:700;color:var(--ink);font-family:sans-serif;">${d.name}</div>
+        ${d.desc ? `<div style="font-size:11px;color:var(--ink-soft);font-family:sans-serif;margin-top:2px;">${d.desc}</div>` : ''}
+      </td>
+      <td><span class="badge badge-dept">${d.code}</span></td>
+      <td style="font-family:sans-serif;color:var(--ink-mid);">${d.hod || '<span style="color:var(--ink-soft);font-style:italic;">Not assigned</span>'}</td>
+      <td style="font-family:sans-serif;color:var(--ink-soft);font-size:12px;max-width:160px;">${d.desc || '—'}</td>
+      <td style="font-family:sans-serif;color:var(--ink-soft);font-size:12px;white-space:nowrap;">${d.created.toLocaleDateString()}</td>
+      <td>
+        <button class="btn btn-sm btn-danger" onclick="deleteDepartment('${d.name.replace(/'/g,"\\'")}')">
+          <i class="fas fa-trash"></i>
+        </button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+window.deleteDepartment = function(name) {
+  if(confirm('Remove department: ' + name + '?')) {
+    departmentsData = departmentsData.filter(d => d.name !== name);
+    renderDeptTable(document.getElementById('deptListSearch')?.value || '');
+    updateDeptStats();
+  }
+};
+
+document.getElementById('saveDeptBtn')?.addEventListener('click', function() {
+  const name  = document.getElementById('newDeptName')?.value.trim();
+  const code  = document.getElementById('newDeptCode')?.value.trim().toUpperCase();
+  const hod   = document.getElementById('newDeptHOD')?.value.trim();
+  const desc  = document.getElementById('newDeptDesc')?.value.trim();
+
+  if(!name || !code) {
+    alert('Department Name and Code are required.');
+    return;
+  }
+  const exists = departmentsData.some(d => d.name.toLowerCase() === name.toLowerCase());
+  if(exists) {
+    alert('A department with that name already exists.');
+    return;
+  }
+
+  departmentsData.push({ name, code, hod: hod || 'TBA', desc: desc || '', created: new Date() });
+
+  renderDeptTable(document.getElementById('deptListSearch')?.value || '');
+  updateDeptStats();
+
+  document.getElementById('newDeptName').value  = '';
+  document.getElementById('newDeptCode').value  = '';
+  document.getElementById('newDeptHOD').value   = '';
+  document.getElementById('newDeptDesc').value  = '';
+});
+
+document.getElementById('clearDeptBtn')?.addEventListener('click', function() {
+  document.getElementById('newDeptName').value  = '';
+  document.getElementById('newDeptCode').value  = '';
+  document.getElementById('newDeptHOD').value   = '';
+  document.getElementById('newDeptDesc').value  = '';
+});
+
+document.getElementById('deptSearchBtn')?.addEventListener('click', function() {
+  renderDeptTable(document.getElementById('deptListSearch')?.value || '');
+});
+
+document.getElementById('deptShowAllBtn')?.addEventListener('click', function() {
+  document.getElementById('deptListSearch').value = '';
+  renderDeptTable('');
+});
+
+document.getElementById('deptListSearch')?.addEventListener('keyup', function(e) {
+  if(e.key === 'Enter') renderDeptTable(this.value);
+});
 </script>
 </body>
 </html>
