@@ -574,7 +574,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
             </span>
             <span id="studentCount"></span>
           </div>
-          <div class="table-wrap">
+          <div class="table-wrap" id="table-wrap">
             <table>
               <thead>
                 <tr>
@@ -584,7 +584,8 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
                   <th>Email</th>
                   <th>Role</th>
                   <th>Del</th>
-                </tr></thead>
+                </tr>
+              </thead>
                 <tbody id="studentTableBody"></tbody>
               </table>
             </div>
@@ -913,7 +914,8 @@ async function getStudentList() {
       tbody.innerHTML = display;
   }
   else{
-      tbody.textContent="No student found";
+      document.getElementById("studentCount").textContent="No Active user yet";
+      document.getElementById("table-wrap").style.display="none";
   }
 }
 
@@ -949,7 +951,8 @@ document.getElementById("searchStudentRegNo").addEventListener("click", async fu
          tbody.innerHTML = output;
       }
       else{
-        tbody.textContent="No Users found"; 
+        document.getElementById("studentCount").textContent="Registriation number not found";
+        document.getElementById("table-wrap").style.display="none";
       }
   }
 })
@@ -987,7 +990,8 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
         tbody.innerHTML = output;
      }
      else{
-      tbody.textContent="No record of user found in that department";
+      document.getElementById("studentCount").textContent="No record of user found in that department";
+      document.getElementById("table-wrap").style.display="none";
      }
   }
 })
