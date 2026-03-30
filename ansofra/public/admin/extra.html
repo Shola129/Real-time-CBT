@@ -720,9 +720,6 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 </div><!-- /app -->
 
 <script>
-/* ══════════════════════════════════════
-   ORIGINAL JS — untouched
-══════════════════════════════════════ */
 const getID = localStorage.getItem('cbt-admin-email');
 const getEmail = localStorage.getItem('cbt-admin-ID');
 if(!getID && !getEmail){
@@ -731,12 +728,11 @@ if(!getID && !getEmail){
 
 document.addEventListener("DOMContentLoaded", async ()=>{
   getDetail();
-  await getTotslStudent();
+  await getTotalStudent();
   await getTotalSubject();
   await getDepartment();
   await getLastLogin();
   await setTimeLogin();
-  // init department page stats
   renderDeptTable('');
   updateDeptStats();
 })
@@ -746,7 +742,8 @@ async function getDetail(){
   const ID = getID;
   const e = {email:email, ID:ID};
   const api = await fetch('/cbt/ansofra/apiadmin/Details', {
-      method:'POST', body:e
+      method:'POST', 
+      body:e
   });
   const result = await api.json();
   const response = result.response;
@@ -755,12 +752,16 @@ async function getDetail(){
     document.getElementById("profile-email").textContent=response.email;
     document.getElementById("profile-name").textContent=response.fullname;
   }
+  else{
+    // document.location.href="/cbt/ansofra/ilease";
+  }
 }
 
-async function getTotslStudent(){
+async function getTotalStudent(){
   const e ={role:'user'};
   const api = await fetch('/cbt/ansofra/apiadmin/TotalStudents', {
-      method:'POST', body:e
+      method:'POST', 
+      body:e
   });
   const result = await api.json();
   const response = result.response;
@@ -774,7 +775,8 @@ async function getTotslStudent(){
 async function getTotalSubject(){
   const e = {role:'set'};
   const api = await fetch('/cbt/ansofra/apiadmin/TotalSubjects', {
-      method:'POST', body:e
+      method:'POST', 
+      body:e
   });
   const result = await api.json();
   const response = result.response;
@@ -788,7 +790,8 @@ async function getTotalSubject(){
 async function getDepartment(){
   const e = {role:'set'};
   const api = await fetch('/cbt/ansofra/apiadmin/TotalSubjects', {
-      method:'POST', body:e
+      method:'POST',
+      body:e
   });
   const result = await api.json();
   const response = result.response;
@@ -802,13 +805,17 @@ async function getDepartment(){
 async function getLastLogin(){
   const e = {email:getEmail, ID:getID};
   const api = await fetch("/cbt/ansofra/apiadmin/Get/LastLogin", {
-      method:"POST", body:e
+      method:"POST", 
+      body:e
   });
   const result = await api.json();
   const response = result.response;
   if(result.status==="success"){
     document.getElementById('last-seen-display').textContent=response.last_seen;
     document.getElementById('last-login').textContent=response.last_login;
+  }
+   else{
+    // window.location.href="/cbt/ansofra/ilease";
   }
 }
 
@@ -820,7 +827,8 @@ async function setLastLogin(){
   const time = new Date().toLocaleTimeString();
   const e = {email:getEmail, ID:getID, lastLogin:time};
   const api = await fetch("/cbt/ansofra/apiadmin/Set/LastLogin", {
-      method:"POST", body:e
+      method:"POST",
+       body:e
   });
   const result = await api.json();
   console.log(result);

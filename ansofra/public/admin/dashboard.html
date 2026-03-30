@@ -657,7 +657,7 @@ if(!getID && !getEmail){
 
 document.addEventListener("DOMContentLoaded", async ()=>{
   getDetail();
-  await getTotslStudent();
+  await getTotalStudent();
   await getTotalSubject();
   await getDepartment();
   await getLastLogin();
@@ -687,7 +687,7 @@ async function getDetail(){
   }
 }
 
-async function getTotslStudent(){
+async function getTotalStudent(){
   const e ={role:'user'};
   const api = await fetch('/cbt/ansofra/apiadmin/TotalStudents', {
       method:'POST',
