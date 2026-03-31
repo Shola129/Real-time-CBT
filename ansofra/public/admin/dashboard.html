@@ -614,10 +614,6 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           </div>
         </div>
       </div>
-
-      <!-- ══════════════════════════════════════
-           DEPARTMENTS PAGE — new feature
-      ══════════════════════════════════════ -->
       <div id="departments" class="page">
 
         <!-- Mini stats row -->
@@ -636,13 +632,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
               <div class="dept-stat-mini-lbl">HODs Assigned</div>
             </div>
           </div>
-          <div class="dept-stat-mini">
-            <div class="dept-stat-mini-icon"><i class="fas fa-calendar-check"></i></div>
-            <div>
-              <div class="dept-stat-mini-val" id="deptNewest">—</div>
-              <div class="dept-stat-mini-lbl">Latest Added</div>
-            </div>
-          </div>
+          
         </div>
 
         <!-- Create Department Panel -->
@@ -972,6 +962,18 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
     }
   }
 });
+
+async function totalDepartment(){
+  const e = {role:'set'};
+  const api = await fetch("/cbt/ansofra/apiadmin/total/department", {
+      method:'POST',
+      body:e
+  });
+
+  const result = await api.json();
+  const response = result.response;
+  document.getElementById('').textContent=response;
+}
 
 let editingIndex = -1;
 window.openEditModal = function(idx) {
