@@ -2,7 +2,7 @@
 namespace NewdichControllerSrc;
 use NewdichMiddleware\Index;
 use NewdichDto\AnsofraDto;
-use NewdichSrc\GetAllSub;
+use NewdichSrc\Query\GetAllSub;
 
 $data = json_decode(file_get_contents('php://input'), true);
 $cleanData = [];

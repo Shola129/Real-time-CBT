@@ -63,7 +63,7 @@ class Platform{
         "HeadOfDepartment  VARCHAR(255) NOT NULL",
         "Description  VARCHAR(255)",
         "Date_Created VARCHAR(255) NOT NULL",
-        "DepartmentID VARCHAR(255) NOT NULL"
+        "departmentID VARCHAR(255) NOT NULL"
     ];
 
     public const SETSUBJECTS_TABLE = "subjects";

@@ -166,7 +166,7 @@ elseif($url===$adminArea. "/get/department/set/list"){
 }
 
 elseif($url=== $adminArea . "/search/dep/code"){
-    require_once __DIR__ . $srcController . "/DepController.php";
+    require_once __DIR__ . $srcController . "/DepControllerController.php";
     exit();
 }
 
