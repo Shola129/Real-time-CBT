@@ -964,6 +964,37 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
   }
 });
 
+
+ document.getElementById("saveDeptBtn").addEventListener("click", async()=>{
+    const data = document.getElementById("departmentform");
+    const form = new FormData(data);
+    const role = "set";
+    const time = new Date().toLocaleTimeString() +" "+ new Date().toLocaleDateString();
+    form.append("date_created", time);
+    form.append("role", role);
+   
+    const api = await fetch('/cbt/ansofra/apiadmin/set/department', {
+        method:"POST",
+        body:form
+    });
+
+    const result = await api.json();
+ 
+    if(result.status==='success'){
+        alert("save successful");
+        renderDeptTable(document.getElementById('deptListSearch')?.value || '');
+        // updateDeptStats();
+
+        document.getElementById('newDeptName').value  = '';
+        document.getElementById('newDeptCode').value  = '';
+        document.getElementById('newDeptHOD').value   = '';
+        document.getElementById('newDeptDesc').value  = '';
+    }
+    else{
+      alert(`${result.response}`);
+    }
+})
+
 async function totalDepartment(){
   const e = {role:'set'};
   const api = await fetch("/cbt/ansofra/apiadmin/total/department", {

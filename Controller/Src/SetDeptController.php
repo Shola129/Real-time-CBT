@@ -12,9 +12,13 @@ foreach($data as $key=>$val){
     $cleanData[$key]=$mid->cleanData($val);
 }
 
-$dto = new AnsofraDto($cleanData);
-$logic = new SetDept($dto);
-$log = $logic->process();
-echo $log;
-exit();
+echo json_encode([
+    'status'=>'ueru',
+    'response'=>$data
+]);
+// $dto = new AnsofraDto($cleanData);
+// $logic = new SetDept($dto);
+// $log = $logic->process();
+// echo $log;
+// exit();
 ?>
