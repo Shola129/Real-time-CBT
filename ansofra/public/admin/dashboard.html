@@ -667,29 +667,6 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
             </div>
           </div>
         </div>
-        <script>
-          document.getElementById("saveDeptBtn").addEventListener("click", async()=>{
-              const data = document.getElementById("departmentform");
-              const form = new FormData(data);
-              const role = "set";
-              const time = new Date().toLocaleTimeString() +" "+ new Date().toLocaleDateString();
-              form.append("date_created", time);
-              form.append("role", role);
-
-              const api = await fetch('/cbt/ansofra/apiadmin/set/department', {
-                  method:"PSOT",
-                  body:e
-              });
-
-              const result = await api.json();
-              if(result.status==='success'){
-                 alert("save successful");
-              }
-              else{
-                alert(`${result.response}`);
-              }
-          })
-        </script>
         <!-- Search + List Panel -->
         <div class="search-bar">
           <div class="search-field" style="flex:1;">
@@ -1196,32 +1173,6 @@ window.deleteDepartment = function(name) {
   }
 };
 
-document.getElementById('saveDeptBtn')?.addEventListener('click', function() {
-  const name  = document.getElementById('newDeptName')?.value.trim();
-  const code  = document.getElementById('newDeptCode')?.value.trim().toUpperCase();
-  const hod   = document.getElementById('newDeptHOD')?.value.trim();
-  const desc  = document.getElementById('newDeptDesc')?.value.trim();
-
-  if(!name || !code) {
-    alert('Department Name and Code are required.');
-    return;
-  }
-  const exists = departmentsData.some(d => d.name.toLowerCase() === name.toLowerCase());
-  if(exists) {
-    alert('A department with that name already exists.');
-    return;
-  }
-
-  departmentsData.push({ name, code, hod: hod || 'TBA', desc: desc || '', created: new Date() });
-
-  renderDeptTable(document.getElementById('deptListSearch')?.value || '');
-  updateDeptStats();
-
-  document.getElementById('newDeptName').value  = '';
-  document.getElementById('newDeptCode').value  = '';
-  document.getElementById('newDeptHOD').value   = '';
-  document.getElementById('newDeptDesc').value  = '';
-});
 
 document.getElementById('clearDeptBtn')?.addEventListener('click', function() {
   document.getElementById('newDeptName').value  = '';
