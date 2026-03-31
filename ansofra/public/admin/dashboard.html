@@ -682,7 +682,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
             <span class="panel-title"><i class="fas fa-building-columns"></i> Department List</span>
             <span id="deptCount" style="font-family:sans-serif;font-size:12px;color:var(--ink-soft);"></span>
           </div>
-          <div class="table-wrap">
+          <div class="table-wrap" id="displayAnyErr">
             <table>
               <thead>
                 <tr>
@@ -702,9 +702,41 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
             <i class="fas fa-building-circle-xmark"></i> No departments found. Create one above.
           </div>
         </div>
+          <script>
+              async function updateDeptStats(){
+                const e = {
+                  role:'role'
+                }
 
+                const api = await fetch("/cbt/ansofra/apiadmin/get/department/set/list", {
+                    method:'POST',
+                    body:e
+                });
+
+                const results = await api.json();
+                if(results.statu==="success"){
+                    const response = response.response;
+                    let output = "";
+                    for(let i=0; i<response.length; i++){
+                      output+=`
+                            <th>${i+1}</th>
+                            <th>${response[i].department}</th>
+                            <th>${response[i].DepartmentCode}</th>
+                            <th>${response[i].HeadOfDepartment}</th>
+                            <th>${response[i].Description}</th>
+                            <th>${response[i].Date_Created}</th>
+                            <th>Action</th>
+                      `
+                    }
+                    document.getElementById("deptTableBody").innerHTML=output;
+                }
+                else{
+                  document.getElementById('displayAnyErr').textContent="No department set yet";
+                }
+              }
+          </script>
       </div>
-      <!-- END DEPARTMENTS -->
+    
 
     </div> 
   </div>
