@@ -57,8 +57,12 @@ class Platform{
     public const DEPARTMENT_TABLE = "department";
     public const DEPARTMENT_TABLE_COLUMNS = [
         "department_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
-        "department VARCHAR(1000) NOT NULL",
-        "role VARCHAR(255) NOT NULL"
+        "department VARCHAR(250) NOT NULL",
+        "role VARCHAR(255) NOT NULL",
+        "DepartmentCode VARCHAR(255) NOT NULL",
+        "HeadOfDepartment  VARCHAR(255) NOT NULL",
+        "Description  VARCHAR(255)",
+        "Date_Created VARCHAR(255) NOT NULL"
     ];
 
     public const SETSUBJECTS_TABLE = "subject_sets";
