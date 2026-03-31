@@ -165,6 +165,11 @@ elseif($url===$adminArea. "/get/department/set/list"){
     exit();
 }
 
+elseif($url=== $adminArea . "/search/dep/code"){
+    require_once __DIR__ . $srcController . "/DepController.php";
+    exit();
+}
+
 
 // /api endpoints
 elseif($url === $docRoot . $rootDir . $usersArea."/register" || $url === $usersArea."/register"."/"){

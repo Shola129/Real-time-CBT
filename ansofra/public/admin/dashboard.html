@@ -676,7 +676,9 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           <button id="deptSearchBtn" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Search</button>
           <!-- <button id="deptShowAllBtn" class="btn btn-sm"><i class="fas fa-list"></i> Show All</button> -->
         </div>
-
+        <script>
+          
+        </script>
         <div class="panel">
           <div class="panel-header">
             <span class="panel-title"><i class="fas fa-building-columns"></i> Department List</span>
@@ -946,14 +948,15 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
     if(result.status==="success"){
         let output ='';
         for(let i=0; i<response.length; i++){
-          output+=`<tr>
-            <td style="font-weight:600">${response[i].regNum}</td>
-            <td>${response[i].fullname}</td>
-            <td><span class="badge badge-dept">${response[i].department}</span></td>
-            <td>${response[i].email}</td>
-            <td>${response[i].role}</td>
-            <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
-          </tr>`;
+          output+=`
+                  <tr>
+                    <td style="font-weight:600">${response[i].regNum}</td>
+                    <td>${response[i].fullname}</td>
+                    <td><span class="badge badge-dept">${response[i].department}</span></td>
+                    <td>${response[i].email}</td>
+                    <td>${response[i].role}</td>
+                    <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
+                  </tr>`;
         }
         tbody.innerHTML = output;
     } else {
@@ -1025,6 +1028,7 @@ async function updateDeptStats(){
       let output = "";
       for(let i=0; i<response.length; i++){
         output+=`
+           <tr>
               <th>${i+1}</th>
               <th>${response[i].department}</th>
               <th>${response[i].DepartmentCode}</th>
@@ -1032,15 +1036,52 @@ async function updateDeptStats(){
               <th>${response[i].Description}</th>
               <th>${response[i].Date_Created}</th>
               <th>Action</th>
+            <tr>
         `
       }
       document.getElementById("deptTableBody").innerHTML=output;
   }
   else{
-    document.getElementById('displayAnyErr').textContent="No department set yet";
+    document.getElementById('displayAnyErr').style.display="none"
+    document.getElementById('noDeptMsg').style.display="block";
   }
 }
 
+document.getElementById("deptSearchBtn").addEventListener("click", async ()=>{
+    const type = document.getElementById("deptListSearch").value.trim();
+    const e = {DepartmentCode:type};
+  
+    const api = await fetch('/cbt/ansofra/apiadmin/search/dep/code', {
+        method:'POST',
+        headers:{'Content-type':'application/json'},
+        body:JSON.stringify(e)
+    });
+
+    const results = await api.json();
+    console.log(results);
+    if(results.status==="success"){
+          const response = results.response;
+          let output = "";
+          for(let i=0; i<response.length; i++){
+            output+=`
+                <tr>
+                  <th>${i+1}</th>
+                  <th>${response[i].department}</th>
+                  <th>${response[i].DepartmentCode}</th>
+                  <th>${response[i].HeadOfDepartment}</th>
+                  <th>${response[i].Description}</th>
+                  <th>${response[i].Date_Created}</th>
+                  <th>Action</th>
+                </tr>
+            `
+          }
+          document.getElementById("deptTableBody").innerHTML=output;
+      }
+    else{
+      document.getElementById('displayAnyErr').style.display="none"
+      document.getElementById('noDeptMsg').style.display="block";
+    } 
+  })
 let editingIndex = -1;
 window.openEditModal = function(idx) {
   const sub = subjectsList[idx];
@@ -1246,9 +1287,9 @@ document.getElementById('clearDeptBtn')?.addEventListener('click', function() {
   document.getElementById('newDeptDesc').value  = '';
 });
 
-document.getElementById('deptSearchBtn')?.addEventListener('click', function() {
-  renderDeptTable(document.getElementById('deptListSearch')?.value || '');
-});
+// document.getElementById('deptSearchBtn')?.addEventListener('click', function() {
+//   renderDeptTable(document.getElementById('deptListSearch')?.value || '');
+// });
 
 document.getElementById('deptShowAllBtn')?.addEventListener('click', function() {
   document.getElementById('deptListSearch').value = '';
