@@ -44,6 +44,9 @@ class SaveQuest{
                 'correctAss'=>$this->dto->correctAss,
                 'role'=>'set'
             ];
+            $newMig2 = new Migration(null, $this->table2);
+            $mig2 = $newMig2->save($data);
+            return $mig2;
         } 
         else{
            return  json_encode([
