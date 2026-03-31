@@ -62,13 +62,15 @@ class Platform{
         "DepartmentCode VARCHAR(255) NOT NULL",
         "HeadOfDepartment  VARCHAR(255) NOT NULL",
         "Description  VARCHAR(255)",
-        "Date_Created VARCHAR(255) NOT NULL"
+        "Date_Created VARCHAR(255) NOT NULL",
+        "DepartmentID VARCHAR(255) NOT NULL"
     ];
 
-    public const SETSUBJECTS_TABLE = "subject_sets";
+    public const SETSUBJECTS_TABLE = "subjects";
     public const SETSUBJECTS_TABLE_COLUMNS = [
-        "subject_sets_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
+        "subjects_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
         "department VARCHAR(2550) NOT NULL",
+        "DepartmentCode VARCHAR(2550) NOT NULL",
         "subject VARCHAR(2550) NOT NULL",
         "subjectID VARCHAR(255) NOT NULL",
         "role VARCHAR(255) NOT NULL",

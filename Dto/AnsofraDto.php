@@ -28,6 +28,7 @@ class AnsofraDto{
     public $DepartmentCode;
     public $HeadOfDepartment;
     public $Description;
+    public $DepartmentID;
 
     public function __construct(array $inData){
         $allProp = get_object_vars($this);

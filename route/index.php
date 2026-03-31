@@ -170,6 +170,26 @@ elseif($url=== $adminArea . "/search/dep/code"){
     exit();
 }
 
+elseif($url===$adminArea."/get/allSubject/Dep"){
+    require_once __DIR__ . $srcController . "/GetAllSubController.php";
+    exit();
+}
+
+elseif($url===$adminArea. "/edit/department"){
+    require_once __DIR__ . $srcController . "/EditDepartmentController.php";
+    exit();
+}
+
+elseif($url===$adminArea. "/edit/subject"){
+    require_once __DIR__ . $srcController . "/EditSubjectController.php";
+    exit();
+}
+
+elseif($url===$adminArea. "/save/subject"){
+    require_once __DIR__ . $srcController . "/SaveSubjectController.php";
+    exit();
+}
+
 
 // /api endpoints
 elseif($url === $docRoot . $rootDir . $usersArea."/register" || $url === $usersArea."/register"."/"){

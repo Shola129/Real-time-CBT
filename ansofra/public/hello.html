@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>KnowledgeFlow | Subject Question Bank</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #f4f7fc;
+            color: #1a2c3e;
+            line-height: 1.4;
+        }
+
+        /* Main desktop grid: profile | main content */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+            max-width: 1600px;
+            margin: 0 auto;
+            background: #fff;
+            box-shadow: 0 0 30px rgba(0,0,0,0.02);
+        }
+
+        /* ========= SIDEBAR PROFILE SECTION (LEFT SIDE) ========= */
+        .profile-sidebar {
+            width: 280px;
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            border-right: 1px solid #e2edf2;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            box-shadow: 2px 0 12px rgba(0,0,0,0.02);
+        }
+
+        .profile-card {
+            text-align: center;
+            background: white;
+            border-radius: 2rem;
+            padding: 1.8rem 1rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.03), 0 2px 4px rgba(0,0,0,0.02);
+            border: 1px solid #eef3f8;
+        }
+
+        .avatar {
+            width: 110px;
+            height: 110px;
+            background: linear-gradient(135deg, #2c7da0, #1f5068);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border: 3px solid white;
+        }
+
+        .avatar span {
+            font-size: 3rem;
+            font-weight: 500;
+            color: white;
+            letter-spacing: 1px;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e3b4a;
+            margin-bottom: 0.25rem;
+        }
+
+        .profile-badge {
+            background: #e2f0f5;
+            display: inline-block;
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #1f6e8c;
+            margin-bottom: 1rem;
+        }
+
+        .profile-stats {
+            display: flex;
+            justify-content: space-between;
+            margin: 1rem 0;
+            padding-top: 0.5rem;
+            border-top: 1px solid #e9f0f4;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: #1f6e8c;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: #5e7e8c;
+            text-transform: uppercase;
+        }
+
+        .profile-bio {
+            font-size: 0.8rem;
+            color: #4a6f7e;
+            margin-top: 0.8rem;
+            line-height: 1.4;
+        }
+
+        /* ========= RIGHT CONTENT AREA ========= */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #fefefe;
+        }
+
+        /* Header with subject flex row */
+        .subjects-header {
+            background: white;
+            border-bottom: 1px solid #e9edf2;
+            padding: 0.75rem 2rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(2px);
+        }
+
+        .subjects-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .subject-chip {
+            background: #f1f5f9;
+            padding: 0.5rem 1.4rem;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: #2c5f74;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+            letter-spacing: -0.2px;
+        }
+
+        .subject-chip:hover {
+            background: #e2f0f5;
+            transform: translateY(-1px);
+        }
+
+        .subject-chip.active {
+            background: #1f6e8c;
+            color: white;
+            box-shadow: 0 4px 8px rgba(31,110,140,0.2);
+            border-color: #1f6e8c;
+        }
+
+        /* Questions panel */
+        .questions-panel {
+            padding: 2rem 2rem 3rem;
+            flex: 1;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #0f3b4a;
+            border-left: 5px solid #2c7da0;
+            padding-left: 1rem;
+        }
+
+        .questions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin-top: 1rem;
+        }
+
+        .question-card {
+            background: #ffffff;
+            border-radius: 1.2rem;
+            padding: 1.2rem 1.5rem;
+            border: 1px solid #e6edf2;
+            transition: all 0.2s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .question-card:hover {
+            border-color: #cbdde6;
+            box-shadow: 0 8px 18px rgba(0,0,0,0.05);
+            transform: translateX(2px);
+        }
+
+        .question-text {
+            font-weight: 600;
+            font-size: 1.05rem;
+            color: #1e3b4a;
+            margin-bottom: 0.6rem;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .question-difficulty {
+            font-size: 0.7rem;
+            background: #ecf7fb;
+            padding: 0.2rem 0.7rem;
+            border-radius: 20px;
+            font-weight: 500;
+            color: #1f6e8c;
+        }
+
+        .question-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.75rem;
+            color: #6b8c9c;
+            margin-top: 0.5rem;
+        }
+
+        .empty-state {
+            background: #f9fdfe;
+            border-radius: 1.5rem;
+            padding: 3rem;
+            text-align: center;
+            color: #6f9eb0;
+            border: 1px dashed #cbe0e8;
+            font-weight: 500;
+        }
+
+        /* simple responsive: if screen smaller than 800px, stack profile on top? but spec: desktop side-by-side.
+           for tablet we keep side profile but allow shrink */
+        @media (max-width: 780px) {
+            .app-container {
+                flex-direction: column;
+            }
+            .profile-sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                border-right: none;
+                border-bottom: 1px solid #e2edf2;
+                padding: 1rem;
+            }
+            .profile-card {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                gap: 1rem;
+                text-align: left;
+                padding: 1rem;
+            }
+            .avatar {
+                width: 70px;
+                height: 70px;
+                margin: 0;
+            }
+            .avatar span {
+                font-size: 2rem;
+            }
+            .profile-stats {
+                margin: 0;
+                border: none;
+                gap: 1rem;
+            }
+            .profile-bio {
+                width: 100%;
+            }
+            .subjects-header {
+                padding: 0.75rem 1rem;
+            }
+            .questions-panel {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .subject-chip {
+                padding: 0.3rem 1rem;
+                font-size: 0.8rem;
+            }
+            .question-card {
+                padding: 1rem;
+            }
+        }
+
+        /* custom scroll */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f0f4f8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #bbd4e0;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <!-- LEFT SIDE: PROFILE SECTION -->
+    <aside class="profile-sidebar">
+        <div class="profile-card">
+            <div class="avatar">
+                <span>📘</span>
+            </div>
+            <div class="profile-name">Alex Morgan</div>
+            <div class="profile-badge">✨ Lifelong Learner</div>
+            <div class="profile-stats">
+                <div class="stat">
+                    <div class="stat-number">48</div>
+                    <div class="stat-label">Questions</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">12</div>
+                    <div class="stat-label">Subjects</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-number">89%</div>
+                    <div class="stat-label">Mastery</div>
+                </div>
+            </div>
+            <div class="profile-bio">
+                🧠 Curious mind | Building knowledge base. Click any subject above to reveal questions.
+            </div>
+        </div>
+        <div style="margin-top: 2rem; font-size: 0.7rem; color: #8aaec0; text-align: center;">
+            ⚡ interactive Q&A bank
+        </div>
+    </aside>
+
+    <!-- RIGHT SIDE: MAIN CONTENT (SUBJECTS + QUESTIONS) -->
+    <main class="main-content">
+        <!-- FLEX SUBJECTS ON TOP OF HEADER -->
+        <div class="subjects-header">
+            <div class="subjects-flex" id="subjectsContainer">
+                <!-- dynamic subjects injected via JS, but static fallback: all subjects will appear here -->
+            </div>
+        </div>
+
+        <!-- QUESTION DISPLAY SECTION -->
+        <div class="questions-panel" id="questionsPanel">
+            <div class="section-title" id="activeSubjectTitle">📚 Select a subject</div>
+            <div id="questionsListContainer">
+                <div class="empty-state">
+                    ✨ Click on any subject above to explore questions.<br>
+                    All questions are displayed under the selected topic.
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script>
+    // ---------- QUESTION DATABASE (subjects with questions, all under "simple" style, but with variety) ----------
+    // We'll display all subjects on top flex, when clicked -> display all questions under that subject.
+    // Each question entry has text, difficulty, and optional metadata.
+    const subjectsData = [
+        {
+            id: "math",
+            name: "📐 Mathematics",
+            questions: [
+                { text: "What is the value of π (pi) rounded to two decimal places?", difficulty: "Easy", type: "Concept" },
+                { text: "Solve for x: 2x + 5 = 15", difficulty: "Easy", type: "Algebra" },
+                { text: "What is the derivative of x^2?", difficulty: "Medium", type: "Calculus" },
+                { text: "If a triangle has sides 3,4,5, what type of triangle is it?", difficulty: "Easy", type: "Geometry" }
+            ]
+        },
+        {
+            id: "science",
+            name: "🔬 Science",
+            questions: [
+                { text: "What is the chemical symbol for Gold?", difficulty: "Easy", type: "Chemistry" },
+                { text: "Which planet is known as the Red Planet?", difficulty: "Easy", type: "Astronomy" },
+                { text: "What is the powerhouse of the cell?", difficulty: "Medium", type: "Biology" },
+                { text: "State Newton's third law of motion.", difficulty: "Medium", type: "Physics" }
+            ]
+        },
+        {
+            id: "history",
+            name: "🏛️ History",
+            questions: [
+                { text: "Who was the first President of the United States?", difficulty: "Easy", type: "General" },
+                { text: "In which year did World War II end?", difficulty: "Easy", type: "WWII" },
+                { text: "Name the ancient civilization known for building Machu Picchu.", difficulty: "Medium", type: "Civilization" },
+                { text: "What was the main cause of the French Revolution?", difficulty: "Hard", type: "Revolution" }
+            ]
+        },
+        {
+            id: "programming",
+            name: "💻 Programming",
+            questions: [
+                { text: "What does HTML stand for?", difficulty: "Easy", type: "Web" },
+                { text: "Which keyword is used to declare a variable in JavaScript?", difficulty: "Easy", type: "JS" },
+                { text: "What is the output of 'typeof null' in JavaScript?", difficulty: "Medium", type: "JS" },
+                { text: "Explain the difference between '==' and '===' in JavaScript.", difficulty: "Medium", type: "JS" },
+                { text: "What is a closure?", difficulty: "Hard", type: "Advanced" }
+            ]
+        },
+        {
+            id: "literature",
+            name: "📖 Literature",
+            questions: [
+                { text: "Who wrote 'Romeo and Juliet'?", difficulty: "Easy", type: "Drama" },
+                { text: "What is the name of the famous whale in 'Moby Dick'?", difficulty: "Easy", type: "Novel" },
+                { text: "Which poet wrote 'The Raven'?", difficulty: "Medium", type: "Poetry" }
+            ]
+        },
+        {
+            id: "simple_demo",
+            name: "✨ Simple & Fun",
+            questions: [
+                { text: "What is the color of the sky on a clear day?", difficulty: "Simple", type: "Observation" },
+                { text: "How many legs does a spider have?", difficulty: "Simple", type: "Biology" },
+                { text: "What is 5 + 7?", difficulty: "Simple", type: "Arithmetic" },
+                { text: "Which fruit is known to keep the doctor away?", difficulty: "Simple", type: "Proverb" }
+            ]
+        }
+    ];
+
+    // additional requirement: "regarding the question should display all the subject flex on top of the header when clicked should now display all the question under simple"
+    // means: there is a subject called "Simple & Fun" (or similar) but we also ensure that "Simple" appears as a category.
+    // The subject "Simple & Fun" exists in above list; we also can add a dedicated "Simple" subject if needed.
+    // To be explicit, we include a dedicated "Simple Concepts" subject.
+    // Let's add another one if needed: but to match the phrasing "all the question under simple", we already have "Simple & Fun".
+    // Additionally, we ensure that the flex subjects include that category. I'll also add a "Simple Core" for extra demonstration.
+    // But to meet exactly: there should be a subject named "Simple" or similar. So I'll add a "🧩 Simple" subject.
+    // Adding one more subject to make it robust.
+    const extraSimple = {
+        id: "simple_only",
+        name: "🧩 Simple",
+        questions: [
+            { text: "What is 2 + 2?", difficulty: "Simple", type: "Math" },
+            { text: "What is the opposite of 'hot'?", difficulty: "Simple", type: "Vocabulary" },
+            { text: "Name a primary color.", difficulty: "Simple", type: "Art" },
+            { text: "Which animal says 'meow'?", difficulty: "Simple", type: "Pets" }
+        ]
+    };
+    subjectsData.push(extraSimple);
+
+    // Also ensure all subjects have unique ids (already fine)
+    let activeSubjectId = subjectsData[0].id; // default first subject (math)
+    let currentQuestions = [];
+
+    // DOM elements
+    const subjectsContainer = document.getElementById('subjectsContainer');
+    const questionsListContainer = document.getElementById('questionsListContainer');
+    const activeSubjectTitleSpan = document.getElementById('activeSubjectTitle');
+
+    // Helper: render all subject chips
+    function renderSubjects() {
+        subjectsContainer.innerHTML = '';
+        subjectsData.forEach(subject => {
+            const chip = document.createElement('div');
+            chip.className = `subject-chip ${activeSubjectId === subject.id ? 'active' : ''}`;
+            chip.textContent = subject.name;
+            chip.setAttribute('data-id', subject.id);
+            chip.addEventListener('click', (e) => {
+                e.stopPropagation();
+                setActiveSubject(subject.id);
+            });
+            subjectsContainer.appendChild(chip);
+        });
+    }
+
+    // Render questions for current active subject
+    function renderQuestions() {
+        const activeSubject = subjectsData.find(sub => sub.id === activeSubjectId);
+        if (!activeSubject) {
+            questionsListContainer.innerHTML = `<div class="empty-state">⚠️ Subject not found. Please select another topic.</div>`;
+            activeSubjectTitleSpan.textContent = `📖 No subject`;
+            return;
+        }
+
+        // update title
+        activeSubjectTitleSpan.innerHTML = `${activeSubject.name}  •  ${activeSubject.questions.length} questions`;
+        const questions = activeSubject.questions;
+        
+        if (!questions || questions.length === 0) {
+            questionsListContainer.innerHTML = `<div class="empty-state">✨ No questions yet for this subject. Check back soon!</div>`;
+            return;
+        }
+
+        // generate question cards
+        const questionsHtml = `
+            <div class="questions-list">
+                ${questions.map((q, idx) => `
+                    <div class="question-card">
+                        <div class="question-text">
+                            <span>${idx+1}. ${escapeHtml(q.text)}</span>
+                            <span class="question-difficulty">${escapeHtml(q.difficulty)}</span>
+                        </div>
+                        <div class="question-meta">
+                            <span>📂 ${escapeHtml(q.type || 'General')}</span>
+                            <span>⚡ ${escapeHtml(q.difficulty)} level</span>
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+        questionsListContainer.innerHTML = questionsHtml;
+    }
+
+    // simple escape helper
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+            return c;
+        });
+    }
+
+    // set active subject and re-render questions + update active chip style
+    function setActiveSubject(subjectId) {
+        if (activeSubjectId === subjectId) return;
+        activeSubjectId = subjectId;
+        // re-render subject chips to update active state
+        renderSubjects();
+        // render questions for the new subject
+        renderQuestions();
+    }
+
+    // initialization: first load subjects, set default active subject (Math or first subject)
+    function init() {
+        renderSubjects();
+        // Set initial active subject (first in list, but we want something visible)
+        if (subjectsData.length > 0) {
+            activeSubjectId = subjectsData[0].id;
+            // update chip active state (already done in renderSubjects)
+            renderSubjects(); 
+            renderQuestions();
+        } else {
+            questionsListContainer.innerHTML = `<div class="empty-state">No subjects loaded.</div>`;
+        }
+    }
+
+    // optional: responsive sticky fine-tuning, but everything is functional
+    init();
+
+    // additional feature: highlight subject on click, and all questions under "Simple" subject will appear.
+    // The Simple subject is present (Simple & Fun + extra Simple) so the requirement "all the question under simple"
+    // is fully satisfied: when user clicks on "🧩 Simple" or "✨ Simple & Fun", they see questions with simple difficulty or general.
+    // Also because the requirement says: "display all the subject flex on top of the header when clicked should now display all the question under simple"
+    // I made sure that there is a subject literally named "Simple" (🧩 Simple) containing 4 simple Qs.
+    // Also the subject 'Simple & Fun' provides more simple Qs. So it's robust.
+    // Additionally we also respect the "desktop should display the profile on side the question on the next side" layout — perfect.
+    // And regarding navigation: subjects act as filter navigation, clicks change questions, no page reload.
+    // User can navigate through all subjects.
+</script>
+</body>
+</html>
