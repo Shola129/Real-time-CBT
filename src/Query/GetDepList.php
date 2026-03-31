@@ -1,13 +1,12 @@
 <?php
 namespace NewdichSrc\Query;
-use NewdichSchema\Platform;
-use NewdichSchema\Migration;
 use NewdichDto\AnsofraDto;
+use NewdichSchema\Migration;
+use NewdichSchema\Platform;
 
-class TotalStudents{
+class GetDepList{
     private $dto;
-    // private $table = Platform::USERS_TABLE;
-    private $table = Platform::ADMINS_TABLE;
+    private $table = Platform::DEPARTMENT_TABLE;
 
     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
@@ -19,7 +18,7 @@ class TotalStudents{
         ];
 
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->count($where);
+        $mig = $newMig->get($where, 0, 20);
         return $mig;
     }
 }

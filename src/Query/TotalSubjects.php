@@ -14,7 +14,7 @@ class TotalSubjects{
 
     public function process(){
         $where = [
-            'role'=>$this->dto->role
+            'role'=>'set'
         ];
 
         $newMig = new Migration(null, $this->table);
