@@ -47,14 +47,41 @@ class ScheduleExam{
                 $mig3 = $newMig3->get($getAllUserInThatDep, 0, 50);
                 $decodeMig3 = json_decode($mig3, true);
                 if($decodeMig3["status"]==="success"){
+                    $time = $this->dto->timeSchedule;
                     $response = $decodeMig3["response"];
                     $allEmail = $response["email"];
-                    $output = '';
-                    for($i=0; $i<$allEmail; $i++){
-
+                    $a = count($allEmail);
+                    $holdEachEmail='';
+                    for($i=0; $i<$a; $i++){
+                        $holdEachEmail=$allEmail[$i];
+                    }
+                    $body = "Th time set for cbt exam is $time";
+                    $newMail = new Index();
+                    $mail = $newMail->sendOtp('TimeTable', $body, $holdEachEmail);
+                    $decodeMail = json_decode($mail, true);
+                    if($decodeMail['status']==="success"){
+                        return json_encode([
+                            'status'=>'success',
+                            'response'=>'time scheduled have being saved and sent to the registered user department to ready'
+                        ], JSON_PRETTY_PRINT);
+                    }
+                    else{
+                        return $mail;
                     }
                 }
+                else{
+                    return json_decode([
+                        'status'=>'fail',
+                        'response'=>'no user found registered for the department'
+                    ], JSON_PRETTY_PRINT);
+                }
             }
+            else{
+                return $mig2;
+            }
+        }
+        else{
+            return $mig;
         }
     }
 }
