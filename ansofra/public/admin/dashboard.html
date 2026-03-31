@@ -641,31 +641,53 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
             <span class="panel-title"><i class="fas fa-plus-circle"></i> Create Department</span>
           </div>
           <div class="panel-body">
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Department Name <span style="color:#c44;font-size:10px;">*</span></label>
-                <input class="form-control" type="text" id="newDeptName" placeholder="e.g. Computer Science" />
+            <form id="departmentform">
+                <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Department Name <span style="color:#c44;font-size:10px;">*</span></label>
+                  <input class="form-control" type="text" id="newDeptName" placeholder="e.g. Computer Science" name="department" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Department Code <span style="color:#c44;font-size:10px;">*</span></label>
+                  <input class="form-control" type="text" id="newDeptCode" placeholder="e.g. CS" style="text-transform:uppercase;" name="DepartmentCode" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Head of Department</label>
+                  <input class="form-control" type="text" id="newDeptHOD" placeholder="e.g. Dr. Smith" name="HeadOfDepartment"/>
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Description</label>
+                  <input class="form-control" type="text" id="newDeptDesc" placeholder="Short description (optional)" name="Description" />
+                </div>
               </div>
-              <div class="form-group">
-                <label class="form-label">Department Code <span style="color:#c44;font-size:10px;">*</span></label>
-                <input class="form-control" type="text" id="newDeptCode" placeholder="e.g. CS" style="text-transform:uppercase;" />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Head of Department</label>
-                <input class="form-control" type="text" id="newDeptHOD" placeholder="e.g. Dr. Smith" />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Description</label>
-                <input class="form-control" type="text" id="newDeptDesc" placeholder="Short description (optional)" />
-              </div>
-            </div>
+            </form>
             <div style="display:flex;justify-content:flex-end;margin-top:16px;gap:10px;flex-wrap:wrap;">
               <button id="clearDeptBtn" class="btn btn-sm"><i class="fas fa-rotate-left"></i> Clear</button>
               <button id="saveDeptBtn" class="btn btn-primary"><i class="fas fa-save"></i> Save Department</button>
             </div>
           </div>
         </div>
+        <script>
+          document.getElementById("saveDeptBtn").addEventListener("click", async()=>{
+              const data = document.getElementById("departmentform");
+              const form = new FormData(data);
+              const time = new Date().toLocaleTimeString() +" "+ new Date().toLocaleDateString();
+              form.append("date_created", time);
 
+              const api = await fetch('/cbt/ansofra/apiadmin/set/department', {
+                  method:"PSOT",
+                  body:e
+              });
+
+              const result = await api.json();
+              if(result.status==='success'){
+                 alert("save successful");
+              }
+              else{
+                alert(`${result.response}`);
+              }
+          })
+        </script>
         <!-- Search + List Panel -->
         <div class="search-bar">
           <div class="search-field" style="flex:1;">
