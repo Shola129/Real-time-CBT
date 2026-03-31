@@ -724,7 +724,7 @@ document.addEventListener("DOMContentLoaded", async ()=>{
   await getLastLogin();
   await setTimeLogin();
   renderDeptTable('');
-  updateDeptStats();
+  // updateDeptStats();
 })
 
 async function getDetail(){
@@ -972,7 +972,8 @@ async function totalDepartment(){
 
   const result = await api.json();
   const response = result.response;
-  document.getElementById('').textContent=response;
+  document.getElementById('deptHODCount').textContent=response || '00';
+  document.getElementById('deptTotalCount').textContent=response || '00';
 }
 
 let editingIndex = -1;
@@ -1031,7 +1032,7 @@ window.showSection = function(id, navEl) {
   }
   if(id === 'departments') {
     renderDeptTable('');
-    updateDeptStats();
+    totalDepartment();
   }
   closeSidebar();
 };
@@ -1107,17 +1108,17 @@ let departmentsData = [
   { name: 'Literature',       code: 'LIT', hod: 'Prof. William Blake',  desc: 'English and world literature',          created: new Date(2024,8,1) }
 ];
 
-function updateDeptStats() {
-  const total = departmentsData.length;
-  const withHOD = departmentsData.filter(d => d.hod && d.hod !== 'TBA').length;
-  const newest = total > 0 ? departmentsData[departmentsData.length - 1].name : '—';
-  const el1 = document.getElementById('deptTotalCount');
-  const el2 = document.getElementById('deptHODCount');
-  const el3 = document.getElementById('deptNewest');
-  if(el1) el1.textContent = total;
-  if(el2) el2.textContent = withHOD;
-  if(el3) el3.textContent = newest;
-}
+// function updateDeptStats() {
+//   const total = departmentsData.length;
+//   const withHOD = departmentsData.filter(d => d.hod && d.hod !== 'TBA').length;
+//   const newest = total > 0 ? departmentsData[departmentsData.length - 1].name : '—';
+//   const el1 = document.getElementById('deptTotalCount');
+//   const el2 = document.getElementById('deptHODCount');
+//   const el3 = document.getElementById('deptNewest');
+//   if(el1) el1.textContent = total;
+//   if(el2) el2.textContent = withHOD;
+//   if(el3) el3.textContent = newest;
+// }
 
 function renderDeptTable(filter) {
   const tbody = document.getElementById('deptTableBody');
