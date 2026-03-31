@@ -671,8 +671,10 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           document.getElementById("saveDeptBtn").addEventListener("click", async()=>{
               const data = document.getElementById("departmentform");
               const form = new FormData(data);
+              const role = "set";
               const time = new Date().toLocaleTimeString() +" "+ new Date().toLocaleDateString();
               form.append("date_created", time);
+              form.append("role", role);
 
               const api = await fetch('/cbt/ansofra/apiadmin/set/department', {
                   method:"PSOT",
