@@ -24,6 +24,32 @@ class NotifyUserExam{
         $decodeMig = json_decode($mig, true);
         if($decodeMig['status']==="success"){
             $reponse = $decodeMig['reponse'];
+            $time = $this->dto->timeSchedule;
+            $allEamil = $reponse["email"];
+            $a = count($allEamil);
+            $holdEmail = "";
+            for($i=0; $i<$a; $i++){
+                $holdEmail=$allEmail[$i];
+            }
+            $body = "Th time set for cbt exam is $time";
+            $newMail = new Index();
+            $mail = $newMail->sendOtp('TimeTable', $body, $holdEmail);
+            $decodeMail = json_decode($mail, true);
+            if($decodeMail['status']==="success"){
+                return json_encode([
+                    'status'=>'success',
+                    'response'=>'time scheduled have being saved and sent to the registered user department to ready'
+                ], JSON_PRETTY_PRINT);
+            }
+            else{
+                return $mail;
+            }
+        }
+        else{
+            return json_decode([
+                'status'=>'fail',
+                'response'=>'no user found registered for the department'
+            ], JSON_PRETTY_PRINT);
         }
     }
 }
