@@ -109,6 +109,15 @@ class Platform{
         "department VARCHAR(255) NOT NULL"
     ];
 
+    public const SETEXAMTIME_TABLE = 'exam_time_table';
+    public const SETEXAMTIME_TABLE_COLUMNS = [
+        'exam_time_table_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY',
+        'department VARCHAR(255) NOT NULL',
+        'departmentCode VARCHAR(255) NOT NULL',
+        'departmentID VARCHAR(255) NOT NULL',
+        'time_schedule VARCHAR(255) NOT NULL'
+    ];
+
     //you can have as many tables as you want
 }
 ?>
