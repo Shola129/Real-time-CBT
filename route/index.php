@@ -166,7 +166,7 @@ elseif($url===$adminArea. "/get/department/set/list"){
 }
 
 elseif($url=== $adminArea . "/search/dep/code"){
-    require_once __DIR__ . $srcController . "/DepControllerController.php";
+    require_once __DIR__ . $srcController . "/DepController.php";
     exit();
 }
 
@@ -187,6 +187,11 @@ elseif($url===$adminArea. "/edit/subject"){
 
 elseif($url===$adminArea. "/save/subject"){
     require_once __DIR__ . $srcController . "/SaveSubjectController.php";
+    exit();
+}
+
+elseif($url===$adminArea. "/save/questions"){
+    require_once __DIR__ . $srcController . "/SaveQuestController.php";
     exit();
 }
 

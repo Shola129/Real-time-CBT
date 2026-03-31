@@ -78,16 +78,17 @@ class Platform{
 
     public const QUESTIONS_TABLE = "questions";
     public const QUESTIONS_TABLE_COLUMNS = [
-        "subject_sets_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
+        "questions_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
         "department VARCHAR(2550) NOT NULL",
         "subject VARCHAR(2550) NOT NULL",
+        "dragram VARCHAR(255) ",
         "questionID VARCHAR(255) NOT NULL",
-        "questiontext TEXT NOT NULL",
+        "questiontext VARCHAR(1550) NOT NULL",
         "optionA VARCHAR(255) NOT NULL",
         "optionB VARCHAR(255) NOT NULL",
         "optionC VARCHAR(255) NOT NULL",
-        "optionD VARCHAR(255) NOT NULL",
-        "optionE VARCHAR(255) NOT NULL",
+        "optionD VARCHAR(255) ",
+        "optionE VARCHAR(255) ",
         "correctAss VARCHAR(255) NOT NULL",
         "role VARCHAR(255) NOT NULL"
     ];
