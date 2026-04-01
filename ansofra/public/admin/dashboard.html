@@ -1644,6 +1644,13 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
       alert(result.response);
     }
  })
+
+ //Questions
+
+ document.getElementById("searchQuestionSetsBtn").addEventListener("click", async ()=>{
+  const dep = document.getElementById("qsSearchDept").value.trim();
+  const subject = document.getElementById("qsSearchSubject").value.trim();
+ })
 /*
    DEPARTMENTS
    */
@@ -1944,7 +1951,7 @@ window.closeSidebar = function(){ document.getElementById('sidebar').classList.r
    */
 document.getElementById('searchSubjectByNameBtn')?.addEventListener('click',()=>renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value||''));
 document.getElementById('searchSubjectBtn')?.addEventListener('click',()=>renderSubjects(document.getElementById('deptSearchInput')?.value||''));
-document.getElementById('searchQuestionSetsBtn')?.addEventListener('click',()=>renderQuestionSetsByDeptSubj(document.getElementById('qsSearchDept')?.value||'',document.getElementById('qsSearchSubject')?.value||''));
+// document.getElementById('searchQuestionSetsBtn')?.addEventListener('click',()=>renderQuestionSetsByDeptSubj(document.getElementById('qsSearchDept')?.value||'',document.getElementById('qsSearchSubject')?.value||''));
 
 // document.getElementById('saveSubjectBtn')?.addEventListener('click',function(){
 //   const dept = document.getElementById('newDeptSelect')?.value.trim();
