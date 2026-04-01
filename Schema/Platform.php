@@ -115,7 +115,9 @@ class Platform{
         'department VARCHAR(255) NOT NULL',
         'departmentCode VARCHAR(255) NOT NULL',
         'departmentID VARCHAR(255) NOT NULL',
-        'time_schedule VARCHAR(255) NOT NULL'
+        'time_schedule VARCHAR(255) NOT NULL',
+        'time_end VARCHAR(255) NOT NULL',
+        'role VARCHAR(255) NOT NULL'
     ];
 
     //you can have as many tables as you want

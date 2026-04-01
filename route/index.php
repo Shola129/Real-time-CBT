@@ -205,6 +205,11 @@ elseif($url===$adminArea . "/notify/user/ofExam"){
     exit();
 }
 
+elseif($url === $adminArea . "/list/time/sets"){
+    require_once __DIR__ . $srcController . "/ListTimeController.php";
+    exit();
+}
+
 
 // /api endpoints
 elseif($url === $docRoot . $rootDir . $usersArea."/register" || $url === $usersArea."/register"."/"){
