@@ -1725,7 +1725,10 @@ document.getElementById("saveQuestionBtn").addEventListener("click", async ()=>{
       body:form
   });
 
-  const 
+  const result = await api.json();
+  if(result.status==="success"){
+    
+  }
 })
 /*
    DEPARTMENTS
