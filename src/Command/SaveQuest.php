@@ -22,9 +22,9 @@ class SaveQuest{
         ];
 
         $newMig = new Migration(null, $this->table2);
-        $mig = $newMig->get($where, 0,1);
+        $mig = $newMig->get($where,0,1);
         $decodeMig = json_decode($mig, true);
-        if($decodeMig['status']==='success'){
+        if($decodeMig["status"]==='success'){
             $otp = $this->dto->otp;
             $newFile = new Upload($media);
             $file = $newFile->process();
@@ -49,10 +49,11 @@ class SaveQuest{
             return $mig2;
         } 
         else{
-           return  json_encode([
-                'status'=>'failed',
-                'response'=>'subject is yet to be set'
-           ], JSON_PRETTY_PRINT);
+            return $mig;
+        //    return  json_encode([
+        //         'status'=>'failed',
+        //         'response'=>'subject is yet to be set'
+        //    ], JSON_PRETTY_PRINT);
         }
     }
 }
