@@ -194,6 +194,10 @@ elseif($url===$adminArea. "/save/questions"){
     require_once __DIR__ . $srcController . "/SaveQuestController.php";
     exit();
 }
+elseif($url === $adminArea . "/search/question"){
+    require_once __DIR__ . $srcController . "/SeacrhQuesController.php";
+    exit();
+}
 
 elseif($url === $adminArea . "/schedule/exam/time"){
     require_once __DIR__ . $srcController ."/ScheduleExamController.php";

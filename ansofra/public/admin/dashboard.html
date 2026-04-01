@@ -1659,7 +1659,7 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
       subject:subject
     };
 
-    const api = await fetch("/cbt/ansofra/apiadmin/",{
+    const api = await fetch("/cbt/ansofra/apiadmin/seacrh/question",{
       method:"POST",
        headers:{"Content-type":'application/json'},
        body:JSON.stringify(e)
