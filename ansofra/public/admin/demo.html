@@ -22,86 +22,186 @@
   --border-gold: #f0d898;
   --sidebar-w:   230px;
   --topbar-h:    58px;
-  --r-sm:  6px; --r-md: 10px; --r-lg: 16px; --r-xl: 24px; --r-pill: 99px;
-  --shadow-md:    0 4px 24px rgba(0,0,0,.14);
+  --r-sm:  6px;
+  --r-md:  10px;
+  --r-lg:  16px;
+  --r-xl:  24px;
+  --r-pill:99px;
+  --shadow-md: 0 4px 24px rgba(0,0,0,.14);
   --shadow-modal: 0 8px 40px rgba(0,0,0,.18);
 }
+
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; }
-body { font-family: 'Georgia','Times New Roman',serif; background: var(--cream); color: var(--ink); font-size: 14px; line-height: 1.6; overflow-x: hidden; }
+
+body {
+  font-family: 'Georgia', 'Times New Roman', serif;
+  background: var(--cream);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
 .app { display: flex; min-height: 100vh; }
 
-/* ── Sidebar overlay ── */
-.sidebar-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.38); z-index: 90; opacity: 0; pointer-events: none; transition: opacity .3s ease; }
+.sidebar-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.38);
+  z-index: 90;
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s ease;
+}
 .sidebar-overlay.visible { opacity: 1; pointer-events: all; }
 
-/* ── Sidebar ── */
-.sidebar { width: var(--sidebar-w); min-width: var(--sidebar-w); background: var(--white); border-right: 1px solid var(--border); display: flex; flex-direction: column; position: sticky; top: 0; height: 100vh; overflow-y: auto; overflow-x: hidden; flex-shrink: 0; transition: transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s ease; z-index: 100; }
-.sidebar-brand { padding: 20px 18px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
-.brand-icon { width: 38px; height: 38px; background: var(--gold-mid); border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; color: var(--ink); font-size: 17px; flex-shrink: 0; }
+.sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-w);
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  position: sticky; top: 0;
+  height: 100vh;
+  overflow-y: auto; overflow-x: hidden;
+  flex-shrink: 0;
+  transition: transform .3s cubic-bezier(.4,0,.2,1), box-shadow .3s ease;
+  z-index: 100;
+}
+
+.sidebar-brand {
+  padding: 20px 18px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0; position: relative;
+}
+
+.brand-icon {
+  width: 38px; height: 38px;
+  background: var(--gold-mid);
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--ink); font-size: 17px; flex-shrink: 0;
+}
+
 .brand-text { line-height: 1.2; overflow: hidden; }
 .brand-name { font-size: 15px; font-weight: 700; color: var(--ink); white-space: nowrap; }
 .brand-sub  { font-size: 11px; color: var(--ink-soft); font-family: sans-serif; font-style: italic; white-space: nowrap; }
-.sidebar-close { display: none; width: 28px; height: 28px; border: none; background: var(--gold-light); border-radius: var(--r-pill); cursor: pointer; font-size: 13px; color: var(--ink-mid); align-items: center; justify-content: center; flex-shrink: 0; margin-left: auto; transition: background .15s; }
+
+.sidebar-close {
+  display: none;
+  width: 28px; height: 28px;
+  border: none; background: var(--gold-light);
+  border-radius: var(--r-pill);
+  cursor: pointer; font-size: 13px; color: var(--ink-mid);
+  align-items: center; justify-content: center;
+  flex-shrink: 0; margin-left: auto;
+  transition: background .15s;
+}
 .sidebar-close:hover { background: var(--gold-mid); }
+
 .sidebar-nav { padding: 10px 8px; flex: 1; }
-.nav-section-label { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-soft); font-family: sans-serif; font-weight: 700; padding: 10px 10px 5px; white-space: nowrap; }
-.nav-item { display: flex; align-items: center; gap: 12px; padding: 11px 12px; border-radius: var(--r-md); cursor: pointer; font-size: 13.5px; color: var(--ink-mid); font-family: sans-serif; font-weight: 500; transition: background .15s, color .15s, transform .1s; margin-bottom: 2px; user-select: none; white-space: nowrap; }
+
+.nav-section-label {
+  font-size: 10px; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--ink-soft);
+  font-family: sans-serif; font-weight: 700;
+  padding: 10px 10px 5px; white-space: nowrap;
+}
+
+.nav-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 11px 12px;
+  border-radius: var(--r-md);
+  cursor: pointer; font-size: 13.5px;
+  color: var(--ink-mid); font-family: sans-serif; font-weight: 500;
+  transition: background .15s, color .15s, transform .1s;
+  margin-bottom: 2px; user-select: none; white-space: nowrap;
+}
 .nav-item .ni { width: 20px; font-size: 15px; text-align: center; color: var(--ink-soft); flex-shrink: 0; transition: color .15s; }
 .nav-item .nl { flex: 1; overflow: hidden; text-overflow: ellipsis; }
-.nav-item:hover      { background: var(--gold-light); color: var(--gold-deep); transform: translateX(3px); }
-.nav-item:hover .ni  { color: var(--gold-dark); }
-.nav-item.active     { background: var(--gold-mid); color: var(--ink); font-weight: 700; }
-.nav-item.active .ni { color: var(--ink); }
-.sidebar-footer { padding: 14px 18px; border-top: 1px solid var(--border); font-size: 11px; color: var(--ink-soft); font-family: sans-serif; font-style: italic; flex-shrink: 0; white-space: nowrap; overflow: hidden; }
+.nav-item:hover            { background: var(--gold-light); color: var(--gold-deep); transform: translateX(3px); }
+.nav-item:hover .ni        { color: var(--gold-dark); }
+.nav-item.active           { background: var(--gold-mid); color: var(--ink); font-weight: 700; }
+.nav-item.active .ni       { color: var(--ink); }
 
-/* ── Main / Topbar ── */
+.sidebar-footer {
+  padding: 14px 18px; border-top: 1px solid var(--border);
+  font-size: 11px; color: var(--ink-soft);
+  font-family: sans-serif; font-style: italic;
+  flex-shrink: 0; white-space: nowrap; overflow: hidden;
+}
+
 .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-.topbar { background: var(--white); border-bottom: 1px solid var(--border); padding: 0 20px; height: var(--topbar-h); display: flex; align-items: center; justify-content: space-between; gap: 12px; position: sticky; top: 0; z-index: 50; flex-shrink: 0; }
+
+.topbar {
+  background: var(--white); border-bottom: 1px solid var(--border);
+  padding: 0 20px; height: var(--topbar-h);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; position: sticky; top: 0; z-index: 50; flex-shrink: 0;
+}
+
 .topbar-left { display: flex; align-items: center; gap: 10px; }
-.hamburger { display: none; width: 36px; height: 36px; border: 1.5px solid var(--border-gold); border-radius: var(--r-md); background: var(--white); cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 5px; flex-shrink: 0; transition: background .15s; }
+
+.hamburger {
+  display: none;
+  width: 36px; height: 36px;
+  border: 1.5px solid var(--border-gold); border-radius: var(--r-md);
+  background: var(--white); cursor: pointer;
+  flex-direction: column; align-items: center; justify-content: center;
+  gap: 5px; flex-shrink: 0; transition: background .15s;
+}
 .hamburger:hover { background: var(--gold-light); }
 .hamburger span { display: block; width: 16px; height: 2px; background: var(--ink-mid); border-radius: 2px; }
+
 .page-title { font-size: 17px; font-weight: 700; color: var(--ink); white-space: nowrap; }
-.topbar-badge { background: var(--gold-light); border: 1px solid var(--border-gold); color: var(--gold-deep); font-size: 11px; font-family: sans-serif; font-weight: 600; padding: 3px 10px; border-radius: var(--r-pill); white-space: nowrap; }
+
+.topbar-badge {
+  background: var(--gold-light); border: 1px solid var(--border-gold);
+  color: var(--gold-deep); font-size: 11px; font-family: sans-serif;
+  font-weight: 600; padding: 3px 10px; border-radius: var(--r-pill); white-space: nowrap;
+}
+
 .topbar-right { display: flex; align-items: center; gap: 8px; }
+
 .content { padding: 24px; flex: 1; overflow-y: auto; }
 
-/* ── Pages ── */
 .page { display: none; }
 .page.active { display: block; animation: fadeIn .2s ease; }
 @keyframes fadeIn { from { opacity: .6; transform: translateY(5px); } to { opacity: 1; transform: none; } }
 
-/* ── Buttons ── */
-.btn { display: inline-flex; align-items: center; gap: 7px; padding: 8px 16px; font-size: 13px; font-family: sans-serif; font-weight: 600; border-radius: var(--r-pill); border: 1.5px solid var(--border-gold); background: var(--white); color: var(--ink-mid); cursor: pointer; transition: all .15s; white-space: nowrap; }
-.btn:hover     { background: var(--gold-light); border-color: var(--gold-mid); color: var(--gold-deep); }
-.btn-primary   { background: var(--gold-mid); border-color: var(--gold); color: var(--ink); }
+.btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 16px; font-size: 13px; font-family: sans-serif; font-weight: 600;
+  border-radius: var(--r-pill); border: 1.5px solid var(--border-gold);
+  background: var(--white); color: var(--ink-mid);
+  cursor: pointer; transition: all .15s; white-space: nowrap;
+}
+.btn:hover { background: var(--gold-light); border-color: var(--gold-mid); color: var(--gold-deep); }
+.btn-primary { background: var(--gold-mid); border-color: var(--gold); color: var(--ink); }
 .btn-primary:hover { background: var(--gold); border-color: var(--gold-dark); }
-.btn-sm        { padding: 5px 12px; font-size: 12px; }
-.btn-danger    { border-color: #f0caca; color: #a03030; }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+.btn-danger { border-color: #f0caca; color: #a03030; }
 .btn-danger:hover { background: #fff0f0; border-color: #e09090; }
+.btn-info { border-color: #b0d0ea; color: #1a5a9a; }
+.btn-info:hover { background: #eef4fc; border-color: #80aadd; }
 
-/* ── Stat grid ── */
-.stat-grid { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; margin-bottom: 22px; }
+.stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; margin-bottom: 22px; }
 .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 18px 16px; display: flex; flex-direction: column; gap: 8px; transition: border-color .15s; }
 .stat-card:hover { border-color: var(--border-gold); }
 .stat-icon { width: 36px; height: 36px; border-radius: var(--r-md); background: var(--gold-light); display: flex; align-items: center; justify-content: center; font-size: 15px; color: var(--gold-dark); }
 .stat-value { font-size: 24px; font-weight: 700; color: var(--ink); line-height: 1; }
 .stat-label { font-size: 12px; color: var(--ink-soft); font-family: sans-serif; }
 
-/* ── Panel ── */
 .panel { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); overflow: hidden; margin-bottom: 20px; }
 .panel-header { padding: 13px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
 .panel-title { font-size: 13.5px; font-weight: 700; color: var(--ink); font-family: sans-serif; display: flex; align-items: center; gap: 8px; }
 .panel-title i { color: var(--gold-dark); }
 .panel-body { padding: 18px; }
 
-/* ── Section header ── */
 .section-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
 .section-title { font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 8px; }
 .section-title i { color: var(--gold-dark); font-size: 13px; }
 
-/* ── Table ── */
 .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 table { width: 100%; border-collapse: collapse; font-family: sans-serif; font-size: 13px; min-width: 480px; }
 thead { background: var(--cream); }
@@ -110,21 +210,26 @@ td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--in
 tbody tr:last-child td { border-bottom: none; }
 tbody tr:hover td { background: #fefdf8; }
 
-/* ── Badges ── */
 .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: var(--r-pill); font-size: 11px; font-family: sans-serif; font-weight: 600; }
 .badge-dept     { background: var(--gold-light); color: var(--gold-deep); border: 1px solid var(--border-gold); }
 .badge-score    { background: #f0f9ec; color: #3a7a28; border: 1px solid #c4e6b8; }
 .badge-duration { background: #f4f0fc; color: #6650a4; border: 1px solid #d4c8f4; }
+.badge-scheduled { background: #e8f4fd; color: #1565a0; border: 1px solid #b3d4f0; }
+.badge-completed { background: #f0f9ec; color: #3a7a28; border: 1px solid #c4e6b8; }
+.badge-cancelled { background: #fff0f0; color: #a03030; border: 1px solid #f0caca; }
 
-/* ── Forms ── */
 .form-group { display: flex; flex-direction: column; gap: 5px; }
 .form-label { font-size: 11px; font-family: sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--gold-deep); }
-.form-control { padding: 9px 14px; border: 1.5px solid var(--border); border-radius: var(--r-pill); font-size: 13px; font-family: sans-serif; background: var(--white); color: var(--ink); transition: border-color .15s, box-shadow .15s; width: 100%; }
+.form-control {
+  padding: 9px 14px; border: 1.5px solid var(--border);
+  border-radius: var(--r-pill); font-size: 13px; font-family: sans-serif;
+  background: var(--white); color: var(--ink);
+  transition: border-color .15s, box-shadow .15s; width: 100%;
+}
 .form-control:focus { outline: none; border-color: var(--gold-mid); box-shadow: 0 0 0 3px rgba(245,212,114,.25); }
 textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height: 88px; }
-.form-row { display: grid; grid-template-columns: repeat(auto-fill,minmax(170px,1fr)); gap: 14px; align-items: end; }
+.form-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px,1fr)); gap: 14px; align-items: end; }
 
-/* ── Search bar ── */
 .search-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 10px 14px; margin-bottom: 20px; }
 .search-field { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 130px; background: var(--cream); border: 1px solid var(--border); border-radius: var(--r-pill); padding: 6px 14px; }
 .search-field i { color: var(--gold-dark); font-size: 12px; flex-shrink: 0; }
@@ -132,20 +237,31 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 .search-field input:focus, .search-field select:focus { outline: none; }
 .search-field input::placeholder { color: var(--ink-soft); }
 
-/* ── Enrolment bar ── */
 .enrolment-bar { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 13px 18px; margin-bottom: 22px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: sans-serif; font-size: 13px; color: var(--ink-mid); }
 .enrolment-bar i { color: var(--gold-dark); font-size: 15px; }
 .enrolment-bar strong { color: var(--gold-deep); }
 
-/* ── Gallery ── */
-.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 14px; }
-.gallery-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); overflow: hidden; transition: border-color .2s, box-shadow .2s; aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; }
+/* Gallery grid */
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 14px; }
+.gallery-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--r-xl); overflow: hidden;
+  transition: border-color .2s, box-shadow .2s;
+  aspect-ratio: 4/3;
+  display: flex; align-items: center; justify-content: center;
+}
 .gallery-card:hover { border-color: var(--border-gold); box-shadow: 0 4px 16px rgba(0,0,0,.08); }
-.gallery-card .gallery-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg,var(--gold-light) 0%,var(--cream) 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; color: var(--gold-dark); font-family: sans-serif; font-size: 12px; font-weight: 600; }
+.gallery-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gallery-card .gallery-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--cream) 100%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; color: var(--gold-dark); font-family: sans-serif; font-size: 12px; font-weight: 600;
+}
 .gallery-card .gallery-placeholder i { font-size: 28px; color: var(--gold-mid); }
 
-/* ── Subject cards ── */
-.subjects-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); gap: 14px; margin-bottom: 20px; }
+/* Subjects grid */
+.subjects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 14px; margin-bottom: 20px; }
 .subject-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; transition: border-color .15s, box-shadow .15s; }
 .subject-card:hover { border-color: var(--border-gold); box-shadow: 0 2px 12px rgba(0,0,0,.06); }
 .subject-card-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
@@ -155,52 +271,8 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 .subject-card-meta i { color: var(--gold-dark); }
 .subject-card-actions { display: flex; gap: 8px; padding-top: 6px; border-top: 1px solid var(--border); flex-wrap: wrap; }
 
-/* ── Questions ── */
-.step-badge { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; background: var(--gold-mid); border: 1.5px solid var(--gold); border-radius: var(--r-pill); font-size: 12px; font-weight: 700; font-family: sans-serif; color: var(--ink); flex-shrink: 0; }
-.step-title { font-size: 13px; font-weight: 700; color: var(--gold-dark); font-family: sans-serif; display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
-.info-bar { background: var(--gold-light); border: 1px solid var(--border-gold); border-radius: var(--r-xl); padding: 11px 16px; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
-.info-tag { background: var(--white); border: 1px solid var(--border-gold); border-radius: var(--r-pill); padding: 4px 12px; font-size: 12px; font-family: sans-serif; font-weight: 600; color: var(--gold-deep); display: flex; align-items: center; gap: 5px; }
-.options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
-.question-set-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 18px; margin-bottom: 16px; }
-.question-set-header { font-weight: 700; font-size: 16px; color: var(--gold-dark); margin-bottom: 12px; border-left: 4px solid var(--gold); padding-left: 12px; }
-.question-item { background: var(--cream); border-radius: var(--r-lg); padding: 14px; margin-top: 12px; }
-
-/* ── Notice ── */
-.notice { background: var(--cream); border: 1.5px dashed var(--border-gold); border-radius: var(--r-xl); padding: 28px; text-align: center; color: var(--ink-soft); font-family: sans-serif; font-size: 13px; }
-.notice i { font-size: 22px; color: var(--border-gold); margin-bottom: 8px; display: block; }
-
-/* ── Dept stats (Departments page) ── */
-.dept-stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 20px; }
-.dept-stat-mini { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 14px 16px; display: flex; align-items: center; gap: 12px; transition: border-color .15s; }
-.dept-stat-mini:hover { border-color: var(--border-gold); }
-.dept-stat-mini-icon { width: 34px; height: 34px; border-radius: var(--r-md); background: var(--gold-light); display: flex; align-items: center; justify-content: center; font-size: 14px; color: var(--gold-dark); flex-shrink: 0; }
-.dept-stat-mini-val { font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1; }
-.dept-stat-mini-lbl { font-size: 11px; color: var(--ink-soft); font-family: sans-serif; }
-
-/* ════════════════════════════════════════
-   MODAL — z-index 400 (always on top)
-   ════════════════════════════════════════ */
-.modal-backdrop { position: fixed; inset: 0; background: rgba(30,24,10,.45); z-index: 400; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
-.modal-backdrop.open { opacity: 1; pointer-events: all; }
-.modal { background: var(--white); border: 1px solid var(--border-gold); border-radius: var(--r-xl); box-shadow: var(--shadow-modal); width: 100%; max-width: 540px; max-height: 90vh; overflow-y: auto; transform: translateY(18px) scale(.97); transition: transform .25s cubic-bezier(.4,0,.2,1); }
-.modal-backdrop.open .modal { transform: translateY(0) scale(1); }
-.modal-header { padding: 18px 22px 14px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; position: sticky; top: 0; background: var(--white); z-index: 2; border-radius: var(--r-xl) var(--r-xl) 0 0; }
-.modal-title { font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 9px; }
-.modal-title i { color: var(--gold-dark); }
-.modal-close { width: 30px; height: 30px; border: 1.5px solid var(--border-gold); border-radius: var(--r-pill); background: var(--gold-light); cursor: pointer; font-size: 13px; color: var(--ink-mid); display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: all .15s; }
-.modal-close:hover { background: var(--gold-mid); border-color: var(--gold); color: var(--ink); }
-.modal-body { padding: 22px; display: flex; flex-direction: column; gap: 16px; }
-.modal-divider { height: 1px; background: var(--border); margin: 2px 0; }
-.modal-section-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; font-family: sans-serif; font-weight: 700; color: var(--ink-soft); margin-bottom: -4px; }
-.modal-footer { padding: 14px 22px 18px; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; position: sticky; bottom: 0; background: var(--white); z-index: 2; border-radius: 0 0 var(--r-xl) var(--r-xl); }
-
-/* ════════════════════════════════════════
-   DEPT-SUBJECT BROWSER
-   Cards: click → Subjects Drawer (z-index 300)
-   Edit button in drawer → Modal above (z-index 400)
-   ════════════════════════════════════════ */
-.dsb-dept-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(175px,1fr)); gap: 14px; }
-
+/* Department cards for subject browser */
+.dsb-dept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px,1fr)); gap: 14px; }
 .dsb-dept-card { background: var(--white); border: 1.5px solid var(--border-gold); border-radius: var(--r-xl); padding: 20px 18px 16px; cursor: pointer; transition: transform .18s cubic-bezier(.4,0,.2,1), box-shadow .18s, border-color .18s, background .18s; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; user-select: none; }
 .dsb-dept-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--gold-mid); opacity: 0; transition: opacity .18s; }
 .dsb-dept-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(184,144,30,.18); border-color: var(--gold); background: var(--gold-light); }
@@ -238,7 +310,90 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 .dsb-empty { padding: 36px 20px; text-align: center; font-family: sans-serif; font-size: 13px; color: var(--ink-soft); }
 .dsb-empty i { display: block; font-size: 28px; color: var(--border-gold); margin-bottom: 10px; }
 
-/* ── Responsive ── */
+/* Modal */
+.modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(30, 24, 10, .45);
+  z-index: 400;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  opacity: 0; pointer-events: none;
+  transition: opacity .25s ease;
+}
+.modal-backdrop.open { opacity: 1; pointer-events: all; }
+
+.modal {
+  background: var(--white);
+  border: 1px solid var(--border-gold);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-modal);
+  width: 100%;
+  max-width: 540px;
+  max-height: 90vh;
+  overflow-y: auto;
+  transform: translateY(18px) scale(.97);
+  transition: transform .25s cubic-bezier(.4,0,.2,1);
+}
+.modal-backdrop.open .modal { transform: translateY(0) scale(1); }
+
+.modal-header {
+  padding: 18px 22px 14px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  position: sticky; top: 0; background: var(--white); z-index: 2;
+  border-radius: var(--r-xl) var(--r-xl) 0 0;
+}
+.modal-title { font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 9px; }
+.modal-title i { color: var(--gold-dark); }
+.modal-close {
+  width: 30px; height: 30px;
+  border: 1.5px solid var(--border-gold); border-radius: var(--r-pill);
+  background: var(--gold-light); cursor: pointer; font-size: 13px; color: var(--ink-mid);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; transition: all .15s;
+}
+.modal-close:hover { background: var(--gold-mid); border-color: var(--gold); color: var(--ink); }
+.modal-body { padding: 22px; display: flex; flex-direction: column; gap: 16px; }
+.modal-divider { height: 1px; background: var(--border); margin: 2px 0; }
+.modal-section-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; font-family: sans-serif; font-weight: 700; color: var(--ink-soft); margin-bottom: -4px; }
+.modal-footer {
+  padding: 14px 22px 18px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: flex-end;
+  gap: 10px; flex-wrap: wrap;
+  position: sticky; bottom: 0; background: var(--white); z-index: 2;
+  border-radius: 0 0 var(--r-xl) var(--r-xl);
+}
+
+/* Schedule exam page */
+.schedule-stats-grid {
+  display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; margin-bottom: 22px;
+}
+.sch-empty {
+  background: var(--cream); border: 1.5px dashed var(--border-gold);
+  border-radius: var(--r-xl); padding: 36px; text-align: center;
+  color: var(--ink-soft); font-family: sans-serif; font-size: 13px;
+}
+.sch-empty i { font-size: 26px; color: var(--border-gold); display: block; margin-bottom: 10px; }
+
+/* Dept stats */
+.dept-stat-row {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 20px;
+}
+.dept-stat-mini {
+  background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg);
+  padding: 14px 16px; display: flex; align-items: center; gap: 12px;
+  transition: border-color .15s;
+}
+.dept-stat-mini:hover { border-color: var(--border-gold); }
+.dept-stat-mini-icon {
+  width: 34px; height: 34px; border-radius: var(--r-md);
+  background: var(--gold-light); display: flex; align-items: center;
+  justify-content: center; font-size: 14px; color: var(--gold-dark); flex-shrink: 0;
+}
+.dept-stat-mini-val { font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1; }
+.dept-stat-mini-lbl { font-size: 11px; color: var(--ink-soft); font-family: sans-serif; }
+
 @media (max-width: 900px) {
   .sidebar { position: fixed; left: 0; top: 0; bottom: 0; height: 100%; transform: translateX(calc(-1 * var(--sidebar-w) - 10px)); box-shadow: none; }
   .sidebar.open { transform: translateX(0); box-shadow: var(--shadow-md); }
@@ -246,40 +401,42 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
   .hamburger { display: flex; }
   .main { width: 100%; }
   .content { padding: 18px 16px; }
-  .stat-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .stat-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .dept-stat-row { grid-template-columns: 1fr; }
+  .schedule-stats-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .dsb-dept-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
 }
+
 @media (max-width: 560px) {
   :root { --sidebar-w: 260px; }
   .topbar { padding: 0 12px; }
   .page-title { font-size: 15px; }
   .topbar-badge { display: none; }
   .content { padding: 14px 10px; }
-  .stat-grid { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+  .stat-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
   .stat-value { font-size: 20px; }
   .stat-card { padding: 14px 12px; }
-  .options-grid { grid-template-columns: 1fr; }
   .search-bar { flex-direction: column; border-radius: var(--r-lg); padding: 10px; }
   .search-field { min-width: 0; width: 100%; }
-  .subjects-grid { grid-template-columns: 1fr; }
+  .subjects-grid, .dsb-dept-grid { grid-template-columns: 1fr; }
   .panel-body { padding: 14px; }
-  .info-bar { flex-direction: column; align-items: flex-start; }
-  .info-tag { width: 100%; }
   .form-row { grid-template-columns: 1fr; }
-  .btn-label { display: none; }
   .modal-body { padding: 16px; }
   .modal-header, .modal-footer { padding-left: 16px; padding-right: 16px; }
-  .dsb-dept-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
-  .dsb-dept-card { padding: 14px 13px 12px; }
+  .schedule-stats-grid { grid-template-columns: 1fr 1fr; }
   .dsb-drawer { max-width: 100%; }
 }
+
+.question-set-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 18px; margin-bottom: 16px; }
+.question-set-header { font-weight: 700; font-size: 16px; color: var(--gold-dark); margin-bottom: 12px; border-left: 4px solid var(--gold); padding-left: 12px; }
+.question-item { background: var(--cream); border-radius: var(--r-lg); padding: 14px; margin-top: 12px; }
 </style>
 </head>
 <body>
 
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
-<!-- ════ EDIT SUBJECT MODAL  (z-index 400 — always above the drawer) ════ -->
+<!-- MODAL 1 — Edit Subject -->
 <div class="modal-backdrop" id="editModal" onclick="if(event.target===this)closeEditModal()">
   <div class="modal" role="dialog" aria-modal="true">
     <div class="modal-header">
@@ -319,7 +476,131 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
   </div>
 </div>
 
-<!-- ════ APP SHELL ════ -->
+<!-- MODAL 2 — Edit Schedule Exam -->
+<div class="modal-backdrop" id="editScheduleModal" onclick="if(event.target===this)closeEditScheduleModal()">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title"><i class="fas fa-calendar-edit"></i> Edit Schedule Exam</div>
+      <button class="modal-close" onclick="closeEditScheduleModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="editScheduleId" />
+      <div class="form-group">
+        <label class="form-label" for="editSchDept">Department</label>
+        <select class="form-control" id="editSchDept" style="border-radius:var(--r-pill);">
+          <option value="">— Select Department —</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="editSchSubject">Subject</label>
+        <input class="form-control" type="text" id="editSchSubject" placeholder="e.g. Algorithms" />
+      </div>
+      <div class="modal-divider"></div>
+      <div class="modal-section-label">Exam schedule</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <input class="form-control" type="date" id="editSchDate" style="border-radius:var(--r-pill);" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Start Time</label>
+          <input class="form-control" type="time" id="editSchTime" style="border-radius:var(--r-pill);" />
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="form-group">
+          <label class="form-label">Duration (min)</label>
+          <input class="form-control" type="number" id="editSchDuration" placeholder="90" min="1" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Max Students</label>
+          <input class="form-control" type="number" id="editSchMaxStudents" placeholder="100" min="1" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Venue / Hall</label>
+        <input class="form-control" type="text" id="editSchVenue" placeholder="e.g. Hall A, Lab 2" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select class="form-control" id="editSchStatus">
+          <option value="Scheduled">Scheduled</option>
+          <option value="Completed">Completed</option>
+          <option value="Cancelled">Cancelled</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm" onclick="closeEditScheduleModal()"><i class="fas fa-times"></i> Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="saveEditScheduleExam()"><i class="fas fa-save"></i> Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL 3 — Schedule New Exam -->
+<div class="modal-backdrop" id="scheduleModal" onclick="if(event.target===this)closeGenericModal('scheduleModal')">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title"><i class="fas fa-calendar-plus"></i> Schedule New Exam</div>
+      <button class="modal-close" onclick="closeGenericModal('scheduleModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label">Department</label>
+        <select class="form-control" id="schDept" style="border-radius:var(--r-pill);">
+          <option value="">— Select Department —</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Subject</label>
+        <input class="form-control" type="text" id="schSubject" placeholder="e.g. Algorithms" />
+      </div>
+      <div class="modal-divider"></div>
+      <div class="modal-section-label">Exam schedule</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="form-group">
+          <label class="form-label">Date</label>
+          <input class="form-control" type="date" id="schDate" style="border-radius:var(--r-pill);" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Start Time</label>
+          <input class="form-control" type="time" id="schTime" style="border-radius:var(--r-pill);" />
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div class="form-group">
+          <label class="form-label">Duration (min)</label>
+          <input class="form-control" type="number" id="schDuration" placeholder="90" min="1" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Max Students</label>
+          <input class="form-control" type="number" id="schMaxStudents" placeholder="100" min="1" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Venue / Hall</label>
+        <input class="form-control" type="text" id="schVenue" placeholder="e.g. Hall A, Lab 2" />
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-sm" onclick="closeGenericModal('scheduleModal')"><i class="fas fa-times"></i> Cancel</button>
+      <button class="btn btn-primary btn-sm" onclick="saveScheduledExam()"><i class="fas fa-calendar-check"></i> Schedule Exam</button>
+    </div>
+  </div>
+</div>
+
+<!-- Subjects Drawer -->
+<div class="dsb-drawer-backdrop" id="dsbDrawerBackdrop" onclick="closeDsbDrawer()">
+  <div class="dsb-drawer" onclick="event.stopPropagation()">
+    <div class="dsb-drawer-header">
+      <div class="dsb-drawer-title" id="dsbDrawerTitle"></div>
+      <button class="modal-close" onclick="closeDsbDrawer()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="dsb-drawer-body" id="dsbDrawerBody"></div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
 <div class="app">
 
   <aside class="sidebar" id="sidebar">
@@ -339,6 +620,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
       <div class="nav-item" onclick="showSection('questions',this)"><i class="fas fa-circle-question ni"></i><span class="nl">Questions</span></div>
       <div class="nav-item" onclick="showSection('results',this)"><i class="fas fa-file-lines ni"></i><span class="nl">Results</span></div>
       <div class="nav-item" onclick="showSection('departments',this)"><i class="fas fa-building ni"></i><span class="nl">Departments</span></div>
+      <div class="nav-item" onclick="showSection('schedule',this)"><i class="fas fa-calendar-days ni"></i><span class="nl">Schedule Exam</span></div>
     </nav>
     <div class="sidebar-footer">Academic Year 2025 / 26</div>
   </aside>
@@ -348,7 +630,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
       <div class="topbar-left">
         <button class="hamburger" onclick="openSidebar()"><span></span><span></span><span></span></button>
         <span class="page-title" id="pageTitle">Dashboard</span>
-        <span class="topbar-badge">Overview</span>
+        <span class="topbar-badge" id="topbarBadge">Overview</span>
       </div>
       <div class="topbar-right">
         <button class="btn btn-sm"><i class="fas fa-bell"></i></button>
@@ -358,7 +640,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 
     <div class="content">
 
-      <!-- ════ DASHBOARD ════ -->
+      <!-- DASHBOARD -->
       <div id="dashboard" class="page active">
         <div class="stat-grid">
           <div class="stat-card">
@@ -368,31 +650,41 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
             <div><strong>Name: </strong><span id="profile-name">John Fin</span></div>
             <div><strong>Email: </strong><span id="profile-email">johnfin@gmail.com</span></div>
           </div>
-          <div class="stat-card"><div class="stat-icon"><i class="fas fa-graduation-cap"></i></div><div class="stat-value" id="stat-students">—</div><div class="stat-label">Total Students</div></div>
-          <div class="stat-card"><div class="stat-icon"><i class="fas fa-book"></i></div><div class="stat-value" id="stat-subjects">—</div><div class="stat-label">Subjects</div></div>
-          <div class="stat-card"><div class="stat-icon"><i class="fas fa-building-columns"></i></div><div class="stat-value" id="stat-depts">—</div><div class="stat-label">Departments</div></div>
+          <div class="stat-card"><div class="stat-icon"><i class="fas fa-graduation-cap"></i></div><div class="stat-value" id="stat-students"></div><div class="stat-label">Total Students</div></div>
+          <div class="stat-card"><div class="stat-icon"><i class="fas fa-book"></i></div><div class="stat-value" id="stat-subjects"></div><div class="stat-label">Subjects</div></div>
+          <div class="stat-card"><div class="stat-icon"><i class="fas fa-building-columns"></i></div><div class="stat-value" id="stat-depts"></div><div class="stat-label">Departments</div></div>
         </div>
+
         <div class="enrolment-bar">
-          <i class="fas fa-arrow-trend-up"></i> Last Login:&nbsp;<strong id="last-login">—</strong>&nbsp;&nbsp;Last seen:&nbsp;<strong id="last-seen-display">—</strong>
+          <i class="fas fa-arrow-trend-up"></i> Last Login : <strong id="last-login"></strong> &nbsp;&nbsp; Last seen: <strong id="last-seen-display">00:00</strong>
         </div>
+
         <div class="section-header"><div class="section-title"><i class="fas fa-images"></i> Gallery</div></div>
-        <div class="gallery-grid">
-          <div class="gallery-card"><div class="gallery-placeholder"><i class="fas fa-image"></i><span>logo.jpg</span></div></div>
-          <div class="gallery-card"><div class="gallery-placeholder"><i class="fas fa-car"></i><span>1969 Ford Mustang</span></div></div>
-          <div class="gallery-card"><div class="gallery-placeholder"><i class="fas fa-car-side"></i><span>2025 BMW M5</span></div></div>
-          <div class="gallery-card"><div class="gallery-placeholder"><i class="fas fa-image"></i><span>157598.jpg</span></div></div>
+        <div id="dashDeptGrid" class="gallery-grid">
+          <div class="gallery-card">
+            <div class="gallery-placeholder"><i class="fas fa-image"></i><span>Gallery Image 1</span></div>
+          </div>
+          <div class="gallery-card">
+            <div class="gallery-placeholder"><i class="fas fa-car"></i><span>1969 Ford Mustang</span></div>
+          </div>
+          <div class="gallery-card">
+            <div class="gallery-placeholder"><i class="fas fa-car-side"></i><span>2025 BMW M5</span></div>
+          </div>
+          <div class="gallery-card">
+            <div class="gallery-placeholder"><i class="fas fa-image"></i><span>157598.jpg</span></div>
+          </div>
         </div>
       </div>
 
-      <!-- ════ STUDENTS ════ -->
+      <!-- STUDENTS -->
       <div id="students" class="page">
         <div class="search-bar">
           <div class="search-field"><i class="fas fa-id-card"></i><input type="text" id="regSearch" placeholder="Reg. number…" /></div>
-          <button id="searchStudentRegNo" class="btn btn-primary btn-sm"><i class="fas fa-magnifying-glass"></i> Search</button>
+          <button id="searchStudentRegNo" class="btn btn-primary btn-sm">Search</button>
           <div class="search-field">
             <i class="fas fa-building"></i>
             <select id="deptFilter">
-              <option value="">Choose department</option>
+              <option selected>Choose department</option>
               <option value="Computer Science">Computer Science</option>
               <option value="Mathematics">Mathematics</option>
               <option value="Physics">Physics</option>
@@ -404,11 +696,13 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         <div class="panel">
           <div class="panel-header">
             <span class="panel-title"><i class="fas fa-users"></i> Student Register</span>
-            <span id="studentCount" style="font-family:sans-serif;font-size:12px;color:var(--ink-soft);"></span>
+            <span id="studentCount"></span>
           </div>
           <div class="table-wrap" id="table-wrap">
             <table>
-              <thead><tr><th>Reg. No.</th><th>Name</th><th>Department</th><th>Email</th><th>Role</th><th>Del</th></tr></thead>
+              <thead>
+                <tr><th>Reg. No.</th><th>Name</th><th>Department</th><th>Email</th><th>Role</th><th>Del</th></tr>
+              </thead>
               <tbody id="studentTableBody"></tbody>
             </table>
           </div>
@@ -416,10 +710,8 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         </div>
       </div>
 
-      <!-- ════ SUBJECTS ════ -->
+      <!-- SUBJECTS with Department-Subject Browser -->
       <div id="subjects" class="page">
-
-        <!-- Department & Subject Browser -->
         <div class="panel" style="border:2px solid var(--border-gold);margin-bottom:24px;">
           <div class="panel-header" style="background:linear-gradient(90deg,var(--gold-light),var(--cream));">
             <span class="panel-title"><i class="fas fa-sitemap"></i> Departments &amp; Subjects</span>
@@ -430,25 +722,12 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           </div>
         </div>
 
-        <!-- Subjects Drawer (z-index 300; Edit modal sits above at 400) -->
-        <div class="dsb-drawer-backdrop" id="dsbDrawerBackdrop" onclick="closeDsbDrawer()">
-          <div class="dsb-drawer" onclick="event.stopPropagation()">
-            <div class="dsb-drawer-header">
-              <div class="dsb-drawer-title" id="dsbDrawerTitle"></div>
-              <button class="modal-close" onclick="closeDsbDrawer()"><i class="fas fa-times"></i></button>
-            </div>
-            <div class="dsb-drawer-body" id="dsbDrawerBody"></div>
-          </div>
-        </div>
-
-        <!-- Search by subject name -->
         <div class="search-bar" style="background:var(--gold-light);border:1px solid var(--gold);">
           <div class="search-field" style="flex:2;"><i class="fas fa-book"></i><input type="text" id="subjectNameSearchInput" placeholder="Enter subject name to search…" /></div>
           <button id="searchSubjectByNameBtn" class="btn btn-primary"><i class="fas fa-magnifying-glass"></i> Search Subject</button>
         </div>
         <div id="subjectNameSearchResults" class="subjects-grid" style="margin-bottom:20px;"></div>
 
-        <!-- Filter by department -->
         <div class="search-bar">
           <div class="search-field" style="flex:1;"><i class="fas fa-sitemap"></i><input type="text" id="deptSearchInput" placeholder="Filter by department…" /></div>
           <button id="searchSubjectBtn" class="btn btn-primary btn-sm"><i class="fas fa-magnifying-glass"></i> Search</button>
@@ -456,7 +735,6 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         <div id="subjectCardsContainer" class="subjects-grid"></div>
         <div id="noSubjectsMsg" class="notice" style="display:none;"><i class="fas fa-book-open"></i>No subjects found for this department.</div>
 
-        <!-- Add new subject -->
         <div class="panel">
           <div class="panel-header"><span class="panel-title"><i class="fas fa-plus-circle"></i> Add New Subject</span></div>
           <div class="panel-body">
@@ -489,21 +767,20 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         </div>
       </div>
 
-      <!-- ════ QUESTIONS ════ -->
+      <!-- QUESTIONS -->
       <div id="questions" class="page">
         <div class="panel" style="border:2px solid var(--gold);">
-          <div class="panel-header" style="background:var(--gold-light);"><span class="panel-title"><i class="fas fa-magnifying-glass"></i> Search Question Sets</span></div>
+          <div class="panel-header" style="background:var(--gold-light);"><span class="panel-title"><i class="fas fa-magnifying-glass"></i> Search Question Sets (by Department &amp; Subject)</span></div>
           <div class="panel-body">
             <div class="form-row">
               <div class="form-group"><label class="form-label">Department</label><input type="text" id="qsSearchDept" class="form-control" placeholder="e.g. Computer Science" /></div>
               <div class="form-group"><label class="form-label">Subject</label><input type="text" id="qsSearchSubject" class="form-control" placeholder="e.g. Algorithms" /></div>
-              <div class="form-group"><label class="form-label">&nbsp;</label><button id="searchQuestionSetsBtn" class="btn btn-primary"><i class="fas fa-search"></i> Search</button></div>
+              <div class="form-group"><button id="searchQuestionSetsBtn" class="btn btn-primary"><i class="fas fa-search"></i> Search Question Sets</button></div>
             </div>
           </div>
         </div>
         <div id="questionSetsResultsContainer" style="margin-bottom:24px;"></div>
-        <div id="noQsSetsMsg" class="notice" style="display:none;"><i class="fas fa-inbox"></i> No question sets found.</div>
-
+        <div id="noQsSetsMsg" class="notice" style="display:none;"><i class="fas fa-inbox"></i> No question sets found for this department &amp; subject.</div>
         <div id="questionStep1" class="panel">
           <div class="panel-header"><span class="panel-title"><i class="fas fa-sliders"></i> Exam Setup</span></div>
           <div class="panel-body">
@@ -513,12 +790,9 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
               <div class="form-group"><label class="form-label">Subject</label><input class="form-control" type="text" id="questionSubject" placeholder="Algorithms" value="Algorithms" /></div>
               <div class="form-group"><label class="form-label">Duration (min)</label><input class="form-control" type="number" id="questionDuration" placeholder="90" value="90" /></div>
             </div>
-            <div style="display:flex;justify-content:flex-end;margin-top:18px;">
-              <button id="nextToQuestionBtn" class="btn btn-primary">Next: Add Questions <i class="fas fa-arrow-right"></i></button>
-            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:18px;"><button id="nextToQuestionBtn" class="btn btn-primary">Next: Add Questions <i class="fas fa-arrow-right"></i></button></div>
           </div>
         </div>
-
         <div id="questionStep2" style="display:none;">
           <div class="info-bar">
             <div class="info-tag"><i class="fas fa-sitemap"></i> <span id="displayDept"></span></div>
@@ -555,7 +829,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         </div>
       </div>
 
-      <!-- ════ RESULTS ════ -->
+      <!-- RESULTS -->
       <div id="results" class="page">
         <div class="panel">
           <div class="panel-header"><span class="panel-title"><i class="fas fa-chart-simple"></i> Exam Results</span></div>
@@ -572,11 +846,23 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         </div>
       </div>
 
-      <!-- ════ DEPARTMENTS ════ -->
+      <!-- DEPARTMENTS -->
       <div id="departments" class="page">
         <div class="dept-stat-row">
-          <div class="dept-stat-mini"><div class="dept-stat-mini-icon"><i class="fas fa-building"></i></div><div><div class="dept-stat-mini-val" id="deptTotalCount">0</div><div class="dept-stat-mini-lbl">Total Departments</div></div></div>
-          <div class="dept-stat-mini"><div class="dept-stat-mini-icon"><i class="fas fa-user-tie"></i></div><div><div class="dept-stat-mini-val" id="deptHODCount">0</div><div class="dept-stat-mini-lbl">HODs Assigned</div></div></div>
+          <div class="dept-stat-mini">
+            <div class="dept-stat-mini-icon"><i class="fas fa-building"></i></div>
+            <div>
+              <div class="dept-stat-mini-val" id="deptTotalCount">0</div>
+              <div class="dept-stat-mini-lbl">Total Departments</div>
+            </div>
+          </div>
+          <div class="dept-stat-mini">
+            <div class="dept-stat-mini-icon"><i class="fas fa-user-tie"></i></div>
+            <div>
+              <div class="dept-stat-mini-val" id="deptHODCount">0</div>
+              <div class="dept-stat-mini-lbl">HODs Assigned</div>
+            </div>
+          </div>
         </div>
 
         <div class="panel">
@@ -584,10 +870,10 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           <div class="panel-body">
             <form id="departmentform">
               <div class="form-row">
-                <div class="form-group"><label class="form-label">Department Name <span style="color:#c44;font-size:10px;">*</span></label><input class="form-control" type="text" id="newDeptName" name="department" placeholder="e.g. Computer Science" /></div>
-                <div class="form-group"><label class="form-label">Department Code <span style="color:#c44;font-size:10px;">*</span></label><input class="form-control" type="text" id="newDeptCode" name="DepartmentCode" placeholder="e.g. CS" style="text-transform:uppercase;" /></div>
-                <div class="form-group"><label class="form-label">Head of Department</label><input class="form-control" type="text" id="newDeptHOD" name="HeadOfDepartment" placeholder="e.g. Dr. Smith" /></div>
-                <div class="form-group"><label class="form-label">Description</label><input class="form-control" type="text" id="newDeptDesc" name="Description" placeholder="Short description (optional)" /></div>
+                <div class="form-group"><label class="form-label">Department Name <span style="color:#c44;font-size:10px;">*</span></label><input class="form-control" type="text" id="newDeptName" placeholder="e.g. Computer Science" name="department" /></div>
+                <div class="form-group"><label class="form-label">Department Code <span style="color:#c44;font-size:10px;">*</span></label><input class="form-control" type="text" id="newDeptCode" placeholder="e.g. CS" style="text-transform:uppercase;" name="DepartmentCode" /></div>
+                <div class="form-group"><label class="form-label">Head of Department</label><input class="form-control" type="text" id="newDeptHOD" placeholder="e.g. Dr. Smith" name="HeadOfDepartment" /></div>
+                <div class="form-group"><label class="form-label">Description</label><input class="form-control" type="text" id="newDeptDesc" placeholder="Short description (optional)" name="Description" /></div>
               </div>
             </form>
             <div style="display:flex;justify-content:flex-end;margin-top:16px;gap:10px;flex-wrap:wrap;">
@@ -598,7 +884,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         </div>
 
         <div class="search-bar">
-          <div class="search-field" style="flex:1;"><i class="fas fa-magnifying-glass"></i><input type="text" id="deptListSearch" placeholder="Search by department code…" /></div>
+          <div class="search-field" style="flex:1;"><i class="fas fa-magnifying-glass"></i><input type="text" id="deptListSearch" placeholder="Search Departmental code" /></div>
           <button id="deptSearchBtn" class="btn btn-primary btn-sm"><i class="fas fa-search"></i> Search</button>
         </div>
 
@@ -609,7 +895,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           </div>
           <div class="table-wrap" id="displayAnyErr">
             <table>
-              <thead><tr><th>#</th><th>Department Name</th><th>Code</th><th>Head of Department</th><th>Description</th><th>Date Created</th><th>Action</th></tr></thead>
+              <thead><tr><th>#</th><th>Department Name</th><th>Code</th><th>Head of Department</th><th>Description</th><th>Date Created</th><th>Actions</th></tr></thead>
               <tbody id="deptTableBody"></tbody>
             </table>
           </div>
@@ -617,9 +903,40 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         </div>
       </div>
 
-    </div><!-- /content -->
-  </div><!-- /main -->
-</div><!-- /app -->
+      <!-- SCHEDULE EXAM PAGE -->
+      <div id="schedule" class="page">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;">
+          <div class="section-title"><i class="fas fa-calendar-days"></i> Scheduled Exams</div>
+          <button class="btn btn-primary" onclick="openScheduleModal()"><i class="fas fa-calendar-plus"></i> Schedule New Exam</button>
+        </div>
+
+        <div class="schedule-stats-grid">
+          <div class="stat-card"><div class="stat-icon"><i class="fas fa-calendar-check"></i></div><div class="stat-value" id="schStatTotal">0</div><div class="stat-label">Total Scheduled</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#e8f4fd;color:#1565a0;"><i class="fas fa-hourglass-half"></i></div><div class="stat-value" id="schStatUpcoming">0</div><div class="stat-label">Upcoming</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#f0f9ec;color:#3a7a28;"><i class="fas fa-circle-check"></i></div><div class="stat-value" id="schStatCompleted">0</div><div class="stat-label">Completed</div></div>
+          <div class="stat-card"><div class="stat-icon" style="background:#fff0f0;color:#a03030;"><i class="fas fa-ban"></i></div><div class="stat-value" id="schStatCancelled">0</div><div class="stat-label">Cancelled</div></div>
+        </div>
+
+        <div class="search-bar">
+          <div class="search-field" style="flex:2;"><i class="fas fa-magnifying-glass"></i><input type="text" id="schSearchInput" placeholder="Search department, subject, code…" oninput="renderScheduleTable(this.value)" /></div>
+          <div class="search-field"><i class="fas fa-filter"></i><select id="schStatusFilter" onchange="renderScheduleTable(document.getElementById('schSearchInput').value)"><option value="">All Status</option><option value="Scheduled">Scheduled</option><option value="Completed">Completed</option><option value="Cancelled">Cancelled</option></select></div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title"><i class="fas fa-table-list"></i> Exam Schedule List</span><span id="schTableCount" style="font-family:sans-serif;font-size:12px;color:var(--ink-soft);"></span></div>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th>#</th><th>Department</th><th>Dept. Code</th><th>Dept. ID</th><th>Subject</th><th>Date</th><th>Time</th><th>Duration</th><th>Venue</th><th>Max Students</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="scheduleTableBody"></tbody>
+            </table>
+          </div>
+          <div id="noScheduleMsg" class="sch-empty" style="display:none;"><i class="fas fa-calendar-xmark"></i>No exams scheduled yet. Click <strong>"Schedule New Exam"</strong> to get started.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 
 <script>
 /* ============================================================
@@ -637,19 +954,12 @@ let subjectsList = [
   { dept:'Computer Science', name:'Algorithms',        duration:90, totalQs:20, created:new Date(2024,8,1) },
   { dept:'Computer Science', name:'Data Structures',   duration:60, totalQs:15, created:new Date(2024,8,1) },
   { dept:'Computer Science', name:'Operating Systems', duration:90, totalQs:18, created:new Date(2024,9,1) },
-  { dept:'Computer Science', name:'Computer Networks', duration:75, totalQs:12, created:new Date(2024,9,15) },
   { dept:'Mathematics',      name:'Calculus I',        duration:90, totalQs:25, created:new Date(2024,8,1) },
   { dept:'Mathematics',      name:'Linear Algebra',    duration:90, totalQs:22, created:new Date(2024,8,1) },
-  { dept:'Mathematics',      name:'Discrete Maths',    duration:60, totalQs:18, created:new Date(2024,9,1) },
   { dept:'Physics',          name:'Mechanics',         duration:90, totalQs:20, created:new Date(2024,8,1) },
   { dept:'Physics',          name:'Electromagnetism',  duration:90, totalQs:18, created:new Date(2024,8,1) },
-  { dept:'Physics',          name:'Thermodynamics',    duration:75, totalQs:15, created:new Date(2024,9,1) },
   { dept:'Chemistry',        name:'Organic Chemistry', duration:90, totalQs:22, created:new Date(2024,8,1) },
-  { dept:'Chemistry',        name:'Inorganic Chem',    duration:90, totalQs:20, created:new Date(2024,8,1) },
-  { dept:'Chemistry',        name:'Physical Chemistry',duration:75, totalQs:17, created:new Date(2024,9,1) },
-  { dept:'Literature',       name:'African Literature',duration:60, totalQs:15, created:new Date(2024,8,1) },
-  { dept:'Literature',       name:'Poetry & Prose',    duration:60, totalQs:14, created:new Date(2024,8,1) },
-  { dept:'Literature',       name:'Drama & Theatre',   duration:60, totalQs:12, created:new Date(2024,9,1) },
+  { dept:'Literature',       name:'African Literature',duration:60, totalQs:15, created:new Date(2024,8,1) }
 ];
 
 let departmentsData = [
@@ -676,46 +986,42 @@ let questionSetsData = [
   ]}
 ];
 
+let scheduledExams = [
+  { id:1, dept:'Computer Science', deptCode:'CS',  deptID:'DEPT-CS-001',  subject:'Algorithms',       date:'2026-04-10', time:'09:00', duration:90, venue:'Computer Lab 1', maxStudents:50,  status:'Scheduled' },
+  { id:2, dept:'Mathematics',      deptCode:'MTH', deptID:'DEPT-MTH-002', subject:'Calculus I',        date:'2026-04-15', time:'10:00', duration:90, venue:'Hall B',          maxStudents:80,  status:'Scheduled' },
+  { id:3, dept:'Physics',          deptCode:'PHY', deptID:'DEPT-PHY-003', subject:'Mechanics',         date:'2026-03-20', time:'08:00', duration:90, venue:'Hall A',          maxStudents:60,  status:'Completed' },
+  { id:4, dept:'Chemistry',        deptCode:'CHM', deptID:'DEPT-CHM-004', subject:'Organic Chemistry', date:'2026-03-25', time:'09:30', duration:75, venue:'Lab 3',           maxStudents:45,  status:'Cancelled' }
+];
+let scheduleIdCounter = scheduledExams.length + 1;
+
 /* ============================================================
-   DEPT-SUBJECT BROWSER  (department cards)
+   DEPT-SUBJECT BROWSER
    ============================================================ */
 function renderDSB() {
-  const gridEl  = document.getElementById('dsbDeptGrid');
+  const gridEl = document.getElementById('dsbDeptGrid');
   const badgeEl = document.getElementById('dsbTotalBadge');
   if (!gridEl) return;
   const depts = Object.keys(DEPT_META);
   if (badgeEl) badgeEl.textContent = subjectsList.length + ' subjects across ' + depts.length + ' departments';
   gridEl.innerHTML = depts.map(d => {
-    const meta  = DEPT_META[d];
+    const meta = DEPT_META[d];
     const count = subjectsList.filter(s => s.dept === d).length;
-    return `
-      <div class="dsb-dept-card" onclick="openDsbDrawer('${d.replace(/'/g,"\\'")}')">
-        <div class="dsb-dept-icon"><i class="${meta.icon}"></i></div>
-        <div>
-          <div class="dsb-dept-name">${d}</div>
-          <div class="dsb-dept-code">${meta.code}</div>
-        </div>
-        <div class="dsb-dept-footer">
-          <div class="dsb-dept-count"><i class="fas fa-book" style="font-size:10px;"></i>&nbsp;${count} subject${count!==1?'s':''}</div>
-          <i class="fas fa-chevron-right dsb-dept-arrow"></i>
-        </div>
-      </div>`;
+    return `<div class="dsb-dept-card" onclick="openDsbDrawer('${d.replace(/'/g,"\\'")}')">
+      <div class="dsb-dept-icon"><i class="${meta.icon}"></i></div>
+      <div><div class="dsb-dept-name">${d}</div><div class="dsb-dept-code">${meta.code}</div></div>
+      <div class="dsb-dept-footer"><div class="dsb-dept-count"><i class="fas fa-book" style="font-size:10px;"></i>&nbsp;${count} subject${count!==1?'s':''}</div><i class="fas fa-chevron-right dsb-dept-arrow"></i></div>
+    </div>`;
   }).join('');
 }
 
-/* ── track which dept is open in the drawer for re-render after edit ── */
 let _drawerDept = '';
 
 window.openDsbDrawer = function(deptName) {
   _drawerDept = deptName;
-  const meta     = DEPT_META[deptName] || {};
+  const meta = DEPT_META[deptName] || {};
   const subjects = subjectsList.filter(s => s.dept === deptName);
-  const totalQs  = subjects.reduce((a,s) => a+(s.totalQs||0), 0);
-
-  document.getElementById('dsbDrawerTitle').innerHTML =
-    `<i class="${meta.icon||'fas fa-building'}"></i> ${deptName}
-     <span class="badge badge-dept" style="font-size:10px;">${meta.code}</span>`;
-
+  const totalQs = subjects.reduce((a,s) => a+(s.totalQs||0), 0);
+  document.getElementById('dsbDrawerTitle').innerHTML = `<i class="${meta.icon||'fas fa-building'}"></i> ${deptName} <span class="badge badge-dept" style="font-size:10px;">${meta.code}</span>`;
   document.getElementById('dsbDrawerBody').innerHTML = `
     <div class="dsb-drawer-meta">
       <span><i class="fas fa-user-tie"></i> ${meta.hod||'—'}</span>
@@ -724,33 +1030,19 @@ window.openDsbDrawer = function(deptName) {
       <span><i class="fas fa-align-left"></i> ${meta.desc||''}</span>
     </div>
     <div class="dsb-subject-list">
-      ${subjects.length === 0
-        ? `<div class="dsb-empty"><i class="fas fa-folder-open"></i>No subjects yet for this department.<br><small>Use the form below to add one.</small></div>`
-        : subjects.map(s => {
-            const idx = subjectsList.indexOf(s);
-            return `
-              <div class="dsb-subject-row">
-                <div class="dsb-subject-info">
-                  <div class="dsb-subject-name">${s.name}</div>
-                  <div class="dsb-subject-date">Added ${s.created?s.created.toLocaleDateString():'—'}</div>
-                </div>
-                <div class="dsb-subject-badges">
-                  <span class="badge badge-duration"><i class="far fa-clock"></i> ${s.duration} min</span>
-                  <span class="badge badge-score"><i class="fas fa-circle-question"></i> ${s.totalQs||0} Qs</span>
-                  <button class="btn btn-sm" style="padding:4px 10px;" title="Edit"
-                    onclick="openEditModal(${idx})">
-                    <i class="fas fa-pen"></i>
-                  </button>
-                  <button class="btn btn-sm btn-danger" style="padding:4px 10px;" title="Delete"
-                    onclick="deleteSubjectFromDrawer(${idx},'${deptName.replace(/'/g,"\\'")}')">
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-              </div>`;
-          }).join('')
-      }
+      ${subjects.length === 0 ? `<div class="dsb-empty"><i class="fas fa-folder-open"></i>No subjects yet for this department.<br><small>Use the form below to add one.</small></div>` : subjects.map(s => {
+        const idx = subjectsList.indexOf(s);
+        return `<div class="dsb-subject-row">
+          <div class="dsb-subject-info"><div class="dsb-subject-name">${s.name}</div><div class="dsb-subject-date">Added ${s.created?s.created.toLocaleDateString():'—'}</div></div>
+          <div class="dsb-subject-badges">
+            <span class="badge badge-duration"><i class="far fa-clock"></i> ${s.duration} min</span>
+            <span class="badge badge-score"><i class="fas fa-circle-question"></i> ${s.totalQs||0} Qs</span>
+            <button class="btn btn-sm" style="padding:4px 10px;" onclick="openEditModal(${idx})"><i class="fas fa-pen"></i></button>
+            <button class="btn btn-sm btn-danger" style="padding:4px 10px;" onclick="deleteSubjectFromDrawer(${idx},'${deptName.replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>`;
+      }).join('')}
     </div>`;
-
   document.getElementById('dsbDrawerBackdrop').classList.add('open');
   document.body.style.overflow = 'hidden';
 };
@@ -765,12 +1057,13 @@ window.deleteSubjectFromDrawer = function(idx, deptName) {
     subjectsList.splice(idx, 1);
     renderDSB();
     renderSubjects(document.getElementById('deptSearchInput')?.value || '');
-    openDsbDrawer(deptName); // refresh drawer content
+    renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value || '');
+    openDsbDrawer(deptName);
   }
 };
 
 /* ============================================================
-   EDIT SUBJECT MODAL  (z-index 400 — above drawer at 300)
+   EDIT SUBJECT MODAL
    ============================================================ */
 let editingIndex = -1;
 
@@ -778,33 +1071,34 @@ window.openEditModal = function(idx) {
   const sub = subjectsList[idx];
   if (!sub) return;
   editingIndex = idx;
-  document.getElementById('edit-dept').value     = sub.dept;
-  document.getElementById('edit-name').value     = sub.name;
+  document.getElementById('edit-dept').value = sub.dept;
+  document.getElementById('edit-name').value = sub.name;
   document.getElementById('edit-duration').value = sub.duration;
-  document.getElementById('edit-totalqs').value  = sub.totalQs || 0;
-  document.getElementById('edit-date').value     = sub.created ? sub.created.toISOString().split('T')[0] : '';
+  document.getElementById('edit-totalqs').value = sub.totalQs || 0;
+  document.getElementById('edit-date').value = sub.created ? sub.created.toISOString().split('T')[0] : '';
   document.getElementById('editModal').classList.add('open');
-  // body overflow already set by drawer — no change needed
+  document.body.style.overflow = 'hidden';
 };
 
 window.closeEditModal = function() {
   document.getElementById('editModal').classList.remove('open');
+  document.body.style.overflow = '';
   editingIndex = -1;
 };
 
 window.saveEditSubject = function() {
   if (editingIndex < 0) return;
-  const dept     = document.getElementById('edit-dept').value.trim();
-  const name     = document.getElementById('edit-name').value.trim();
+  const dept = document.getElementById('edit-dept').value.trim();
+  const name = document.getElementById('edit-name').value.trim();
   const duration = parseInt(document.getElementById('edit-duration').value);
-  const totalQs  = parseInt(document.getElementById('edit-totalqs').value);
+  const totalQs = parseInt(document.getElementById('edit-totalqs').value);
   if (!dept||!name||isNaN(duration)) { alert('Required fields missing'); return; }
   subjectsList[editingIndex] = { ...subjectsList[editingIndex], dept, name, duration, totalQs: isNaN(totalQs)?0:totalQs };
   closeEditModal();
   renderDSB();
   renderSubjects(document.getElementById('deptSearchInput')?.value||'');
   renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value||'');
-  if (_drawerDept) openDsbDrawer(dept || _drawerDept); // re-open drawer with refreshed data
+  if (_drawerDept) openDsbDrawer(dept || _drawerDept);
 };
 
 /* ============================================================
@@ -821,40 +1115,20 @@ function renderSubjectsByName(searchName) {
   if (!filtered.length) { container.innerHTML = '<div class="notice"><i class="fas fa-search"></i> No subjects match that name.</div>'; return; }
   container.innerHTML = filtered.map(sub => {
     const meta = DEPT_META[sub.dept]||{};
-    return `<div class="subject-card">
-      <div class="subject-card-top">
-        <span class="badge badge-dept"><i class="${meta.icon||'fas fa-building'}"></i> ${sub.dept}</span>
-        <span class="badge badge-duration"><i class="far fa-clock"></i> ${sub.duration} min</span>
-      </div>
-      <div class="subject-card-name">${sub.name}</div>
-    </div>`;
+    return `<div class="subject-card"><div class="subject-card-top"><span class="badge badge-dept"><i class="${meta.icon||'fas fa-building'}"></i> ${sub.dept}</span><span class="badge badge-duration"><i class="far fa-clock"></i> ${sub.duration} min</span></div><div class="subject-card-name">${sub.name}</div></div>`;
   }).join('');
 }
 
 function renderSubjects(filter) {
   const container = document.getElementById('subjectCardsContainer');
-  const noMsg     = document.getElementById('noSubjectsMsg');
+  const noMsg = document.getElementById('noSubjectsMsg');
   if (!container) return;
   const filtered = filter.trim() ? subjectsList.filter(s=>s.dept.toLowerCase().includes(filter.toLowerCase())) : subjectsList;
   if (!filtered.length) { container.innerHTML=''; if(noMsg) noMsg.style.display='block'; return; }
   if (noMsg) noMsg.style.display='none';
   container.innerHTML = filtered.map(sub => {
     const idx = subjectsList.indexOf(sub);
-    return `<div class="subject-card">
-      <div class="subject-card-top">
-        <span class="badge badge-dept">${sub.dept}</span>
-        <span class="badge badge-duration"><i class="far fa-clock"></i> ${sub.duration} min</span>
-      </div>
-      <div class="subject-card-name">${sub.name}</div>
-      <div class="subject-card-meta">
-        <span><i class="fas fa-circle-question"></i> ${sub.totalQs||0} Questions</span>
-        <span><i class="fas fa-calendar"></i> ${sub.created?sub.created.toLocaleDateString():'—'}</span>
-      </div>
-      <div class="subject-card-actions">
-        <button class="btn btn-sm" onclick="openEditModal(${idx})"><i class="fas fa-pen"></i> Edit</button>
-        <button class="btn btn-sm btn-danger" onclick="deleteSubject(${idx})"><i class="fas fa-trash"></i></button>
-      </div>
-    </div>`;
+    return `<div class="subject-card"><div class="subject-card-top"><span class="badge badge-dept">${sub.dept}</span><span class="badge badge-duration"><i class="far fa-clock"></i> ${sub.duration} min</span></div><div class="subject-card-name">${sub.name}</div><div class="subject-card-meta"><span><i class="fas fa-circle-question"></i> ${sub.totalQs||0} Questions</span><span><i class="fas fa-calendar"></i> ${sub.created?sub.created.toLocaleDateString():'—'}</span></div><div class="subject-card-actions"><button class="btn btn-sm" onclick="openEditModal(${idx})"><i class="fas fa-pen"></i> Edit</button><button class="btn btn-sm btn-danger" onclick="deleteSubject(${idx})"><i class="fas fa-trash"></i></button></div></div>`;
   }).join('');
 }
 
@@ -868,230 +1142,435 @@ window.deleteSubject = function(i) {
 };
 
 /* ============================================================
+   SCHEDULE EXAM FUNCTIONS
+   ============================================================ */
+function populateSchDeptDropdown(selectId) {
+  const sel = document.getElementById(selectId);
+  if (!sel) return;
+  const current = sel.value;
+  sel.innerHTML = '<option value="">— Select Department —</option>';
+  departmentsData.forEach(d => {
+    const opt = document.createElement('option');
+    opt.value = d.name;
+    opt.textContent = `${d.name} (${d.code})`;
+    if (d.name === current) opt.selected = true;
+    sel.appendChild(opt);
+  });
+}
+
+function openScheduleModal() {
+  populateSchDeptDropdown('schDept');
+  document.getElementById('schSubject').value = '';
+  document.getElementById('schDate').value = new Date().toISOString().split('T')[0];
+  document.getElementById('schTime').value = '09:00';
+  document.getElementById('schDuration').value = '90';
+  document.getElementById('schMaxStudents').value = '';
+  document.getElementById('schVenue').value = '';
+  openGenericModal('scheduleModal');
+}
+
+function saveScheduledExam() {
+  const deptName = document.getElementById('schDept').value;
+  const subject = document.getElementById('schSubject').value.trim();
+  const date = document.getElementById('schDate').value;
+  const time = document.getElementById('schTime').value;
+  const duration = parseInt(document.getElementById('schDuration').value) || 0;
+  const maxStudents = parseInt(document.getElementById('schMaxStudents').value) || 0;
+  const venue = document.getElementById('schVenue').value.trim();
+  if (!deptName||!subject||!date||!time){ alert('Please fill all required fields (*).'); return; }
+  const dept = departmentsData.find(d => d.name===deptName);
+  const code = dept ? dept.code : 'N/A';
+  const id = scheduleIdCounter++;
+  scheduledExams.push({ id, dept:deptName, deptCode:code, deptID:`DEPT-${code}-${String(id).padStart(3,'0')}`, subject, date, time, duration, venue:venue||'TBA', maxStudents, status:'Scheduled' });
+  closeGenericModal('scheduleModal');
+  renderScheduleTable(document.getElementById('schSearchInput')?.value||'');
+  updateScheduleStats();
+}
+
+/* Edit Schedule Exam functions */
+let editingScheduleId = null;
+
+window.openEditScheduleModal = function(id) {
+  const exam = scheduledExams.find(e => e.id === id);
+  if (!exam) return;
+  editingScheduleId = id;
+  populateSchDeptDropdown('editSchDept');
+  document.getElementById('editSchDept').value = exam.dept;
+  document.getElementById('editSchSubject').value = exam.subject;
+  document.getElementById('editSchDate').value = exam.date;
+  document.getElementById('editSchTime').value = exam.time;
+  document.getElementById('editSchDuration').value = exam.duration;
+  document.getElementById('editSchMaxStudents').value = exam.maxStudents;
+  document.getElementById('editSchVenue').value = exam.venue;
+  document.getElementById('editSchStatus').value = exam.status;
+  document.getElementById('editScheduleModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeEditScheduleModal = function() {
+  document.getElementById('editScheduleModal').classList.remove('open');
+  document.body.style.overflow = '';
+  editingScheduleId = null;
+};
+
+window.saveEditScheduleExam = function() {
+  if (editingScheduleId === null) return;
+  const examIndex = scheduledExams.findIndex(e => e.id === editingScheduleId);
+  if (examIndex === -1) return;
+  const deptName = document.getElementById('editSchDept').value;
+  const dept = departmentsData.find(d => d.name === deptName);
+  const code = dept ? dept.code : 'N/A';
+  scheduledExams[examIndex] = {
+    ...scheduledExams[examIndex],
+    dept: deptName,
+    deptCode: code,
+    subject: document.getElementById('editSchSubject').value.trim(),
+    date: document.getElementById('editSchDate').value,
+    time: document.getElementById('editSchTime').value,
+    duration: parseInt(document.getElementById('editSchDuration').value) || 0,
+    maxStudents: parseInt(document.getElementById('editSchMaxStudents').value) || 0,
+    venue: document.getElementById('editSchVenue').value.trim() || 'TBA',
+    status: document.getElementById('editSchStatus').value
+  };
+  closeEditScheduleModal();
+  renderScheduleTable(document.getElementById('schSearchInput')?.value||'');
+  updateScheduleStats();
+};
+
+function renderScheduleTable(filter) {
+  const tbody = document.getElementById('scheduleTableBody');
+  const noMsg = document.getElementById('noScheduleMsg');
+  const countEl = document.getElementById('schTableCount');
+  const statusVal = document.getElementById('schStatusFilter')?.value || '';
+  const q = (filter||'').trim().toLowerCase();
+  const list = scheduledExams.filter(ex => {
+    const matchText = !q || ex.dept.toLowerCase().includes(q) || ex.subject.toLowerCase().includes(q) || ex.deptCode.toLowerCase().includes(q) || ex.deptID.toLowerCase().includes(q);
+    const matchStatus = !statusVal || ex.status===statusVal;
+    return matchText && matchStatus;
+  });
+  if(countEl) countEl.textContent = list.length + ' exam' + (list.length!==1?'s':'');
+  if(!list.length){ tbody.innerHTML=''; if(noMsg) noMsg.style.display='block'; return; }
+  if(noMsg) noMsg.style.display='none';
+  tbody.innerHTML = list.map((ex,i) => {
+    const badgeCls = ex.status==='Scheduled'?'badge-scheduled': ex.status==='Completed'?'badge-completed':'badge-cancelled';
+    const fmtDate = ex.date ? new Date(ex.date+'T00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—';
+    return `<tr><td style="font-weight:600;">${i+1}</td><td style="font-weight:700;">${ex.dept}</td><td><span class="badge badge-dept">${ex.deptCode}</span></td><td style="font-size:11px;">${ex.deptID}</td><td>${ex.subject}</td><td>${fmtDate}</td><td>${ex.time}</td><td>${ex.duration} min</td><td>${ex.venue}</td><td style="text-align:center;">${ex.maxStudents||'—'}</td><td><span class="badge ${badgeCls}">${ex.status}</span></td><td style="display:flex;gap:6px;"><button class="btn btn-sm btn-info" onclick="openEditScheduleModal(${ex.id})"><i class="fas fa-pen"></i></button><button class="btn btn-sm btn-danger" onclick="deleteScheduledExam(${ex.id})"><i class="fas fa-trash"></i></button></td></tr>`;
+  }).join('');
+}
+
+function updateScheduleStats() {
+  document.getElementById('schStatTotal').textContent = scheduledExams.length;
+  document.getElementById('schStatUpcoming').textContent = scheduledExams.filter(e=>e.status==='Scheduled').length;
+  document.getElementById('schStatCompleted').textContent = scheduledExams.filter(e=>e.status==='Completed').length;
+  document.getElementById('schStatCancelled').textContent = scheduledExams.filter(e=>e.status==='Cancelled').length;
+}
+
+window.deleteScheduledExam = function(id) {
+  if(confirm('Remove this scheduled exam?')){
+    scheduledExams = scheduledExams.filter(e=>e.id!==id);
+    renderScheduleTable(document.getElementById('schSearchInput')?.value||'');
+    updateScheduleStats();
+  }
+};
+
+function openGenericModal(id) {
+  document.getElementById(id).classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeGenericModal(id) {
+  document.getElementById(id).classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('scheduleModal')?.addEventListener('click', function(e){ if(e.target === this) closeGenericModal('scheduleModal'); });
+document.getElementById('editScheduleModal')?.addEventListener('click', function(e){ if(e.target === this) closeEditScheduleModal(); });
+
+/* ============================================================
    QUESTION SETS
    ============================================================ */
 function renderQuestionSetsByDeptSubj(deptFilter, subjFilter) {
   const container = document.getElementById('questionSetsResultsContainer');
-  const noMsg     = document.getElementById('noQsSetsMsg');
-  const filtered  = questionSetsData.filter(qs=>{
-    const md = !deptFilter.trim()||qs.dept.toLowerCase().includes(deptFilter.toLowerCase());
-    const ms = !subjFilter.trim()||qs.subject.toLowerCase().includes(subjFilter.toLowerCase());
-    return md&&ms;
+  const noMsg = document.getElementById('noQsSetsMsg');
+  const filtered = questionSetsData.filter(qs => {
+    let md = !deptFilter.trim() || qs.dept.toLowerCase().includes(deptFilter.toLowerCase());
+    let ms = !subjFilter.trim() || qs.subject.toLowerCase().includes(subjFilter.toLowerCase());
+    return md && ms;
   });
   if (!filtered.length) { container.innerHTML=''; noMsg.style.display='block'; return; }
   noMsg.style.display='none';
-  container.innerHTML = filtered.map(qs=>`
-    <div class="panel question-set-card">
-      <div class="question-set-header"><i class="fas fa-layer-group"></i> ${qs.dept} · ${qs.subject} (${qs.questions.length} questions)</div>
-      ${qs.questions.map((q,i)=>`
-        <div class="question-item">
-          <strong>Q${i+1}:</strong> ${q.text}
-          <div style="margin-top:8px;">${q.options.map((opt,idx)=>`<div>${String.fromCharCode(65+idx)}. ${opt}</div>`).join('')}</div>
-          <span class="badge badge-score" style="margin-top:6px;display:inline-flex;">✓ Correct: ${q.correct}</span>
-        </div>`).join('')}
-    </div>`).join('');
+  container.innerHTML = filtered.map(qs => `<div class="panel question-set-card"><div class="question-set-header"><i class="fas fa-layer-group"></i> ${qs.dept} · ${qs.subject} (${qs.questions.length} questions)</div>${qs.questions.map((q,i)=>`<div class="question-item"><strong>Q${i+1}:</strong> ${q.text}<div style="margin-top:8px;">${q.options.map((opt,idx)=>`<div>${String.fromCharCode(65+idx)}. ${opt}</div>`).join('')}</div><span class="badge badge-score" style="margin-top:6px;display:inline-flex;">✓ Correct: ${q.correct}</span></div>`).join('')}</div>`).join('');
 }
 
 /* ============================================================
    STUDENTS
    ============================================================ */
 async function getStudentList() {
+  const tbody = document.getElementById('studentTableBody');
+  const e = {role:'user'};
   try {
-    const api=await fetch('/cbt/ansofra/apiadmin/GET/students',{method:'POST',body:{role:'user'}});
-    const r=await api.json();
-    if(r.status==='success'){
-      document.getElementById('studentTableBody').innerHTML=r.response.map(s=>`
-        <tr><td style="font-weight:600">${s.regNum}</td><td>${s.fullname}</td>
-        <td><span class="badge badge-dept">${s.department}</span></td>
-        <td>${s.email}</td><td>${s.role}</td>
-        <td><button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button></td></tr>`).join('');
+    const api = await fetch('/cbt/ansofra/apiadmin/GET/students', { method:"POST", body:e });
+    const result = await api.json();
+    if(result.status==="success"){
+      let display = '';
+      for(let i=0; i<result.response.length; i++){
+        const r = result.response[i];
+        display += `<tr><td style="font-weight:600">${r.regNum}</td><td>${r.fullname}</td><td><span class="badge badge-dept">${r.department}</span></td><td>${r.email}</td><td>${r.role}</td><td><button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button></td></tr>`;
+      }
+      tbody.innerHTML = display;
     } else {
-      document.getElementById('studentCount').textContent='No active users yet';
-      document.getElementById('table-wrap').style.display='none';
+      document.getElementById("studentCount").textContent = "No Active user yet";
+      document.getElementById("table-wrap").style.display = "none";
     }
-  } catch(e){}
+  } catch(e) { console.log(e); }
 }
 
-document.getElementById('searchStudentRegNo')?.addEventListener('click',async function(){
-  const regNo=document.getElementById('regSearch').value.trim();
-  if(!regNo){alert('Enter a registration number');return;}
-  try{
-    const api=await fetch('/cbt/ansofra/apiadmin/search/regNum',{method:'POST',body:{regNum:regNo}});
-    const r=await api.json();
-    if(r.status==='success') document.getElementById('studentTableBody').innerHTML=r.response.map(s=>`
-      <tr><td style="font-weight:600">${s.regNum}</td><td>${s.fullname}</td>
-      <td><span class="badge badge-dept">${s.department}</span></td>
-      <td>${s.email}</td><td>${s.role}</td>
-      <td><button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button></td></tr>`).join('');
-  }catch(e){}
+document.getElementById("searchStudentRegNo")?.addEventListener("click", async function(){
+  const tbody = document.getElementById('studentTableBody');
+  const regNo = document.getElementById('regSearch').value.trim();
+  if(!regNo){ alert("you have not entered reg number of the student"); return; }
+  const e = {regNum:regNo};
+  try {
+    const api = await fetch('/cbt/ansofra/apiadmin/search/regNum', { method:"POST", body:e });
+    const result = await api.json();
+    if(result.status==="success"){
+      let output = '';
+      for(let i=0; i<result.response.length; i++){
+        const r = result.response[i];
+        output += `<tr><td style="font-weight:600">${r.regNum}</td><td>${r.fullname}</td><td><span class="badge badge-dept">${r.department}</span></td><td>${r.email}</td><td>${r.role}</td><td><button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button></td></tr>`;
+      }
+      tbody.innerHTML = output;
+    } else {
+      document.getElementById("studentCount").textContent = "Registriation number not found";
+      document.getElementById("table-wrap").style.display = "none";
+    }
+  } catch(e) { console.log(e); }
 });
 
-document.getElementById('deptFilter')?.addEventListener('change',async function(){
-  const val=this.value.trim();
-  if(!val){alert('Select a department');return;}
-  try{
-    const api=await fetch('/cbt/ansofra/apiadmin/selected/department',{method:'POST',body:{department:val}});
-    const r=await api.json();
-    if(r.status==='success') document.getElementById('studentTableBody').innerHTML=r.response.map(s=>`
-      <tr><td style="font-weight:600">${s.regNum}</td><td>${s.fullname}</td>
-      <td><span class="badge badge-dept">${s.department}</span></td>
-      <td>${s.email}</td><td>${s.role}</td>
-      <td><button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button></td></tr>`).join('');
-  }catch(e){}
+document.getElementById("deptFilter")?.addEventListener("change", async () => {
+  const tbody = document.getElementById('studentTableBody');
+  const val = document.getElementById('deptFilter').value.trim();
+  if(!val){ alert("Select department"); return; }
+  const e = {department:val};
+  try {
+    const api = await fetch('/cbt/ansofra/apiadmin/selected/department', { method:"POST", body:e });
+    const result = await api.json();
+    if(result.status==="success"){
+      let output = '';
+      for(let i=0; i<result.response.length; i++){
+        const r = result.response[i];
+        output += `<tr><td style="font-weight:600">${r.regNum}</td><td>${r.fullname}</td><td><span class="badge badge-dept">${r.department}</span></td><td>${r.email}</td><td>${r.role}</td><td><button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button></td></tr>`;
+      }
+      tbody.innerHTML = output;
+    } else {
+      document.getElementById("studentCount").textContent = "No record of user found in that department";
+      document.getElementById("table-wrap").style.display = "none";
+    }
+  } catch(e) { console.log(e); }
 });
 
 /* ============================================================
-   DEPARTMENTS PAGE
+   DEPARTMENTS
    ============================================================ */
-function renderDeptTable(filter){
-  const tbody=document.getElementById('deptTableBody');
-  const noMsg=document.getElementById('noDeptMsg');
-  const countEl=document.getElementById('deptCount');
-  if(!tbody)return;
-  const list=filter.trim()?departmentsData.filter(d=>
-    d.name.toLowerCase().includes(filter.toLowerCase())||
-    d.code.toLowerCase().includes(filter.toLowerCase())||
-    (d.hod||'').toLowerCase().includes(filter.toLowerCase())):departmentsData;
-  if(countEl) countEl.textContent=list.length+' department'+(list.length!==1?'s':'');
-  if(!list.length){tbody.innerHTML='';if(noMsg)noMsg.style.display='block';return;}
-  if(noMsg)noMsg.style.display='none';
-  tbody.innerHTML=list.map((d,i)=>`
-    <tr>
-      <td style="font-weight:600;color:var(--ink-soft);font-family:sans-serif;">${i+1}</td>
-      <td><div style="font-weight:700;color:var(--ink);font-family:sans-serif;">${d.name}</div>
-          ${d.desc?`<div style="font-size:11px;color:var(--ink-soft);font-family:sans-serif;margin-top:2px;">${d.desc}</div>`:''}</td>
-      <td><span class="badge badge-dept">${d.code}</span></td>
-      <td style="font-family:sans-serif;color:var(--ink-mid);">${d.hod||'<span style="color:var(--ink-soft);font-style:italic;">Not assigned</span>'}</td>
-      <td style="font-family:sans-serif;color:var(--ink-soft);font-size:12px;max-width:160px;">${d.desc||'—'}</td>
-      <td style="font-family:sans-serif;color:var(--ink-soft);font-size:12px;white-space:nowrap;">${d.created.toLocaleDateString()}</td>
-      <td><button class="btn btn-sm btn-danger" onclick="deleteDepartment('${d.name.replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i></button></td>
-    </tr>`).join('');
+function renderDeptTable(filter) {
+  const tbody = document.getElementById('deptTableBody');
+  const noMsg = document.getElementById('noDeptMsg');
+  const countEl = document.getElementById('deptCount');
+  if(!tbody) return;
+  const list = filter.trim() ? departmentsData.filter(d => d.name.toLowerCase().includes(filter.toLowerCase()) || d.code.toLowerCase().includes(filter.toLowerCase()) || (d.hod||'').toLowerCase().includes(filter.toLowerCase())) : departmentsData;
+  if(countEl) countEl.textContent = list.length + ' department' + (list.length!==1?'s':'');
+  if(!list.length){ tbody.innerHTML=''; if(noMsg) noMsg.style.display='block'; return; }
+  if(noMsg) noMsg.style.display='none';
+  tbody.innerHTML = list.map((d,i) => `<tr><td>${i+1}</td><td><div style="font-weight:700;">${d.name}</div>${d.desc?`<div style="font-size:11px;">${d.desc}</div>`:''}</td><td><span class="badge badge-dept">${d.code}</span></td><td>${d.hod||'<span style="font-style:italic;">Not assigned</span>'}</td><td>${d.desc||'—'}</td><td>${d.created.toLocaleDateString()}</td><td><button class="btn btn-sm btn-danger" onclick="deleteDepartment('${d.name.replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
 }
 
-window.deleteDepartment=function(name){
+window.deleteDepartment = function(name) {
   if(confirm('Remove department: '+name+'?')){
-    departmentsData=departmentsData.filter(d=>d.name!==name);
+    departmentsData = departmentsData.filter(d => d.name!==name);
     renderDeptTable(document.getElementById('deptListSearch')?.value||'');
     syncDeptStats();
+    populateSchDeptDropdown('schDept');
+    populateSchDeptDropdown('editSchDept');
   }
 };
 
-function syncDeptStats(){
-  const total=departmentsData.length;
-  document.getElementById('stat-depts').textContent=total;
-  document.getElementById('deptTotalCount').textContent=total;
-  document.getElementById('deptHODCount').textContent=departmentsData.filter(d=>d.hod).length;
+function syncDeptStats() {
+  const total = departmentsData.length;
+  document.getElementById('stat-depts').textContent = total;
+  document.getElementById('deptTotalCount').textContent = total;
+  document.getElementById('deptHODCount').textContent = departmentsData.filter(d=>d.hod).length;
 }
 
-document.getElementById('saveDeptBtn')?.addEventListener('click',async function(){
-  const form=new FormData(document.getElementById('departmentform'));
-  const time=new Date().toLocaleTimeString()+' '+new Date().toLocaleDateString();
-  form.append('date_created',time);form.append('role','set');
-  try{
-    const api=await fetch('/cbt/ansofra/apiadmin/set/department',{method:'POST',body:form});
-    const r=await api.json();
-    if(r.status==='success'){
-      alert('Department saved successfully');
-      renderDeptTable('');syncDeptStats();
-      ['newDeptName','newDeptCode','newDeptHOD','newDeptDesc'].forEach(id=>{document.getElementById(id).value='';});
-    }else{alert(r.response);}
-  }catch(e){alert('Could not reach server — check your connection.');}
+document.getElementById("saveDeptBtn")?.addEventListener("click", async () => {
+  const data = document.getElementById("departmentform");
+  const form = new FormData(data);
+  const time = new Date().toLocaleTimeString() + " " + new Date().toLocaleDateString();
+  form.append("date_created", time);
+  form.append("role", "set");
+  try {
+    const api = await fetch('/cbt/ansofra/apiadmin/set/department', { method:"POST", body:form });
+    const result = await api.json();
+    if(result.status==='success'){
+      alert("save successful");
+      renderDeptTable(document.getElementById('deptListSearch')?.value || '');
+      syncDeptStats();
+      document.getElementById('newDeptName').value = '';
+      document.getElementById('newDeptCode').value = '';
+      document.getElementById('newDeptHOD').value = '';
+      document.getElementById('newDeptDesc').value = '';
+      populateSchDeptDropdown('schDept');
+      populateSchDeptDropdown('editSchDept');
+    } else {
+      alert(`${result.response}`);
+    }
+  } catch(e) { alert("Could not reach server"); }
 });
 
-document.getElementById('deptSearchBtn')?.addEventListener('click',async function(){
-  const code=document.getElementById('deptListSearch').value.trim();
-  try{
-    const api=await fetch('/cbt/ansofra/apiadmin/search/dep/code',{method:'POST',headers:{'Content-type':'application/json'},body:JSON.stringify({DepartmentCode:code})});
-    const r=await api.json();
-    if(r.status==='success'){
-      document.getElementById('deptTableBody').innerHTML=r.response.map((d,i)=>`
-        <tr><td>${i+1}</td><td>${d.department}</td><td>${d.DepartmentCode}</td>
-        <td>${d.HeadOfDepartment}</td><td>${d.Description}</td><td>${d.Date_Created}</td>
-        <td><button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button></td></tr>`).join('');
-    }else{document.getElementById('displayAnyErr').style.display='none';document.getElementById('noDeptMsg').style.display='block';}
-  }catch(e){renderDeptTable(code);}
+document.getElementById("deptSearchBtn")?.addEventListener("click", async () => {
+  const type = document.getElementById("deptListSearch").value.trim();
+  const e = {DepartmentCode:type};
+  try {
+    const api = await fetch('/cbt/ansofra/apiadmin/search/dep/code', { method:'POST', headers:{'Content-type':'application/json'}, body:JSON.stringify(e) });
+    const results = await api.json();
+    if(results.status==="success"){
+      const response = results.response;
+      let output = "";
+      for(let i=0; i<response.length; i++){
+        const r = response[i];
+        output += `<tr><td>${i+1}</td><td><div style="font-weight:700;">${r.department}</div></td><td><span class="badge badge-dept">${r.DepartmentCode}</span></td><td>${r.HeadOfDepartment}</td><td>${r.Description}</td><td>${r.Date_Created}</td><td><button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button></td></tr>`;
+      }
+      document.getElementById("deptTableBody").innerHTML = output;
+    } else {
+      renderDeptTable(type);
+    }
+  } catch(e) { renderDeptTable(type); }
 });
 
-document.getElementById('clearDeptBtn')?.addEventListener('click',function(){
-  ['newDeptName','newDeptCode','newDeptHOD','newDeptDesc'].forEach(id=>{document.getElementById(id).value='';});
+document.getElementById('clearDeptBtn')?.addEventListener('click', () => {
+  ['newDeptName','newDeptCode','newDeptHOD','newDeptDesc'].forEach(id => document.getElementById(id).value='');
 });
-document.getElementById('deptListSearch')?.addEventListener('keyup',function(e){if(e.key==='Enter')renderDeptTable(this.value);});
+document.getElementById('deptListSearch')?.addEventListener('keyup', function(e){ if(e.key==='Enter') renderDeptTable(this.value); });
 
 /* ============================================================
    DASHBOARD API CALLS
    ============================================================ */
-const getID    = localStorage.getItem('cbt-admin-email');
+const getID = localStorage.getItem('cbt-admin-email');
 const getEmail = localStorage.getItem('cbt-admin-ID');
 
-async function getDetail(){try{const api=await fetch('/cbt/ansofra/apiadmin/Details',{method:'POST',body:{email:getEmail,ID:getID}});const r=await api.json();if(r.status==='success'){document.getElementById('profile-id').textContent=r.response.ID;document.getElementById('profile-email').textContent=r.response.email;document.getElementById('profile-name').textContent=r.response.fullname;}}catch(e){}}
-async function getTotalStudent(){try{const api=await fetch('/cbt/ansofra/apiadmin/TotalStudents',{method:'POST',body:{role:'user'}});const r=await api.json();document.getElementById('stat-students').textContent=r.status==='success'?r.response:'00';}catch(e){document.getElementById('stat-students').textContent='00';}}
-async function getTotalSubject(){try{const api=await fetch('/cbt/ansofra/apiadmin/TotalSubjects',{method:'POST',body:{role:'set'}});const r=await api.json();document.getElementById('stat-subjects').textContent=r.status==='success'?r.response:subjectsList.length;}catch(e){document.getElementById('stat-subjects').textContent=subjectsList.length;}}
-async function getLastLogin(){try{const api=await fetch('/cbt/ansofra/apiadmin/Get/LastLogin',{method:'POST',body:{email:getEmail,ID:getID}});const r=await api.json();if(r.status==='success'){document.getElementById('last-seen-display').textContent=r.response.last_seen;document.getElementById('last-login').textContent=r.response.last_login;}}catch(e){}}
+async function getDetail() {
+  try {
+    const api = await fetch('/cbt/ansofra/apiadmin/Details', { method:'POST', body:{email:getEmail, ID:getID} });
+    const result = await api.json();
+    if(result.status==="success"){
+      document.getElementById("profile-id").textContent = result.response.ID;
+      document.getElementById("profile-email").textContent = result.response.email;
+      document.getElementById("profile-name").textContent = result.response.fullname;
+    }
+  } catch(e) {}
+}
+
+async function getTotalStudent() {
+  try {
+    const api = await fetch('/cbt/ansofra/apiadmin/TotalStudents', { method:'POST', body:{role:'user'} });
+    const result = await api.json();
+    document.getElementById("stat-students").textContent = result.status==="success" ? result.response : "00";
+  } catch(e) { document.getElementById("stat-students").textContent = "00"; }
+}
+
+async function getTotalSubject() {
+  try {
+    const api = await fetch('/cbt/ansofra/apiadmin/TotalSubjects', { method:'POST', body:{role:'set'} });
+    const result = await api.json();
+    document.getElementById("stat-subjects").textContent = result.status==="success" ? result.response : subjectsList.length;
+  } catch(e) { document.getElementById("stat-subjects").textContent = subjectsList.length; }
+}
+
+async function getLastLogin() {
+  try {
+    const api = await fetch("/cbt/ansofra/apiadmin/Get/LastLogin", { method:"POST", body:{email:getEmail, ID:getID} });
+    const result = await api.json();
+    if(result.status==="success"){
+      document.getElementById('last-seen-display').textContent = result.response.last_seen;
+      document.getElementById('last-login').textContent = result.response.last_login;
+    }
+  } catch(e) {}
+}
 
 /* ============================================================
    NAVIGATION
    ============================================================ */
-window.showSection=function(id,navEl){
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+window.showSection = function(id, navEl){
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id)?.classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  if(navEl)navEl.classList.add('active');
-  const titles={dashboard:'Dashboard',students:'Students',subjects:'Subjects',questions:'Questions',results:'Results',departments:'Departments'};
-  document.getElementById('pageTitle').textContent=titles[id]||id;
-  if(id==='students')getStudentList();
-  if(id==='subjects'){renderDSB();renderSubjects('');renderSubjectsByName('');}
-  if(id==='questions'){document.getElementById('questionStep1').style.display='';document.getElementById('questionStep2').style.display='none';renderQuestionSetsByDeptSubj('','');}
-  if(id==='departments'){renderDeptTable('');syncDeptStats();}
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  if(navEl) navEl.classList.add('active');
+  const titles = { dashboard:'Dashboard', students:'Students', subjects:'Subjects', questions:'Questions', results:'Results', departments:'Departments', schedule:'Schedule Exam' };
+  document.getElementById('pageTitle').textContent = titles[id] || id;
+  if(id === 'students') getStudentList();
+  if(id === 'questions'){ document.getElementById('questionStep1').style.display = ''; document.getElementById('questionStep2').style.display = 'none'; renderQuestionSetsByDeptSubj('',''); }
+  if(id === 'departments'){ renderDeptTable(''); syncDeptStats(); }
+  if(id === 'subjects'){ renderDSB(); renderSubjects(''); renderSubjectsByName(''); }
+  if(id === 'schedule'){ renderScheduleTable(''); updateScheduleStats(); populateSchDeptDropdown('schDept'); populateSchDeptDropdown('editSchDept'); }
   closeSidebar();
 };
 
-window.openSidebar=function(){document.getElementById('sidebar').classList.add('open');document.getElementById('sidebarOverlay').classList.add('visible');document.body.style.overflow='hidden';};
-window.closeSidebar=function(){document.getElementById('sidebar').classList.remove('open');document.getElementById('sidebarOverlay').classList.remove('visible');document.body.style.overflow='';};
+window.openSidebar = function(){ document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('visible'); document.body.style.overflow='hidden'; };
+window.closeSidebar = function(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('visible'); document.body.style.overflow=''; };
 
 /* ============================================================
-   SUBJECTS EVENT LISTENERS
+   EVENT LISTENERS
    ============================================================ */
 document.getElementById('searchSubjectByNameBtn')?.addEventListener('click',()=>renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value||''));
 document.getElementById('searchSubjectBtn')?.addEventListener('click',()=>renderSubjects(document.getElementById('deptSearchInput')?.value||''));
 document.getElementById('searchQuestionSetsBtn')?.addEventListener('click',()=>renderQuestionSetsByDeptSubj(document.getElementById('qsSearchDept')?.value||'',document.getElementById('qsSearchSubject')?.value||''));
 
 document.getElementById('saveSubjectBtn')?.addEventListener('click',function(){
-  const dept=document.getElementById('newDeptSelect')?.value.trim();
-  const name=document.getElementById('newSubject')?.value.trim();
-  const dur=document.getElementById('newDuration')?.value;
-  if(!dept){alert('Please choose a department');return;}
-  if(!name){alert('Please enter a subject name');return;}
-  if(!dur){alert('Please enter a duration');return;}
-  subjectsList.push({dept,name,duration:+dur,created:new Date(),totalQs:0});
+  const dept = document.getElementById('newDeptSelect')?.value.trim();
+  const name = document.getElementById('newSubject')?.value.trim();
+  const dur = document.getElementById('newDuration')?.value;
+  if(!dept){ alert('Please choose a department'); return; }
+  if(!name){ alert('Please enter a subject name'); return; }
+  if(!dur){ alert('Please enter a duration'); return; }
+  subjectsList.push({ dept, name, duration:+dur, created:new Date(), totalQs:0 });
   renderDSB();
   renderSubjects(document.getElementById('deptSearchInput')?.value||'');
   renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value||'');
-  document.getElementById('newSubject').value='';
-  document.getElementById('newDuration').value='90';
-  document.getElementById('newDeptSelect').value='';
+  document.getElementById('newSubject').value = '';
+  document.getElementById('newDuration').value = '90';
+  document.getElementById('newDeptSelect').value = '';
   openDsbDrawer(dept);
 });
 
-document.getElementById('nextToQuestionBtn')?.addEventListener('click',()=>{
-  const dept=document.getElementById('questionDept')?.value.trim();
-  const subj=document.getElementById('questionSubject')?.value.trim();
-  const dur=document.getElementById('questionDuration')?.value;
-  if(!dept||!subj||!dur){alert('Complete all fields');return;}
-  document.getElementById('displayDept').textContent=dept;
-  document.getElementById('displaySubject').textContent=subj;
-  document.getElementById('displayDuration').textContent=dur;
-  document.getElementById('questionStep1').style.display='none';
-  document.getElementById('questionStep2').style.display='';
+document.getElementById('nextToQuestionBtn')?.addEventListener('click', () => {
+  const dept = document.getElementById('questionDept').value.trim();
+  const subj = document.getElementById('questionSubject').value.trim();
+  const dur = document.getElementById('questionDuration').value;
+  if(!dept||!subj||!dur){ alert('Complete fields'); return; }
+  document.getElementById('displayDept').textContent = dept;
+  document.getElementById('displaySubject').textContent = subj;
+  document.getElementById('displayDuration').textContent = dur;
+  document.getElementById('questionStep1').style.display = 'none';
+  document.getElementById('questionStep2').style.display = '';
 });
-document.getElementById('changeDetailsBtn')?.addEventListener('click',()=>{document.getElementById('questionStep2').style.display='none';document.getElementById('questionStep1').style.display='';});
-function clearQForm(){['questionText','optionA','optionB','optionC','optionD'].forEach(id=>{document.getElementById(id).value='';});document.getElementById('correctAnswer').value='';}
-document.getElementById('saveQuestionBtn')?.addEventListener('click',()=>{if(!document.getElementById('questionText')?.value.trim()){alert('Enter a question');return;}alert('Question saved (demo).');clearQForm();});
-document.getElementById('addAnotherQuestionBtn')?.addEventListener('click',()=>{if(!document.getElementById('questionText')?.value.trim()){alert('Enter a question first');return;}alert('Saved. Add another.');clearQForm();});
+document.getElementById('changeDetailsBtn')?.addEventListener('click', () => {
+  document.getElementById('questionStep2').style.display = 'none';
+  document.getElementById('questionStep1').style.display = '';
+});
+document.getElementById('saveQuestionBtn')?.addEventListener('click', () => {
+  if(!document.getElementById('questionText').value.trim()){ alert('Enter question'); return; }
+  alert('Question saved (demo).');
+  ['questionText','optionA','optionB','optionC','optionD'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('correctAnswer').value='';
+});
+document.getElementById('addAnotherQuestionBtn')?.addEventListener('click', () => {
+  if(!document.getElementById('questionText').value.trim()){ alert('Enter question first'); return; }
+  alert('Saved. Add another.');
+  ['questionText','optionA','optionB','optionC','optionD'].forEach(id => document.getElementById(id).value='');
+  document.getElementById('correctAnswer').value='';
+});
 
 /* ============================================================
    INIT
    ============================================================ */
-document.addEventListener('DOMContentLoaded',async()=>{
+document.addEventListener('DOMContentLoaded', async () => {
   getDetail();
   getTotalStudent();
   getTotalSubject();
@@ -1099,8 +1578,13 @@ document.addEventListener('DOMContentLoaded',async()=>{
   renderDeptTable('');
   syncDeptStats();
   renderDSB();
+  renderSubjects('');
   renderSubjectsByName('');
+  renderScheduleTable('');
+  updateScheduleStats();
   renderQuestionSetsByDeptSubj('','');
+  populateSchDeptDropdown('schDept');
+  populateSchDeptDropdown('editSchDept');
 });
 </script>
 </body>
