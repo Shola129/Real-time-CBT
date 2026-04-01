@@ -2,7 +2,7 @@
 namespace NewdichControllerSrc;
 use NewdichDto\AnsofraDto;
 use NewdichMiddleware\Index;
-use NewdichSrc\SeacrhQues;
+use NewdichSrc\Query\SeacrhQues;
 
 $data = json_decode(file_get_contents("php://input"), true);
 $mid = new Index;
