@@ -194,7 +194,7 @@ elseif($url===$adminArea. "/save/questions"){
     require_once __DIR__ . $srcController . "/SaveQuestController.php";
     exit();
 }
-elseif($url === $adminArea . "/search/question"){
+elseif($url === $adminArea . "/seacrh/question"){
     require_once __DIR__ . $srcController . "/SeacrhQuesController.php";
     exit();
 }
