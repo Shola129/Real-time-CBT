@@ -1720,7 +1720,7 @@ document.getElementById("saveQuestionBtn").addEventListener("click", async ()=>{
   const form = new FormData(data);
   form.append('department', department);
   form.append('subject', sub);
-  const api = await fetch("/cbt/ansofra/apiadmin/", {
+  const api = await fetch("/cbt/ansofra/apiadmin/save/questions", {
       method:"POST",
       body:form
   });
