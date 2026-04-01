@@ -1725,8 +1725,6 @@ document.getElementById("saveQuestionBtn").addEventListener("click", async ()=>{
       body:form
   });
 
-  
-
   const result = await api.json();
   if(result.status==="success"){
     alert(result.response);
