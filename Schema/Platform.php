@@ -76,7 +76,7 @@ class Platform{
         "role VARCHAR(255) NOT NULL",
          "Date_Created VARCHAR(255) NOT NULL"
     ];
-    
+
     public const QUESTIONS_TABLE = "questions";
     public const QUESTIONS_TABLE_COLUMNS = [
         "questions_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
@@ -90,6 +90,7 @@ class Platform{
         "optionC VARCHAR(255) NOT NULL",
         "optionD VARCHAR(255) ",
         "optionE VARCHAR(255) ",
+        "correctOtp VARCHAR(255) NOT NULL",
         "correctAss VARCHAR(255) NOT NULL",
         "role VARCHAR(255) NOT NULL"
     ];
