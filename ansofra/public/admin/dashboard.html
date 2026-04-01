@@ -1727,7 +1727,10 @@ document.getElementById("saveQuestionBtn").addEventListener("click", async ()=>{
 
   const result = await api.json();
   if(result.status==="success"){
-    
+    alert(result.response);
+  }
+  else{
+    alert(result.response);
   }
 })
 /*
