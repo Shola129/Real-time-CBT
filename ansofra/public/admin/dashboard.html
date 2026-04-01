@@ -784,7 +784,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
             <div class="form-row">
               <div class="form-group"><label class="form-label">Department</label><input class="form-control" type="text" id="questionDept" placeholder="Computer Science" value="Computer Science" /></div>
               <div class="form-group"><label class="form-label">Subject</label><input class="form-control" type="text" id="questionSubject" placeholder="Algorithms" value="Algorithms" /></div>
-              <div class="form-group"><label class="form-label">Duration (min)</label><input class="form-control" type="number" id="questionDuration" placeholder="90" value="90" /></div>
+              <!-- <div class="form-group"><label class="form-label">Duration (min)</label><input class="form-control" type="number" id="questionDuration" placeholder="90" value="90" /></div> -->
             </div>
             <div style="display:flex;justify-content:flex-end;margin-top:18px;"><button id="nextToQuestionBtn" class="btn btn-primary">Next: Add Questions <i class="fas fa-arrow-right"></i></button></div>
           </div>
@@ -799,8 +799,9 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           <div class="panel">
             <div class="panel-header"><span class="panel-title"><i class="fas fa-circle-question"></i> Enter Question</span></div>
             <div class="panel-body">
-              <div class="step-title"><span class="step-badge">2</span> Question details</div>
-              <div class="form-group" style="margin-bottom:14px;"><label class="form-label">Question Text</label><textarea class="form-control" id="questionText" placeholder="Type the question here…"></textarea></div>
+              <div class="step-title"><span class="step-badge"></span> Question details</div>
+              <div class="form-group" style="margin-bottom:14px;"><label class="form-label">Question Text</label><textarea class="form-control" id="questionText" placeholder="Type the question here…" name="questiontext"></textarea></div>
+              <div class="form-group"><label for="form-label">Upload image if any diagram</label><input type="file" name="media[]" multiple></div>
               <div class="form-group" style="margin-bottom:6px;"><label class="form-label">Answer Options</label></div>
               <div class="options-grid">
                 <input class="form-control" type="text" id="optionA" placeholder="Option A" />
@@ -2023,11 +2024,9 @@ document.getElementById('searchSubjectBtn')?.addEventListener('click',()=>render
 document.getElementById('nextToQuestionBtn')?.addEventListener('click', () => {
   const dept = document.getElementById('questionDept').value.trim();
   const subj = document.getElementById('questionSubject').value.trim();
-  const dur = document.getElementById('questionDuration').value;
-  if(!dept||!subj||!dur){ alert('Complete fields'); return; }
+  if(!dept||!subj){ alert('Complete fields'); return; }
   document.getElementById('displayDept').textContent = dept;
   document.getElementById('displaySubject').textContent = subj;
-  document.getElementById('displayDuration').textContent = dur;
   document.getElementById('questionStep1').style.display = 'none';
   document.getElementById('questionStep2').style.display = '';
 });
