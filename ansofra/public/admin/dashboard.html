@@ -1650,6 +1650,10 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
  document.getElementById("searchQuestionSetsBtn").addEventListener("click", async ()=>{
   const dep = document.getElementById("qsSearchDept").value.trim();
   const subject = document.getElementById("qsSearchSubject").value.trim();
+  if(dep==="" || subject===""){
+    alert("all field required");
+  }
+  
  })
 /*
    DEPARTMENTS
