@@ -1399,18 +1399,18 @@ document.getElementById('editScheduleModal')?.addEventListener('click', function
 /*
    QUESTION SETS
    */
-function renderQuestionSetsByDeptSubj(deptFilter, subjFilter) {
-  const container = document.getElementById('questionSetsResultsContainer');
-  const noMsg = document.getElementById('noQsSetsMsg');
-  const filtered = questionSetsData.filter(qs => {
-    let md = !deptFilter.trim() || qs.dept.toLowerCase().includes(deptFilter.toLowerCase());
-    let ms = !subjFilter.trim() || qs.subject.toLowerCase().includes(subjFilter.toLowerCase());
-    return md && ms;
-  });
-  if (!filtered.length) { container.innerHTML=''; noMsg.style.display='block'; return; }
-  noMsg.style.display='none';
-  container.innerHTML = filtered.map(qs => `<div class="panel question-set-card"><div class="question-set-header"><i class="fas fa-layer-group"></i> ${qs.dept} · ${qs.subject} (${qs.questions.length} questions)</div>${qs.questions.map((q,i)=>`<div class="question-item"><strong>Q${i+1}:</strong> ${q.text}<div style="margin-top:8px;">${q.options.map((opt,idx)=>`<div>${String.fromCharCode(65+idx)}. ${opt}</div>`).join('')}</div><span class="badge badge-score" style="margin-top:6px;display:inline-flex;">✓ Correct: ${q.correct}</span></div>`).join('')}</div>`).join('');
-}
+// function renderQuestionSetsByDeptSubj(deptFilter, subjFilter) {
+//   const container = document.getElementById('questionSetsResultsContainer');
+//   const noMsg = document.getElementById('noQsSetsMsg');
+//   const filtered = questionSetsData.filter(qs => {
+//     let md = !deptFilter.trim() || qs.dept.toLowerCase().includes(deptFilter.toLowerCase());
+//     let ms = !subjFilter.trim() || qs.subject.toLowerCase().includes(subjFilter.toLowerCase());
+//     return md && ms;
+//   });
+//   if (!filtered.length) { container.innerHTML=''; noMsg.style.display='block'; return; }
+//   noMsg.style.display='none';
+//   container.innerHTML = filtered.map(qs => `<div class="panel question-set-card"><div class="question-set-header"><i class="fas fa-layer-group"></i> ${qs.dept} · ${qs.subject} (${qs.questions.length} questions)</div>${qs.questions.map((q,i)=>`<div class="question-item"><strong>Q${i+1}:</strong> ${q.text}<div style="margin-top:8px;">${q.options.map((opt,idx)=>`<div>${String.fromCharCode(65+idx)}. ${opt}</div>`).join('')}</div><span class="badge badge-score" style="margin-top:6px;display:inline-flex;">✓ Correct: ${q.correct}</span></div>`).join('')}</div>`).join('');
+// }
 
 /*
    STUDENTS
@@ -1653,8 +1653,34 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
   if(dep==="" || subject===""){
     alert("all field required");
   }
+  else{
+    const e = {
+      department:dep,
+      subject:subject
+    };
+
+    const api = await fetch("/cbt/ansofra/apiadmin/",{
+      method:"POST",
+       headers:{"Content-type":'application/json'},
+       body:JSON.stringify(e)
+    });
+
+    const result = await api.json();
+    if(result.status==="success"){
+      const response = result.response;
+      let output = '';
+      for (let index = 0; index < response.length; index++) {
+        output += `
+        `;  
+      }
+      const container = document.getElementById('questionSetsResultsContainer');
+    }
+    else{
+
+    }
   
- })
+  }
+}) 
 /*
    DEPARTMENTS
    */
