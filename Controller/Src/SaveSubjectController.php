@@ -13,7 +13,7 @@ foreach($data as $key=>$val){
 }
 
 $dto = new AnsofraDto($cleanData);
-$logic = new SaveSubject();
+$logic = new SaveSubject($dto);
 $log = $logic->process();
 echo $log;
 exit();

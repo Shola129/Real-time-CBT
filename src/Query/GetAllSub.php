@@ -15,11 +15,11 @@ class GetAllSub{
     public function process(){
         $where = [
             'department'=>$this->dto->department,
-            'DepartmentCode'=>$this->dto->departmentID
+            'DepartmentCode'=>$this->dto->DepartmentCode
         ];
 
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->get($newMig, 0, 20);
+        $mig = $newMig->get($where, 0, 20);
         return $mig;
     }
 }

@@ -438,43 +438,37 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 
 <!-- MODAL 1 — Edit Subject -->
 <div class="modal-backdrop" id="editModal" onclick="if(event.target===this)closeEditModal()">
-  <div class="modal" role="dialog" aria-modal="true">
-    <div class="modal-header">
-      <div class="modal-title"><i class="fas fa-pen-to-square"></i> Edit Subject</div>
-      <button class="modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
-    </div>
-    <div class="modal-body">
-      <div class="form-group">
-        <label class="form-label" for="edit-dept">Department</label>
-        <input class="form-control" type="text" id="edit-dept" placeholder="e.g. Computer Science" />
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="edit-name">Subject Name</label>
-        <input class="form-control" type="text" id="edit-name" placeholder="e.g. Algorithms" />
-      </div>
-      <div class="modal-divider"></div>
-      <div class="modal-section-label">Exam details</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-        <div class="form-group">
-          <label class="form-label" for="edit-duration">Duration (min)</label>
-          <input class="form-control" type="number" id="edit-duration" placeholder="90" min="1" />
+  <form id="editSub">
+      <div class="modal" role="dialog" aria-modal="true">
+        <div class="modal-header">
+          <div class="modal-title"><i class="fas fa-pen-to-square"></i> Edit Subject</div>
+          <button class="modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="edit-totalqs">Total Questions</label>
-          <input class="form-control" type="number" id="edit-totalqs" placeholder="0" min="0" />
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="edit-dept">Department</label>
+            <input class="form-control" type="text" id="edit-dept" placeholder="e.g. Computer Science" name="department" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="edit-name">Department Code</label>
+            <input class="form-control" type="text" id="edit-name" placeholder="CS" name="DepartmentCode"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="edit-name">Subject Name</label>
+            <input class="form-control" type="text" id="edit-name" placeholder="e.g. Algorithms" name="subject"/>
+          </div>
+          <div class="form-group" hidden>
+            <label class="form-label" for="edit-name">Subject ID</label>
+            <input class="form-control" type="text" id="subjectID" placeholder="e.g. Algorithms" name="subjectID"/>
+          </div>
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="edit-date">Created Date</label>
-        <input class="form-control" type="date" id="edit-date" style="border-radius:var(--r-pill);" />
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-sm" onclick="closeEditModal()"><i class="fas fa-times"></i> Cancel</button>
-      <button class="btn btn-primary btn-sm" onclick="saveEditSubject()"><i class="fas fa-save"></i> Save Changes</button>
-    </div>
+        <div class="modal-footer">
+          <button class="btn btn-sm" onclick="closeEditModal()"><i class="fas fa-times"></i> Cancel</button>
+          <button class="btn btn-primary btn-sm" onclick="saveEditSubject()"><i class="fas fa-save"></i> Save Changes</button>
+        </div>
+  </form>
   </div>
-</div>
 
 <!-- MODAL 2 — Edit Schedule Exam -->
 <div class="modal-backdrop" id="editScheduleModal" onclick="if(event.target===this)closeEditScheduleModal()">
@@ -738,31 +732,33 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         <div class="panel">
           <div class="panel-header"><span class="panel-title"><i class="fas fa-plus-circle"></i> Add New Subject</span></div>
           <div class="panel-body">
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Department</label>
-                <select class="form-control" id="newDeptSelect" style="border-radius:var(--r-pill);">
-                  <option value="">— Choose Department —</option>
-                  <option value="Computer Science">Computer Science</option>
-                  <option value="Mathematics">Mathematics</option>
-                  <option value="Physics">Physics</option>
-                  <option value="Chemistry">Chemistry</option>
-                  <option value="Literature">Literature</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Subject Name</label>
-                <input class="form-control" type="text" id="newSubject" placeholder="e.g. Algorithms" />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Duration (min)</label>
-                <input class="form-control" type="number" id="newDuration" placeholder="90" value="90" />
-              </div>
-              <div class="form-group" style="justify-content:flex-end;">
-                <label class="form-label">&nbsp;</label>
-                <button id="saveSubjectBtn" class="btn btn-primary"><i class="fas fa-save"></i> Save Subject</button>
-              </div>
-            </div>
+            <form id="saveSubject">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Department</label>
+                    <select class="form-control" id="newDeptSelect" style="border-radius:var(--r-pill);" name="department">
+                      <option value="">— Choose Department —</option>
+                      <option value="Computer Science">Computer Science</option>
+                      <option value="Mathematics">Mathematics</option>
+                      <option value="Physics">Physics</option>
+                      <option value="Chemistry">Chemistry</option>
+                      <option value="Literature">Literature</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Department code</label>
+                    <input class="form-control" type="text" id="newSubject" placeholder="e.g. Algorithms" name="DepartmentCode"/>
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Subject Name</label>
+                    <input class="form-control" type="text" id="newSubject" placeholder="e.g. Algorithms" name="subject" />
+                  </div>
+                  <div class="form-group" style="justify-content:flex-end;">
+                    <label class="form-label">&nbsp;</label>
+                    <button id="saveSubjectBtn" class="btn btn-primary"><i class="fas fa-save"></i> Save Subject</button>
+                  </div>
+                </div>
+            </form>
           </div>
         </div>
       </div>
@@ -1130,38 +1126,38 @@ function renderDSB() {
   // }).join('');
 }
 
-let _drawerDept = '';
+// let _drawerDept = '';
 
-window.openDsbDrawer = function(deptName) {
-  _drawerDept = deptName;
-  const meta = DEPT_META[deptName] || {};
-  const subjects = subjectsList.filter(s => s.dept === deptName);
-  const totalQs = subjects.reduce((a,s) => a+(s.totalQs||0), 0);
-  document.getElementById('dsbDrawerTitle').innerHTML = `<i class="${meta.icon||'fas fa-building'}"></i> ${deptName} <span class="badge badge-dept" style="font-size:10px;">${meta.code}</span>`;
-  document.getElementById('dsbDrawerBody').innerHTML = `
-    <div class="dsb-drawer-meta">
-      <span><i class="fas fa-user-tie"></i> ${meta.hod||'—'}</span>
-      <span><i class="fas fa-book"></i> ${subjects.length} subject${subjects.length!==1?'s':''}</span>
-      <span><i class="fas fa-circle-question"></i> ${totalQs} questions</span>
-      <span><i class="fas fa-align-left"></i> ${meta.desc||''}</span>
-    </div>
-    <div class="dsb-subject-list">
-      ${subjects.length === 0 ? `<div class="dsb-empty"><i class="fas fa-folder-open"></i>No subjects yet for this department.<br><small>Use the form below to add one.</small></div>` : subjects.map(s => {
-        const idx = subjectsList.indexOf(s);
-        return `<div class="dsb-subject-row">
-          <div class="dsb-subject-info"><div class="dsb-subject-name">${s.name}</div><div class="dsb-subject-date">Added ${s.created?s.created.toLocaleDateString():'—'}</div></div>
-          <div class="dsb-subject-badges">
-            <span class="badge badge-duration"><i class="far fa-clock"></i> ${s.duration} min</span>
-            <span class="badge badge-score"><i class="fas fa-circle-question"></i> ${s.totalQs||0} Qs</span>
-            <button class="btn btn-sm" style="padding:4px 10px;" onclick="openEditModal(${idx})"><i class="fas fa-pen"></i></button>
-            <button class="btn btn-sm btn-danger" style="padding:4px 10px;" onclick="deleteSubjectFromDrawer(${idx},'${deptName.replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i></button>
-          </div>
-        </div>`;
-      }).join('')}
-    </div>`;
-  document.getElementById('dsbDrawerBackdrop').classList.add('open');
-  document.body.style.overflow = 'hidden';
-};
+// window.openDsbDrawer = function(deptName) {
+//   _drawerDept = deptName;
+//   const meta = DEPT_META[deptName] || {};
+//   const subjects = subjectsList.filter(s => s.dept === deptName);
+//   const totalQs = subjects.reduce((a,s) => a+(s.totalQs||0), 0);
+//   document.getElementById('dsbDrawerTitle').innerHTML = `<i class="${meta.icon||'fas fa-building'}"></i> ${deptName} <span class="badge badge-dept" style="font-size:10px;">${meta.code}</span>`;
+//   document.getElementById('dsbDrawerBody').innerHTML = `
+//     <div class="dsb-drawer-meta">
+//       <span><i class="fas fa-user-tie"></i> ${meta.hod||'—'}</span>
+//       <span><i class="fas fa-book"></i> ${subjects.length} subject${subjects.length!==1?'s':''}</span>
+//       <span><i class="fas fa-circle-question"></i> ${totalQs} questions</span>
+//       <span><i class="fas fa-align-left"></i> ${meta.desc||''}</span>
+//     </div>
+//     <div class="dsb-subject-list">
+//       ${subjects.length === 0 ? `<div class="dsb-empty"><i class="fas fa-folder-open"></i>No subjects yet for this department.<br><small>Use the form below to add one.</small></div>` : subjects.map(s => {
+//         const idx = subjectsList.indexOf(s);
+//         return `<div class="dsb-subject-row">
+//           <div class="dsb-subject-info"><div class="dsb-subject-name">${s.name}</div><div class="dsb-subject-date">Added ${s.created?s.created.toLocaleDateString():'—'}</div></div>
+//           <div class="dsb-subject-badges">
+//             <span class="badge badge-duration"><i class="far fa-clock"></i> ${s.duration} min</span>
+//             <span class="badge badge-score"><i class="fas fa-circle-question"></i> ${s.totalQs||0} Qs</span>
+//             <button class="btn btn-sm" style="padding:4px 10px;" onclick="openEditModal(${idx})"><i class="fas fa-pen"></i></button>
+//             <button class="btn btn-sm btn-danger" style="padding:4px 10px;" onclick="deleteSubjectFromDrawer(${idx},'${deptName.replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i></button>
+//           </div>
+//         </div>`;
+//       }).join('')}
+//     </div>`;
+//   document.getElementById('dsbDrawerBackdrop').classList.add('open');
+//   document.body.style.overflow = 'hidden';
+// };
 
 window.closeDsbDrawer = function() {
   document.getElementById('dsbDrawerBackdrop').classList.remove('open');
@@ -1181,20 +1177,20 @@ window.closeDsbDrawer = function() {
 /*
    EDIT SUBJECT MODAL
    */
-let editingIndex = -1;
+// let editingIndex = -1;
 
-window.openEditModal = function(idx) {
-  const sub = subjectsList[idx];
-  if (!sub) return;
-  editingIndex = idx;
-  document.getElementById('edit-dept').value = sub.dept;
-  document.getElementById('edit-name').value = sub.name;
-  document.getElementById('edit-duration').value = sub.duration;
-  document.getElementById('edit-totalqs').value = sub.totalQs || 0;
-  document.getElementById('edit-date').value = sub.created ? sub.created.toISOString().split('T')[0] : '';
-  document.getElementById('editModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-};
+// window.openEditModal = function(idx) {
+//   const sub = subjectsList[idx];
+//   if (!sub) return;
+//   editingIndex = idx;
+//   document.getElementById('edit-dept').value = sub.dept;
+//   document.getElementById('edit-name').value = sub.name;
+//   document.getElementById('edit-duration').value = sub.duration;
+//   document.getElementById('edit-totalqs').value = sub.totalQs || 0;
+//   document.getElementById('edit-date').value = sub.created ? sub.created.toISOString().split('T')[0] : '';
+//   document.getElementById('editModal').classList.add('open');
+//   document.body.style.overflow = 'hidden';
+// };
 
 window.closeEditModal = function() {
   document.getElementById('editModal').classList.remove('open');
@@ -1511,6 +1507,143 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
   }
 });
 
+ async function getDepartment(){
+  const e = {role:'set'};
+  const api = await fetch('/cbt/ansofra/apiadmin/get/department/set/list',{
+      method:"POST",
+      headers:{'Content-type':'application/json'},
+      body:JSON.stringify(e)
+  });
+
+  const result = await api.json();
+  if(result.status==="success"){
+    const response = result.response;
+    let output = '';
+    for (let index = 0; index < response.length; index++) {
+        output +=`
+        <div class="dsb-dept-card" onclick="openDsbDrawer('${response[index].department}', '${response[index].DepartmentCode}', '${response[index].departmentID}', '${response[index].HeadOfDepartment}', '${response[index].Description}')">
+           <div class="dsb-dept-icon"><i class=""></i></div>
+           <div><div class="dsb-dept-name">${response[index].department}</div><div class="dsb-dept-code">${response[index].DepartmentCode}</div></div>
+           <div class="dsb-dept-footer"><div class="dsb-dept-count"><i class="fas fa-book" style="font-size:10px;"></i>&nbsp;</div><i class="fas fa-chevron-right dsb-dept-arrow"></i></div>
+        </div>`;
+    }
+    document.getElementById("dsbDeptGrid").innerHTML=output;
+  }
+  else{
+      document.getElementById("dsbDeptGrid").textContent="No department set yet";
+    }
+ }
+
+ async function openDsbDrawer(department, DepartmentCode, departmentID, HeadOfDepartment, Description){
+      const e = {
+        department:department,
+        departmentID:departmentID,
+        DepartmentCode:DepartmentCode
+      };
+
+      const api = await fetch("/cbt/ansofra/apiadmin/get/allSubject/Dep", {
+          method:"POST",
+          headers:{"Content-type":'application/json'},
+          body:JSON.stringify(e)
+      });
+
+      const result = await api.json();
+      if(result.status==="success"){
+        const  response = result.response;
+        let output = '';
+        for (let index = 0; index < response.length; index++) {
+          output +=`
+            <div class="dsb-drawer-meta">
+                <span><i class="fas fa-user-tie"></i> ${ HeadOfDepartment||'—'}</span>
+                <span><i class="fas fa-book"></i> ${response[index].subject.length} subject${response[index].subject.length!==1?'s':''}</span>
+                <span><i class="fas fa-align-left"></i> ${Description||''}</span>
+            </div>
+            <div class="dsb-subject-list"> 
+               <div class="dsb-subject-row">
+              <div class="dsb-subject-info"><div class="dsb-subject-name">${response[index].subject}</div><div class="dsb-subject-date">Added ${response[index].Date_Created || '—'}</div></div>
+                <div class="dsb-subject-badges">
+                  <button class="btn btn-sm" style="padding:4px 10px;" onclick="openEditModal('${response[index].subjectID}', '${response[index].subject}')"><i class="fas fa-pen"></i></button>
+                  <button class="btn btn-sm btn-danger" style="padding:4px 10px;" onclick="deleteSubjectFromDrawer('${response[index].subjectID}', '${response[index].subject}')"><i class="fas fa-trash"></i></button>
+                </div>
+            </div>;
+          </div>`;
+        }
+        document.getElementById('dsbDrawerTitle').innerHTML = ` ${department} <span class="badge badge-dept" style="font-size:10px;">${DepartmentCode}</span>`;
+        document.getElementById('dsbDrawerBody').innerHTML = output;
+      }
+      else{
+        document.getElementById("dsbDrawerBody").innerHTML=`
+            <div class="dsb-empty"><i class="fas fa-folder-open"></i>No subjects yet for this department.<br><small>Use the form below to add one.</small></div>
+        `;
+         document.getElementById('dsbDrawerTitle').innerHTML = ` ${department} <span class="badge badge-dept" style="font-size:10px;">${DepartmentCode}</span>`;
+      }
+       document.getElementById('dsbDrawerBackdrop').classList.add('open');
+      document.body.style.overflow = 'hidden';
+ }
+
+ async function openEditModal(subjectID, subject){
+    document.getElementById('subjectID').value=subjectID;
+    document.getElementById('editModal').classList.add('open');
+     document.body.style.overflow = 'hidden';
+ }
+
+ async function saveEditSubject(){
+    const data = document.getElementById('');
+    const form = new FormData(data);
+
+    const api = await fetch('/', {
+        method:'POST',
+        body:form
+    })
+
+    const result = await api.json();
+    if(result.status==="success"){
+       alert(result.response);
+    }
+    else{
+      alert("unable to edit the subject");
+    }
+ }
+
+  async function deleteSubjectFromDrawer(subjectID, subject){
+      const e = {
+      subjectID: subjectID,
+      subject:subject
+    }
+    
+    const api = await fetch('/', {
+        method:'POST',
+        headers:{'Content-type':'application/json'},
+        body:JSON.stringify(e)
+    })
+
+    const result = await api.json();
+    if(result.status==="success"){
+       alert(result.response);
+    }
+    else{
+      alert("unable to delete the subject");
+    }
+ }
+
+ document.getElementById("saveSubjectBtn").addEventListener("click", async ()=>{
+    event.preventDefault();
+    const data = document.getElementById("saveSubject");
+    const form = new FormData(data);
+
+    const api = await fetch("/cbt/ansofra/apiadmin/save/subject", {
+        method:"POST",
+        body:form
+    });
+
+    const result = await api.json();
+    if(result.status==="success"){
+      alert(result.response);
+    }
+    else{
+      alert(result.response);
+    }
+ })
 /*
    DEPARTMENTS
    */
@@ -1794,6 +1927,7 @@ window.showSection = function(id, navEl){
     //  renderDeptTable(''); syncDeptStats(); 
     }
   if(id === 'subjects'){
+    getDepartment();
     //  renderDSB(); renderSubjects(''); renderSubjectsByName(''); 
     }
   if(id === 'schedule'){
@@ -1812,22 +1946,22 @@ document.getElementById('searchSubjectByNameBtn')?.addEventListener('click',()=>
 document.getElementById('searchSubjectBtn')?.addEventListener('click',()=>renderSubjects(document.getElementById('deptSearchInput')?.value||''));
 document.getElementById('searchQuestionSetsBtn')?.addEventListener('click',()=>renderQuestionSetsByDeptSubj(document.getElementById('qsSearchDept')?.value||'',document.getElementById('qsSearchSubject')?.value||''));
 
-document.getElementById('saveSubjectBtn')?.addEventListener('click',function(){
-  const dept = document.getElementById('newDeptSelect')?.value.trim();
-  const name = document.getElementById('newSubject')?.value.trim();
-  const dur = document.getElementById('newDuration')?.value;
-  if(!dept){ alert('Please choose a department'); return; }
-  if(!name){ alert('Please enter a subject name'); return; }
-  if(!dur){ alert('Please enter a duration'); return; }
-  subjectsList.push({ dept, name, duration:+dur, created:new Date(), totalQs:0 });
-  renderDSB();
-  renderSubjects(document.getElementById('deptSearchInput')?.value||'');
-  renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value||'');
-  document.getElementById('newSubject').value = '';
-  document.getElementById('newDuration').value = '90';
-  document.getElementById('newDeptSelect').value = '';
-  openDsbDrawer(dept);
-});
+// document.getElementById('saveSubjectBtn')?.addEventListener('click',function(){
+//   const dept = document.getElementById('newDeptSelect')?.value.trim();
+//   const name = document.getElementById('newSubject')?.value.trim();
+//   const dur = document.getElementById('newDuration')?.value;
+//   if(!dept){ alert('Please choose a department'); return; }
+//   if(!name){ alert('Please enter a subject name'); return; }
+//   if(!dur){ alert('Please enter a duration'); return; }
+//   subjectsList.push({ dept, name, duration:+dur, created:new Date(), totalQs:0 });
+//   renderDSB();
+//   renderSubjects(document.getElementById('deptSearchInput')?.value||'');
+//   renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value||'');
+//   document.getElementById('newSubject').value = '';
+//   document.getElementById('newDuration').value = '90';
+//   document.getElementById('newDeptSelect').value = '';
+//   openDsbDrawer(dept);
+// });
 
 document.getElementById('nextToQuestionBtn')?.addEventListener('click', () => {
   const dept = document.getElementById('questionDept').value.trim();
