@@ -49,7 +49,6 @@ class SaveQuest{
             return $mig2;
         } 
         else{
-            
             return $mig;
         //    return  json_encode([
         //         'status'=>'failed',
