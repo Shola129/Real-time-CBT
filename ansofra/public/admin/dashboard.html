@@ -1692,10 +1692,11 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
         </div>
         `;  
       }
-      const container = document.getElementById('questionSetsResultsContainer');
+      const container = document.getElementById('questionSetsResultsContainer').innerHTML=output;
+       document.getElementById('noQsSetsMsg').style.display="none";
     }
     else{
-
+         document.getElementById('noQsSetsMsg').style.display="block";
     }
   
   }
