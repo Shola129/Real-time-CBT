@@ -1718,7 +1718,7 @@ document.getElementById("saveQuestionBtn").addEventListener("click", async ()=>{
   const sub = document.getElementById("displaySubject");
   const data = document.getElementById("saveQuestion");
   const form = new FormData(data);
-  form.append('department', department);
+  form.append('department', dep);
   form.append('subject', sub);
   const api = await fetch("/cbt/ansofra/apiadmin/save/questions", {
       method:"POST",
