@@ -1714,8 +1714,8 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
 
 document.getElementById("saveQuestionBtn").addEventListener("click", async ()=>{
   event.preventDefault();
-  const dep = document.getElementById("displayDept");
-  const sub = document.getElementById("displaySubject");
+  const dep = document.getElementById("displayDept").textContent;
+  const sub = document.getElementById("displaySubject").textContent;
   const data = document.getElementById("saveQuestion");
   const form = new FormData(data);
   form.append('department', dep);
