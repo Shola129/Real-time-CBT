@@ -793,42 +793,44 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           <div class="info-bar">
             <div class="info-tag"><i class="fas fa-sitemap"></i> <span id="displayDept"></span></div>
             <div class="info-tag"><i class="fas fa-book"></i> <span id="displaySubject"></span></div>
-            <div class="info-tag"><i class="far fa-clock"></i> <span id="displayDuration"></span> min</div>
+            <!-- <div class="info-tag"><i class="far fa-clock"></i> <span id="displayDuration"></span> min</div> -->
             <button id="changeDetailsBtn" class="btn btn-sm" style="margin-left:auto;"><i class="fas fa-pencil"></i> Change</button>
           </div>
-          <div class="panel">
-            <div class="panel-header"><span class="panel-title"><i class="fas fa-circle-question"></i> Enter Question</span></div>
-            <div class="panel-body">
-              <div class="step-title"><span class="step-badge"></span> Question details</div>
-              <div class="form-group" style="margin-bottom:14px;"><label class="form-label">Question Text</label><textarea class="form-control" id="questionText" placeholder="Type the question here…" name="questiontext"></textarea></div>
-              <div class="form-group"><label for="form-label">Upload image if any diagram</label><input type="file" name="media[]" multiple></div>
-              <div class="form-group" style="margin-bottom:6px;"><label class="form-label">Answer Options</label></div>
-              <div class="options-grid">
-              <input class="form-control" type="text" id="optionA" placeholder="Option A"   name="optionA"/>
-                <input class="form-control" type="text" id="optionB" placeholder="Option B" name="optionB"/>
-                <input class="form-control" type="text" id="optionC" placeholder="Option C" name="optionC"/>
-                <input class="form-control" type="text" id="optionD" placeholder="Option D" name="optionD"/>
-                <input class="form-control" type="text" id="optionE" placeholder="optionE" name="optionE" />
+          <form id="saveQuestion">
+             <div class="panel">
+                <div class="panel-header"><span class="panel-title"><i class="fas fa-circle-question"></i> Enter Question</span></div>
+                <div class="panel-body">
+                  <div class="step-title"><span class="step-badge"></span> Question details</div>
+                  <div class="form-group" style="margin-bottom:14px;"><label class="form-label">Question Text</label><textarea class="form-control" id="questionText" placeholder="Type the question here…" name="questiontext"></textarea></div>
+                  <div class="form-group"><label for="form-label">Upload image if any diagram</label><input type="file" name="media[]" multiple></div>
+                  <div class="form-group" style="margin-bottom:6px;"><label class="form-label">Answer Options</label></div>
+                  <div class="options-grid">
+                  <input class="form-control" type="text" id="optionA" placeholder="Option A"   name="optionA"/>
+                    <input class="form-control" type="text" id="optionB" placeholder="Option B" name="optionB"/>
+                    <input class="form-control" type="text" id="optionC" placeholder="Option C" name="optionC"/>
+                    <input class="form-control" type="text" id="optionD" placeholder="Option D" name="optionD"/>
+                    <input class="form-control" type="text" id="optionE" placeholder="optionE" name="optionE" />
+                  </div>
+                  <div class="form-group" style="max-width:260px;margin-bottom:20px;">
+                    <label class="form-label">Correct Answer</label>
+                    <select class="form-control" id="correctAnswer" name="correctOtp">
+                      <option value="">Select correct answer…</option>
+                      <option value="A">A</option>
+                      <option value="B">B</option>
+                      <option value="C">C</option>
+                      <option value="D">D</option>
+                      <option value="E">E</option>
+                    </select><br>
+                    <label for="form-label">Write Ans</label>
+                    <input type="text" name="correctAss" class="form-control">
+                  </div>
+                  <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
+                    <!-- <button id="addAnotherQuestionBtn" class="btn"><i class="fas fa-plus"></i> Add Another</button> -->
+                    <button id="saveQuestionBtn" class="btn btn-primary"><i class="fas fa-cloud-upload-alt"></i> Save Question</button>
+                  </div>
+                </div>
               </div>
-              <div class="form-group" style="max-width:260px;margin-bottom:20px;">
-                <label class="form-label">Correct Answer</label>
-                <select class="form-control" id="correctAnswer" name="correctOtp">
-                  <option value="">Select correct answer…</option>
-                  <option value="A">A</option>
-                  <option value="B">B</option>
-                  <option value="C">C</option>
-                  <option value="D">D</option>
-                  <option value="E">E</option>
-                </select><br>
-                <label for="form-label">Write Ans</label>
-                <input type="text" name="correctAss" class="form-control">
-              </div>
-              <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
-                <button id="addAnotherQuestionBtn" class="btn"><i class="fas fa-plus"></i> Add Another</button>
-                <button id="saveQuestionBtn" class="btn btn-primary"><i class="fas fa-cloud-upload-alt"></i> Save Question</button>
-              </div>
-            </div>
-          </div>
+          </form>
         </div>
       </div>
 
@@ -1708,6 +1710,23 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
   
   }
 }) 
+
+
+document.getElementById("saveQuestionBtn").addEventListener("click", async ()=>{
+  event.preventDefault();
+  const dep = document.getElementById("displayDept");
+  const sub = document.getElementById("displaySubject");
+  const data = document.getElementById("saveQuestion");
+  const form = new FormData(data);
+  form.append('department', department);
+  form.append('subject', sub);
+  const api = await fetch("/cbt/ansofra/apiadmin/", {
+      method:"POST",
+      body:form
+  });
+
+  const 
+})
 /*
    DEPARTMENTS
    */
@@ -2040,12 +2059,12 @@ document.getElementById('changeDetailsBtn')?.addEventListener('click', () => {
   document.getElementById('questionStep2').style.display = 'none';
   document.getElementById('questionStep1').style.display = '';
 });
-document.getElementById('saveQuestionBtn')?.addEventListener('click', () => {
-  if(!document.getElementById('questionText').value.trim()){ alert('Enter question'); return; }
-  alert('Question saved (demo).');
-  ['questionText','optionA','optionB','optionC','optionD'].forEach(id => document.getElementById(id).value='');
-  document.getElementById('correctAnswer').value='';
-});
+// document.getElementById('saveQuestionBtn')?.addEventListener('click', () => {
+//   if(!document.getElementById('questionText').value.trim()){ alert('Enter question'); return; }
+//   alert('Question saved (demo).');
+//   ['questionText','optionA','optionB','optionC','optionD'].forEach(id => document.getElementById(id).value='');
+//   document.getElementById('correctAnswer').value='';
+// });
 document.getElementById('addAnotherQuestionBtn')?.addEventListener('click', () => {
   if(!document.getElementById('questionText').value.trim()){ alert('Enter question first'); return; }
   alert('Saved. Add another.');
