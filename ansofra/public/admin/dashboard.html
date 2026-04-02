@@ -546,7 +546,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         </div>
         <div class="form-group">
           <label class="form-label">Department Code</label>
-          <input class="form-control" type="text" id="schSubject" placeholder="e.g. CS" name="departmentCode"/>
+          <input class="form-control" type="text" id="schSubject" placeholder="e.g. CS" name="DepartmentCode"/>
         </div>
             <div class="modal-divider"></div>
             <div class="modal-section-label">Exam schedule</div>
@@ -1292,7 +1292,11 @@ function openScheduleModal() {
 async function saveScheduledExam() {
   const data =  document.getElementById("formdata");
   const form = new FormData(data);
-
+  const obj = {};
+  form.forEach((val, key)=>{
+    obj[key]=val;
+  })
+  console.log(obj);
   const api = await fetch("/cbt/ansofra/apiadmin/schedule/exam/time", {
       method:"POST",
       body:form
