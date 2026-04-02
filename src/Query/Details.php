@@ -4,7 +4,7 @@ use NewdichSchema\Platform;
 use NewdichSchema\Migration;
 use NewdichDto\AnsofraDto;
 
-class Details {
+class Details{
      private $dto;
      private $table = Platform::ADMINS_TABLE;
 
@@ -14,7 +14,6 @@ class Details {
 
      public function process(){
         $where = [
-            "email"=>$this->dto->email,
             "ID"=>$this->dto->ID
         ];
 
