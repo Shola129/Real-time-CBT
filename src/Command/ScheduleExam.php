@@ -40,7 +40,6 @@ class ScheduleExam{
 
             $newMig2 = new Migration(null, $this->table2);
             $mig2 = $newMig2->saveUnique($col, $val, $data);
-            return $mig2;
             $decodeMig2 = json_decode($mig2, true);
             if($decodeMig2['status']==="success"){
                 $getAllUserInThatDep = [
