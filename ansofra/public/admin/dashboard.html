@@ -1299,12 +1299,13 @@ async function saveScheduledExam() {
   });
 
   const result = await api.json();
-  if(result.status==="success"){
-    alert(result.response);
-  }
-  else{
-    alert(result.response);
-  }
+  console.log(result);
+  // if(result.status==="success"){
+  //   alert(result.response);
+  // }
+  // else{
+  //   alert(result.response);
+  // }
 
   // const deptName = document.getElementById('schDept').value;
   // const subject = document.getElementById('schSubject').value.trim();

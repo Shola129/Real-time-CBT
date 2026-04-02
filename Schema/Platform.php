@@ -74,7 +74,7 @@ class Platform{
         "subject VARCHAR(2550) NOT NULL",
         "subjectID VARCHAR(255) NOT NULL",
         "role VARCHAR(255) NOT NULL",
-         "Date_Created VARCHAR(255) NOT NULL"
+        "Date_Created VARCHAR(255) NOT NULL"
     ];
 
     public const QUESTIONS_TABLE = "questions";
