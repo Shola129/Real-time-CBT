@@ -116,7 +116,7 @@ class Platform{
         'exam_time_table_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY',
         'department VARCHAR(255) NOT NULL',
         'departmentCode VARCHAR(255) NOT NULL',
-        'departmentID VARCHAR(255)',
+        'timeID VARCHAR(255)',
         'date VARCHAR(255) NOT NULL',
         'start VARCHAR(255) NOT NULL',
         'end VARCHAR(255) NOT NULL',

@@ -40,6 +40,10 @@ class AnsofraDto{
     public $optionE;
     public $correctAss;
     public $correctOtp;
+    public $date;
+    public $end;
+    public $start;
+    public $duration;
 
     public function __construct(array $inData){
         $allProp = get_object_vars($this);

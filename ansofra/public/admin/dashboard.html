@@ -1293,7 +1293,7 @@ async function saveScheduledExam() {
   const data =  document.getElementById("formdata");
   const form = new FormData(data);
 
-  const api = await fetch("/cbt/ansofra/apiadmin/", {
+  const api = await fetch("/cbt/ansofra/apiadmin/schedule/exam/time", {
       method:"POST",
       body:form
   });

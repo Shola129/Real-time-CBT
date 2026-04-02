@@ -18,21 +18,24 @@ class ScheduleExam{
     public function process(){
         $where = [
             'department'=>$this->dto->department,
-            'DepartmentCode'=>$this->dto->DepartmentCode,
-            'departmentID'=>$this->dto->departmentID
+            'DepartmentCode'=>$this->dto->DepartmentCode
         ];
 
         $newMig = new Migration(null, $this->table);
         $mig = $newMig->get($where, 0,1);
         $decodeMig = json_decode($mig, true);
         if($decodeMig['status']==="success"){
-            $col = "departmentID";
-            $val = $this->dto->departmentID;
+            $col = "timeID";
+            $val = $this->dto->department . $this->dto->DepartmentCode;
             $data = [
-                'departmentID'=>$this->dto->departmentID,
-                "department"=>$this->dto->department,
-                'departmentCode'=>$this->dto->departmentCode,
-                'time_schedule'=>$this->dto->timeSchedule
+                "department"=> $this->dto->department,
+                'departmentCode'=> $this->dto->departmentCode,
+                'date'=> $this->dto->date,
+                'start'=> $this->dto->start,
+                'end'=> $this->dto->end,
+                'duration'=> $this->dto->duration,
+                'timeID'=> $this->dto->department . $this->dto->DepartmentCode,
+                'role'=> 'set'
             ];
 
             $newMig2 = new Migration(null, $this->table);
