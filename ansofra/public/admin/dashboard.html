@@ -538,42 +538,41 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
       <div class="modal-title"><i class="fas fa-calendar-plus"></i> Schedule New Exam</div>
       <button class="modal-close" onclick="closeGenericModal('scheduleModal')"><i class="fas fa-times"></i></button>
     </div>
-    <div class="modal-body">
-      <div class="form-group">
-        <label class="form-label">Department</label>
-        <input class="form-control" type="text" id="schSubject" placeholder="e.g. Computer Science"/>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Subject</label>
-        <input class="form-control" type="text" id="schSubject" placeholder="e.g. Algorithms" />
-      </div>
-      <div class="modal-divider"></div>
-      <div class="modal-section-label">Exam schedule</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+    <form id="formdata">
+        <div class="modal-body">
         <div class="form-group">
-          <label class="form-label">Date</label>
-          <input class="form-control" type="datetime" id="schDate" style="border-radius:var(--r-pill);" />
+          <label class="form-label">Department</label>
+          <input class="form-control" type="text" id="schSubject" placeholder="e.g. Computer Science" name="department"/>
         </div>
         <div class="form-group">
-          <label class="form-label">Start Time</label>
-          <input class="form-control" type="time" id="schTime" style="border-radius:var(--r-pill);" />
+          <label class="form-label">Department Code</label>
+          <input class="form-control" type="text" id="schSubject" placeholder="e.g. Computer Science" name="departmentCode"/>
         </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-        <div class="form-group">
-          <label class="form-label">Duration (min)</label>
-          <input class="form-control" type="number" id="schDuration" placeholder="90" min="1" />
+            <div class="modal-divider"></div>
+            <div class="modal-section-label">Exam schedule</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div class="form-group">
+                <label class="form-label">Date</label>
+                <input class="form-control" type="date" id="schDate" style="border-radius:var(--r-pill);" name="date" />
+              </div>
+              <div class="form-group">
+                <label class="form-label"> Time (Start)</label>
+              <input class="form-control" type="time" id="schDate" style="border-radius:var(--r-pill);" name="start" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Time (End)</label>
+              <input class="form-control" type="time" id="edntime" placeholder="2024/05/3 3:45 AM" name="end"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Duration (min)</label>
+              <input class="form-control" type="number" id="schDuration" placeholder="90" min="1" name="duration"/>
+            </div> 
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            
+          </div>
         </div>
-        <div class="form-group">
-          <label class="form-label">Max Students</label>
-          <input class="form-control" type="number" id="schMaxStudents" placeholder="100" min="1" />
-        </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Venue / Hall</label>
-        <input class="form-control" type="text" id="schVenue" placeholder="e.g. Hall A, Lab 2" />
-      </div>
-    </div>
+    </form>
     <div class="modal-footer">
       <button class="btn btn-sm" onclick="closeGenericModal('scheduleModal')"><i class="fas fa-times"></i> Cancel</button>
       <button class="btn btn-primary btn-sm" onclick="saveScheduledExam()"><i class="fas fa-calendar-check"></i> Schedule Exam</button>
@@ -1281,23 +1280,39 @@ function populateSchDeptDropdown(selectId) {
 
 function openScheduleModal() {
   populateSchDeptDropdown('schDept');
-  document.getElementById('schSubject').value = '';
-  document.getElementById('schDate').value = new Date().toISOString().split('T')[0];
-  document.getElementById('schTime').value = '09:00';
-  document.getElementById('schDuration').value = '90';
-  document.getElementById('schMaxStudents').value = '';
-  document.getElementById('schVenue').value = '';
+  // document.getElementById('schSubject').value = '';
+  // document.getElementById('schDate').value = new Date().toISOString().split('T')[0];
+  // document.getElementById('schTime').value = '09:00';
+  // document.getElementById('schDuration').value = '90';
+  // document.getElementById('schMaxStudents').value = '';
+  // document.getElementById('schVenue').value = '';
   openGenericModal('scheduleModal');
 }
 
-function saveScheduledExam() {
-  const deptName = document.getElementById('schDept').value;
-  const subject = document.getElementById('schSubject').value.trim();
-  const date = document.getElementById('schDate').value;
-  const time = document.getElementById('schTime').value;
-  const duration = parseInt(document.getElementById('schDuration').value) || 0;
-  const maxStudents = parseInt(document.getElementById('schMaxStudents').value) || 0;
-  const venue = document.getElementById('schVenue').value.trim();
+async function saveScheduledExam() {
+  const data =  document.getElementById("formdata");
+  const form = new FormData(data);
+
+  const api = await fetch("/cbt/ansofra/apiadmin/", {
+      method:"POST",
+      body:form
+  });
+
+  const result = await api.json();
+  if(result.status==="success"){
+    alert(result.response);
+  }
+  else{
+    alert(result.response);
+  }
+
+  // const deptName = document.getElementById('schDept').value;
+  // const subject = document.getElementById('schSubject').value.trim();
+  // const date = document.getElementById('schDate').value;
+  // const time = document.getElementById('schTime').value;
+  // const duration = parseInt(document.getElementById('schDuration').value) || 0;
+  // const maxStudents = parseInt(document.getElementById('schMaxStudents').value) || 0;
+  // const venue = document.getElementById('schVenue').value.trim();
   // if (!deptName||!subject||!date||!time){ alert('Please fill all required fields (*).'); return; }
   // const dept = departmentsData.find(d => d.name===deptName);
   // const code = dept ? dept.code : 'N/A';
@@ -1315,15 +1330,15 @@ window.openEditScheduleModal = function(id) {
   // const exam = scheduledExams.find(e => e.id === id);
   // if (!exam) return;
   editingScheduleId = id;
-  populateSchDeptDropdown('editSchDept');
-  document.getElementById('editSchDept').value = exam.dept;
-  document.getElementById('editSchSubject').value = exam.subject;
-  document.getElementById('editSchDate').value = exam.date;
-  document.getElementById('editSchTime').value = exam.time;
-  document.getElementById('editSchDuration').value = exam.duration;
-  document.getElementById('editSchMaxStudents').value = exam.maxStudents;
-  document.getElementById('editSchVenue').value = exam.venue;
-  document.getElementById('editSchStatus').value = exam.status;
+  // populateSchDeptDropdown('editSchDept');
+  // document.getElementById('editSchDept').value = exam.dept;
+  // document.getElementById('editSchSubject').value = exam.subject;
+  // document.getElementById('editSchDate').value = exam.date;
+  // document.getElementById('editSchTime').value = exam.time;
+  // document.getElementById('editSchDuration').value = exam.duration;
+  // document.getElementById('editSchMaxStudents').value = exam.maxStudents;
+  // document.getElementById('editSchVenue').value = exam.venue;
+  // document.getElementById('editSchStatus').value = exam.status;
   document.getElementById('editScheduleModal').classList.add('open');
   document.body.style.overflow = 'hidden';
 };
