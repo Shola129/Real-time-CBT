@@ -117,6 +117,8 @@ class Platform{
         'department VARCHAR(255) NOT NULL',
         'departmentCode VARCHAR(255) NOT NULL',
         'departmentID VARCHAR(255) NOT NULL',
+        'schDate VARCHAR(255) NOT NULL',
+        'schTime VARCHAR(255) NOT NULL',
         'time_schedule VARCHAR(255) NOT NULL',
         'time_end VARCHAR(255) NOT NULL',
         'role VARCHAR(255) NOT NULL'

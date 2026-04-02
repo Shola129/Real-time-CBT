@@ -541,9 +541,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
     <div class="modal-body">
       <div class="form-group">
         <label class="form-label">Department</label>
-        <select class="form-control" id="schDept" style="border-radius:var(--r-pill);">
-          <option value="">— Select Department —</option>
-        </select>
+        <input class="form-control" type="text" id="schSubject" placeholder="e.g. Computer Science"/>
       </div>
       <div class="form-group">
         <label class="form-label">Subject</label>
@@ -554,7 +552,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
         <div class="form-group">
           <label class="form-label">Date</label>
-          <input class="form-control" type="date" id="schDate" style="border-radius:var(--r-pill);" />
+          <input class="form-control" type="datetime" id="schDate" style="border-radius:var(--r-pill);" />
         </div>
         <div class="form-group">
           <label class="form-label">Start Time</label>
