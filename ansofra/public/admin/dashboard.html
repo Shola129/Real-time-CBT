@@ -1005,14 +1005,14 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 //   { id:4, dept:'Chemistry',        deptCode:'CHM', deptID:'DEPT-CHM-004', subject:'Organic Chemistry', date:'2026-03-25', time:'09:30', duration:75, venue:'Lab 3',           maxStudents:45,  status:'Cancelled' }
 // ];
 // let scheduleIdCounter = scheduledExams.length + 1;
-const getID = localStorage.getItem('cbt-admin-email') || 'sholadanielek@gmail.com';
-const getEmail = localStorage.getItem('cbt-admin-ID') || 'ADMIN/00CBT/104131';
+const getID = localStorage.getItem('cbt-admin-email');
+const getEmail = localStorage.getItem('cbt-admin-ID');
 if(!getID && !getEmail){
   //  window.location.href="/cbt/ansofra/ilease";
 }
 async function getDetail(){
-  const email = getEmail.trim();
-  const ID = getID.trim();
+  const email =  getEmail|| 'sholadanielek@gmail.com';
+  const ID = getID || 'ADMIN/00CBT/104131';
   const e = {email:email, ID:ID};
   const api = await fetch('/cbt/ansofra/apiadmin/Details', {
       method:'POST',
@@ -1020,7 +1020,7 @@ async function getDetail(){
       body:JSON.stringify(e)
   });
   const result = await api.json();
-  const response = result.response;
+  const response = result.response[0];
   console.log(result);
   if(result.status==="success"){
     document.getElementById("profile-id").textContent=response.ID;
