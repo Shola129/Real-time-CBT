@@ -4,10 +4,9 @@ use NewdichSchema\Platform;
 use NewdichSchema\Migration;
 use NewdichDto\AnsofraDto;
 
-class TotalStudents{
+class CountSch{
     private $dto;
-    private $table = Platform::USERS_TABLE;
-    // private $table = Platform::ADMINS_TABLE;
+    private $table = Platform::SETEXAMTIME_TABLE;
 
     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
@@ -23,5 +22,4 @@ class TotalStudents{
         return $mig;
     }
 }
-
 ?>

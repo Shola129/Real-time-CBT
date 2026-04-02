@@ -1391,6 +1391,19 @@ async function displayScheduledTime(){
    }
 }
 
+async function totalexamSche(){
+   const e = {role:'user'};
+   const api = await fetch('/cbt/ansofra/apiadmin/count/shedule', {
+    method:'POST',
+    headers:{'Content-type':'application/json'},
+    body:JSON.stringify(e)
+   });
+
+   const result = await api.json();
+
+   document.getElementById("schStatTotal").textContent=result.response || '00';
+  
+  }
 /* Edit Schedule Exam functions */
 let editingScheduleId = null;
 
@@ -2115,6 +2128,7 @@ window.showSection = function(id, navEl){
     }
   if(id === 'schedule'){
      displayScheduledTime()
+     totalexamSche();
     //  renderScheduleTable(''); updateScheduleStats(); populateSchDeptDropdown('schDept'); populateSchDeptDropdown('editSchDept');
      }
   closeSidebar();
