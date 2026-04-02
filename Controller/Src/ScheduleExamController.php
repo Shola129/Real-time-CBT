@@ -1,7 +1,7 @@
 <?php
 namespace NewdichControllerSrc;
 use NewdichDto\AnsofraDto;
-use NewdichMiddlewar\Index;
+use NewdichMiddleware\Index;
 use NewdichSrc\Command\ScheduleExam;
 
 $data  = $_POST;
