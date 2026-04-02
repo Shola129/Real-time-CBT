@@ -33,13 +33,14 @@ class ScheduleExam{
                 'date'=> $this->dto->date,
                 'start'=> $this->dto->start,
                 'end'=> $this->dto->end,
-                'duration'=> $this->dto->duration,
+                'duration'=> $this->dto->duration.'hrs',
                 'timeID'=> $this->dto->department . $this->dto->DepartmentCode,
                 'role'=> 'set'
             ];
 
-            $newMig2 = new Migration(null, $this->table);
+            $newMig2 = new Migration(null, $this->table2);
             $mig2 = $newMig2->saveUnique($col, $val, $data);
+            return $mig2;
             $decodeMig2 = json_decode($mig2, true);
             if($decodeMig2['status']==="success"){
                 $getAllUserInThatDep = [
