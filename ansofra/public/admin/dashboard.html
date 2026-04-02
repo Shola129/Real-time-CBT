@@ -546,7 +546,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         </div>
         <div class="form-group">
           <label class="form-label">Department Code</label>
-          <input class="form-control" type="text" id="schSubject" placeholder="e.g. CS" name="DepartmentCode"/>
+          <input class="form-control" type="text" id="schSub" placeholder="e.g. CS" name="DepartmentCode"/>
         </div>
             <div class="modal-divider"></div>
             <div class="modal-section-label">Exam schedule</div>
@@ -557,7 +557,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
               </div>
               <div class="form-group">
                 <label class="form-label"> Time (Start)</label>
-              <input class="form-control" type="time" id="schDate" style="border-radius:var(--r-pill);" name="start" />
+              <input class="form-control" type="time" id="timestart" style="border-radius:var(--r-pill);" name="start" />
             </div>
             <div class="form-group">
               <label class="form-label">Time (End)</label>
@@ -1304,12 +1304,18 @@ async function saveScheduledExam() {
 
   const result = await api.json();
   console.log(result);
-  // if(result.status==="success"){
-  //   alert(result.response);
-  // }
-  // else{
-  //   alert(result.response);
-  // }
+  if(result.status==="success"){
+    alert(result.response);
+      document.getElementById('schSubject').value = '';
+      document.getElementById('schSub').value = '';
+      document.getElementById('schDate').value = '';
+      document.getElementById('timestart').value = '';
+      document.getElementById('edntime').value = '';
+      document.getElementById('schDuration').value = '';
+  }
+  else{
+    alert(result.response);
+  }
 
   // const deptName = document.getElementById('schDept').value;
   // const subject = document.getElementById('schSubject').value.trim();
