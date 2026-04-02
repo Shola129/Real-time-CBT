@@ -1011,8 +1011,8 @@ if(!getID && !getEmail){
   //  window.location.href="/cbt/ansofra/ilease";
 }
 async function getDetail(){
-  const email = getEmail;
-  const ID = getID;
+  const email = getEmail.trim();
+  const ID = getID.trim();
   const e = {email:email, ID:ID};
   const api = await fetch('/cbt/ansofra/apiadmin/Details', {
       method:'POST',

@@ -13,13 +13,14 @@ class Details{
      }
 
      public function process(){
-        $where = [
-            "ID"=>$this->dto->ID
+      $data = [
+         "ID"=>$this->dto->ID,
+         "email"=>$this->dto->email
         ];
 
-        $newMig = new Migration(null, $this->table);
-        $mig = $newMig->get($where, 0, 1);
-        return $mig;
+        $mig = new Migration(null, $this->table);
+        $newmig = $mig->get($data, 0, 1);
+        return $newmig;
      }
 }
 
