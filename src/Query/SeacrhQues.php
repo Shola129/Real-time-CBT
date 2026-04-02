@@ -19,7 +19,7 @@ class SeacrhQues{
         ];
 
         $neMig = new Migration(null, $this->table);
-        $mig = $neMig->get($where, 0,1);
+        $mig = $neMig->get($where, 0,20);
         return $mig;
     }
 }

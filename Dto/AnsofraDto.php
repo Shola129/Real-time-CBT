@@ -32,6 +32,14 @@ class AnsofraDto{
     public $subject;
     public $departmentID;
     public $timeSchedule;
+    public $questiontext;
+    public $optionA;
+    public $optionB;
+    public $optionC;
+    public $optionD;
+    public $optionE;
+    public $correctAss;
+    public $correctOtp;
 
     public function __construct(array $inData){
         $allProp = get_object_vars($this);

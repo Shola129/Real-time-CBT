@@ -801,8 +801,8 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
                 <div class="panel-header"><span class="panel-title"><i class="fas fa-circle-question"></i> Enter Question</span></div>
                 <div class="panel-body">
                   <div class="step-title"><span class="step-badge"></span> Question details</div>
-                  <div class="form-group" style="margin-bottom:14px;"><label class="form-label">Question Text</label><textarea class="form-control" id="questionText" placeholder="Type the question here…" name="questiontext"></textarea></div>
-                  <div class="form-group"><label for="form-label">Upload image if any diagram</label><input type="file" name="media[]" multiple></div>
+                  <div class="form-group" style="margin-bottom:14px;"><label class="form-label">Question Text</label><textarea id="questionstext" class="form-control" id="questionText" placeholder="Type the question here…" name="questiontext"></textarea></div>
+                  <div class="form-group"><label for="form-label">Upload image if any diagram</label><input type="file" name="media[]" id="media" multiple></div>
                   <div class="form-group" style="margin-bottom:6px;"><label class="form-label">Answer Options</label></div>
                   <div class="options-grid">
                   <input class="form-control" type="text" id="optionA" placeholder="Option A"   name="optionA"/>
@@ -822,7 +822,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
                       <option value="E">E</option>
                     </select><br>
                     <label for="form-label">Write Ans</label>
-                    <input type="text" name="correctAss" class="form-control">
+                    <input type="text" id="correctAss" name="correctAss" class="form-control">
                   </div>
                   <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
                     <!-- <button id="addAnotherQuestionBtn" class="btn"><i class="fas fa-plus"></i> Add Another</button> -->
@@ -1683,10 +1683,10 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
         <div class="panel question-set-card">
           <div class="question-set-header">
             <i class="fas fa-layer-group"></i> 
-            ${response[index].department} · ${response[index].subject} (${response[index].questiontext.length} questions)
+            ${response[index].department} · ${response[index].subject})
           </div>
           <div class="question-item">
-            <strong>Q${i+1}:</strong> ${response[index].questiontext}
+            <strong>Q${index+1}:</strong> ${response[index].questiontext}
             <div style="margin-top:8px;">
               <div>A. ${response[index].optionA}</div>
               <div>B. ${response[index].optionB}</div>
@@ -1728,6 +1728,15 @@ document.getElementById("saveQuestionBtn").addEventListener("click", async ()=>{
   const result = await api.json();
   if(result.status==="success"){
     alert(result.response);
+    document.getElementById("media").value="";
+    document.getElementById("optionA").value="";
+    document.getElementById("optionB").value="";
+    document.getElementById("optionC").value="";
+    document.getElementById("optionD").value="";
+    document.getElementById("optionE").value="";
+    document.getElementById("correctAnswer").value="";
+    document.getElementById("correctAss").value="";
+    document.getElementById("questionstext").value="";
   }
   else{
     alert(result.response);

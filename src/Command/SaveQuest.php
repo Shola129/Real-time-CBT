@@ -29,7 +29,7 @@ class SaveQuest{
             $newFile = new Upload($media);
             $file = $newFile->process();
             $decodeFile = json_decode($file, true);
-            $dragram  = $decodeFile['response'][0];
+            $dragram  = $decodeFile['response'][0] ?? '';
             $data = [
                 'department'=>$this->dto->department,
                 'subject'=>$this->dto->subject,
@@ -41,10 +41,11 @@ class SaveQuest{
                 'optionC'=>$this->dto->optionC,
                 'optionD'=>$this->dto->optionD,
                 'optionE'=>$this->dto->optionE ?? '',
+                'correctOtp'=>$this->dto->correctOtp,
                 'correctAss'=>$this->dto->correctAss,
                 'role'=>'set'
             ];
-            $newMig2 = new Migration(null, $this->table2);
+            $newMig2 = new Migration(null, $this->table);
             $mig2 = $newMig2->save($data);
             return $mig2;
         } 
