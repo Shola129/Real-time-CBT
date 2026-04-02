@@ -1350,7 +1350,7 @@ async function saveScheduledExam() {
 async function displayScheduledTime(){
    const e = {role:'set'};
 
-   const api = await fetch("/cbt/ansofra/apiadmin", {
+   const api = await fetch("/cbt/ansofra/apiadmin/list/time/sets", {
       method:"POST",
       headers:{'Content-type':'application/json'},
       body:JSON.stringify(e)
@@ -1372,10 +1372,10 @@ async function displayScheduledTime(){
                 <td>${response[index].end}</td>
                 <td>${response[index].duration} min</td>
                 <td style="display:flex;gap:6px;">
-                  <button class="btn btn-sm btn-info" onclick="openEditScheduleModal(${ex.id})">
+                  <button class="btn btn-sm btn-info" onclick="openEditScheduleModal('${response[index].timeID}')">
                     <i class="fas fa-pen"></i>
                     </button>
-                  <button class="btn btn-sm btn-danger" onclick="deleteScheduledExam(${ex.id})">
+                  <button class="btn btn-sm btn-danger" onclick="deleteScheduledExam('${response[index].timeID}')">
                     <i class="fas fa-trash"></i>
                   </button>
                 </td>
@@ -2114,6 +2114,7 @@ window.showSection = function(id, navEl){
     //  renderDSB(); renderSubjects(''); renderSubjectsByName(''); 
     }
   if(id === 'schedule'){
+     displayScheduledTime()
     //  renderScheduleTable(''); updateScheduleStats(); populateSchDeptDropdown('schDept'); populateSchDeptDropdown('editSchDept');
      }
   closeSidebar();

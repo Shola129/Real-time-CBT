@@ -204,13 +204,28 @@ elseif($url === $adminArea . "/schedule/exam/time"){
     exit();
 }
 
+elseif($url === $adminArea . "/list/time/sets"){
+    require_once __DIR__ . $srcController . "/ListTimeController.php";
+    exit();
+}
+
 elseif($url===$adminArea . "/notify/user/ofExam"){
     require_once __DIR__ . $srcController . "/NotifyUserExamController.php";
     exit();
 }
 
-elseif($url === $adminArea . "/list/time/sets"){
-    require_once __DIR__ . $srcController . "/ListTimeController.php";
+elseif($url === $adminArea . "/count/shedule"){
+    require_once __DIR__ . $srcController . "/CountSchController.php";
+    exit();
+}
+
+elseif($url === $adminArea . "/EditSchedule"){
+    require_once __DIR__ . $srcController . "/EditSchController.php";
+    exit();
+}
+
+elseif($url === $adminArea . "/Search/Dep/Sch"){
+    require_once __DIR__ . $srcController . "/SchScheduleDepController.php";
     exit();
 }
 
