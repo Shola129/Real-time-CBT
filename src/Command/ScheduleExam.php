@@ -29,7 +29,7 @@ class ScheduleExam{
             $val = $this->dto->department . $this->dto->DepartmentCode;
             $data = [
                 "department"=> $this->dto->department,
-                'departmentCode'=> $this->dto->departmentCode,
+                'DepartmentCode'=> $this->dto->DepartmentCode,
                 'date'=> $this->dto->date,
                 'start'=> $this->dto->start,
                 'end'=> $this->dto->end,

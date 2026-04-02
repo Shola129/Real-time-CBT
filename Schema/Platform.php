@@ -115,7 +115,7 @@ class Platform{
     public const SETEXAMTIME_TABLE_COLUMNS = [
         'exam_time_table_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY',
         'department VARCHAR(255) NOT NULL',
-        'departmentCode VARCHAR(255) NOT NULL',
+        'DepartmentCode VARCHAR(255) NOT NULL',
         'timeID VARCHAR(255)',
         'date VARCHAR(255) NOT NULL',
         'start VARCHAR(255) NOT NULL',
