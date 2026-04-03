@@ -477,56 +477,49 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
       <div class="modal-title"><i class="fas fa-calendar-edit"></i> Edit Schedule Exam</div>
       <button class="modal-close" onclick="closeEditScheduleModal()"><i class="fas fa-times"></i></button>
     </div>
-    <div class="modal-body">
-      <input type="hidden" id="editScheduleId" />
-      <div class="form-group">
-        <label class="form-label" for="editSchDept">Department</label>
-        <select class="form-control" id="editSchDept" style="border-radius:var(--r-pill);">
-          <option value="">— Select Department —</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label" for="editSchSubject">Subject</label>
-        <input class="form-control" type="text" id="editSchSubject" placeholder="e.g. Algorithms" />
-      </div>
-      <div class="modal-divider"></div>
-      <div class="modal-section-label">Exam schedule</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+    <form id="formdata2">
+        <div class="modal-body">
         <div class="form-group">
-          <label class="form-label">Date</label>
-          <input class="form-control" type="date" id="editSchDate" style="border-radius:var(--r-pill);" />
+          <label class="form-label">Department</label>
+          <input class="form-control" type="text" id="schSubject" placeholder="e.g. Computer Science" name="department"/>
         </div>
         <div class="form-group">
-          <label class="form-label">Start Time</label>
-          <input class="form-control" type="time" id="editSchTime" style="border-radius:var(--r-pill);" />
+          <label class="form-label">Department Code</label>
+          <input class="form-control" type="text" id="schSub" placeholder="e.g. CS" name="DepartmentCode"/>
         </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-        <div class="form-group">
-          <label class="form-label">Duration (min)</label>
-          <input class="form-control" type="number" id="editSchDuration" placeholder="90" min="1" />
+        <div class="form-group" hidden>
+          <label class="form-label">Time ID </label>
+          <input class="form-control" type="text" id="timeID" placeholder="e.g. CS" name="timeID" hidden/>
         </div>
-        <div class="form-group">
-          <label class="form-label">Max Students</label>
-          <input class="form-control" type="number" id="editSchMaxStudents" placeholder="100" min="1" />
+            <div class="modal-divider"></div>
+            <div class="modal-section-label">Exam schedule</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+              <div class="form-group">
+                <label class="form-label">Date</label>
+                <input class="form-control" type="date" id="schDate" style="border-radius:var(--r-pill);" name="date" />
+              </div>
+              <div class="form-group">
+                <label class="form-label"> Time (Start)</label>
+              <input class="form-control" type="time" id="timestart" style="border-radius:var(--r-pill);" name="start" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Time (End)</label>
+              <input class="form-control" type="time" id="edntime" placeholder="2024/05/3 3:45 AM" name="end"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Duration (min)</label>
+              <input class="form-control" type="number" id="schDuration" placeholder="90" min="1" name="duration"/>
+            </div> 
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+            
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Venue / Hall</label>
-        <input class="form-control" type="text" id="editSchVenue" placeholder="e.g. Hall A, Lab 2" />
-      </div>
-      <div class="form-group">
-        <label class="form-label">Status</label>
-        <select class="form-control" id="editSchStatus">
-          <option value="Scheduled">Scheduled</option>
-          <option value="Completed">Completed</option>
-          <option value="Cancelled">Cancelled</option>
-        </select>
-      </div>
-    </div>
+    </form>
+   
     <div class="modal-footer">
       <button class="btn btn-sm" onclick="closeEditScheduleModal()"><i class="fas fa-times"></i> Cancel</button>
-      <button class="btn btn-primary btn-sm" onclick="saveEditScheduleExam()"><i class="fas fa-save"></i> Save Changes</button>
+      <button class="btn btn-primary btn-sm" onclick="EditScheduleExam()"><i class="fas fa-save"></i> Save Changes</button>
     </div>
   </div>
 </div>
@@ -659,7 +652,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
             <div class="gallery-placeholder"><i class="fas fa-car"></i><span>1969 Ford Mustang</span></div>
           </div>
           <div class="gallery-card">
-            <div class="gallery-placeholder"><i class="fas fa-car-side"></i><span>2025 BMW M5</span></div>
+            <div class="gallery-placeholder"><i class="fas fa-car-side"></i><span><img src="public/assets/logo.jpg" alt=""></span></div>
           </div>
           <div class="gallery-card">
             <div class="gallery-placeholder"><i class="fas fa-image"></i><span>157598.jpg</span></div>
@@ -949,7 +942,8 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
                   <th>Time (End)</th>
                   <th>Duration</th>
                   <!-- <th>Status</th> -->
-                  <th>Actions</th>
+                  <th>Edit</th>
+                  <th>Send TIme Time</th>
                 </tr>
               </thead>
               <tbody id="scheduleTableBody"></tbody>
@@ -1370,14 +1364,16 @@ async function displayScheduledTime(){
                 <td>${response[index].date}</td>
                 <td>${response[index].start}</td>
                 <td>${response[index].end}</td>
-                <td>${response[index].duration} min</td>
+                <td>${response[index].duration}</td>
                 <td style="display:flex;gap:6px;">
                   <button class="btn btn-sm btn-info" onclick="openEditScheduleModal('${response[index].timeID}')">
                     <i class="fas fa-pen"></i>
                     </button>
-                  <button class="btn btn-sm btn-danger" onclick="deleteScheduledExam('${response[index].timeID}')">
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}')">
                     <i class="fas fa-trash"></i>
-                  </button>
+                  </button>  
                 </td>
               </tr>
           `;  
@@ -1405,7 +1401,7 @@ async function totalexamSche(){
   
   }
 
-  async function seacrhDepSch(){
+async function seacrhDepSch(){
     const department = document.getElementById("schSearchInput").value.trim();
     if(!department){
         alert("department feld must not left empty");
@@ -1419,7 +1415,7 @@ async function totalexamSche(){
       });
 
       const result = await api.json();
-      if(result.status==="success"){
+    if(result.status==="success"){
     const response = result.response;
       let output = '';
       for (let index = 0; index < response.length; index++) {
@@ -1432,14 +1428,16 @@ async function totalexamSche(){
                 <td>${response[index].date}</td>
                 <td>${response[index].start}</td>
                 <td>${response[index].end}</td>
-                <td>${response[index].duration} min</td>
+                <td>${response[index].duration}</td>
                 <td style="display:flex;gap:6px;">
                   <button class="btn btn-sm btn-info" onclick="openEditScheduleModal('${response[index].timeID}')">
                     <i class="fas fa-pen"></i>
                     </button>
-                  <button class="btn btn-sm btn-danger" onclick="deleteScheduledExam('${response[index].timeID}')">
+                </td>
+                <td>
+                  <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}')">
                     <i class="fas fa-trash"></i>
-                  </button>
+                  </button>  
                 </td>
               </tr>
           `;  
@@ -1454,13 +1452,51 @@ async function totalexamSche(){
       
     }
   }
-/* Edit Schedule Exam functions */
-let editingScheduleId = null;
 
-window.openEditScheduleModal = function(id) {
+  async function EditScheduleExam() {
+    const data =  document.getElementById("formdata2");
+     const form = new FormData(data);
+    const api = await fetch("/cbt/ansofra/apiadmin/EditSchedule", {
+        method:"POST",
+        body:form
+    });
+
+    const result = await api.json();
+    if(result.status==="success"){
+      // alert(result.response);
+      displayScheduledTime();
+      document.getElementById('editScheduleModal').style.display="none";
+    }
+    else{
+      alert(result.response);
+    }
+  }
+
+  async function sendTimeOut(dep){
+    const e = {department:dep};
+    const api = await fetch("/cbt/ansofra/apiadmin/notify/user/ofExam", {
+        method:"POST",
+        headers:{"Content-type":'application/json'},
+        body:JSON.stringify(e)
+    });
+
+    const result = await api.json();
+    if(result.status ==="success"){
+      alert(result.response);
+    }
+    else{
+      alert(result.response);
+    }
+  }
+
+
+/* Edit Schedule Exam functions */
+// let editingScheduleId = null;
+
+function openEditScheduleModal(timeid) {
   // const exam = scheduledExams.find(e => e.id === id);
   // if (!exam) return;
-  editingScheduleId = id;
+  document.getElementById("timeID").value=timeid;
   // populateSchDeptDropdown('editSchDept');
   // document.getElementById('editSchDept').value = exam.dept;
   // document.getElementById('editSchSubject').value = exam.subject;

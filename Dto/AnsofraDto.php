@@ -44,6 +44,7 @@ class AnsofraDto{
     public $end;
     public $start;
     public $duration;
+    public $timeID;
 
     public function __construct(array $inData){
         $allProp = get_object_vars($this);
