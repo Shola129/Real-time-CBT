@@ -1,0 +1,358 @@
+/* ═══════════════════════════════════════════
+   EDUTEST CBT — SHARED STYLES
+   Navy Blue #0a1f44 | White #ffffff | Red #c0392b
+═══════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap');
+
+:root {
+  --navy:        #0a1f44;
+  --navy-light:  #122b5e;
+  --navy-dark:   #060f22;
+  --navy-mid:    #1a3a6e;
+  --white:       #ffffff;
+  --off-white:   #f4f6fb;
+  --red:         #c0392b;
+  --red-hover:   #a93226;
+  --red-light:   #fdecea;
+  --border:      #dde3f0;
+  --text-muted:  #8896b3;
+  --success:     #1a7f4b;
+  --gold:        #f0b429;
+  --shadow-sm:   0 2px 12px rgba(10,31,68,0.10);
+  --shadow-md:   0 8px 32px rgba(10,31,68,0.15);
+  --shadow-lg:   0 24px 80px rgba(0,0,0,0.30);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Source Sans 3', sans-serif;
+  background: var(--off-white);
+  min-height: 100vh;
+  color: #1a2340;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── AUTH PAGES (login / register) shared shell ── */
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  background: linear-gradient(135deg, var(--navy-dark) 0%, var(--navy) 55%, var(--navy-mid) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+/* decorative grid overlay */
+.auth-page::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    45deg, transparent, transparent 40px,
+    rgba(255,255,255,0.018) 40px, rgba(255,255,255,0.018) 80px
+  );
+  pointer-events: none;
+}
+
+/* decorative red glow */
+.auth-page::after {
+  content: '';
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(192,57,43,0.18), transparent 70%);
+  top: -150px; right: -150px;
+  pointer-events: none;
+}
+
+/* left branding panel */
+.auth-branding {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 56px;
+  width: 420px;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+@media (min-width: 900px) { .auth-branding { display: flex; } }
+
+.brand-emblem {
+  width: 72px; height: 72px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  border: 2px solid rgba(255,255,255,0.2);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Merriweather', serif;
+  font-size: 24px; font-weight: 900;
+  color: var(--white);
+  margin-bottom: 32px;
+  backdrop-filter: blur(6px);
+}
+
+.brand-title {
+  font-family: 'Merriweather', serif;
+  font-size: 32px; font-weight: 900;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+.brand-subtitle {
+  font-size: 14px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.8;
+  letter-spacing: 0.3px;
+}
+
+.brand-divider {
+  width: 48px; height: 3px;
+  background: var(--red);
+  border-radius: 2px;
+  margin: 28px 0;
+}
+
+.brand-stats {
+  display: flex; gap: 28px; margin-top: 8px;
+}
+.brand-stat { display: flex; flex-direction: column; }
+.brand-stat .num {
+  font-family: 'Merriweather', serif;
+  font-size: 26px; font-weight: 700;
+  color: var(--white);
+}
+.brand-stat .lbl {
+  font-size: 11px;
+  color: rgba(255,255,255,0.45);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-top: 2px;
+}
+
+/* right card panel */
+.auth-card-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.auth-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 44px 40px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: var(--shadow-lg);
+  animation: cardIn 0.35s ease;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card-top {
+  margin-bottom: 32px;
+}
+.card-top h2 {
+  font-family: 'Merriweather', serif;
+  font-size: 22px; font-weight: 700;
+  color: var(--navy);
+}
+.card-top p {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 5px;
+  line-height: 1.5;
+}
+
+/* form elements */
+.form-row { display: flex; gap: 14px; }
+.form-row .form-group { flex: 1; }
+
+.form-group { margin-bottom: 18px; }
+
+.form-group label {
+  display: block;
+  font-size: 11px; font-weight: 700;
+  letter-spacing: 0.9px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 7px;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 14px;
+  color: #1a2340;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: var(--white);
+  appearance: none;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(10,31,68,0.08);
+}
+
+.form-group input::placeholder { color: #bcc5d9; }
+
+/* select arrow */
+.select-wrap { position: relative; }
+.select-wrap::after {
+  content: '▾';
+  position: absolute;
+  right: 13px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 13px;
+  pointer-events: none;
+}
+
+/* buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 9px;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 14px; font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: all 0.18s;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--navy);
+  color: var(--white);
+  width: 100%;
+  padding: 13px;
+  font-size: 15px;
+}
+.btn-primary:hover { background: var(--navy-light); }
+.btn-primary:active { transform: scale(0.99); }
+
+.btn-red {
+  background: var(--red);
+  color: var(--white);
+}
+.btn-red:hover { background: var(--red-hover); }
+
+.btn-ghost {
+  background: var(--white);
+  color: var(--navy);
+  border: 1.5px solid var(--border);
+}
+.btn-ghost:hover { border-color: var(--navy); background: #f0f4ff; }
+
+/* auth footer link */
+.auth-footer {
+  text-align: center;
+  margin-top: 22px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.auth-footer a {
+  color: var(--navy);
+  font-weight: 700;
+  text-decoration: none;
+  margin-left: 4px;
+}
+.auth-footer a:hover { text-decoration: underline; }
+
+/* alert / error */
+.alert {
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 13px;
+  margin-bottom: 18px;
+  display: none;
+}
+.alert.error { background: var(--red-light); color: var(--red-hover); border-left: 3px solid var(--red); }
+.alert.success { background: #e6f4ee; color: var(--success); border-left: 3px solid var(--success); }
+.alert.show { display: block; }
+
+/* ── TOP NAV BAR (dashboard) ── */
+.top-bar {
+  background: var(--navy);
+  color: var(--white);
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  box-shadow: var(--shadow-md);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+}
+
+.top-bar-left { display: flex; align-items: center; gap: 14px; }
+
+.top-bar-emblem {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Merriweather', serif;
+  font-size: 13px; font-weight: 700;
+}
+
+.top-bar-title {
+  font-family: 'Merriweather', serif;
+  font-size: 15px; font-weight: 700;
+}
+.top-bar-title small {
+  display: block;
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 11px; font-weight: 400;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.4px;
+}
+
+.top-bar-right { display: flex; align-items: center; gap: 16px; }
+
+.nav-user {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: rgba(255,255,255,0.75);
+}
+.nav-avatar {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  border: 2px solid rgba(255,255,255,0.25);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Merriweather', serif;
+  font-size: 12px; font-weight: 700;
+  color: var(--white);
+}
+
+.btn-logout {
+  background: rgba(192,57,43,0.75);
+  color: var(--white);
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 12px; font-weight: 700;
+  cursor: pointer;
+  border: none;
+  transition: background 0.18s;
+}
+.btn-logout:hover { background: var(--red); }
