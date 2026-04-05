@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Register — EduTest CBT Portal</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .step-indicator {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      margin-bottom: 28px;
+    }
+    .step {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+    .step-circle {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 700;
+      color: var(--text-muted);
+      flex-shrink: 0;
+      transition: all 0.3s;
+    }
+    .step.active .step-circle, .step.done .step-circle {
+      background: var(--navy);
+      color: var(--white);
+    }
+    .step-line {
+      flex: 1;
+      height: 2px;
+      background: var(--border);
+      margin: 0 4px;
+      transition: background 0.3s;
+    }
+    .step.done + .step .step-line,
+    .step.done .step-line { background: var(--navy); }
+
+    .step-label {
+      font-size: 10px;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 4px;
+      white-space: nowrap;
+    }
+    .step.active .step-label { color: var(--navy); font-weight: 700; }
+
+    .step-wrap { display: flex; flex-direction: column; align-items: center; flex: 1; }
+    .step-wrap:not(:last-child)::after {
+      display: none;
+    }
+
+    .form-section { display: none; }
+    .form-section.active { display: block; animation: sectionIn 0.25s ease; }
+    @keyframes sectionIn {
+      from { opacity: 0; transform: translateX(12px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+
+    .pass-strength {
+      margin-top: 6px;
+      height: 4px;
+      border-radius: 2px;
+      background: var(--border);
+      overflow: hidden;
+    }
+    .pass-strength-fill {
+      height: 100%;
+      border-radius: 2px;
+      transition: width 0.3s, background 0.3s;
+      width: 0%;
+    }
+    .pass-hint { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+    .terms-row {
+      display: flex; align-items: flex-start; gap: 9px;
+      font-size: 13px; color: #556; margin-bottom: 20px; margin-top: 4px;
+    }
+    .terms-row input { accent-color: var(--navy); margin-top: 2px; flex-shrink: 0; }
+    .terms-row a { color: var(--navy); font-weight: 600; }
+
+    .btn-row { display: flex; gap: 12px; }
+    .btn-row .btn { flex: 1; }
+  </style>
+</head>
+<body>
+
+<div class="auth-page">
+
+  <!-- Left branding -->
+  <div class="auth-branding">
+    <div class="brand-emblem">ET</div>
+    <div class="brand-title">Create Your<br/>Account</div>
+    <div class="brand-divider"></div>
+    <div class="brand-subtitle">
+      Register once and gain access to all EduTest CBT examination sessions. Your credentials are secure and unique to you.
+    </div>
+    <div class="brand-stats">
+      <div class="brand-stat">
+        <span class="num">4</span>
+        <span class="lbl">Subjects</span>
+      </div>
+      <div class="brand-stat">
+        <span class="num">40</span>
+        <span class="lbl">Questions</span>
+      </div>
+      <div class="brand-stat">
+        <span class="num">400</span>
+        <span class="lbl">Max Score</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right card -->
+  <div class="auth-card-wrap">
+    <div class="auth-card">
+
+      <div class="card-top">
+        <h2>Candidate Registration</h2>
+        <p>Complete the steps below to create your examination account.</p>
+      </div>
+
+      <!-- Step indicator -->
+      <div class="step-indicator">
+        <div class="step-wrap">
+          <div class="step active" id="step-1">
+            <div class="step-circle">1</div>
+          </div>
+          <div class="step-label">Personal</div>
+        </div>
+        <div class="step-line" id="line-1"></div>
+        <div class="step-wrap">
+          <div class="step" id="step-2">
+            <div class="step-circle">2</div>
+          </div>
+          <div class="step-label">Academic</div>
+        </div>
+        <div class="step-line" id="line-2"></div>
+        <div class="step-wrap">
+          <div class="step" id="step-3">
+            <div class="step-circle">3</div>
+          </div>
+          <div class="step-label">Security</div>
+        </div>
+      </div>
+
+      <div class="alert error" id="reg-alert"></div>
+      <div class="alert success" id="reg-success"></div>
+
+      <!-- Step 1: Personal Info -->
+      <div class="form-section active" id="section-1">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" id="inp-firstname" placeholder="e.g. Chukwuemeka"/>
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" id="inp-lastname" placeholder="e.g. Okonkwo"/>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Date of Birth</label>
+          <input type="date" id="inp-dob"/>
+        </div>
+        <div class="form-group">
+          <label>Gender</label>
+          <div class="select-wrap">
+            <select id="inp-gender">
+              <option value="">— Select —</option>
+              <option>Male</option>
+              <option>Female</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" id="inp-phone" placeholder="e.g. 08012345678"/>
+        </div>
+        <button class="btn btn-primary" onclick="nextStep(1)">Continue →</button>
+      </div>
+
+      <!-- Step 2: Academic Info -->
+      <div class="form-section" id="section-2">
+        <div class="form-group">
+          <label>Registration Number</label>
+          <input type="text" id="inp-reg" placeholder="e.g. 2026/UTME/0012345"/>
+        </div>
+        <div class="form-group">
+          <label>State of Origin</label>
+          <div class="select-wrap">
+            <select id="inp-state">
+              <option value="">— Select State —</option>
+              <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option>
+              <option>Anambra</option><option>Bauchi</option><option>Bayelsa</option>
+              <option>Benue</option><option>Borno</option><option>Cross River</option>
+              <option>Delta</option><option>Ebonyi</option><option>Edo</option>
+              <option>Ekiti</option><option>Enugu</option><option>FCT</option>
+              <option>Gombe</option><option>Imo</option><option>Jigawa</option>
+              <option>Kaduna</option><option>Kano</option><option>Katsina</option>
+              <option>Kebbi</option><option>Kogi</option><option>Kwara</option>
+              <option>Lagos</option><option>Nasarawa</option><option>Niger</option>
+              <option>Ogun</option><option>Ondo</option><option>Osun</option>
+              <option>Oyo</option><option>Plateau</option><option>Rivers</option>
+              <option>Sokoto</option><option>Taraba</option><option>Yobe</option>
+              <option>Zamfara</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Examination Year</label>
+          <div class="select-wrap">
+            <select id="inp-year">
+              <option>2024</option><option>2025</option><option selected>2026</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Chosen Course</label>
+          <input type="text" id="inp-course" placeholder="e.g. Computer Science"/>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" onclick="prevStep(2)">← Back</button>
+          <button class="btn btn-primary" onclick="nextStep(2)">Continue →</button>
+        </div>
+      </div>
+
+      <!-- Step 3: Security -->
+      <div class="form-section" id="section-3">
+        <div class="form-group">
+          <label>Create Password</label>
+          <input type="password" id="inp-pass" placeholder="Minimum 6 characters" oninput="checkStrength(this.value)"/>
+          <div class="pass-strength"><div class="pass-strength-fill" id="strength-bar"></div></div>
+          <div class="pass-hint" id="strength-label">Enter a password</div>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" id="inp-pass2" placeholder="Repeat your password"/>
+        </div>
+        <div class="terms-row">
+          <input type="checkbox" id="inp-terms"/>
+          <span>I agree to the <a href="#">Terms of Use</a> and <a href="#">Examination Rules</a> of the EduTest CBT Portal.</span>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" onclick="prevStep(3)">← Back</button>
+          <button class="btn btn-primary" onclick="doRegister()">Create Account</button>
+        </div>
+      </div>
+
+      <div class="auth-footer">
+        Already registered? <a href="login.html">Sign in here</a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  let currentStep = 1;
+
+  function showAlert(id, msg, type) {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.className = `alert ${type} show`;
+    setTimeout(() => el.classList.remove('show'), 4000);
+  }
+
+  function nextStep(from) {
+    document.getElementById('reg-alert').classList.remove('show');
+
+    if (from === 1) {
+      const fn = document.getElementById('inp-firstname').value.trim();
+      const ln = document.getElementById('inp-lastname').value.trim();
+      const dob = document.getElementById('inp-dob').value;
+      const g  = document.getElementById('inp-gender').value;
+      const ph = document.getElementById('inp-phone').value.trim();
+      if (!fn || !ln || !dob || !g || !ph) {
+        showAlert('reg-alert', 'Please complete all personal information fields.', 'error'); return;
+      }
+    }
+    if (from === 2) {
+      const reg = document.getElementById('inp-reg').value.trim();
+      const st  = document.getElementById('inp-state').value;
+      const co  = document.getElementById('inp-course').value.trim();
+      if (!reg || !st || !co) {
+        showAlert('reg-alert', 'Please complete all academic information fields.', 'error'); return;
+      }
+    }
+
+    document.getElementById(`section-${from}`).classList.remove('active');
+    document.getElementById(`section-${from + 1}`).classList.add('active');
+    document.getElementById(`step-${from}`).classList.add('done');
+    document.getElementById(`step-${from + 1}`).classList.add('active');
+    if (from < 3) document.getElementById(`line-${from}`).style.background = 'var(--navy)';
+    currentStep = from + 1;
+  }
+
+  function prevStep(from) {
+    document.getElementById(`section-${from}`).classList.remove('active');
+    document.getElementById(`section-${from - 1}`).classList.add('active');
+    document.getElementById(`step-${from}`).classList.remove('active');
+    document.getElementById(`step-${from - 1}`).classList.remove('done');
+    currentStep = from - 1;
+  }
+
+  function checkStrength(val) {
+    const bar = document.getElementById('strength-bar');
+    const lbl = document.getElementById('strength-label');
+    let score = 0;
+    if (val.length >= 6) score++;
+    if (val.length >= 10) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    const levels = [
+      { w: '0%',   bg: 'var(--border)',   t: 'Enter a password' },
+      { w: '25%',  bg: 'var(--red)',      t: 'Weak' },
+      { w: '50%',  bg: 'var(--gold)',     t: 'Fair' },
+      { w: '75%',  bg: '#3498db',         t: 'Good' },
+      { w: '100%', bg: 'var(--success)',  t: 'Strong ✓' },
+    ];
+    const lvl = levels[Math.min(score, 4)];
+    bar.style.width = lvl.w;
+    bar.style.background = lvl.bg;
+    lbl.textContent = lvl.t;
+  }
+
+  function doRegister() {
+    document.getElementById('reg-alert').classList.remove('show');
+    const pass  = document.getElementById('inp-pass').value;
+    const pass2 = document.getElementById('inp-pass2').value;
+    const terms = document.getElementById('inp-terms').checked;
+
+    if (pass.length < 6) { showAlert('reg-alert', 'Password must be at least 6 characters.', 'error'); return; }
+    if (pass !== pass2)  { showAlert('reg-alert', 'Passwords do not match.', 'error'); return; }
+    if (!terms)          { showAlert('reg-alert', 'You must agree to the terms to continue.', 'error'); return; }
+
+    const user = {
+      firstName: document.getElementById('inp-firstname').value.trim(),
+      lastName:  document.getElementById('inp-lastname').value.trim(),
+      dob:       document.getElementById('inp-dob').value,
+      gender:    document.getElementById('inp-gender').value,
+      phone:     document.getElementById('inp-phone').value.trim(),
+      reg:       document.getElementById('inp-reg').value.trim(),
+      state:     document.getElementById('inp-state').value,
+      year:      document.getElementById('inp-year').value,
+      course:    document.getElementById('inp-course').value.trim(),
+      password:  pass,
+      name:      `${document.getElementById('inp-firstname').value.trim()} ${document.getElementById('inp-lastname').value.trim()}`,
+    };
+
+    // Check duplicate reg
+    const users = JSON.parse(localStorage.getItem('cbt_users') || '[]');
+    if (users.find(u => u.reg === user.reg)) {
+      showAlert('reg-alert', 'This registration number is already registered.', 'error'); return;
+    }
+
+    users.push(user);
+    localStorage.setItem('cbt_users', JSON.stringify(users));
+
+    showAlert('reg-success', 'Account created! Redirecting to login…', 'success');
+    setTimeout(() => window.location.href = 'login.html', 1800);
+  }
+</script>
+</body>
+</html>
