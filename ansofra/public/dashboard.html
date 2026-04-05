@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — EduTest CBT</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ── DASHBOARD LAYOUT ── */
+    #dashboard-page { display: flex; flex-direction: column; min-height: 100vh; }
+
+    .dash-body {
+      display: flex;
+      flex: 1;
+      min-height: calc(100vh - 60px);
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 248px;
+      flex-shrink: 0;
+      background: var(--navy);
+      color: var(--white);
+      padding: 28px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .profile-card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 14px;
+      padding: 22px 16px;
+      text-align: center;
+    }
+    .profile-avatar {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy-mid), var(--navy-light));
+      border: 3px solid rgba(255,255,255,0.2);
+      margin: 0 auto 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Merriweather', serif;
+      font-size: 26px; font-weight: 700;
+      color: var(--white);
+    }
+    .profile-name { font-size: 15px; font-weight: 700; line-height: 1.3; }
+    .profile-reg  { font-size: 11px; color: rgba(255,255,255,0.5); letter-spacing: 0.8px; margin-top: 3px; }
+    .profile-badge {
+      display: inline-block;
+      margin-top: 10px;
+      background: var(--red);
+      color: var(--white);
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .profile-details { margin-top: 14px; display: flex; flex-direction: column; gap: 7px; }
+    .profile-row {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 12px; padding: 6px 10px;
+      background: rgba(255,255,255,0.05);
+      border-radius: 7px;
+    }
+    .profile-row .lbl { color: rgba(255,255,255,0.5); }
+    .profile-row .val { font-weight: 600; font-size: 11px; color: var(--white); }
+
+    /* sidebar info panels */
+    .side-panel {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px;
+      padding: 16px;
+    }
+    .side-panel h4 {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 12px;
+    }
+
+    .subject-list { display: flex; flex-direction: column; gap: 7px; }
+    .subject-list-item {
+      display: flex; align-items: center; gap: 9px;
+      font-size: 12px; color: rgba(255,255,255,0.75);
+      padding: 5px 8px;
+      border-radius: 6px;
+      transition: background 0.15s;
+    }
+    .subject-list-item:hover { background: rgba(255,255,255,0.08); }
+    .subject-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .instruction-list { display: flex; flex-direction: column; gap: 8px; }
+    .instruction-item {
+      display: flex; gap: 9px;
+      font-size: 11px;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.5;
+    }
+    .instruction-item .num {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* ── MAIN CONTENT ── */
+    .main-content {
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    /* ───────────────────────────────
+       WELCOME SCREEN (before exam)
+    ─────────────────────────────── */
+    #welcome-screen {
+      padding: 40px 40px;
+      animation: fadeUp 0.4s ease;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .welcome-hero {
+      background: var(--navy);
+      border-radius: 20px;
+      padding: 50px 48px;
+      color: var(--white);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .welcome-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: repeating-linear-gradient(
+        45deg, transparent, transparent 30px,
+        rgba(255,255,255,0.015) 30px, rgba(255,255,255,0.015) 60px
+      );
+    }
+    .welcome-hero::after {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(192,57,43,0.2), transparent 70%);
+      right: -120px; bottom: -120px;
+    }
+    .welcome-hero > * { position: relative; z-index: 1; }
+
+    .welcome-greeting {
+      font-size: 13px;
+      color: rgba(255,255,255,0.55);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .welcome-name {
+      font-family: 'Merriweather', serif;
+      font-size: 34px; font-weight: 900;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+    .welcome-name span { color: var(--gold); }
+    .welcome-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      max-width: 480px;
+      margin: 0 auto 32px;
+      line-height: 1.7;
+    }
+
+    .start-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--red);
+      color: var(--white);
+      padding: 16px 44px;
+      border-radius: 12px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 16px; font-weight: 700;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      box-shadow: 0 6px 24px rgba(192,57,43,0.4);
+      letter-spacing: 0.3px;
+    }
+    .start-btn:hover {
+      background: var(--red-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 32px rgba(192,57,43,0.5);
+    }
+    .start-btn:active { transform: translateY(0); }
+
+    .start-btn .arrow {
+      font-size: 20px;
+      transition: transform 0.2s;
+    }
+    .start-btn:hover .arrow { transform: translateX(4px); }
+
+    /* info cards row */
+    .info-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+    .info-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 22px 20px;
+      box-shadow: var(--shadow-sm);
+    }
+    .info-card .ic-icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+    .info-card .ic-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .info-card .ic-value {
+      font-family: 'Merriweather', serif;
+      font-size: 20px; font-weight: 700;
+      color: var(--navy);
+    }
+    .info-card .ic-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* subject preview table */
+    .subjects-section {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+    .subjects-section-head {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .subjects-section-head h3 {
+      font-family: 'Merriweather', serif;
+      font-size: 16px; color: var(--navy);
+    }
+    .subjects-section-head span {
+      font-size: 12px; color: var(--text-muted);
+    }
+
+    .subject-table { width: 100%; border-collapse: collapse; }
+    .subject-table th {
+      padding: 10px 24px;
+      font-size: 10px; font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      color: var(--text-muted);
+      text-align: left;
+      background: var(--off-white);
+      border-bottom: 1px solid var(--border);
+    }
+    .subject-table td {
+      padding: 14px 24px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+      color: #1a2340;
+    }
+    .subject-table tr:last-child td { border-bottom: none; }
+    .subject-table tr:hover td { background: #f8faff; }
+
+    .subj-color {
+      display: inline-block;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    /* ───────────────────────────────
+       EXAM SCREEN (inside dashboard)
+    ─────────────────────────────── */
+    #exam-screen { display: none; flex-direction: column; flex: 1; }
+
+    /* Subject nav tabs */
+    .subject-nav {
+      background: var(--navy-dark);
+      padding: 0 28px;
+      display: flex; gap: 4px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .subject-nav::-webkit-scrollbar { display: none; }
+    .subject-tab {
+      padding: 11px 20px;
+      font-size: 13px; font-weight: 600;
+      color: rgba(255,255,255,0.5);
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .subject-tab:hover { color: rgba(255,255,255,0.9); }
+    .subject-tab.active { color: var(--white); border-bottom-color: var(--red); }
+    .subject-tab .q-count { font-size: 10px; color: rgba(255,255,255,0.4); margin-left: 6px; }
+
+    .exam-body { display: flex; flex: 1; }
+
+    /* Exam sidebar (question grid only) */
+    .exam-sidebar {
+      width: 220px;
+      flex-shrink: 0;
+      background: var(--navy);
+      padding: 20px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .exam-sidebar .side-panel h4 { margin-bottom: 10px; }
+
+    .progress-panel .prog-row {
+      display: flex; justify-content: space-between;
+      font-size: 12px; margin-bottom: 7px;
+    }
+    .progress-panel .prog-row .pname { color: rgba(255,255,255,0.7); }
+    .progress-panel .prog-row .pscore { font-weight: 700; color: var(--white); }
+    .prog-bar {
+      height: 3px; background: rgba(255,255,255,0.1);
+      border-radius: 2px; margin-bottom: 10px;
+    }
+    .prog-bar-fill {
+      height: 100%; border-radius: 2px;
+      background: var(--red);
+      transition: width 0.4s ease;
+    }
+
+    .q-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 5px; }
+    .q-dot {
+      aspect-ratio: 1;
+      border-radius: 5px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 600;
+      cursor: pointer;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.5);
+      transition: all 0.15s;
+    }
+    .q-dot:hover { background: rgba(255,255,255,0.2); color: var(--white); }
+    .q-dot.answered { background: var(--success); color: var(--white); }
+    .q-dot.current  { background: var(--red); color: var(--white); }
+    .q-dot.flagged  { background: var(--gold); color: #1a2340; }
+
+    /* Question area */
+    .question-area { flex: 1; padding: 28px 36px; overflow-y: auto; background: var(--off-white); }
+
+    .subj-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 22px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid var(--border);
+    }
+    .subj-header h2 {
+      font-family: 'Merriweather', serif;
+      font-size: 20px; color: var(--navy); font-weight: 700;
+    }
+    .subj-header .prog-info { font-size: 13px; color: var(--text-muted); }
+    .subj-header .prog-info strong { color: var(--navy); }
+
+    .question-card {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 30px 32px;
+      box-shadow: 0 2px 16px rgba(10,31,68,0.07);
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+      animation: fadeSlide 0.25s ease;
+    }
+    @keyframes fadeSlide {
+      from { opacity:0; transform: translateY(8px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    .q-number {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--red); margin-bottom: 12px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .q-number::after { content:''; flex:1; height:1px; background: var(--border); }
+    .question-text { font-size: 16px; line-height: 1.75; color: #1a2340; margin-bottom: 22px; }
+
+    .options { display: flex; flex-direction: column; gap: 10px; }
+    .option-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 13px 18px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.18s;
+      background: var(--white);
+    }
+    .option-item:hover { border-color: var(--navy); background: #f0f4ff; }
+    .option-item.selected { border-color: var(--navy); background: #e8eef8; }
+    .option-letter {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      background: var(--off-white);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 13px;
+      color: var(--navy); flex-shrink: 0;
+      transition: all 0.18s;
+      border: 1.5px solid var(--border);
+    }
+    .option-item.selected .option-letter {
+      background: var(--navy); color: var(--white); border-color: var(--navy);
+    }
+    .option-text { font-size: 14px; line-height: 1.5; }
+
+    .nav-actions {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-top: 22px;
+    }
+    .btn-nav-prev {
+      background: var(--white); color: var(--navy);
+      border: 1.5px solid var(--border);
+      padding: 11px 22px; border-radius: 8px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 14px; font-weight: 700;
+      cursor: pointer; transition: all 0.18s;
+    }
+    .btn-nav-prev:hover { border-color: var(--navy); background: #f0f4ff; }
+    .btn-nav-next {
+      background: var(--navy); color: var(--white);
+      padding: 11px 22px; border-radius: 8px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 14px; font-weight: 700;
+      cursor: pointer; border: none; transition: all 0.18s;
+    }
+    .btn-nav-next:hover { background: var(--navy-light); }
+    .btn-flag-q {
+      background: var(--white); color: var(--gold);
+      border: 1.5px solid var(--gold);
+      padding: 10px 18px; border-radius: 8px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 13px; font-weight: 700;
+      cursor: pointer; transition: all 0.18s;
+    }
+    .btn-flag-q:hover { background: #fffbf0; }
+    .btn-flag-q.flagged { background: var(--gold); color: #1a2340; }
+    .btn-submit-exam {
+      background: var(--red); color: var(--white);
+      padding: 11px 22px; border-radius: 8px;
+      font-family: 'Source Sans 3', sans-serif;
+      font-size: 14px; font-weight: 700;
+      cursor: pointer; border: none; transition: all 0.18s;
+    }
+    .btn-submit-exam:hover { background: var(--red-hover); }
+
+    /* timer in exam top bar */
+    .timer-badge {
+      background: rgba(192,57,43,0.85);
+      color: var(--white);
+      padding: 6px 16px; border-radius: 20px;
+      font-size: 17px; font-weight: 700;
+      letter-spacing: 1px; min-width: 92px;
+      text-align: center; font-variant-numeric: tabular-nums;
+    }
+    .timer-badge.warning { background: var(--gold); color: #1a2340; }
+    .timer-badge.danger  { background: var(--red); animation: pulse 1s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;} 50%{opacity:0.65;} }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(6,15,34,0.72);
+      display: none; align-items: center; justify-content: center;
+      z-index: 999;
+      backdrop-filter: blur(4px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal {
+      background: var(--white);
+      border-radius: 18px; padding: 42px 44px;
+      max-width: 440px; width: 90%;
+      text-align: center;
+      box-shadow: var(--shadow-lg);
+      animation: modalIn 0.25s ease;
+    }
+    @keyframes modalIn { from{opacity:0;transform:scale(.95);}to{opacity:1;transform:scale(1);} }
+    .modal-icon { width:70px;height:70px;border-radius:50%;background:var(--red-light);margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-size:30px; }
+    .modal h3 { font-family:'Merriweather',serif;font-size:20px;color:var(--navy);margin-bottom:10px; }
+    .modal p  { font-size:14px;color:#556;line-height:1.6; }
+    .modal-actions { display:flex;gap:12px;margin-top:26px; }
+    .modal-actions .btn { flex:1; }
+
+    /* Result */
+    #result-screen {
+      display: none;
+      min-height: 100vh;
+      background: linear-gradient(135deg,var(--navy-dark),var(--navy));
+      align-items: center; justify-content: center;
+      flex-direction: column; padding: 40px 20px;
+    }
+    .result-card {
+      background: var(--white); border-radius: 20px;
+      padding: 48px 44px; max-width: 560px; width: 100%;
+      text-align: center; box-shadow: var(--shadow-lg);
+    }
+    .result-title { font-family:'Merriweather',serif;font-size:24px;color:var(--navy);margin-bottom:4px; }
+    .result-sub { font-size:13px;color:var(--text-muted);margin-bottom:30px; }
+    .result-circle {
+      width:140px;height:140px;border-radius:50%;
+      background:var(--navy);margin:0 auto 28px;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      color:var(--white);box-shadow:0 8px 32px rgba(10,31,68,0.3);
+    }
+    .result-circle .big { font-size:42px;font-weight:700;line-height:1; }
+    .result-circle .out { font-size:13px;color:rgba(255,255,255,0.55); }
+    .result-breakdown { margin-bottom:28px; }
+    .result-row {
+      display:flex;justify-content:space-between;align-items:center;
+      padding:12px 0;border-bottom:1px solid var(--border);font-size:14px;
+    }
+    .result-row:last-child { border-bottom:none; }
+    .result-row .sname { color:#333; }
+    .result-row .spts  { font-weight:700;color:var(--navy); }
+
+    @media (max-width: 768px) {
+      .sidebar { display: none; }
+      .exam-sidebar { display: none; }
+      .question-area { padding: 18px 16px; }
+      #welcome-screen { padding: 20px 16px; }
+      .welcome-hero { padding: 32px 20px; }
+      .welcome-name { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ DASHBOARD PAGE ═══ -->
+<div id="dashboard-page">
+
+  <!-- Top bar -->
+  <div class="top-bar" id="top-bar">
+    <div class="top-bar-left">
+      <div class="top-bar-emblem">ET</div>
+      <div class="top-bar-title">
+        EduTest CBT
+        <small id="top-session-label">Candidate Dashboard</small>
+      </div>
+    </div>
+    <div class="top-bar-right">
+      <div id="timer-wrap" style="display:none">
+        <div class="timer-badge" id="timer">01:30:00</div>
+      </div>
+      <div class="nav-user">
+        <div class="nav-avatar" id="nav-avatar">--</div>
+        <span id="nav-name">Candidate</span>
+      </div>
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <!-- Main body -->
+  <div class="dash-body">
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+      <div class="profile-card">
+        <div class="profile-avatar" id="sidebar-avatar">--</div>
+        <div class="profile-name" id="sidebar-name">—</div>
+        <div class="profile-reg"  id="sidebar-reg">—</div>
+        <div class="profile-badge">UTME Candidate</div>
+        <div class="profile-details">
+          <div class="profile-row"><span class="lbl">State</span>   <span class="val" id="sb-state">—</span></div>
+          <div class="profile-row"><span class="lbl">Year</span>    <span class="val" id="sb-year">—</span></div>
+          <div class="profile-row"><span class="lbl">Course</span>  <span class="val" id="sb-course">—</span></div>
+          <div class="profile-row"><span class="lbl">Gender</span>  <span class="val" id="sb-gender">—</span></div>
+          <div class="profile-row"><span class="lbl">Phone</span>   <span class="val" id="sb-phone">—</span></div>
+        </div>
+      </div>
+
+      <!-- shown before exam -->
+      <div class="side-panel" id="subjects-side">
+        <h4>Subjects</h4>
+        <div class="subject-list" id="subject-list-side"></div>
+      </div>
+
+      <!-- shown during exam -->
+      <div class="side-panel progress-panel" id="progress-side" style="display:none">
+        <h4>Progress</h4>
+        <div id="progress-list"></div>
+      </div>
+
+      <div class="side-panel" id="q-panel" style="display:none">
+        <h4>Questions</h4>
+        <div class="q-grid" id="q-grid"></div>
+      </div>
+
+      <div class="side-panel" id="instructions-side">
+        <h4>Instructions</h4>
+        <div class="instruction-list">
+          <div class="instruction-item"><div class="num">1</div><span>Answer all questions in each subject.</span></div>
+          <div class="instruction-item"><div class="num">2</div><span>You can navigate between subjects freely.</span></div>
+          <div class="instruction-item"><div class="num">3</div><span>Flag uncertain questions to review later.</span></div>
+          <div class="instruction-item"><div class="num">4</div><span>Exam auto-submits when time expires.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="main-content">
+
+      <!-- WELCOME SCREEN -->
+      <div id="welcome-screen">
+        <div class="welcome-hero">
+          <div class="welcome-greeting">Welcome back, Candidate</div>
+          <div class="welcome-name" id="hero-name">Loading…</div>
+          <div class="welcome-sub" id="hero-sub">
+            Your examination session is ready. Review your details below, then start when you are prepared. The exam timer begins the moment you click <em>Start Exam</em>.
+          </div>
+          <button class="start-btn" onclick="launchExam()">
+            Start Examination <span class="arrow">→</span>
+          </button>
+        </div>
+
+        <!-- Info cards -->
+        <div class="info-cards">
+          <div class="info-card">
+            <div class="ic-icon">📋</div>
+            <div class="ic-label">Registration</div>
+            <div class="ic-value" id="ic-reg" style="font-size:14px">—</div>
+          </div>
+          <div class="info-card">
+            <div class="ic-icon">⏱</div>
+            <div class="ic-label">Duration</div>
+            <div class="ic-value">90 <span style="font-size:13px">mins</span></div>
+            <div class="ic-sub">1 hour 30 minutes</div>
+          </div>
+          <div class="info-card">
+            <div class="ic-icon">📚</div>
+            <div class="ic-label">Subjects</div>
+            <div class="ic-value">4</div>
+            <div class="ic-sub">10 questions each</div>
+          </div>
+          <div class="info-card">
+            <div class="ic-icon">🏆</div>
+            <div class="ic-label">Max Score</div>
+            <div class="ic-value">400</div>
+            <div class="ic-sub">100 per subject</div>
+          </div>
+        </div>
+
+        <!-- Subject table -->
+        <div class="subjects-section">
+          <div class="subjects-section-head">
+            <h3>Examination Subjects</h3>
+            <span>10 questions · 10 marks each</span>
+          </div>
+          <table class="subject-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Subject</th>
+                <th>Questions</th>
+                <th>Max Score</th>
+                <th>Duration</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td><span class="subj-color" style="background:#3498db"></span>English Language</td><td>10</td><td>100</td><td>~22 mins</td></tr>
+              <tr><td>2</td><td><span class="subj-color" style="background:#e74c3c"></span>Mathematics</td><td>10</td><td>100</td><td>~23 mins</td></tr>
+              <tr><td>3</td><td><span class="subj-color" style="background:#2ecc71"></span>Physics</td><td>10</td><td>100</td><td>~23 mins</td></tr>
+              <tr><td>4</td><td><span class="subj-color" style="background:#f39c12"></span>Chemistry</td><td>10</td><td>100</td><td>~22 mins</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- EXAM SCREEN -->
+      <div id="exam-screen">
+        <div class="subject-nav" id="subject-nav"></div>
+        <div class="exam-body">
+          <div class="question-area" id="question-area"></div>
+        </div>
+      </div>
+
+    </div><!-- /main-content -->
+  </div><!-- /dash-body -->
+</div><!-- /dashboard-page -->
+
+<!-- Result -->
+<div id="result-screen">
+  <div class="result-card">
+    <div class="result-title">Examination Complete</div>
+    <div class="result-sub">Your answers have been submitted and recorded.</div>
+    <div class="result-circle">
+      <div class="big" id="result-total">—</div>
+      <div class="out">out of 400</div>
+    </div>
+    <div class="result-breakdown" id="result-breakdown"></div>
+    <button class="btn btn-primary" style="margin-top:0" onclick="backToDash()">Back to Dashboard</button>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal-overlay" id="submit-modal">
+  <div class="modal">
+    <div class="modal-icon">⚠️</div>
+    <h3>Submit Examination?</h3>
+    <p>You are about to submit your answers. This action cannot be undone. Ensure you have attempted all questions.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Go Back</button>
+      <button class="btn btn-red"   onclick="finalSubmit()">Submit Now</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════
+// SUBJECTS DATA
+// ══════════════════════════════════════════
+const SUBJECTS = [
+  { name:"English Language", color:"#3498db", questions:[
+    {q:"Choose the word most nearly <strong>opposite</strong> to the underlined word: The politician gave a <u>verbose</u> speech.",opts:["Concise","Lengthy","Eloquent","Boring"],ans:0},
+    {q:"Select the option that best completes the sentence: The committee members _____ yet to reach a consensus.",opts:["is","are","was","were"],ans:1},
+    {q:"Identify the figure of speech in: 'The wind whispered through the trees.'",opts:["Simile","Metaphor","Personification","Hyperbole"],ans:2},
+    {q:"Choose the correct spelling:",opts:["Accomodate","Accommodate","Acommodate","Accomadate"],ans:1},
+    {q:"Which sentence is grammatically correct?",opts:["He don't know the answer.","She doesn't knows the answer.","They doesn't want to come.","We do not agree with the decision."],ans:3},
+    {q:"The word 'ephemeral' means:",opts:["Everlasting","Short-lived","Transparent","Unusual"],ans:1},
+    {q:"Identify the clause type: 'Although it was raining, they continued the match.'",opts:["Noun clause","Adverbial clause","Adjectival clause","Main clause"],ans:1},
+    {q:"Replace the underlined idiom: He was <u>over the moon</u> when admitted.",opts:["Depressed","Very happy","Surprised","Angry"],ans:1},
+    {q:"Which is the correct plural of 'phenomenon'?",opts:["Phenomenons","Phenomena","Phenomenas","Phenomeni"],ans:1},
+    {q:"Select the word that rhymes with 'Bough':",opts:["Cough","Dough","Plough","Through"],ans:2},
+  ]},
+  { name:"Mathematics", color:"#e74c3c", questions:[
+    {q:"Find the value of x if: 3x + 7 = 22",opts:["3","4","5","6"],ans:2},
+    {q:"Area of a circle with radius 7cm (π = 22/7):",opts:["154 cm²","44 cm²","308 cm²","22 cm²"],ans:0},
+    {q:"Simplify: (2³ × 2⁴) ÷ 2⁵",opts:["4","2","8","16"],ans:0},
+    {q:"A trader buys for ₦800 and sells for ₦1,000. Percentage profit?",opts:["20%","25%","15%","30%"],ans:1},
+    {q:"Sum of the first 10 terms of AP: 2, 5, 8, 11…",opts:["145","155","165","175"],ans:1},
+    {q:"Gradient of the line: 4y = 3x − 8",opts:["4","3","¾","⅓"],ans:2},
+    {q:"If P={2,4,6,8} and Q={1,2,3,4}, find P∩Q.",opts:["{2,4}","{1,2,3,4,6,8}","{6,8}","{1,3}"],ans:0},
+    {q:"Evaluate: log₁₀(1000)",opts:["2","3","4","10"],ans:1},
+    {q:"A 10m ladder makes 60° with ground. How high up the wall does it reach?",opts:["5m","5√3 m","10√3 m","8m"],ans:1},
+    {q:"Solve: x² − 5x + 6 = 0",opts:["x=2,x=3","x=−2,x=−3","x=1,x=6","x=−1,x=−6"],ans:0},
+  ]},
+  { name:"Physics", color:"#2ecc71", questions:[
+    {q:"Which of the following is a vector quantity?",opts:["Speed","Temperature","Velocity","Mass"],ans:2},
+    {q:"The SI unit of electric current is:",opts:["Volt","Ohm","Ampere","Watt"],ans:2},
+    {q:"A body moves with uniform velocity when:",opts:["Net force is zero","Acceleration is constant","Speed is changing","All of the above"],ans:0},
+    {q:"Velocity ratio of a pulley system with 4 pulleys:",opts:["2","4","6","8"],ans:1},
+    {q:"Which electromagnetic wave has the highest frequency?",opts:["Radio waves","Infrared","X-rays","Gamma rays"],ans:3},
+    {q:"Stone thrown up at 20 m/s. Max height? (g=10)",opts:["20m","40m","10m","30m"],ans:0},
+    {q:"Light bending around an obstacle is called:",opts:["Reflection","Refraction","Diffraction","Dispersion"],ans:2},
+    {q:"Ohm's Law states current is proportional to:",opts:["Power","Resistance","Voltage","Charge"],ans:2},
+    {q:"Which is NOT a renewable energy source?",opts:["Solar","Coal","Wind","Tidal"],ans:1},
+    {q:"Critical angle for a medium is 42° (sin 42°≈0.67). Refractive index?",opts:["1.49","0.67","1.33","0.74"],ans:0},
+  ]},
+  { name:"Chemistry", color:"#f39c12", questions:[
+    {q:"Atomic number of Carbon:",opts:["6","8","12","14"],ans:0},
+    {q:"Which is NOT a noble gas?",opts:["Neon","Argon","Nitrogen","Krypton"],ans:2},
+    {q:"Type of bond in NaCl:",opts:["Covalent","Ionic","Metallic","Hydrogen"],ans:1},
+    {q:"IUPAC name of CH₃CH₂OH:",opts:["Methanol","Ethanol","Propanol","Butanol"],ans:1},
+    {q:"Gas produced when zinc reacts with dilute HCl:",opts:["Oxygen","Carbon dioxide","Hydrogen","Nitrogen"],ans:2},
+    {q:"pH of a neutral solution at 25°C:",opts:["0","7","14","4"],ans:1},
+    {q:"Avogadro's number is approximately:",opts:["6.02×10²²","6.02×10²³","6.02×10²⁴","6.02×10²¹"],ans:1},
+    {q:"Which is a homogeneous mixture?",opts:["Sand and water","Salt solution","Oil and water","Soil"],ans:1},
+    {q:"Ore of aluminium:",opts:["Haematite","Bauxite","Galena","Magnetite"],ans:1},
+    {q:"Elements in the same group share the same:",opts:["Atomic mass","Neutron count","Number of valence electrons","Full electron configuration"],ans:2},
+  ]},
+];
+
+// ══════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════
+let user = null;
+let examState = {
+  currentSubject: 0,
+  currentQuestion: 0,
+  answers: [],
+  flagged: [],
+  timerSeconds: 5400,
+  timerInterval: null,
+  started: false
+};
+
+// ══════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════
+window.addEventListener('load', () => {
+  const session = JSON.parse(localStorage.getItem('cbt_session') || 'null');
+  if (!session) { window.location.href = 'login.html'; return; }
+  user = session;
+  populateUI();
+});
+
+function populateUI() {
+  const initials = user.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+  // top bar
+  document.getElementById('nav-avatar').textContent = initials;
+  document.getElementById('nav-name').textContent   = user.firstName || user.name;
+  // sidebar
+  document.getElementById('sidebar-avatar').textContent = initials;
+  document.getElementById('sidebar-name').textContent   = user.name;
+  document.getElementById('sidebar-reg').textContent    = user.reg;
+  document.getElementById('sb-state').textContent   = user.state;
+  document.getElementById('sb-year').textContent    = user.year;
+  document.getElementById('sb-course').textContent  = user.course  || '—';
+  document.getElementById('sb-gender').textContent  = user.gender  || '—';
+  document.getElementById('sb-phone').textContent   = user.phone   || '—';
+  // hero
+  document.getElementById('hero-name').innerHTML = `Welcome, <span>${user.firstName || user.name.split(' ')[0]}</span>`;
+  document.getElementById('ic-reg').textContent  = user.reg;
+  // subject list sidebar
+  const sl = document.getElementById('subject-list-side');
+  sl.innerHTML = SUBJECTS.map(s => `
+    <div class="subject-list-item">
+      <span class="subject-dot" style="background:${s.color}"></span>${s.name}
+    </div>
+  `).join('');
+}
+
+// ══════════════════════════════════════════
+// LAUNCH EXAM
+// ══════════════════════════════════════════
+function launchExam() {
+  examState.answers = SUBJECTS.map(s => Array(s.questions.length).fill(-1));
+  examState.flagged  = SUBJECTS.map(s => Array(s.questions.length).fill(false));
+  examState.currentSubject  = 0;
+  examState.currentQuestion = 0;
+  examState.started = true;
+
+  document.getElementById('welcome-screen').style.display  = 'none';
+  document.getElementById('exam-screen').style.display     = 'flex';
+  document.getElementById('timer-wrap').style.display      = 'block';
+  document.getElementById('top-session-label').textContent = 'Exam In Progress';
+  document.getElementById('subjects-side').style.display   = 'none';
+  document.getElementById('instructions-side').style.display = 'none';
+  document.getElementById('progress-side').style.display   = 'block';
+  document.getElementById('q-panel').style.display         = 'block';
+
+  buildSubjectTabs();
+  renderQuestion();
+  startTimer();
+}
+
+// ══════════════════════════════════════════
+// TABS
+// ══════════════════════════════════════════
+function buildSubjectTabs() {
+  document.getElementById('subject-nav').innerHTML = SUBJECTS.map((s,i)=>`
+    <div class="subject-tab ${i===0?'active':''}" id="tab-${i}" onclick="switchSubject(${i})">
+      ${s.name} <span class="q-count">(${s.questions.length}Q)</span>
+    </div>`).join('');
+}
+
+function switchSubject(idx) {
+  examState.currentSubject = idx;
+  examState.currentQuestion = 0;
+  document.querySelectorAll('.subject-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
+  renderQuestion();
+}
+
+// ══════════════════════════════════════════
+// RENDER
+// ══════════════════════════════════════════
+function renderQuestion() {
+  const si = examState.currentSubject;
+  const qi = examState.currentQuestion;
+  const subj = SUBJECTS[si];
+  const q    = subj.questions[qi];
+  const sel  = examState.answers[si][qi];
+  const flag = examState.flagged[si][qi];
+  const isLast = si === SUBJECTS.length-1 && qi === subj.questions.length-1;
+  const letters = ['A','B','C','D'];
+
+  document.getElementById('question-area').innerHTML = `
+    <div class="subj-header">
+      <h2>${subj.name}</h2>
+      <div class="prog-info">Question <strong>${qi+1}</strong> of <strong>${subj.questions.length}</strong></div>
+    </div>
+    <div class="question-card">
+      <div class="q-number">Question ${qi+1}</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options">
+        ${q.opts.map((o,oi)=>`
+          <div class="option-item ${sel===oi?'selected':''}" onclick="selectAnswer(${oi})">
+            <div class="option-letter">${letters[oi]}</div>
+            <div class="option-text">${o}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-nav-prev" onclick="prevQ()" ${qi===0&&si===0?'disabled':''}>← Previous</button>
+      <button class="btn-flag-q ${flag?'flagged':''}" onclick="toggleFlag()">
+        ${flag?'⚑ Flagged':'⚐ Flag'}
+      </button>
+      ${isLast
+        ? `<button class="btn-submit-exam" onclick="openModal()">Submit Exam</button>`
+        : `<button class="btn-nav-next" onclick="nextQ()">Next →</button>`}
+    </div>
+  `;
+  updateGrid();
+  updateProgress();
+}
+
+function selectAnswer(oi) {
+  examState.answers[examState.currentSubject][examState.currentQuestion] = oi;
+  renderQuestion();
+}
+function toggleFlag() {
+  const si = examState.currentSubject, qi = examState.currentQuestion;
+  examState.flagged[si][qi] = !examState.flagged[si][qi];
+  renderQuestion();
+}
+function goToQuestion(qi) { examState.currentQuestion = qi; renderQuestion(); }
+
+function nextQ() {
+  const si = examState.currentSubject;
+  if (examState.currentQuestion < SUBJECTS[si].questions.length-1) { examState.currentQuestion++; }
+  else if (si < SUBJECTS.length-1) { switchSubject(si+1); return; }
+  renderQuestion();
+}
+function prevQ() {
+  if (examState.currentQuestion > 0) { examState.currentQuestion--; }
+  else if (examState.currentSubject > 0) {
+    const nsi = examState.currentSubject-1;
+    examState.currentSubject = nsi;
+    examState.currentQuestion = SUBJECTS[nsi].questions.length-1;
+    document.querySelectorAll('.subject-tab').forEach((t,i)=>t.classList.toggle('active',i===nsi));
+  }
+  renderQuestion();
+}
+
+function updateGrid() {
+  const si = examState.currentSubject;
+  document.getElementById('q-grid').innerHTML = SUBJECTS[si].questions.map((_,qi)=>{
+    let cls='q-dot';
+    if(qi===examState.currentQuestion) cls+=' current';
+    else if(examState.flagged[si][qi]) cls+=' flagged';
+    else if(examState.answers[si][qi]!==-1) cls+=' answered';
+    return `<div class="${cls}" onclick="goToQuestion(${qi})">${qi+1}</div>`;
+  }).join('');
+}
+
+function updateProgress() {
+  const el = document.getElementById('progress-list');
+  el.innerHTML = SUBJECTS.map((s,si)=>{
+    const done  = examState.answers[si].filter(a=>a!==-1).length;
+    const total = s.questions.length;
+    const pct   = Math.round((done/total)*100);
+    return `
+      <div class="prog-row">
+        <span class="pname">${s.name.split(' ')[0]}</span>
+        <span class="pscore">${done}/${total}</span>
+      </div>
+      <div class="prog-bar"><div class="prog-bar-fill" style="width:${pct}%"></div></div>`;
+  }).join('');
+}
+
+// ══════════════════════════════════════════
+// TIMER
+// ══════════════════════════════════════════
+function startTimer() {
+  examState.timerInterval = setInterval(()=>{
+    examState.timerSeconds--;
+    const h = Math.floor(examState.timerSeconds/3600);
+    const m = Math.floor((examState.timerSeconds%3600)/60);
+    const s = examState.timerSeconds%60;
+    const el = document.getElementById('timer');
+    el.textContent = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    el.className = 'timer-badge';
+    if(examState.timerSeconds<=600) el.classList.add('warning');
+    if(examState.timerSeconds<=120) el.classList.add('danger');
+    if(examState.timerSeconds<=0){ clearInterval(examState.timerInterval); finalSubmit(); }
+  },1000);
+}
+
+// ══════════════════════════════════════════
+// MODAL & SUBMIT
+// ══════════════════════════════════════════
+function openModal()  { document.getElementById('submit-modal').classList.add('open'); }
+function closeModal() { document.getElementById('submit-modal').classList.remove('open'); }
+
+function finalSubmit() {
+  clearInterval(examState.timerInterval);
+  closeModal();
+  const scores = SUBJECTS.map((s,si)=>{
+    let correct=0;
+    s.questions.forEach((q,qi)=>{ if(examState.answers[si][qi]===q.ans) correct++; });
+    return {name:s.name, correct, total:s.questions.length, score:correct*10};
+  });
+  const total = scores.reduce((sum,s)=>sum+s.score,0);
+  document.getElementById('result-total').textContent = total;
+  document.getElementById('result-breakdown').innerHTML = scores.map(s=>`
+    <div class="result-row">
+      <span class="sname">${s.name}</span>
+      <span class="spts">${s.score}/100 (${s.correct}/${s.total} correct)</span>
+    </div>`).join('');
+  document.getElementById('dashboard-page').style.display = 'none';
+  document.getElementById('result-screen').style.display  = 'flex';
+}
+
+function backToDash() {
+  document.getElementById('result-screen').style.display  = 'none';
+  document.getElementById('dashboard-page').style.display = 'flex';
+  document.getElementById('exam-screen').style.display    = 'none';
+  document.getElementById('welcome-screen').style.display = 'block';
+  document.getElementById('timer-wrap').style.display     = 'none';
+  document.getElementById('top-session-label').textContent= 'Candidate Dashboard';
+  document.getElementById('subjects-side').style.display  = 'block';
+  document.getElementById('instructions-side').style.display = 'block';
+  document.getElementById('progress-side').style.display  = 'none';
+  document.getElementById('q-panel').style.display        = 'none';
+  examState.timerSeconds = 5400;
+  examState.started = false;
+}
+
+function logout() {
+  localStorage.removeItem('cbt_session');
+  window.location.href = 'login.html';
+}
+</script>
+</body>
+</html>

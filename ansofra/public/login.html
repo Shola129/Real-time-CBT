@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — EduTest CBT Portal</title>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    .login-divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 20px 0;
+    }
+    .login-divider hr { flex: 1; border: none; border-top: 1px solid var(--border); }
+    .login-divider span { font-size: 11px; color: var(--text-muted); white-space: nowrap; text-transform: uppercase; letter-spacing: 0.8px; }
+
+    .remember-row {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 20px; margin-top: -4px;
+    }
+    .remember-row label {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 13px; color: #445;
+      cursor: pointer; user-select: none;
+    }
+    .remember-row label input[type=checkbox] { accent-color: var(--navy); width: 14px; height: 14px; }
+    .forgot-link { font-size: 12px; color: var(--navy); font-weight: 600; text-decoration: none; }
+    .forgot-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<div class="auth-page">
+
+  <!-- Left branding -->
+  <div class="auth-branding">
+    <div class="brand-emblem">ET</div>
+    <div class="brand-title">EduTest CBT<br/>Portal</div>
+    <div class="brand-divider"></div>
+    <div class="brand-subtitle">
+      The official Computer-Based Testing platform for the Unified Tertiary Matriculation Examination. Secure. Reliable. Standardised.
+    </div>
+    <div class="brand-stats">
+      <div class="brand-stat">
+        <span class="num">4</span>
+        <span class="lbl">Subjects</span>
+      </div>
+      <div class="brand-stat">
+        <span class="num">90</span>
+        <span class="lbl">Minutes</span>
+      </div>
+      <div class="brand-stat">
+        <span class="num">400</span>
+        <span class="lbl">Total Score</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right card -->
+  <div class="auth-card-wrap">
+    <div class="auth-card">
+
+      <div class="card-top">
+        <h2>Welcome Back</h2>
+        <p>Sign in with your registration credentials to access your examination.</p>
+      </div>
+
+      <div class="alert error" id="login-alert"></div>
+
+      <div class="form-group">
+        <label>Registration Number</label>
+        <input type="text" id="inp-reg" placeholder="e.g. 2026/UTME/0012345" autocomplete="username"/>
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <input type="password" id="inp-pass" placeholder="Enter your password" autocomplete="current-password"/>
+      </div>
+
+      <div class="remember-row">
+        <label>
+          <input type="checkbox" id="remember"/> Remember me
+        </label>
+        <a href="#" class="forgot-link">Forgot password?</a>
+      </div>
+
+      <button class="btn btn-primary" onclick="doLogin()">Sign In →</button>
+
+      <div class="login-divider">
+        <hr/><span>New candidate?</span><hr/>
+      </div>
+
+      <a href="register.html" class="btn btn-ghost" style="width:100%; text-align:center;">
+        Create an Account
+      </a>
+
+      <div class="auth-footer">
+        &copy; 2026 EduTest CBT. All rights reserved.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="auth.js"></script>
+<script>
+  function doLogin() {
+    const reg  = document.getElementById('inp-reg').value.trim();
+    const pass = document.getElementById('inp-pass').value;
+    const alert = document.getElementById('login-alert');
+    alert.className = 'alert';
+
+    if (!reg || !pass) {
+      alert.textContent = 'Please enter your registration number and password.';
+      alert.classList.add('error', 'show');
+      return;
+    }
+
+    // Load users from localStorage
+    const users = JSON.parse(localStorage.getItem('cbt_users') || '[]');
+    const user  = users.find(u => u.reg === reg && u.password === pass);
+
+    if (!user) {
+      alert.textContent = 'Invalid registration number or password. Please try again.';
+      alert.classList.add('error', 'show');
+      return;
+    }
+
+    // Save session
+    localStorage.setItem('cbt_session', JSON.stringify(user));
+    window.location.href = 'dashboard.html';
+  }
+
+  // Allow Enter key
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+  // Auto-fill if remembered
+  window.addEventListener('load', () => {
+    const session = JSON.parse(localStorage.getItem('cbt_session') || 'null');
+    if (session) window.location.href = 'dashboard.html';
+  });
+</script>
+</body>
+</html>
