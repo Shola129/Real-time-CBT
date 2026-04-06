@@ -76,6 +76,53 @@ elseif($url===$docRoot.$rootDir."/ilease/validateEmail" || $url===$docRoot.$root
     exit();
 }
 
+// for user's area
+
+elseif($url === $docRoot.$rootDir."/Login" || $url===$docRoot.$rootDir."/Login" . "/"){
+    require_once __DIR__ ."/../ansofra/public/login.html";
+    exit();
+}
+
+elseif($url=== $docRoot.$rootDir ."/Register" || $url ===$docRoot.$rootDir."/Register" ."/"){
+    require_once __DIR__ . "/../ansofra/public/register.html";
+    exit();
+}
+
+elseif($url=== $docRoot.$rootDir ."/Verification" || $url ===$docRoot.$rootDir."/Verification" ."/"){
+    require_once __DIR__ ."/../ansofra/public/otp.html";
+    exit();
+}
+
+elseif($url=== $docRoot.$rootDir ."/Dashboard" || $url ===$docRoot.$rootDir."/Dashboard" ."/"){
+    require_once __DIR__ ."/../ansofra/public/dashboard.html";
+    exit();
+}
+
+// else($url=== $docRoot.$rootDir ."/" || $url ===$docRoot.$rootDir."/" ."/"){
+
+// }
+
+// else($url=== $docRoot.$rootDir ."/" || $url ===$docRoot.$rootDir."/" ."/"){
+
+// }
+
+// else($url=== $docRoot.$rootDir ."/" || $url ===$docRoot.$rootDir."/" ."/"){
+
+// }
+
+// else($url=== $docRoot.$rootDir ."/" || $url ===$docRoot.$rootDir."/" ."/"){
+
+// }
+
+// else($url=== $docRoot.$rootDir ."/" || $url ===$docRoot.$rootDir."/" ."/"){
+
+// }
+
+// else($url=== $docRoot.$rootDir ."/" || $url ===$docRoot.$rootDir."/" ."/"){
+
+// }
+
+
 //backend
 elseif($url === $adminArea."/run_migration"){
     require_once __DIR__ . $srcController."/RunMigration.php";
