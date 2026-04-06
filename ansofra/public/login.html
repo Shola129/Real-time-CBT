@@ -68,7 +68,7 @@
 
       <div class="form-group">
         <label>Registration Number</label>
-        <input type="text" id="inp-reg" placeholder="e.g. 2026/UTME/0012345" autocomplete="username"/>
+        <input type="text" id="email" placeholder="e.g. 2026/UTME/0012345" autocomplete="username"/>
       </div>
 
       <div class="form-group">
@@ -103,31 +103,52 @@
 
 <script src="auth.js"></script>
 <script>
-  function doLogin() {
-    const reg  = document.getElementById('inp-reg').value.trim();
+ async function doLogin() {
+    const email  = document.getElementById('email').value.trim();
     const pass = document.getElementById('inp-pass').value;
     const alert = document.getElementById('login-alert');
     alert.className = 'alert';
 
-    if (!reg || !pass) {
-      alert.textContent = 'Please enter your registration number and password.';
+
+    if (!email || !pass) {
+      alert.textContent = 'Please enter your email and password.';
       alert.classList.add('error', 'show');
       return;
     }
 
-    // Load users from localStorage
-    const users = JSON.parse(localStorage.getItem('cbt_users') || '[]');
-    const user  = users.find(u => u.reg === reg && u.password === pass);
+    else{
+      const e = {email:email, password:pass};
 
-    if (!user) {
-      alert.textContent = 'Invalid registration number or password. Please try again.';
-      alert.classList.add('error', 'show');
-      return;
+      const api = await fetch("/cbt/ansofra/api/login", {
+          method:"POST",
+          headers:{'Content-type':'application/json'},
+          body:JSON.stringify(e)
+      });
+
+      const result = await api.json();
+      if(result.status==="success"){
+        window.location.href = '/cbt/ansofra/dashboard';
+      }
+      else{
+          alert.textContent = 'Invalid registration number or password. Please try again.';
+          alert.classList.add('error', 'show');
+          return;
+      }
     }
 
-    // Save session
-    localStorage.setItem('cbt_session', JSON.stringify(user));
-    window.location.href = 'dashboard.html';
+    // // Load users from localStorage
+    // const users = JSON.parse(localStorage.getItem('cbt_users') || '[]');
+    // const user  = users.find(u => u.reg === reg && u.password === pass);
+
+    // if (!user) {
+    //   alert.textContent = 'Invalid registration number or password. Please try again.';
+    //   alert.classList.add('error', 'show');
+    //   return;
+    // }
+
+    // // Save session
+    // localStorage.setItem('cbt_session', JSON.stringify(user));
+    // window.location.href = 'dashboard.html';
   }
 
   // Allow Enter key

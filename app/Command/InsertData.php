@@ -22,7 +22,7 @@ class InsertData{
         if($decodeMig["status"]==="success"){
             $col = "email";
             $val = $this->dto->email;
-            $regNum = "2026/EXAM/". $this->dto->otp;
+            $regNum = "2026/EXAM/".$this->dto->otp;
             $data = [
                 "email"=>$this->dto->email,
                 "fullname"=>$this->dto->fullname,
@@ -31,7 +31,11 @@ class InsertData{
                 "department"=>$this->dto->department,
                 "date_created"=>$this->dto->date_created,
                 "regNum"=>$regNum,
-                "result"=>$this->dto->result ?? ''
+                "result"=>$this->dto->result ?? '',
+                'state'=>$this->dto->state ?? '',
+                "gender"=>$this->dto->gender ?? '',
+                "year"=>$this->dto->year ?? '',
+                "dob"=>$this->dto->dob
             ];
 
             $newMig2 = new Migration(null, $this->table);

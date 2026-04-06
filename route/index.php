@@ -293,6 +293,11 @@ elseif($url === $usersArea. "/Enter/Data"){
     exit();
 }
 
+elseif($url === $usersArea . "/login"){
+    require_once __DIR__ . $appController . "/LoginController.php";
+    exit();
+}
+
 
 // /api endpoints
 // elseif($url === $docRoot . $rootDir . $usersArea."/register" || $url === $usersArea."/register"."/"){

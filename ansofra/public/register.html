@@ -353,7 +353,7 @@
             Continue &nbsp;→
           </button>
         </div>
-        <div class="auth-footer">Already registered?<a href="login.html">Sign in here</a></div>
+        <div class="auth-footer">Already registered?<a href="/cbt/ansofra/login">Sign in here</a></div>
       </div>
       <!-- </form> -->
 
@@ -492,11 +492,7 @@
 
         <!-- STEP 2: Academic Info -->
         <div class="form-section" id="section-2">
-          <div class="form-group">
-            <label>Registration Number</label>
-            /*You'll be alter or given registeriation number and it'll be sent to register email*/
-            <!-- <input type="text" id="inp-reg" placeholder="e.g. 2026/UTME/0012345"/> -->
-          </div>
+         
           <div class="form-group">
             <label>State of Origin</label>
             <div class="select-wrap">
@@ -558,7 +554,7 @@
           </div>
         </div>
 
-        <div class="auth-footer">Already registered?<a href="login.html">Sign in here</a></div>
+        <div class="auth-footer">Already registered?<a href="/cbt/ansofra/login">Sign in here</a></div>
       </div>
 
     </div>
@@ -932,10 +928,9 @@
       if (!fn||!ln||!dob||!g||!ph) { showAlert('reg-alert','Please complete all personal information fields.','error'); return; }
     }
     if (from === 2) {
-      const reg = document.getElementById('inp-reg').value.trim();
       const st  = document.getElementById('inp-state').value;
       const co  = document.getElementById('inp-course').value.trim();
-      if (!reg||!st||!co) { showAlert('reg-alert','Please complete all academic information fields.','error'); return; }
+      if (!st||!co) { showAlert('reg-alert','Please complete all academic information fields.','error'); return; }
     }
     document.getElementById(`section-${from}`).classList.remove('active');
     document.getElementById(`section-${from+1}`).classList.add('active');
@@ -992,16 +987,17 @@
     const lastName  = document.getElementById('inp-lastname').value.trim();
     const user = {
       email: verifiedEmail, firstName, lastName,
-      name: `${firstName} ${lastName}`,
+      fullname: `${firstName} ${lastName}`,
       dob:    document.getElementById('inp-dob').value,
       gender: document.getElementById('inp-gender').value,
       phone:  document.getElementById('inp-phone').value.trim(),
       state:  document.getElementById('inp-state').value,
       year:   document.getElementById('inp-year').value,
-      course: document.getElementById('inp-course').value.trim(),
+      department: document.getElementById('inp-course').value.trim(),
       password: pass,
+      date_created: new Date().toLocaleTimeString() + '  ' + new Date().toLocaleDateString() 
     };
-    const api = await fetch("/cbt/ansofra/api/inset/data", {
+    const api = await fetch("/cbt/ansofra/api/Enter/Data", {
         method:"POST",
         headers:{'Content-type':'application/json'},
         body:JSON.stringify(user)

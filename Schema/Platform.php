@@ -106,7 +106,12 @@ class Platform{
         "date_created VARCHAR(255)", 
         "role VARCHAR(255) NOT NULL",
         "department VARCHAR(255) NOT NULL",
-        "result VARCHAR(255)"
+        "result VARCHAR(255)",
+        "dob VARCHAR(255) NOT NULL",
+        "gender VARCHAR(255) NOT NULL",
+        "state VARCHAR(255) NOT NULL",
+        "year VARCHAR(255) NOT NULL"
+
     ];
 
     public const SETEXAMTIME_TABLE = 'exam_time_table';
