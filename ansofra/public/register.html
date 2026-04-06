@@ -381,7 +381,6 @@
           ⚠️ Your code has expired. Please request a new one using the Resend button below.
         </div>
 
-        <!-- OTP digit boxes -->
         <div class="otp-inputs">
           <input class="otp-box" id="otp-0" maxlength="1" inputmode="numeric" pattern="[0-9]" onkeydown="otpKeyDown(event,0)" oninput="otpInput(event,0)" onpaste="otpPaste(event)"/>
           <input class="otp-box" id="otp-1" maxlength="1" inputmode="numeric" pattern="[0-9]" onkeydown="otpKeyDown(event,1)" oninput="otpInput(event,1)"/>
@@ -391,7 +390,7 @@
           <input class="otp-box" id="otp-5" maxlength="1" inputmode="numeric" pattern="[0-9]" onkeydown="otpKeyDown(event,5)" oninput="otpInput(event,5)"/>
         </div>
 
-        <!-- Timer ring -->
+      
         <div class="otp-timer-wrap">
           <div class="otp-timer-ring">
             <svg width="68" height="68" viewBox="0 0 68 68">
@@ -812,48 +811,65 @@
     const btn = document.getElementById('btn-verify-otp');
     btn.disabled = true; btn.textContent = 'Verifying…';
 
-    try {
-      // ── REAL BACKEND CALL ──────────────────────────
-      // const res    = await fetch('/cbt/ansofra/otp/verify', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email: verifiedEmail, otp: code })
-      // });
-      // const result = await res.json();
-      // ──────────────────────────────────────────────
-      //
-      // DEMO fallback (any 6-digit code passes):
-      await new Promise(r => setTimeout(r, 900));
-      const result = { status: 'success' };
+    // try {
+      const e = { email: verifiedEmail, otp: code };
+      const res    = await fetch('/cbt/ansofra/otp/verify', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(e)
+      });
+      
+      const result = await res.json();
+       btn.disabled = false; btn.textContent = 'Verify Code →';
+      if(result.status==="success"){
+          stopOtpTimer();
+          showAlert('otp-success-alert', '✅ Email verified!', 'success');
+          document.getElementById('confirmed-email-text').textContent = `${verifiedEmail} — verified`;
 
-      btn.disabled = false; btn.textContent = 'Verify Code →';
-
-      if (result.status !== 'success') {
+          setTimeout(() => {
+            switchPanel('panel-otp', 'panel-form');
+          }, 700);
+      }
+      else{
         shakeOtpBoxes();
         clearOtpBoxes();
         document.getElementById('otp-0').focus();
         showAlert('otp-alert', result.message || 'Invalid code. Please try again.', 'error');
         return;
       }
+      //
+      // DEMO fallback (any 6-digit code passes):
+      // await new Promise(r => setTimeout(r, 900));
+      // const result = { status: 'success' };
+
+      // btn.disabled = false; btn.textContent = 'Verify Code →';
+
+      // if (result.status !== 'success') {
+      //   shakeOtpBoxes();
+      //   clearOtpBoxes();
+      //   document.getElementById('otp-0').focus();
+      //   showAlert('otp-alert', result.message || 'Invalid code. Please try again.', 'error');
+      //   return;
+      // }
 
       // ✅ OTP verified
-      stopOtpTimer();
-      showAlert('otp-success-alert', '✅ Email verified!', 'success');
-      document.getElementById('confirmed-email-text').textContent = `${verifiedEmail} — verified`;
+      // stopOtpTimer();
+      // showAlert('otp-success-alert', '✅ Email verified!', 'success');
+      // document.getElementById('confirmed-email-text').textContent = `${verifiedEmail} — verified`;
 
-      setTimeout(() => {
-        switchPanel('panel-otp', 'panel-form');
-      }, 700);
+      // setTimeout(() => {
+      //   switchPanel('panel-otp', 'panel-form');
+      // }, 700);
 
-    } catch (err) {
-      btn.disabled = false; btn.textContent = 'Verify Code →';
-      showAlert('otp-alert', 'Network error. Please try again.', 'error');
-    }
+    // } catch (err) {
+    //   btn.disabled = false; btn.textContent = 'Verify Code →';
+    //   showAlert('otp-alert', 'Network error. Please try again.', 'error');
+    // }
   }
 
-  /* ══════════════════════════════════════════════
-     RESEND OTP
-  ══════════════════════════════════════════════ */
+ 
+    //  RESEND OTP
+
   async function resendOtp() {
     const btn = document.getElementById('btn-resend');
     btn.disabled = true;
@@ -862,26 +878,38 @@
     document.getElementById('otp-alert').classList.remove('show');
     clearOtpBoxes();
 
-    try {
-      // ── REAL BACKEND CALL ──────────────────────────
-      // await fetch('/cbt/ansofra/otp/resend', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email: verifiedEmail })
-      // });
-      // ──────────────────────────────────────────────
-      await new Promise(r => setTimeout(r, 1200)); // demo delay
+    // try {
+     const e ={ email: verifiedEmail };
+     const api = await fetch('/cbt/ansofra/otp/resend', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(e)
+      });
+      
+      const result = await api.json();
+      if(result.status==="success"){
+            btn.textContent = 'Resend Code';
+            // Restart timer — resend button locked again until next expiry
+            startOtpTimer();
+            document.getElementById('otp-0').focus();
+            showAlert('otp-success-alert', 'A new code has been sent to your email.', 'success');
+      }
+      else{
+         btn.disabled = false; btn.textContent = 'Resend Code';
+         showAlert('otp-alert', 'Failed to resend. Please try again.', 'error');
+      }
+      // await new Promise(r => setTimeout(r, 1200)); // demo delay
 
-      btn.textContent = 'Resend Code';
-      // Restart timer — resend button locked again until next expiry
-      startOtpTimer();
-      document.getElementById('otp-0').focus();
-      showAlert('otp-success-alert', 'A new code has been sent to your email.', 'success');
+      // btn.textContent = 'Resend Code';
+      // // Restart timer — resend button locked again until next expiry
+      // startOtpTimer();
+      // document.getElementById('otp-0').focus();
+      // showAlert('otp-success-alert', 'A new code has been sent to your email.', 'success');
 
-    } catch (err) {
-      btn.disabled = false; btn.textContent = 'Resend Code';
-      showAlert('otp-alert', 'Failed to resend. Please try again.', 'error');
-    }
+    // } catch (err) {
+    //   btn.disabled = false; btn.textContent = 'Resend Code';
+    //   showAlert('otp-alert', 'Failed to resend. Please try again.', 'error');
+    // }
   }
 
   /* ══════════════════════════════════════════════
