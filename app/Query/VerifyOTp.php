@@ -8,7 +8,7 @@ class VerifyOTp{
     private $dto;
     private $table = Platform::OTPDB_TABLE;
 
-    public function __construct(AnsofraDto $dto){
+   public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
     }
 
@@ -17,7 +17,7 @@ class VerifyOTp{
             'otp'=>$this->dto->otpCode,
             'email'=>$this->dto->email
         ];
-
+        
         $newMig = new Migration(null, $this->table);
         $mig = $newMig->get($where, 0, 1);
         return $mig;

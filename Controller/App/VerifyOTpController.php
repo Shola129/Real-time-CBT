@@ -8,7 +8,7 @@ $data = json_decode(file_get_contents("php://input"), true);
 $cleanData = [];
 $mid = new Index();
 
-foreach($cleanData as $key=>$val){
+foreach($data as $key=>$val){
     $cleanData[$key]=$mid->cleanData($val);
 }
 

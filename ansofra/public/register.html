@@ -342,7 +342,7 @@
 
         <div class="form-group">
           <label>Email Address</label>
-          <input type="email" id="inp-email" placeholder="e.g. candidate@example.com" autocomplete="email"onkeydown="if(event.key==='Enter') submitEmail()"/>
+          <input type="email" id="inp-email" name="email placeholder="e.g. candidate@example.com" autocomplete="email"onkeydown="if(event.key==='Enter') submitEmail()"/>
         </div>
 
         <div class="checking-bar" id="checking-bar"><div class="checking-fill"></div></div>
@@ -357,9 +357,9 @@
       </div>
       <!-- </form> -->
 
-      <!-- ══════════════════════════════════
+      <!-- 
            PANEL 2 — OTP VERIFICATION
-      ══════════════════════════════════ -->
+       -->
       <div class="panel" id="panel-otp">
         <div class="gate-icon">🔐</div>
         <div class="gate-title">Verify Your Email</div>
@@ -421,9 +421,9 @@
         </div>
       </div>
 
-      <!-- ══════════════════════════════════
+      <!-- 
            PANEL 3 — FULL REGISTRATION FORM
-      ══════════════════════════════════ -->
+       -->
       <div class="panel" id="panel-form">
 
         <div class="card-top">
@@ -558,16 +558,16 @@
         </div>
 
         <div class="auth-footer">Already registered?<a href="login.html">Sign in here</a></div>
-      </div><!-- /panel-form -->
+      </div>
 
-    </div><!-- /auth-card -->
+    </div>
   </div>
-</div><!-- /auth-page -->
+</div>
 
 <script>
-  /* ══════════════════════════════════════════════
+  /* 
      STATE
-  ══════════════════════════════════════════════ */
+   */
   let verifiedEmail   = '';
   let otpTimerSecs    = 120;   // 2 minutes
   let otpTimerHandle  = null;
@@ -575,9 +575,9 @@
   const OTP_TOTAL     = 120;
   const RING_CIRC     = 175.9; // 2π × 28
 
-  /* ══════════════════════════════════════════════
+  /* 
      HELPERS
-  ══════════════════════════════════════════════ */
+   */
   function showAlert(id, msg, type) {
     const el = document.getElementById(id);
     el.textContent = msg;
@@ -601,9 +601,9 @@
     }, 250);
   }
 
-  /* ══════════════════════════════════════════════
+  /* 
      PANEL 1 — EMAIL SUBMISSION
-  ══════════════════════════════════════════════ */
+   */
   function submitEmail() {
     event.preventDefault();
     const emailInput = document.getElementById('inp-email');
@@ -681,9 +681,9 @@
     }, 260);
   }
 
-  /* ══════════════════════════════════════════════
+  /* 
      OTP TIMER
-  ══════════════════════════════════════════════ */
+   */
   function startOtpTimer() {
     otpTimerSecs   = OTP_TOTAL;
     otpExpired     = false;
@@ -733,21 +733,24 @@
   }
 
   async function deleteExpiredOtp(email) {
-    // Notify backend that OTP has expired (delete from DB)
-    try {
-      await fetch('/cbt/ansofra/otp/expire', {
+    const  e = {email:email};
+    // try {
+      const api = await fetch('/cbt/ansofra/otp/expire', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email })
+        body: JSON.stringify(e)
       });
-    } catch (_) {
-      // silently fail — backend should also have its own TTL
-    }
+
+      const result = await api.json();
+      console.log(result);
+    // } catch (_) {
+     
+    // }
   }
 
-  /* ══════════════════════════════════════════════
+  /* 
      OTP INPUT BEHAVIOUR
-  ══════════════════════════════════════════════ */
+   */
   function otpInput(e, idx) {
     const val = e.target.value.replace(/\D/g,'');
     e.target.value = val;
@@ -797,9 +800,9 @@
     });
   }
 
-  /* ══════════════════════════════════════════════
+  /* 
      OTP VERIFY
-  ══════════════════════════════════════════════ */
+   */
   async function verifyOtp() {
     if (otpExpired) {
       showAlert('otp-alert', 'Your code has expired. Please request a new one.', 'error');
@@ -812,15 +815,17 @@
     btn.disabled = true; btn.textContent = 'Verifying…';
 
     // try {
-      const e = { email: verifiedEmail, otp: code };
-      const res    = await fetch('/cbt/ansofra/otp/verify', {
+      const e = { email: verifiedEmail, otpCode: code };
+      console.log(e);
+      const res    = await fetch('/cbt/ansofra/api/Verifiy/otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(e)
       });
       
       const result = await res.json();
-       btn.disabled = false; btn.textContent = 'Verify Code →';
+      btn.disabled = false; btn.textContent = 'Verify Code →';
+      console.log(result);
       if(result.status==="success"){
           stopOtpTimer();
           showAlert('otp-success-alert', '✅ Email verified!', 'success');
@@ -880,9 +885,9 @@
 
     // try {
      const e ={ email: verifiedEmail };
-     const api = await fetch('/cbt/ansofra/otp/resend', {
+     const api = await fetch('/cbt/ansofra/api/register', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type':'application/json' },
         body: JSON.stringify(e)
       });
       
@@ -912,9 +917,9 @@
     // }
   }
 
-  /* ══════════════════════════════════════════════
+  /* 
      STEP NAVIGATION (Registration form)
-  ══════════════════════════════════════════════ */
+   */
   function nextStep(from) {
     document.getElementById('reg-alert').classList.remove('show');
     if (from === 1) {
@@ -949,9 +954,9 @@
     document.getElementById(`line-${from-1}`).classList.remove('done');
   }
 
-  /* ══════════════════════════════════════════════
+  /* 
      PASSWORD STRENGTH
-  ══════════════════════════════════════════════ */
+   */
   function checkStrength(val) {
     const bar = document.getElementById('strength-bar');
     const lbl = document.getElementById('strength-label');
@@ -970,9 +975,9 @@
     bar.style.width = lvl.w; bar.style.background = lvl.bg; lbl.textContent = lvl.t;
   }
 
-  /* ══════════════════════════════════════════════
+  /* 
      FINAL REGISTRATION SUBMIT
-  ══════════════════════════════════════════════ */
+   */
   function doRegister() {
     document.getElementById('reg-alert').classList.remove('show');
     const pass  = document.getElementById('inp-pass').value;
