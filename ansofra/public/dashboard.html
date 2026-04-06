@@ -374,9 +374,7 @@
 </div>
 
 <script>
-/* ══════════════════════════════════════════════════════════
-   STATE
-══════════════════════════════════════════════════════════ */
+
 let SUBJECTS  = [];   // populated from backend
 let user      = null; // email
 let userData  = null; // full profile object
@@ -391,9 +389,6 @@ let examState = {
   started: false,
 };
 
-/* ══════════════════════════════════════════════════════════
-   INIT
-══════════════════════════════════════════════════════════ */
 window.addEventListener('load', () => {
   const raw = localStorage.getItem('cbt_session') || 'sholadanielek@gmail.com';
   if (!raw) { window.location.href = 'login.html'; return; }
@@ -401,9 +396,6 @@ window.addEventListener('load', () => {
   populateUI();
 });
 
-/* ══════════════════════════════════════════════════════════
-   FETCH — candidate profile
-══════════════════════════════════════════════════════════ */
 async function populateUI() {
   try {
     const res    = await fetch('/cbt/ansofra/api/details', {
@@ -451,9 +443,7 @@ async function populateUI() {
   } catch (err) { console.error('populateUI:', err); }
 }
 
-/* ══════════════════════════════════════════════════════════
-   FETCH — subject list (sidebar + table)
-══════════════════════════════════════════════════════════ */
+
 async function fetchSubjectList(department) {
   try {
     const res    = await fetch('/cbt/ansofra/api/getAllSebject', {
@@ -492,9 +482,8 @@ async function fetchSubjectList(department) {
   } catch (err) { console.error('fetchSubjectList:', err); }
 }
 
-/* ══════════════════════════════════════════════════════════
-   FETCH — exam details → compute window status → update UI
-══════════════════════════════════════════════════════════ */
+  //  FETCH — exam details 
+  
 async function fetchExamDetails(department) {
   const btn    = document.getElementById('start-btn');
   const btnTxt = document.getElementById('start-btn-text');
@@ -513,7 +502,7 @@ async function fetchExamDetails(department) {
     });
     const result = await res.json();
 
-    /* ── No exam configured ────────────────────────────────── */
+   
     if (result.status !== 'success' || !result.response?.[0]) {
       setStatus('ended','','background:var(--text-muted)', 'No exam scheduled yet. You will be notified by email.');
       btnTxt.textContent = 'Exam Not Scheduled'; btn.disabled = true; return;
@@ -522,12 +511,12 @@ async function fetchExamDetails(department) {
     const exam         = result.response[0];
     const durationMins = parseInt(exam.duration) || 120;
 
-    /* ── Parse date + start/end into Date objects ──────────── */
+
     const startDT = buildDatetime(exam.date, exam.start);
     const endDT   = buildDatetime(exam.date, exam.end);
     const now     = new Date();
 
-    /* ── Fill info cards ───────────────────────────────────── */
+  
     document.getElementById('ic-dura').textContent     = `${durationMins} mins`;
     document.getElementById('ic-dura-sub').textContent = formatDuration(durationMins);
     document.getElementById('next-date').textContent   = niceDate(exam.date);
@@ -558,12 +547,18 @@ async function fetchExamDetails(department) {
         }, msLeft);
       }
 
-    } else if (now >= startDT || now < endDT) {
+    } else if (now >= startDT && now < endDT) {
       /* LIVE */
       setStatus('live','pulse','background:#2ecc71','Exam is live — you may begin now');
       btnTxt.textContent = 'Start Examination'; btn.disabled = false;
-
-    } else {
+    } 
+    
+    else if(now >= endDT){
+      /* ENDED */
+      setStatus('ended','','background:var(--red)','This examination window has closed.');
+      btnTxt.textContent = 'Exam Has Ended'; btn.disabled = true; 
+    }
+    else {
       /* ENDED */
       setStatus('ended','','background:var(--red)','This examination window has closed.');
       btnTxt.textContent = 'Exam Has Ended'; btn.disabled = true;
@@ -576,9 +571,7 @@ async function fetchExamDetails(department) {
   }
 }
 
-/* ══════════════════════════════════════════════════════════
-   FETCH — subject count
-══════════════════════════════════════════════════════════ */
+  //  FETCH — subject count
 async function fetchSubjectCount(department) {
   try {
     const res    = await fetch('/cbt/ansofra/api/countSubject', {
@@ -591,11 +584,10 @@ async function fetchSubjectCount(department) {
   } catch (err) { console.error('fetchSubjectCount:', err); }
 }
 
-/* ══════════════════════════════════════════════════════════
+/*
    LAUNCH EXAM
    Re-checks the live window at the moment of click, then
-   fetches questions and starts the session.
-══════════════════════════════════════════════════════════ */
+   fetches questions and starts the session. */
 async function launchExam() {
   const btn    = document.getElementById('start-btn');
   const btnTxt = document.getElementById('start-btn-text');
@@ -638,13 +630,12 @@ async function launchExam() {
     }
 
     /* ── Window closed ─────────────────────────────────────── */
-    // if (now >= endDT) {
-    //   setLaunchError('The examination window has closed. You can no longer start the exam.');
-    //   btnTxt.textContent = 'Exam Has Ended';
-    //   /* leave btn disabled — window is permanently closed */ return;
-    // }
-     if (now >= startDT ) {
-       examState.answers        = SUBJECTS.map(s => Array(s.questions.length).fill(-1));
+    if (now >= endDT) {
+      setLaunchError('The examination window has closed. You can no longer start the exam.');
+      btnTxt.textContent = 'Exam Has Ended';
+      /* leave btn disabled — window is permanently closed */ return;
+    }
+      examState.answers        = SUBJECTS.map(s => Array(s.questions.length).fill(-1));
       examState.flagged        = SUBJECTS.map(s => Array(s.questions.length).fill(false));
       examState.currentSubject  = 0;
       examState.currentQuestion = 0;
@@ -663,10 +654,7 @@ async function launchExam() {
       buildSubjectTabs();
       renderQuestion();
       startTimer();
-    }
 
-    /* ── ✅ EXAM IS LIVE ────────────────────────────────────── */
-    // Effective timer = min(full duration, remaining window time)
     const windowMs    = endDT - now;
     const durationMs  = durationMins * 60_000;
     examState.timerSeconds = Math.floor(Math.min(durationMs, windowMs) / 1_000);
@@ -690,12 +678,11 @@ async function launchExam() {
   }
 }
 
-/* ══════════════════════════════════════════════════════════
+/*
    FETCH — exam questions
    Expected shape per subject:
    { name:"English Language", color:"#3498db",
-     questions:[{ q:"...", opts:["A","B","C","D"], ans:0 }, …] }
-══════════════════════════════════════════════════════════ */
+     questions:[{ q:"...", opts:["A","B","C","D"], ans:0 }, …] } */
 async function fetchExamQuestions(department) {
   try {
     const res    = await fetch('/cbt/ansofra/api/getExamQuestions', {
@@ -710,9 +697,8 @@ async function fetchExamQuestions(department) {
   } catch (err) { console.warn('fetchExamQuestions:', err); }
 }
 
-/* ══════════════════════════════════════════════════════════
-   DATE / TIME HELPERS
-══════════════════════════════════════════════════════════ */
+/*
+   DATE / TIME HELPERS */
 /**
  * Build a proper JS Date from a date string and time string.
  * Accepts date as YYYY-MM-DD, DD/MM/YYYY, or DD-MM-YYYY.
@@ -775,9 +761,8 @@ function setLaunchError(msg) {
   badge.innerHTML = `<span class="status-dot" style="background:var(--red)"></span>${msg}`;
 }
 
-/* ══════════════════════════════════════════════════════════
-   SUBJECT TABS
-══════════════════════════════════════════════════════════ */
+/*
+   SUBJECT TABS */
 function buildSubjectTabs() {
   document.getElementById('subject-nav').innerHTML = SUBJECTS.map((s,i) => `
     <div class="subject-tab ${i===0?'active':''}" id="tab-${i}" onclick="switchSubject(${i})">
@@ -790,9 +775,8 @@ function switchSubject(idx) {
   renderQuestion();
 }
 
-/* ══════════════════════════════════════════════════════════
-   RENDER QUESTION
-══════════════════════════════════════════════════════════ */
+/*
+   RENDER QUESTION */
 function renderQuestion() {
   const si=examState.currentSubject, qi=examState.currentQuestion;
   const subj=SUBJECTS[si], q=subj.questions[qi];
@@ -847,9 +831,8 @@ function updateProgress(){
   }).join('');
 }
 
-/* ══════════════════════════════════════════════════════════
-   TIMER
-══════════════════════════════════════════════════════════ */
+/*
+   TIMER */
 function startTimer(){
   renderTimerDisplay();
   examState.timerInterval=setInterval(()=>{
@@ -868,9 +851,8 @@ function renderTimerDisplay(){
   if(s<=120)el.classList.add('danger');
 }
 
-/* ══════════════════════════════════════════════════════════
-   MODAL & SUBMIT
-══════════════════════════════════════════════════════════ */
+/*
+   MODAL & SUBMIT */
 function openModal(){document.getElementById('submit-modal').classList.add('open');}
 function closeModal(){document.getElementById('submit-modal').classList.remove('open');}
 
