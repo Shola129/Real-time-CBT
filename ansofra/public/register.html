@@ -270,13 +270,12 @@
   <div class="auth-card-wrap">
     <div class="auth-card">
 
-      <!-- ══════════════════════════════
-           PANEL A — EMAIL GATE
-           Shown on first load
-      ══════════════════════════════ -->
-      <div id="panel-email">
+      
+           <!-- PANEL A — EMAIL GATE -->
+      <form id="data1">
+         <div id="panel-email">
         <div class="email-gate-icon">✉️</div>
-        <div class="email-gate-title">Let's get started</div>
+        <div class="email-gate-title">User Login Area</div>
         <div class="email-gate-sub">
           Enter your email address to begin. We'll verify that no account already exists before letting you proceed.
         </div>
@@ -306,12 +305,12 @@
         <div class="auth-footer">
           Already registered? <a href="login.html">Sign in here</a>
         </div>
+      </form>
       </div>
 
-      <!-- ══════════════════════════════
-           PANEL B — FULL REGISTRATION
-           Revealed only after email check passes
-      ══════════════════════════════ -->
+   
+           <!-- PANEL B — FULL REGISTRATION -->
+         
       <div id="panel-form">
 
         <div class="card-top">
@@ -460,14 +459,9 @@
 </div><!-- /auth-page -->
 
 <script>
-  /* ─────────────────────────────────────────────
-     STATE
-  ───────────────────────────────────────────── */
+
   let verifiedEmail = '';
 
-  /* ─────────────────────────────────────────────
-     ALERTS
-  ───────────────────────────────────────────── */
   function showAlert(id, msg, type) {
     const el = document.getElementById(id);
     el.textContent = msg;
@@ -502,30 +496,64 @@
 
     // Simulate backend check delay (1.6 s)
     setTimeout(() => {
-      const users  = JSON.parse(localStorage.getItem('cbt_users') || '[]');
-      const exists = users.find(u => u.email && u.email.toLowerCase() === email.toLowerCase());
 
-      // Hide scanning animation
-      document.getElementById('checking-bar').classList.remove('active');
-      document.getElementById('checking-label').classList.remove('active');
+      verifiedEmail();
+      // const users  = JSON.parse(localStorage.getItem('cbt_users') || '[]');
+      // const exists = users.find(u => u.email && u.email.toLowerCase() === email.toLowerCase());
 
-      if (exists) {
-        // ❌ Email already registered
-        btn.disabled        = false;
+      // // Hide scanning animation
+      // document.getElementById('checking-bar').classList.remove('active');
+      // document.getElementById('checking-label').classList.remove('active');
+
+      // if (exists) {
+      //   // ❌ Email already registered
+      //   btn.disabled        = false;
+      //   btn.textContent     = 'Continue →';
+      //   emailInput.disabled = false;
+      //   showAlert('email-alert',
+      //     'An account with this email already exists. Please sign in instead.',
+      //     'error');
+      //   return;
+      // }
+
+      // ✅ Email is free — store and reveal full form
+      // verifiedEmail = email;
+      // document.getElementById('confirmed-email-text').textContent = `${email} — verified`;
+      // document.getElementById('confirmed-badge').classList.add('show');
+      // revealFullForm();
+    }, 1600);
+  }
+
+  async function verifiedEmail(){
+    const emailInput = document.getElementById('inp-email');
+    const email      = emailInput.value.trim();
+    const btn        = document.getElementById('btn-check-email');
+    document.getElementById('checking-bar').classList.remove('active');
+    document.getElementById('checking-label').classList.remove('active');
+    const data1 = document.getElementById("data1");
+    const form = new FormData(data1);
+    const api = await fetch("/cbt/ansofra/register", {
+        method:"POST",
+        headers:{'Content-type':'application/json'},
+        body:form
+    });
+
+    const result = await api.json();
+    if(result.status==="success"){
+      verifiedEmail = email;
+      document.getElementById('confirmed-email-text').textContent = `${email} — verified`;
+      document.getElementById('confirmed-badge').classList.add('show');
+      revealFullForm(); 
+    }
+    else{
+      btn.disabled        = false;
         btn.textContent     = 'Continue →';
         emailInput.disabled = false;
         showAlert('email-alert',
           'An account with this email already exists. Please sign in instead.',
           'error');
         return;
-      }
-
-      // ✅ Email is free — store and reveal full form
-      verifiedEmail = email;
-      document.getElementById('confirmed-email-text').textContent = `${email} — verified`;
-      document.getElementById('confirmed-badge').classList.add('show');
-      revealFullForm();
-    }, 1600);
+    }
   }
 
   function revealFullForm() {

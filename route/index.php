@@ -78,22 +78,17 @@ elseif($url===$docRoot.$rootDir."/ilease/validateEmail" || $url===$docRoot.$root
 
 // for user's area
 
-elseif($url === $docRoot.$rootDir."/Login" || $url===$docRoot.$rootDir."/Login" . "/"){
+elseif($url === $docRoot.$rootDir."/login" || $url===$docRoot.$rootDir."/login" . "/"){
     require_once __DIR__ ."/../ansofra/public/login.html";
     exit();
 }
 
-elseif($url=== $docRoot.$rootDir ."/Register" || $url ===$docRoot.$rootDir."/Register" ."/"){
+elseif($url=== $docRoot.$rootDir ."/register" || $url ===$docRoot.$rootDir."/register" ."/"){
     require_once __DIR__ . "/../ansofra/public/register.html";
     exit();
 }
 
-elseif($url=== $docRoot.$rootDir ."/Verification" || $url ===$docRoot.$rootDir."/Verification" ."/"){
-    require_once __DIR__ ."/../ansofra/public/otp.html";
-    exit();
-}
-
-elseif($url=== $docRoot.$rootDir ."/Dashboard" || $url ===$docRoot.$rootDir."/Dashboard" ."/"){
+elseif($url=== $docRoot.$rootDir ."/dashboard" || $url ===$docRoot.$rootDir."/dashboard" ."/"){
     require_once __DIR__ ."/../ansofra/public/dashboard.html";
     exit();
 }
