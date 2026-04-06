@@ -126,11 +126,17 @@
       });
 
       const result = await api.json();
+      console.log(result);
       if(result.status==="success"){
         window.location.href = '/cbt/ansofra/dashboard';
       }
+      else if(result.status==="fail"){
+          alert.textContent = 'Invalid password. Please try again.';
+          alert.classList.add('error', 'show');
+          return;
+      }
       else{
-          alert.textContent = 'Invalid registration number or password. Please try again.';
+          alert.textContent = 'Invalid email. Please try again.';
           alert.classList.add('error', 'show');
           return;
       }

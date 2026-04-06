@@ -4,6 +4,7 @@ use NewdichDto\AnsofraDto;
 use NewdichMiddleware\Index;
 use NewdichSchema\Platform;
 use NewdichSchema\Migration;
+use NewdichAuth\Authentication;
 
 class Login{
     private $dto;
@@ -24,7 +25,33 @@ class Login{
         if($decodeMig["status"]==="success"){
             $response = $decodeMig["response"][0];
             $password = $response["password"];
-            $pass = $this->dto->password
+            $pass = $this->dto->password;
+            if($pass===$password){
+                $newAuth = new Authentication();
+                $auth = $newAuth->auth($this->dto->email, "USER");
+                $decodeAuth = json_decode($auth, true);
+                if($decodeAuth["status"]==="success"){
+                    return json_encode([
+                        'status'=>'success',
+                        'response'=>'allow in'
+                    ], JSON_PRETTY_PRINT);
+                }
+                else{
+                    return $auth;
+                }
+            }
+            else{
+                return json_encode([
+                    'status'=>'fail',
+                    'response'=>'password not correct'
+                ], JSON_PRETTY_PRINT);
+            }
+        }
+        else{
+             return json_encode([
+                'status'=>'failed',
+                'response'=>'email no found'
+            ], JSON_PRETTY_PRINT);
         }
     }
 }
