@@ -809,36 +809,37 @@ let examState = {
 // INIT
 // ══════════════════════════════════════════
 window.addEventListener('load', () => {
-  const session = JSON.parse(localStorage.getItem('cbt_session') || 'null');
-  if (!session) { window.location.href = 'login.html'; return; }
+  const session =localStorage.getItem('cbt_session') || 'sholadanielek@gmail.com';
+  // if (!session) { window.location.href = 'login.html'; return; }
   user = session;
   populateUI();
 });
 
 function populateUI() {
-  const initials = user.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-  // top bar
-  document.getElementById('nav-avatar').textContent = initials;
-  document.getElementById('nav-name').textContent   = user.firstName || user.name;
-  // sidebar
-  document.getElementById('sidebar-avatar').textContent = initials;
-  document.getElementById('sidebar-name').textContent   = user.name;
-  document.getElementById('sidebar-reg').textContent    = user.reg;
-  document.getElementById('sb-state').textContent   = user.state;
-  document.getElementById('sb-year').textContent    = user.year;
-  document.getElementById('sb-course').textContent  = user.course  || '—';
-  document.getElementById('sb-gender').textContent  = user.gender  || '—';
-  document.getElementById('sb-phone').textContent   = user.phone   || '—';
-  // hero
-  document.getElementById('hero-name').innerHTML = `Welcome, <span>${user.firstName || user.name.split(' ')[0]}</span>`;
-  document.getElementById('ic-reg').textContent  = user.reg;
-  // subject list sidebar
-  const sl = document.getElementById('subject-list-side');
-  sl.innerHTML = SUBJECTS.map(s => `
-    <div class="subject-list-item">
-      <span class="subject-dot" style="background:${s.color}"></span>${s.name}
-    </div>
-  `).join('');
+  console.log(user);
+  // const initials = user.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+  // // top bar
+  // document.getElementById('nav-avatar').textContent = initials;
+  // document.getElementById('nav-name').textContent   = user.firstName || user.name;
+  // // sidebar
+  // document.getElementById('sidebar-avatar').textContent = initials;
+  // document.getElementById('sidebar-name').textContent   = user.name;
+  // document.getElementById('sidebar-reg').textContent    = user.reg;
+  // document.getElementById('sb-state').textContent   = user.state;
+  // document.getElementById('sb-year').textContent    = user.year;
+  // document.getElementById('sb-course').textContent  = user.course  || '—';
+  // document.getElementById('sb-gender').textContent  = user.gender  || '—';
+  // document.getElementById('sb-phone').textContent   = user.phone   || '—';
+  // // hero
+  // document.getElementById('hero-name').innerHTML = `Welcome, <span>${user.firstName || user.name.split(' ')[0]}</span>`;
+  // document.getElementById('ic-reg').textContent  = user.reg;
+  // // subject list sidebar
+  // const sl = document.getElementById('subject-list-side');
+  // sl.innerHTML = SUBJECTS.map(s => `
+  //   <div class="subject-list-item">
+  //     <span class="subject-dot" style="background:${s.color}"></span>${s.name}
+  //   </div>
+  // `).join('');
 }
 
 // ══════════════════════════════════════════
