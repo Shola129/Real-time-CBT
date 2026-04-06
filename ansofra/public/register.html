@@ -330,7 +330,7 @@
 
     
            <!-- PANEL 1 — EMAIL GATE -->
-      <form id="data1">
+      <form id="dataOne">
         <div class="panel active" id="panel-email">
         <div class="gate-icon">✉️</div>
         <div class="gate-title">Let's get started</div>
@@ -349,7 +349,7 @@
         <div class="checking-label" id="checking-label">Verifying email address…</div>
 
         <div style="margin-top:14px;">
-          <button class="btn btn-primary" id="btn-check-email" onclick="submitEmail()">
+          <button type="submit" class="btn btn-primary" id="btn-check-email" onclick="submitEmail()">
             Continue &nbsp;→
           </button>
         </div>
@@ -606,6 +606,7 @@
      PANEL 1 — EMAIL SUBMISSION
   ══════════════════════════════════════════════ */
   function submitEmail() {
+    event.preventDefault();
     const emailInput = document.getElementById('inp-email');
     const email      = emailInput.value.trim();
     const btn        = document.getElementById('btn-check-email');
@@ -626,12 +627,16 @@
   }
 
   async function callEmailCheckAPI(email, btn, emailInput) {
-    const data1 = document.getElementById("data1");
-    const form = new FormData(data1);
-    try {
+    event.preventDefault();
+    const data = document.getElementById("dataOne");
+    const form = new FormData(data);
+  
+    // try {
+      const e = {email:email};
       const res    = await fetch('/cbt/ansofra/api/register', {
         method: 'POST',
-        body: form
+        headers:{'Content-type':'application/json'},
+        body: JSON.stringify(e)
       });
       const result = await res.json();
       if(result.status==="success"){
@@ -656,13 +661,13 @@
       }
        document.getElementById('checking-bar').classList.remove('active');
       document.getElementById('checking-label').classList.remove('active');
-    } catch (err) {
-      document.getElementById('checking-bar').classList.remove('active');
-      document.getElementById('checking-label').classList.remove('active');
-      btn.disabled = false; btn.textContent = 'Continue →';
-      emailInput.disabled = false;
-      showAlert('email-alert', 'Network error. Please check your connection and try again.', 'error');
-    }
+    // } catch (err) {
+    //   document.getElementById('checking-bar').classList.remove('active');
+    //   document.getElementById('checking-label').classList.remove('active');
+    //   btn.disabled = false; btn.textContent = 'Continue →';
+    //   emailInput.disabled = false;
+    //   showAlert('email-alert', 'Network error. Please check your connection and try again.', 'error');
+    // }
   }
 
   function backToEmail() {
