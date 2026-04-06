@@ -462,7 +462,7 @@
         <div class="form-section active" id="section-1">
           <div class="form-row">
             <div class="form-group">
-              <label>First Name</label>
+              <label>Full Name</label>
               <input type="text" id="inp-firstname" placeholder="e.g. Chukwuemeka"/>
             </div>
             <div class="form-group">
@@ -494,7 +494,8 @@
         <div class="form-section" id="section-2">
           <div class="form-group">
             <label>Registration Number</label>
-            <input type="text" id="inp-reg" placeholder="e.g. 2026/UTME/0012345"/>
+            /*You'll be alter or given registeriation number and it'll be sent to register email*/
+            <!-- <input type="text" id="inp-reg" placeholder="e.g. 2026/UTME/0012345"/> -->
           </div>
           <div class="form-group">
             <label>State of Origin</label>
@@ -978,7 +979,7 @@
   /* 
      FINAL REGISTRATION SUBMIT
    */
-  function doRegister() {
+ async  function doRegister() {
     document.getElementById('reg-alert').classList.remove('show');
     const pass  = document.getElementById('inp-pass').value;
     const pass2 = document.getElementById('inp-pass2').value;
@@ -995,21 +996,36 @@
       dob:    document.getElementById('inp-dob').value,
       gender: document.getElementById('inp-gender').value,
       phone:  document.getElementById('inp-phone').value.trim(),
-      reg:    document.getElementById('inp-reg').value.trim(),
       state:  document.getElementById('inp-state').value,
       year:   document.getElementById('inp-year').value,
       course: document.getElementById('inp-course').value.trim(),
       password: pass,
     };
+    const api = await fetch("/cbt/ansofra/api/inset/data", {
+        method:"POST",
+        headers:{'Content-type':'application/json'},
+        body:JSON.stringify(user)
+    });
 
-    const users = JSON.parse(localStorage.getItem('cbt_users') || '[]');
-    if (users.find(u => u.reg === user.reg)) {
-      showAlert('reg-alert','This registration number is already in use.','error'); return;
+    const result = await api.json();
+    if(result.status==="success"){
+      showAlert('reg-success','🎉 Account created successfully! Redirecting to login…','success');
+      setTimeout(() => window.location.href = '/cbt/ansofra/login', 2000);
     }
-    users.push(user);
-    localStorage.setItem('cbt_users', JSON.stringify(users));
-    showAlert('reg-success','🎉 Account created successfully! Redirecting to login…','success');
-    setTimeout(() => window.location.href = 'login.html', 2000);
+    else if(result.status==="fail"){
+        showAlert('reg-alert','The department is not available.','error'); return;
+    }
+    else{
+      showAlert('reg-alert','Error occur while trying to login try agan later','error'); return;
+    }
+    // const users = JSON.parse(localStorage.getItem('cbt_users') || '[]');
+    // if (users.find(u => u.reg === user.reg)) {
+    //   showAlert('reg-alert','This registration number is already in use.','error'); return;
+    // }
+    // users.push(user);
+    // localStorage.setItem('cbt_users', JSON.stringify(users));
+    // showAlert('reg-success','🎉 Account created successfully! Redirecting to login…','success');
+    // setTimeout(() => window.location.href = 'login.html', 2000);
   }
 </script>
 </body>
