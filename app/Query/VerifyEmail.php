@@ -10,7 +10,7 @@ class VerifyEmail{
     private $table = Platform::USERS_TABLE;
     private $table2 = Platform::OTPDB_TABLE;
 
-    public function __contsruct(AnsofraDto $dto){
+    public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
     }
 

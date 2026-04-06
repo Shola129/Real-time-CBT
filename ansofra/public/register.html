@@ -330,7 +330,7 @@
 
     
            <!-- PANEL 1 — EMAIL GATE -->
-      <form id="dataOne">
+      <!-- <form id="dataOne"> -->
         <div class="panel active" id="panel-email">
         <div class="gate-icon">✉️</div>
         <div class="gate-title">Let's get started</div>
@@ -342,7 +342,7 @@
 
         <div class="form-group">
           <label>Email Address</label>
-          <input type="email" id="inp-email" name="email" placeholder="e.g. candidate@example.com" autocomplete="email"onkeydown="if(event.key==='Enter') submitEmail()"/>
+          <input type="email" id="inp-email" placeholder="e.g. candidate@example.com" autocomplete="email"onkeydown="if(event.key==='Enter') submitEmail()"/>
         </div>
 
         <div class="checking-bar" id="checking-bar"><div class="checking-fill"></div></div>
@@ -355,7 +355,7 @@
         </div>
         <div class="auth-footer">Already registered?<a href="login.html">Sign in here</a></div>
       </div>
-      </form>
+      <!-- </form> -->
 
       <!-- ══════════════════════════════════
            PANEL 2 — OTP VERIFICATION
@@ -628,12 +628,13 @@
 
   async function callEmailCheckAPI(email, btn, emailInput) {
     event.preventDefault();
-    const data = document.getElementById("dataOne");
-    const form = new FormData(data);
+    // const data = document.getElementById("dataOne");
+    // const form = new FormData(data);
   
     // try {
       const e = {email:email};
-      const res    = await fetch('/cbt/ansofra/api/register', {
+      // console.log(e);
+      const res = await fetch('/cbt/ansofra/api/register', {
         method: 'POST',
         headers:{'Content-type':'application/json'},
         body: JSON.stringify(e)
