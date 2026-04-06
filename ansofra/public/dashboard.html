@@ -637,7 +637,7 @@
           <div class="welcome-greeting">Welcome back, Candidate</div>
           <div class="welcome-name" id="hero-name">Loading…</div>
           <div class="welcome-sub" id="hero-sub">
-            Your examination session is ready. Review your details below, then start when you are prepared. The exam timer begins the moment you click <em>Start Exam</em>.
+             Review your details below, then start when you are prepared. The exam timer begins the moment you click <em>Start Exam</em>.
           </div>
           <button class="start-btn" onclick="launchExam()">
             Start Examination <span class="arrow">→</span>
@@ -648,25 +648,25 @@
         <div class="info-cards">
           <div class="info-card">
             <div class="ic-icon">📋</div>
-            <div class="ic-label">Registration</div>
-            <div class="ic-value" id="ic-reg" style="font-size:14px">—</div>
+            <div class="ic-label">Registration No.</div>
+            <div class="ic-value" id="ic-reg" style="font-size:14px" style="display: block;"></div>
           </div>
           <div class="info-card">
             <div class="ic-icon">⏱</div>
             <div class="ic-label">Duration</div>
-            <div class="ic-value">90 <span style="font-size:13px">mins</span></div>
-            <div class="ic-sub">1 hour 30 minutes</div>
+            <div class="ic-value" id="ic-dura">120 <span style="font-size:13px">mins</span></div>
+            <!-- <div class="ic-sub" id="ic-dura">2 hours</div> -->
           </div>
           <div class="info-card">
             <div class="ic-icon">📚</div>
             <div class="ic-label">Subjects</div>
-            <div class="ic-value">4</div>
-            <div class="ic-sub">10 questions each</div>
+            <div class="ic-value" id="count-ub">4</div>
+            <div class="ic-sub">30 questions each but exam 50</div>
           </div>
           <div class="info-card">
             <div class="ic-icon">🏆</div>
-            <div class="ic-label">Max Score</div>
-            <div class="ic-value">400</div>
+            <div class="ic-label">Next Exam Date</div>
+            <div class="ic-value" id="next-date">400</div>
             <div class="ic-sub">100 per subject</div>
           </div>
         </div>
@@ -677,7 +677,7 @@
             <h3>Examination Subjects</h3>
             <span>10 questions · 10 marks each</span>
           </div>
-          <table class="subject-table">
+          <!-- <table class="subject-table">
             <thead>
               <tr>
                 <th>#</th>
@@ -693,7 +693,7 @@
               <tr><td>3</td><td><span class="subj-color" style="background:#2ecc71"></span>Physics</td><td>10</td><td>100</td><td>~23 mins</td></tr>
               <tr><td>4</td><td><span class="subj-color" style="background:#f39c12"></span>Chemistry</td><td>10</td><td>100</td><td>~22 mins</td></tr>
             </tbody>
-          </table>
+          </table> -->
         </div>
       </div>
 
@@ -815,55 +815,141 @@ window.addEventListener('load', () => {
   populateUI();
 });
 
-function populateUI() {
+async function populateUI() {
   console.log(user);
-  // const initials = user.name.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
-  // // top bar
-  // document.getElementById('nav-avatar').textContent = initials;
-  // document.getElementById('nav-name').textContent   = user.firstName || user.name;
-  // // sidebar
-  // document.getElementById('sidebar-avatar').textContent = initials;
-  // document.getElementById('sidebar-name').textContent   = user.name;
-  // document.getElementById('sidebar-reg').textContent    = user.reg;
-  // document.getElementById('sb-state').textContent   = user.state;
-  // document.getElementById('sb-year').textContent    = user.year;
-  // document.getElementById('sb-course').textContent  = user.course  || '—';
-  // document.getElementById('sb-gender').textContent  = user.gender  || '—';
-  // document.getElementById('sb-phone').textContent   = user.phone   || '—';
-  // // hero
-  // document.getElementById('hero-name').innerHTML = `Welcome, <span>${user.firstName || user.name.split(' ')[0]}</span>`;
-  // document.getElementById('ic-reg').textContent  = user.reg;
-  // // subject list sidebar
-  // const sl = document.getElementById('subject-list-side');
-  // sl.innerHTML = SUBJECTS.map(s => `
-  //   <div class="subject-list-item">
-  //     <span class="subject-dot" style="background:${s.color}"></span>${s.name}
-  //   </div>
-  // `).join('');
+  const e = {email:user};
+  const api = await fetch('/cbt/ansofra/api/details', {
+        method:'POST',
+        headers:{"Content-type":"applications/json"},
+        body:JSON.stringify(e)
+  })
+
+  const result = await api.json();
+  const response = result.response[0];
+  if(result.status==="success"){
+      const initials = response.fullname.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+  // top bar
+  document.getElementById('nav-avatar').textContent = initials;
+  document.getElementById('nav-name').textContent   = response.firstName || response.fullname;
+  // sidebar
+  document.getElementById('sidebar-avatar').textContent = initials;
+  document.getElementById('sidebar-name').textContent   = response.fullname;
+  document.getElementById('sidebar-reg').textContent    = response.regNum;
+  document.getElementById('sb-state').textContent   = response.state;
+  document.getElementById('sb-year').textContent    = response.year;
+  document.getElementById('sb-course').textContent  = response.department  || '—';
+  document.getElementById('sb-gender').textContent  = response.gender  || '—';
+  document.getElementById('sb-phone').textContent   = response.phone   || '—';
+  document.getElementById("ic-reg").textContent = response.regNum;
+  document.getElementById('hero-name').innerHTML = `Welcome, <span>${response.firstName || response.fullname.split(' ')[0]}</span>`;
+  document.getElementById('ic-reg').textContent  = response.regNum;
+  // subject list sidebar
+  getSubject(response.department);
+  getExaminationDetail(response.department);
+  countSubject(response.department);
+  }
+
 }
+
+async function getSubject(department){
+  const e = {department:department};
+  const api = await fetch("/cbt/ansofra/api/getAllSebject", {
+        method:"POST",
+        headers:{'Content-type':'application/json'},
+        body:JSON.stringify(e)
+  });
+
+  const result = await api.json();
+  const response = result["response"];
+  let output = '';
+  for (let index = 0; index < response.length; index++) {
+     output +=  `
+    <div class="subject-list-item">
+      <span class="subject-dot" style="background:" style="display:flex"></span>${response[index].subject}
+    </div>
+  `;    
+  }
+   const sl = document.getElementById('subject-list-side');
+  sl.innerHTML=output;
+  
+}
+
+async function getExaminationDetail(department){
+  const e = {department:department};
+  const api = await fetch('/cbt/ansofra/api/getExamdetails', {
+      method:"POST",
+      headers:{'Content-type':'application/json'},
+      body:JSON.stringify(e)
+  });
+
+  const result = await api.json();
+ 
+  const response = result.response[0];
+  document.getElementById("ic-dura").textContent=response.duration || "NOT SET";
+  document.getElementById("next-date").textContent=response.date + " / " + response.start;
+}
+
+async function countSubject(department){
+  const e = {department:department};
+  const api = await fetch("/cbt/ansofra/api/countSubject", {
+      method:"POST",
+      headers:{"Content-type":"application/json"},
+      body:JSON.stringify(e)
+  });
+
+  const result = await api.json();
+  document.getElementById("count-ub").textContent=result.response;
+}
+
 
 // ══════════════════════════════════════════
 // LAUNCH EXAM
 // ══════════════════════════════════════════
-function launchExam() {
-  examState.answers = SUBJECTS.map(s => Array(s.questions.length).fill(-1));
-  examState.flagged  = SUBJECTS.map(s => Array(s.questions.length).fill(false));
-  examState.currentSubject  = 0;
-  examState.currentQuestion = 0;
-  examState.started = true;
+async function launchExam() {
+  const department = document.getElementById("sb-course").textContent;
+   const e = {department:department};
+  const api = await fetch('/cbt/ansofra/api/getExamdetails', {
+      method:"POST",
+      headers:{'Content-type':'application/json'},
+      body:JSON.stringify(e)
+  });
 
-  document.getElementById('welcome-screen').style.display  = 'none';
-  document.getElementById('exam-screen').style.display     = 'flex';
-  document.getElementById('timer-wrap').style.display      = 'block';
-  document.getElementById('top-session-label').textContent = 'Exam In Progress';
-  document.getElementById('subjects-side').style.display   = 'none';
-  document.getElementById('instructions-side').style.display = 'none';
-  document.getElementById('progress-side').style.display   = 'block';
-  document.getElementById('q-panel').style.display         = 'block';
+  const result = await api.json();
+  const response = result.response;
 
-  buildSubjectTabs();
-  renderQuestion();
-  startTimer();
+  if(result.status==="success"){
+      const timeStetted  = response.date + response.start;
+      const timeEnd = response.date + response.end;
+      const currentTime = new Date().toLocaleDateString() + new Date().toLocaleTimeString() || '2';
+      if( currentTime < timeStetted){
+          alert("Exam is yet to start");
+      }
+      else if(currentTime < timeEnd &&  currentTime >= timeStetted){
+          examState.answers = SUBJECTS.map(s => Array(s.questions.length).fill(-1));
+          examState.flagged  = SUBJECTS.map(s => Array(s.questions.length).fill(false));
+          examState.currentSubject  = 0;
+          examState.currentQuestion = 0;
+          examState.started = true;
+
+          document.getElementById('welcome-screen').style.display  = 'none';
+          document.getElementById('exam-screen').style.display     = 'flex';
+          document.getElementById('timer-wrap').style.display      = 'block';
+          document.getElementById('top-session-label').textContent = 'Exam In Progress';
+          document.getElementById('subjects-side').style.display   = 'none';
+          document.getElementById('instructions-side').style.display = 'none';
+          document.getElementById('progress-side').style.display   = 'block';
+          document.getElementById('q-panel').style.display         = 'block';
+          buildSubjectTabs();
+          renderQuestion();
+          startTimer();
+      }
+      else{
+        alert("exam ended");
+      }
+  }
+  else{
+    alert("exam is yet to set, you'll be notify when to start exam with registerd email");
+  }
 }
 
 // ══════════════════════════════════════════

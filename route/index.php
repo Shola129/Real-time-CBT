@@ -298,6 +298,25 @@ elseif($url === $usersArea . "/login"){
     exit();
 }
 
+elseif($url === $usersArea . "/details"){
+    require_once __DIR__ . $appController . "/DetailsController.php";
+    exit();
+}
+
+elseif($url === $usersArea . "/getAllSebject"){
+    require_once __DIR__ . $appController . "/getAllSebjectController.php";
+    exit();
+}
+
+elseif($url === $usersArea . "/getExamdetails"){
+    require_once __DIR__ . $appController . "/getExamdetailsController.php";
+    exit();
+}
+
+elseif($url === $usersArea . "/countSubject"){
+    require_once __DIR__ . $appController . "/countSubjectController.php";
+    exit();
+}
 
 // /api endpoints
 // elseif($url === $docRoot . $rootDir . $usersArea."/register" || $url === $usersArea."/register"."/"){
