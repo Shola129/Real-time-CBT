@@ -26,7 +26,7 @@ class InsertData{
             $data = [
                 "email"=>$this->dto->email,
                 "fullname"=>$this->dto->fullname,
-                "password"=>$this->dto->phone,
+                "password"=>$this->dto->password,
                 "role"=>"USER",
                 "department"=>$this->dto->department,
                 "date_created"=>$this->dto->date_created,
@@ -35,7 +35,8 @@ class InsertData{
                 'state'=>$this->dto->state ?? '',
                 "gender"=>$this->dto->gender ?? '',
                 "year"=>$this->dto->year ?? '',
-                "dob"=>$this->dto->dob
+                "dob"=>$this->dto->dob,
+                "phone"=>$this->dto->phone
             ];
 
             $newMig2 = new Migration(null, $this->table);

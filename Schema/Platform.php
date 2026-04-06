@@ -110,7 +110,7 @@ class Platform{
         "dob VARCHAR(255) NOT NULL",
         "gender VARCHAR(255) NOT NULL",
         "state VARCHAR(255) NOT NULL",
-        "year VARCHAR(255) NOT NULL"
+        "year VARCHAR(255) NOT NULL",
 
     ];
 
