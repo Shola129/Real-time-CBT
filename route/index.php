@@ -271,12 +271,34 @@ elseif($url === $adminArea . "/Search/Dep/Sch"){
     exit();
 }
 
+// EndPoint for user's area
+
+elseif($url === $usersArea . "/register"){
+    require_once __DIR__ . $appController . "/RegisterController.php";
+    exit();
+}
+
+elseif($url === $usersArea . "/delete/otp"){
+    require_once __DIR__ . $appController . "/DelOtpController.php";
+    exit();
+}
+
+elseif($url === $usersArea . "/Verifiy/otp"){
+    require_once __DIR__ . $appController . "/VerifyOTpController.php";
+    exit();
+}
+
+elseif($url === $usersArea. "/Enter/Data"){
+    require_once __DIR__ . $appController . "/InsertDataController.php";
+    exit();
+}
+
 
 // /api endpoints
-elseif($url === $docRoot . $rootDir . $usersArea."/register" || $url === $usersArea."/register"."/"){
-    require_once __DIR__ . $appController."/RegisterController.php";
-    exit;
-}
+// elseif($url === $docRoot . $rootDir . $usersArea."/register" || $url === $usersArea."/register"."/"){
+//     require_once __DIR__ . $appController."/RegisterController.php";
+//     exit;
+// }
 
 
 else{

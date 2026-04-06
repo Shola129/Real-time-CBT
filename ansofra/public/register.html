@@ -342,10 +342,7 @@
 
         <div class="form-group">
           <label>Email Address</label>
-          <input type="email" id="inp-email"
-                 placeholder="e.g. candidate@example.com"
-                 autocomplete="email"
-                 onkeydown="if(event.key==='Enter') submitEmail()"/>
+          <input type="email" id="inp-email" name="email" placeholder="e.g. candidate@example.com" autocomplete="email"onkeydown="if(event.key==='Enter') submitEmail()"/>
         </div>
 
         <div class="checking-bar" id="checking-bar"><div class="checking-fill"></div></div>
@@ -625,46 +622,40 @@
     document.getElementById('checking-bar').classList.add('active');
     document.getElementById('checking-label').classList.add('active');
 
-    // Call backend API to check email + send OTP
     callEmailCheckAPI(email, btn, emailInput);
   }
 
   async function callEmailCheckAPI(email, btn, emailInput) {
+    const data1 = document.getElementById("data1");
+    const form = new FormData(data1);
     try {
-      // ── REAL BACKEND CALL ──────────────────────────
-      // const res    = await fetch('/cbt/ansofra/register', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ email })
-      // });
-      // const result = await res.json();
-      // ──────────────────────────────────────────────
-      //
-      // DEMO fallback (remove when real API is live):
-      await new Promise(r => setTimeout(r, 1600));
-      const users  = JSON.parse(localStorage.getItem('cbt_users') || '[]');
-      const result = users.find(u => u.email?.toLowerCase() === email.toLowerCase())
-        ? { status: 'error',   message: 'An account with this email already exists.' }
-        : { status: 'success', message: 'OTP sent' };
-
-      document.getElementById('checking-bar').classList.remove('active');
-      document.getElementById('checking-label').classList.remove('active');
-
-      if (result.status !== 'success') {
-        btn.disabled = false; btn.textContent = 'Continue →';
-        emailInput.disabled = false;
-        showAlert('email-alert', result.message || 'An account with this email already exists. Please sign in instead.', 'error');
-        return;
+      const res    = await fetch('/cbt/ansofra/api/register', {
+        method: 'POST',
+        body: form
+      });
+      const result = await res.json();
+      if(result.status==="success"){
+          verifiedEmail = email;
+          document.getElementById('otp-email-display').textContent = email;
+          switchPanel('panel-email', 'panel-otp');
+          startOtpTimer();
+          setTimeout(() => document.getElementById('otp-0').focus(), 400);
       }
-
-      // ✅ Email OK — show OTP panel
-      verifiedEmail = email;
-      document.getElementById('otp-email-display').textContent = email;
-      switchPanel('panel-email', 'panel-otp');
-      startOtpTimer();
-      // Focus first OTP box
-      setTimeout(() => document.getElementById('otp-0').focus(), 400);
-
+      
+      else if(result.status==="fail"){
+          btn.disabled = false; btn.textContent = 'Continue →';
+          emailInput.disabled = false;
+          showAlert('error');
+          return;
+      }
+      else{
+           btn.disabled = false; btn.textContent = 'Continue →';
+          emailInput.disabled = false;
+          showAlert('email-alert', 'An account with this email already exists. Please sign in instead.', 'error');
+          return;
+      }
+       document.getElementById('checking-bar').classList.remove('active');
+      document.getElementById('checking-label').classList.remove('active');
     } catch (err) {
       document.getElementById('checking-bar').classList.remove('active');
       document.getElementById('checking-label').classList.remove('active');

@@ -104,11 +104,9 @@ class Platform{
         "regNum VARCHAR(255)",
         "phone VARCHAR(255)",
         "date_created VARCHAR(255)", 
-        "last_login VARCHAR(255)",
-        "last_seen VARCHAR(255)",
-        "username VARCHAR(255)",
         "role VARCHAR(255) NOT NULL",
-        "department VARCHAR(255) NOT NULL"
+        "department VARCHAR(255) NOT NULL",
+        "result VARCHAR(255)"
     ];
 
     public const SETEXAMTIME_TABLE = 'exam_time_table';
