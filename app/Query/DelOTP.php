@@ -8,12 +8,12 @@ class DelOTP{
     private $dto;
     private $table = Platform::OTPDB_TABLE;
 
-    public function __contsruct(AnsofraDto $dto){
+    public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
     }
 
     public function process(){
-        $where = [
+          $where = [
             'email'=>$this->dto->email
         ];
 

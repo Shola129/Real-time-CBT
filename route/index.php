@@ -278,7 +278,7 @@ elseif($url === $usersArea . "/register"){
     exit();
 }
 
-elseif($url === $usersArea . "/delete/otp"){
+elseif($url === $usersArea . "/otp/expire"){
     require_once __DIR__ . $appController . "/DelOtpController.php";
     exit();
 }

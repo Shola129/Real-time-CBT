@@ -735,7 +735,7 @@
   async function deleteExpiredOtp(email) {
     const  e = {email:email};
     // try {
-      const api = await fetch('/cbt/ansofra/otp/expire', {
+      const api = await fetch('/cbt/ansofra/api/otp/expire', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(e)
@@ -817,7 +817,7 @@
     // try {
       const e = { email: verifiedEmail, otpCode: code };
       console.log(e);
-      const res    = await fetch('/cbt/ansofra/api/Verifiy/otp', {
+      const res = await fetch('/cbt/ansofra/api/Verifiy/otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(e)
@@ -825,15 +825,15 @@
       
       const result = await res.json();
       btn.disabled = false; btn.textContent = 'Verify Code →';
-      console.log(result);
       if(result.status==="success"){
+          deleteExpiredOtp(verifiedEmail);
           stopOtpTimer();
           showAlert('otp-success-alert', '✅ Email verified!', 'success');
           document.getElementById('confirmed-email-text').textContent = `${verifiedEmail} — verified`;
 
           setTimeout(() => {
             switchPanel('panel-otp', 'panel-form');
-          }, 700);
+          }, 1000);
       }
       else{
         shakeOtpBoxes();
