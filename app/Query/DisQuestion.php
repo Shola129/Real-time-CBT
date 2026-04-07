@@ -48,11 +48,17 @@ class DisQuestion{
                     'score'=>$this->dto->score ?? '',
                     'startedAt'=>date("Y-m-d H:i:s")
                 ];
-                $mig = $newMig3->save($data);
-                return json_encode([
-                    'status'=>'success',
-                    'response'=>$response
-                ], JSON_PRETTY_PRINT);
+                $mig3 = $newMig3->save($data);
+                $decodemig3 = json_decode($mig3, true);
+                if($decodemig3["status"]==="success"){
+                    return json_encode([
+                        'status'=>'success',
+                        'response'=>$response
+                    ], JSON_PRETTY_PRINT);
+                }
+                else{
+                    return $mig3;
+                }
             }
         }
     }

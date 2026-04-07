@@ -130,7 +130,7 @@ class Platform{
     public const QUESTIONATTEMPTS_TABLE = 'question_attempts';
     public const QUESTIONATTEMPTS_TABLE_COLUMNS = [
         "question_attempts_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
-        "deparmtment VARCHAR(255) NOT NULL",
+        "department VARCHAR(255) NOT NULL",
         "subject VARCHAR(255) NOT NULL",
         "regNum VARCHAR(255) NOT NULL",
         "question TEXT",
