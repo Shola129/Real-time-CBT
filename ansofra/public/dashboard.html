@@ -841,42 +841,54 @@ async function switchSubject(department, subject){
 
   const result = await api.json();
   const rawData = result.response[0];
-
   const questionList = JSON.parse(rawData.question);
-
-  let currentIndex = 0;
-  let output = "";
-  for (let index = 0; index < response.length; index++) {
-      output +=`
-        <div class="subj-header">
-          <h2>${response[index].subject}</h2>
-          <div class="prog-info">Question <strong>${index+1}</strong> of <strong>subj.questions.length}</strong></div>
-        </div>
-        <div class="question-card">
-          <div class="q-number">Question ${index+1}</div>
-          <div class="question-text">${response[index].questiont}}</div>
-          <div class="options">
-            <div class="option-item sel===oi?'selected':''}" onclick="selectAnswer(oi})">
-              <div class="option-letter">[oi]}</div>
-              <div class="option-text">o}</div>
-            </div>}
+  let output = '';
+  for (let index = 0; index < questionList.length; index++) {
+    output +=`
+          <div class="subj-header">
+            <h2>${questionList[index].subject}</h2>
+            <div class="prog-info">Question <strong>${index+1}</strong> of <strong>${questionList.length}</strong></div>
           </div>
-        </div>
-        <div class="nav-actions">
-          <button class="btn-nav-prev" onclick="prevQ()" qi===0&&si===0?'disabled':''}>← Previous</button>
-          <button class="btn-flag-q flag?'flagged':''}" onclick="toggleFlag()">flag?'⚑ Flagged':'⚐ Flag'}</button>
-          isLast?<button class="btn-submit-exam" onclick="openModal()">Submit Exam</button>
-                  :<button class="btn-nav-next" onclick="nextQ()">Next →</button>
-        </div> `;
-  }
-
+          <div class="question-card">
+            <div class="q-number">Question ${index+1}</div>
+            <div class="question-text">${questionList[index].questiontext}</div>
+            <div class="options">
+              <div class="option-item sel===oi?'selected':''}" onclick="selectAnswer(oi})">
+                <div class="option-letter">A</div>
+                <div class="option-text">${questionList[index].optionA}</div>
+              </div>
+               <div class="option-item sel===oi?'selected':''}" onclick="selectAnswer(oi})">
+                <div class="option-letter">B</div>
+                <div class="option-text">${questionList[index].optionB}</div>
+              </div>
+               <div class="option-item sel===oi?'selected':''}" onclick="selectAnswer(oi})">
+                <div class="option-letter">C</div>
+                <div class="option-text">${questionList[index].optionC}</div>
+              </div>
+               <div class="option-item sel===oi?'selected':''}" onclick="selectAnswer(oi})">
+                <div class="option-letter">D</div>
+                <div class="option-text">${questionList[index].optionD}</div>
+              </div>
+               <div class="option-item sel===oi?'selected':''}" onclick="selectAnswer(oi})">
+                <div class="option-letter">E</div>
+                <div class="option-text">${questionList[index].optionE}</div>
+              </div>
+            </div>
+          </div>
+          <div class="nav-actions">
+            <button class="btn-nav-prev" onclick="prevQ()" qi===0&&si===0?'disabled':''}>← Previous</button>
+            <button class="btn-flag-q flag?'flagged':''}" onclick="toggleFlag()">flag?'⚑ Flagged':'⚐ Flag'}</button>
+            isLast?<button class="btn-submit-exam" onclick="openModal()">Submit Exam</button>
+                    :<button class="btn-nav-next" onclick="nextQ()">Next →</button>
+          </div> `;
+    }
   document.getElementById("question-area").innerHTML=output;
 }
 
 /* ══════════════════════════════════════════════════════════
    RENDER QUESTION
 ══════════════════════════════════════════════════════════ */
-// function renderQuestion() {
+function renderQuestion() {
 //   // const si=examState.currentSubject, qi=examState.currentQuestion;
 //   // const subj=SUBJECTS[si], q=subj.questions[qi];
 //   // const sel=examState.answers[si][qi], flag=examState.flagged[si][qi];
@@ -931,7 +943,7 @@ async function switchSubject(department, subject){
 //                :<button class="btn-nav-next" onclick="nextQ()">Next →</button>
 //     </div>`;
 //   // updateGrid(); updateProgress(); buildSubjectTabs();
-// }
+}
 
 function selectAnswer(oi){examState.answers[examState.currentSubject][examState.currentQuestion]=oi;renderQuestion();}
 function toggleFlag(){const si=examState.currentSubject,qi=examState.currentQuestion;examState.flagged[si][qi]=!examState.flagged[si][qi];renderQuestion();}
