@@ -514,6 +514,7 @@ async function fetchExamDetails(department) {
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ department:department }),
     });
+    
     const result = await res.json();
     /* ── No exam configured ────────────────────────────────── */
     if (result.status !== 'success' || !result.response?.[0]) {
