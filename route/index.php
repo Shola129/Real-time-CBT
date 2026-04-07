@@ -318,6 +318,11 @@ elseif($url === $usersArea . "/countSubject"){
     exit();
 }
 
+elseif($url === $usersArea . "/display/qesution"){
+    require_once __DIR__ . $appController . "/DisQuestionController.php";
+    exit();
+}
+
 // /api endpoints
 // elseif($url === $docRoot . $rootDir . $usersArea."/register" || $url === $usersArea."/register"."/"){
 //     require_once __DIR__ . $appController."/RegisterController.php";
