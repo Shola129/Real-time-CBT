@@ -514,7 +514,7 @@ async function fetchExamDetails(department) {
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ department:department }),
     });
-    
+
     const result = await res.json();
     /* ── No exam configured ────────────────────────────────── */
     if (result.status !== 'success' || !result.response?.[0]) {
@@ -614,7 +614,7 @@ async function launchExam() {
     const res    = await fetch('/cbt/ansofra/api/getExamdetails', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ department }),
+      body:    JSON.stringify({ department:department }),
     });
     const result = await res.json();
 
