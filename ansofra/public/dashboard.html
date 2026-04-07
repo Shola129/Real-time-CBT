@@ -708,10 +708,10 @@ async function launchExam() {
 ══════════════════════════════════════════════════════════ */
 async function fetchExamQuestions(department) {
   // try {
-    const res    = await fetch('/cbt/ansofra/api/getExamQuestions', {
+    const res    = await fetch('/cbt/ansofra/api/display/qesution', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ department }),
+      body:    JSON.stringify({ department:departments }),
     });
     const result = await res.json();
     if (result.status === 'success' && Array.isArray(result.response) && result.response.length) {
