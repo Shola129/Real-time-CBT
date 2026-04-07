@@ -135,8 +135,8 @@ class Platform{
         "regNum VARCHAR(255) NOT NULL",
         "question TEXT",
         "status VARCHAR(255) NOT NULL",
-        "score VARCHAR(15255) NOT NULL",
-        "startedAt VARCHAR(15255) NOT NULL"
+        "score VARCHAR(255) NOT NULL",
+        "startedAt VARCHAR(255) NOT NULL"
     ];
 
     //you can have as many tables as you want

@@ -840,6 +840,7 @@ async function switchSubject(department, subject){
   });
 
   const result = await api.json();
+  console.log(result);
   const response = result.response;
   const question = response.question;
   let output = "";

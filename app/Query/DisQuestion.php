@@ -10,7 +10,7 @@ class DisQuestion{
     private $table2 = Platform::QUESTIONS_TABLE;
 
     public function __construct(AnsofraDto $dto){
-        $this->dto->$dto;   
+        $this->dto=$dto;   
     }
 
     public function process(){
@@ -36,7 +36,7 @@ class DisQuestion{
             $mig2 = $newMig2->get($where2);
             $decodeMig2 = json_decode($mig2, true);
             if($decodeMig2["status"]==="success"){
-                $response = [$decodeMig2]["response"];
+                $response = $decodeMig2["response"];
                 shuffle($response);
                 $newMig3 = new Migration(null, $this->table);
                 $data = [
