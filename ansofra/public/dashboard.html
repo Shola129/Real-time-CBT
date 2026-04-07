@@ -395,11 +395,11 @@ let examState = {
    INIT
 ══════════════════════════════════════════════════════════ */
 window.addEventListener('load', () => {
-  const raw = localStorage.getItem('cbt_session') || "sholadanielek@gmail.com";
+  const raw = localStorage.getItem('cbt_session') || 'sholadanielek@gmail.com';
   if (!raw) { window.location.href = 'login.html'; return; }
   // try {
-   
-    user = raw;
+    const parsed =raw;
+    user = parsed || parsed;
   // } catch { user = raw; }
   populateUI();
 });
@@ -508,11 +508,11 @@ async function fetchExamDetails(department) {
     badge.innerHTML = `<span class="status-dot ${dot}" style="${dotStyle}"></span>${text}`;
   };
 
-  try {
+  // try {
     const res    = await fetch('/cbt/ansofra/api/getExamdetails', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ department }),
+      body:    JSON.stringify({ department:department }),
     });
     const result = await res.json();
 
@@ -572,11 +572,11 @@ async function fetchExamDetails(department) {
       btnTxt.textContent = 'Exam Has Ended'; btn.disabled = true;
     }
 
-  } catch (err) {
-    console.error('fetchExamDetails:', err);
-    setStatus('ended','','background:var(--text-muted)','Could not load exam details. Please refresh.');
-    btnTxt.textContent = 'Unable to Load'; btn.disabled = true;
-  }
+  // } catch (err) {
+  //   console.error('fetchExamDetails:', err);
+  //   setStatus('ended','','background:var(--text-muted)','Could not load exam details. Please refresh.');
+  //   btnTxt.textContent = 'Unable to Load'; btn.disabled = true;
+  // }
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -654,12 +654,12 @@ async function launchExam() {
 
     /* ── STEP 2: Fetch questions from backend ──────────────── */
     btnTxt.textContent = 'Loading questions…';
-    // await fetchExamQuestions(department);
+    await fetchExamQuestions(department);
 
-    // if (!SUBJECTS.length) {
-    //   setLaunchError('Questions could not be loaded. Please try again.');
-    //   btn.disabled = false; btnTxt.textContent = 'Start Examination'; return;
-    // }
+    if (!SUBJECTS.length) {
+      setLaunchError('Questions could not be loaded. Please try again.');
+      btn.disabled = false; btnTxt.textContent = 'Start Examination'; return;
+    }
 
     /* ── STEP 3: Initialise answer/flag arrays ─────────────── */
     examState.answers        = SUBJECTS.map(s => Array(s.questions.length).fill(-1));
@@ -678,11 +678,17 @@ async function launchExam() {
     document.getElementById('progress-side').style.display       = 'block';
     document.getElementById('q-panel').style.display             = 'block';
 
-    /* ── STEP 5: Build tabs (from fetched SUBJECTS), notify
-                  backend of first active subject, render, run timer */
-    buildSubjectTabs();
-    // await notifyActiveSubject(SUBJECTS[0].name, department);
-    renderQuestion();
+    /* ── STEP 5: Build subject tabs from backend (async),
+                  then load + display the first subject's questions */
+    await buildSubjectTabs();
+
+    // Trigger first subject load — switchSubject fetches questions,
+    // renders the first question, and calls notifyActiveSubject
+    const firstSubject = examState.subjectNames?.[0] || '';
+    if (firstSubject) {
+      await switchSubject(0, department, firstSubject);
+    }
+
     startTimer();
 
   // } catch (err) {
@@ -710,28 +716,29 @@ async function fetchExamQuestions(department) {
     if (result.status === 'success' && Array.isArray(result.response) && result.response.length) {
       SUBJECTS = result.response;
     }
-  // } catch (err) { console.warn('fetchExamQuestions:', err); }
+  // } 
+  // catch (err) { console.warn('fetchExamQuestions:', err); }
 }
 
 /* ── Notify backend which subject is currently active ────────
    Fires on exam launch (first subject) and on every tab switch.
    Adjust the endpoint + payload to match your backend schema. */
 async function notifyActiveSubject(subjectName, department) {
-  try {
-    await fetch('/cbt/ansofra/api/activeSubject', {
+  const regNum = document.getElementById('sidebar-reg').textContent;
+  // try {
+    await fetch('/cbt/ansofra/api/display/qesution', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({
-        email:      user,
+        regNum:regNum,
         department: department,
         subject:    subjectName,
-        timestamp:  new Date().toISOString(),
       }),
     });
-  } catch (err) {
-    // Non-fatal — log and continue; don't block the candidate
-    console.warn('notifyActiveSubject:', err);
-  }
+  // } catch (err) {
+  //   // Non-fatal — log and continue; don't block the candidate
+  //   console.warn('notifyActiveSubject:', err);
+  // }
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -803,169 +810,285 @@ function setLaunchError(msg) {
    SUBJECT TABS
 ══════════════════════════════════════════════════════════ */
 async function buildSubjectTabs() {
-  const department = document.getElementById("sb-course").textContent;
-   const res    = await fetch('/cbt/ansofra/api/getAllSebject', {
+  const department = userData?.department
+    || document.getElementById('sb-course').textContent.trim();
+
+  try {
+    const res    = await fetch('/cbt/ansofra/api/getAllSebject', {
       method:  'POST',
       headers: { 'Content-Type': 'application/json' },
       body:    JSON.stringify({ department }),
     });
     const result = await res.json();
-    const list   = result.response;
-    let output = '';
-    for (let index = 0; index < list.length; index++) {
-      output +=`<div class="subject-tab ${index===0?'active':''}" id="tab-${index}" onclick="switchSubject('${department}', '${list[index].subject}')">
-      ${list[index].subject}<span class="q-count"></span>
-    </div>`;
-    }
-  document.getElementById('subject-nav').innerHTML = output;
+    const list   = result.response || [];
+
+    // Cache subject names so switchSubject can reference them by index
+    examState.subjectNames = list.map(s => s.subject);
+
+    document.getElementById('subject-nav').innerHTML = list.map((s, i) => `
+      <div class="subject-tab ${i===0?'active':''}" id="tab-${i}"
+           onclick="switchSubject(${i}, '${department}', '${s.subject.replace(/'/g,"\\'")}')">
+        ${s.subject}
+        <span class="q-count" id="qcount-${i}"></span>
+      </div>`).join('');
+  } catch (err) {
+    console.error('buildSubjectTabs:', err);
+  }
 }
-async function switchSubject(department, subject){
-  const regNum = document.getElementById("sidebar-reg").textContent;
-  // examState.currentSubject=idx; examState.currentQuestion=0;
-  // document.querySelectorAll('.subject-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
-  // // Notify backend which subject is now active
-  // const department = userData?.department || document.getElementById('sb-course').textContent.trim();
-  // notifyActiveSubject(SUBJECTS[idx].name, department);
-  // renderQuestion();
-  const e = {
-    department:department,
-    subject:subject,
-    regNum:regNum
-  };
+async function switchSubject(idx, department, subjectName) {
+  // Update active tab highlight
+  document.querySelectorAll('.subject-tab')
+    .forEach((t, i) => t.classList.toggle('active', i === idx));
 
-  const api = await fetch("/cbt/ansofra/api/display/qesution", {
-      method:"POST",
-      headers:{'Content-type':'application/json'},
-      body:JSON.stringify(e)
-  });
+  // Reset per-question state for this subject index
+  examState.currentSubject  = idx;
+  examState.currentQuestion = 0;
 
-  const result = await api.json();
-  const rawData = result.response[0];
-  const questionList = JSON.parse(rawData.question);
-  let output = '';
-  for (let index = 0; index < questionList.length; index++) {
-    output +=`
-          <div class="subj-header">
-            <h2>${questionList[index].subject}</h2>
-            <div class="prog-info">Question <strong>${index+1}</strong> of <strong>${questionList.length}</strong></div>
-          </div>
-          <div class="question-card">
-            <div class="q-number">Question ${index+1}</div>
-            <div class="question-text">${questionList[index].questiontext}</div>
-            <div class="options">
-              <div class="option-item sel===oi?'selected':''}" onclick="selectAnswer(oi})">
-                <div class="option-letter">A</div>
-                <div class="option-text">${questionList[index].optionA}</div>
-              </div>
-               <div class="option-item sel===oi?'selected':''}" onclick="selectAnswer(oi})">
-                <div class="option-letter">B</div>
-                <div class="option-text">${questionList[index].optionB}</div>
-              </div>
-               <div class="option-item sel===oi?'selected':''}" onclick="selectAnswer(oi})">
-                <div class="option-letter">C</div>
-                <div class="option-text">${questionList[index].optionC}</div>
-              </div>
-               <div class="option-item sel===oi?'selected':''}" onclick="selectAnswer(oi})">
-                <div class="option-letter">D</div>
-                <div class="option-text">${questionList[index].optionD}</div>
-              </div>
-               <div class="option-item sel===oi?'selected':''}" onclick="selectAnswer(oi})">
-                <div class="option-letter">E</div>
-                <div class="option-text">${questionList[index].optionE}</div>
-              </div>
-            </div>
-          </div>
-          <div class="nav-actions">
-            <button class="btn-nav-prev" onclick="prevQ()" qi===0&&si===0?'disabled':''}>← Previous</button>
-            <button class="btn-flag-q flag?'flagged':''}" onclick="toggleFlag()">flag?'⚑ Flagged':'⚐ Flag'}</button>
-            isLast?<button class="btn-submit-exam" onclick="openModal()">Submit Exam</button>
-                    :<button class="btn-nav-next" onclick="nextQ()">Next →</button>
-          </div> `;
+  // Notify backend of active subject (non-blocking)
+  notifyActiveSubject(subjectName, department);
+
+  // Show loading placeholder
+  document.getElementById('question-area').innerHTML =
+    `<div style="padding:40px;text-align:center;color:var(--text-muted)">
+       Loading ${subjectName} questions…
+     </div>`;
+
+  try {
+    const regNum = document.getElementById('sidebar-reg').textContent.trim();
+
+    const res    = await fetch('/cbt/ansofra/api/display/qesution', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ department:department, subject: subjectName, regNum :regNum}),
+    });
+    const result = await res.json();
+
+    /* ── Parse backend response ──────────────────────────────────
+       Expected: result.response[0].question  = JSON string array
+       Each item: { subject, questiontext, optionA, optionB,
+                    optionC, optionD, optionE, answer }
+    ─────────────────────────────────────────────────────────── */
+    const raw        = result.response[0];
+    const questionList = typeof raw.question === 'string'
+      ? JSON.parse(raw.question)
+      : raw.question;
+
+    // Store in a subject-keyed cache so we can navigate later
+    if (!examState.subjectQuestions) examState.subjectQuestions = {};
+    examState.subjectQuestions[idx] = questionList;
+
+    // Ensure answers/flagged arrays are sized for this subject
+    if (!examState.answers[idx] || examState.answers[idx].length !== questionList.length) {
+      examState.answers[idx] = Array(questionList.length).fill(-1);
+      examState.flagged[idx] = Array(questionList.length).fill(false);
     }
-  document.getElementById("question-area").innerHTML=output;
+
+    // Update question count badge on the tab
+    const qCountEl = document.getElementById(`qcount-${idx}`);
+    if (qCountEl) qCountEl.textContent = `(${questionList.length}Q)`;
+
+    // Render the first question of this subject
+    renderApiQuestion();
+
+  } catch (err) {
+    console.error('switchSubject fetch:', err);
+    document.getElementById('question-area').innerHTML =
+      `<div style="padding:40px;text-align:center;color:var(--red)">
+         Failed to load questions. Please try again.
+       </div>`;
+  }
 }
 
 /* ══════════════════════════════════════════════════════════
    RENDER QUESTION
 ══════════════════════════════════════════════════════════ */
 function renderQuestion() {
-//   // const si=examState.currentSubject, qi=examState.currentQuestion;
-//   // const subj=SUBJECTS[si], q=subj.questions[qi];
-//   // const sel=examState.answers[si][qi], flag=examState.flagged[si][qi];
-//   // const isLast=si===SUBJECTS.length-1&&qi===subj.questions.length-1;
-//   // const L=['A','B','C','D'];
-//   // document.getElementById('question-area').innerHTML=`
-//   //   <div class="subj-header">
-//   //     <h2>${subj.name}</h2>
-//   //     <div class="prog-info">Question <strong>${qi+1}</strong> of <strong>${subj.questions.length}</strong></div>
-//   //   </div>
-//   //   <div class="question-card">
-//   //     <div class="q-number">Question ${qi+1}</div>
-//   //     <div class="question-text">${q.q}</div>
-//   //     <div class="options">${q.opts.map((o,oi)=>`
-//   //       <div class="option-item ${sel===oi?'selected':''}" onclick="selectAnswer(${oi})">
-//   //         <div class="option-letter">${L[oi]}</div>
-//   //         <div class="option-text">${o}</div>
-//   //       </div>`).join('')}
-//   //     </div>
-//   //   </div>
-//   //   <div class="nav-actions">
-//   //     <button class="btn-nav-prev" onclick="prevQ()" ${qi===0&&si===0?'disabled':''}>← Previous</button>
-//   //     <button class="btn-flag-q ${flag?'flagged':''}" onclick="toggleFlag()">${flag?'⚑ Flagged':'⚐ Flag'}</button>
-//   //     ${isLast?`<button class="btn-submit-exam" onclick="openModal()">Submit Exam</button>`
-//   //              :`<button class="btn-nav-next" onclick="nextQ()">Next →</button>`}
-//   //   </div>`;
-//   // updateGrid(); updateProgress();
-//   // const si=examState.currentSubject, qi=examState.currentQuestion;
-//   // const subj=SUBJECTS[si], q=subj.questions[qi];
-//   // const sel=examState.answers[si][qi], flag=examState.flagged[si][qi];
-//   // const isLast=si===SUBJECTS.length-1&&qi===subj.questions.length-1;
-//   const L=['A','B','C','D'];
-//   document.getElementById('question-area').innerHTML=`
-//     <div class="subj-header">
-//       <h2>subj.name}</h2>
-//       <div class="prog-info">Question <strong>qi+1}</strong> of <strong>subj.questions.length}</strong></div>
-//     </div>
-//     <div class="question-card">
-//       <div class="q-number">Question i+1}</div>
-//       <div class="question-text">.q}</div>
-//       <div class="options">
-//         <div class="option-item sel===oi?'selected':''}" onclick="selectAnswer(oi})">
-//           <div class="option-letter">[oi]}</div>
-//           <div class="option-text">o}</div>
-//         </div>}
-//       </div>
-//     </div>
-//     <div class="nav-actions">
-//       <button class="btn-nav-prev" onclick="prevQ()" qi===0&&si===0?'disabled':''}>← Previous</button>
-//       <button class="btn-flag-q flag?'flagged':''}" onclick="toggleFlag()">flag?'⚑ Flagged':'⚐ Flag'}</button>
-//       isLast?<button class="btn-submit-exam" onclick="openModal()">Submit Exam</button>
-//                :<button class="btn-nav-next" onclick="nextQ()">Next →</button>
-//     </div>`;
-//   // updateGrid(); updateProgress(); buildSubjectTabs();
+  const si=examState.currentSubject, qi=examState.currentQuestion;
+  const subj=SUBJECTS[si], q=subj.questions[qi];
+  const sel=examState.answers[si][qi], flag=examState.flagged[si][qi];
+  const isLast=si===SUBJECTS.length-1&&qi===subj.questions.length-1;
+  const L=['A','B','C','D'];
+  document.getElementById('question-area').innerHTML=`
+    <div class="subj-header">
+      <h2>${subj.name}</h2>
+      <div class="prog-info">Question <strong>${qi+1}</strong> of <strong>${subj.questions.length}</strong></div>
+    </div>
+    <div class="question-card">
+      <div class="q-number">Question ${qi+1}</div>
+      <div class="question-text">${q.q}</div>
+      <div class="options">${q.opts.map((o,oi)=>`
+        <div class="option-item ${sel===oi?'selected':''}" onclick="selectAnswer(${oi})">
+          <div class="option-letter">${L[oi]}</div>
+          <div class="option-text">${o}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-nav-prev" onclick="prevQ()" ${qi===0&&si===0?'disabled':''}>← Previous</button>
+      <button class="btn-flag-q ${flag?'flagged':''}" onclick="toggleFlag()">${flag?'⚑ Flagged':'⚐ Flag'}</button>
+      ${isLast?`<button class="btn-submit-exam" onclick="openModal()">Submit Exam</button>`
+               :`<button class="btn-nav-next" onclick="nextQ()">Next →</button>`}
+    </div>`;
+  updateGrid(); updateProgress();
 }
 
-function selectAnswer(oi){examState.answers[examState.currentSubject][examState.currentQuestion]=oi;renderQuestion();}
-function toggleFlag(){const si=examState.currentSubject,qi=examState.currentQuestion;examState.flagged[si][qi]=!examState.flagged[si][qi];renderQuestion();}
-function goToQuestion(qi){examState.currentQuestion=qi;renderQuestion();}
-function nextQ(){const si=examState.currentSubject;if(examState.currentQuestion<SUBJECTS[si].questions.length-1)examState.currentQuestion++;else if(si<SUBJECTS.length-1){switchSubject(si+1);return;}renderQuestion();}
-function prevQ(){if(examState.currentQuestion>0)examState.currentQuestion--;else if(examState.currentSubject>0){const n=examState.currentSubject-1;examState.currentSubject=n;examState.currentQuestion=SUBJECTS[n].questions.length-1;document.querySelectorAll('.subject-tab').forEach((t,i)=>t.classList.toggle('active',i===n));}renderQuestion();}
+/* ══════════════════════════════════════════════════════════
+   RENDER API QUESTION
+   Renders one question at a time from the API-fetched list.
+   Supports A–E options, flagging, prev/next, submit.
+══════════════════════════════════════════════════════════ */
+function renderApiQuestion() {
+  const si  = examState.currentSubject;
+  const qi  = examState.currentQuestion;
+  const questions = examState.subjectQuestions[si];
 
-function updateGrid(){
-  const si=examState.currentSubject;
-  document.getElementById('q-grid').innerHTML=SUBJECTS[si].questions.map((_,qi)=>{
-    let c='q-dot';
-    if(qi===examState.currentQuestion)c+=' current';
-    else if(examState.flagged[si][qi])c+=' flagged';
-    else if(examState.answers[si][qi]!==-1)c+=' answered';
-    return`<div class="${c}" onclick="goToQuestion(${qi})">${qi+1}</div>`;
+  if (!questions || !questions.length) return;
+
+  const q       = questions[qi];
+  const sel     = examState.answers[si][qi];       // -1 = unanswered
+  const flag    = examState.flagged[si][qi] || false;
+  const total   = questions.length;
+  const isLast  = qi === total - 1
+    && si === (examState.subjectNames?.length || 1) - 1;
+
+  // Build options — skip empty ones (e.g. no option E)
+  const optKeys   = ['optionA','optionB','optionC','optionD','optionE'];
+  const optLabels = ['A','B','C','D','E'];
+  const opts = optKeys
+    .map((k, i) => ({ label: optLabels[i], text: q[k] }))
+    .filter(o => o.text && String(o.text).trim() !== '');
+
+  const optionsHtml = opts.map((o, oi) => `
+    <div class="option-item ${sel === oi ? 'selected' : ''}"
+         onclick="selectAnswer(${oi})" style="cursor:pointer">
+      <div class="option-letter">${o.label}</div>
+      <div class="option-text">${o.text}</div>
+    </div>`).join('');
+
+  const prevDisabled = (qi === 0 && si === 0) ? 'disabled' : '';
+  const actionBtn = isLast
+    ? `<button class="btn-submit-exam" onclick="openModal()">Submit Exam</button>`
+    : `<button class="btn-nav-next" onclick="nextQ()">Next →</button>`;
+
+  document.getElementById('question-area').innerHTML = `
+    <div class="subj-header">
+      <h2>${q.subject || examState.subjectNames?.[si] || ''}</h2>
+      <div class="prog-info">
+        Question <strong>${qi + 1}</strong> of <strong>${total}</strong>
+      </div>
+    </div>
+    <div class="question-card">
+      <div class="q-number">Question ${qi + 1}</div>
+      <div class="question-text">${q.questiontext}</div>
+      <div class="options">${optionsHtml}</div>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-nav-prev" onclick="prevQ()" ${prevDisabled}>← Previous</button>
+      <button class="btn-flag-q ${flag ? 'flagged' : ''}" onclick="toggleFlag()">
+        ${flag ? '⚑ Flagged' : '⚐ Flag'}
+      </button>
+      ${actionBtn}
+    </div>`;
+
+  updateGrid();
+  updateProgress();
+}
+
+function selectAnswer(oi) {
+  const si = examState.currentSubject, qi = examState.currentQuestion;
+  examState.answers[si][qi] = oi;
+  // Re-render whichever mode is active
+  if (examState.subjectQuestions && examState.subjectQuestions[si]) {
+    renderApiQuestion();
+  } else {
+    renderQuestion();
+  }
+}
+function toggleFlag() {
+  const si = examState.currentSubject, qi = examState.currentQuestion;
+  examState.flagged[si][qi] = !examState.flagged[si][qi];
+  if (examState.subjectQuestions && examState.subjectQuestions[si]) {
+    renderApiQuestion();
+  } else {
+    renderQuestion();
+  }
+  updateGrid();
+}
+function goToQuestion(qi) {
+  examState.currentQuestion = qi;
+  const si = examState.currentSubject;
+  if (examState.subjectQuestions && examState.subjectQuestions[si]) {
+    renderApiQuestion();
+  } else {
+    renderQuestion();
+  }
+}
+function nextQ() {
+  const si = examState.currentSubject;
+  const questions = examState.subjectQuestions?.[si] || SUBJECTS[si]?.questions || [];
+  if (examState.currentQuestion < questions.length - 1) {
+    examState.currentQuestion++;
+    if (examState.subjectQuestions && examState.subjectQuestions[si]) {
+      renderApiQuestion();
+    } else {
+      renderQuestion();
+    }
+  } else {
+    // Move to the next subject tab
+    const nextIdx = si + 1;
+    const nextName = examState.subjectNames?.[nextIdx];
+    const dept = userData?.department || document.getElementById('sb-course').textContent.trim();
+    if (nextIdx < (examState.subjectNames?.length || SUBJECTS.length)) {
+      switchSubject(nextIdx, dept, nextName || SUBJECTS[nextIdx]?.name || '');
+    }
+  }
+}
+function prevQ() {
+  const si = examState.currentSubject;
+  if (examState.currentQuestion > 0) {
+    examState.currentQuestion--;
+    if (examState.subjectQuestions && examState.subjectQuestions[si]) {
+      renderApiQuestion();
+    } else {
+      renderQuestion();
+    }
+  } else if (si > 0) {
+    const prevIdx = si - 1;
+    const prevName = examState.subjectNames?.[prevIdx];
+    const dept = userData?.department || document.getElementById('sb-course').textContent.trim();
+    switchSubject(prevIdx, dept, prevName || SUBJECTS[prevIdx]?.name || '');
+  }
+}
+
+function updateGrid() {
+  const si = examState.currentSubject;
+  // Use API questions list if available, else fall back to SUBJECTS
+  const questions = examState.subjectQuestions?.[si] || SUBJECTS[si]?.questions || [];
+  document.getElementById('q-grid').innerHTML = questions.map((_, qi) => {
+    let c = 'q-dot';
+    if (qi === examState.currentQuestion)     c += ' current';
+    else if (examState.flagged[si]?.[qi])      c += ' flagged';
+    else if (examState.answers[si]?.[qi] !== -1 && examState.answers[si]?.[qi] !== undefined) c += ' answered';
+    return `<div class="${c}" onclick="goToQuestion(${qi})">${qi + 1}</div>`;
   }).join('');
 }
-function updateProgress(){
-  document.getElementById('progress-list').innerHTML=SUBJECTS.map((s,si)=>{
-    const done=examState.answers[si].filter(a=>a!==-1).length,total=s.questions.length,pct=Math.round(done/total*100);
-    return`<div class="prog-row"><span class="pname">${s.name.split(' ')[0]}</span><span class="pscore">${done}/${total}</span></div>
-           <div class="prog-bar"><div class="prog-bar-fill" style="width:${pct}%"></div></div>`;
+function updateProgress() {
+  // Use subjectNames + subjectQuestions (API mode) or SUBJECTS (static mode)
+  const names = examState.subjectNames || SUBJECTS.map(s => s.name);
+  document.getElementById('progress-list').innerHTML = names.map((name, si) => {
+    const questions = examState.subjectQuestions?.[si] || SUBJECTS[si]?.questions || [];
+    const total = questions.length;
+    if (!total) return '';
+    const answers = examState.answers[si] || [];
+    const done = answers.filter(a => a !== -1 && a !== undefined).length;
+    const pct  = Math.round((done / total) * 100);
+    return `<div class="prog-row">
+              <span class="pname">${name.split(' ')[0]}</span>
+              <span class="pscore">${done}/${total}</span>
+            </div>
+            <div class="prog-bar">
+              <div class="prog-bar-fill" style="width:${pct}%"></div>
+            </div>`;
   }).join('');
 }
 
