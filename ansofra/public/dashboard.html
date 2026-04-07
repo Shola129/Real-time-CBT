@@ -516,7 +516,6 @@ async function fetchExamDetails(department) {
     });
     const result = await res.json();
 
-
     /* ── No exam configured ────────────────────────────────── */
     if (result.status !== 'success' || !result.response?.[0]) {
       setStatus('ended','','background:var(--text-muted)', 'No exam scheduled yet. You will be notified by email.');
