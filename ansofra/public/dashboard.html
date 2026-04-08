@@ -297,9 +297,8 @@
 </div>
 
 <script>
-/* ══════════════════════════════════════════════════════════
-   STATE
-══════════════════════════════════════════════════════════ */
+/*    STATE
+*/
 let SUBJECTS  = [];
 let user      = null;
 let userData  = null;
@@ -317,9 +316,8 @@ let examState = {
   started: false,
 };
 
-/* ══════════════════════════════════════════════════════════
-   INIT
-══════════════════════════════════════════════════════════ */
+/*    INIT
+*/
 window.addEventListener('load', () => {
   const raw = localStorage.getItem('cbt_session') || "sholadanielek@gmail.com";
   if (!raw) { window.location.href = 'login.html'; return; }
@@ -327,9 +325,8 @@ window.addEventListener('load', () => {
   populateUI();
 });
 
-/* ══════════════════════════════════════════════════════════
-   FETCH — candidate profile
-══════════════════════════════════════════════════════════ */
+/*    FETCH — candidate profile
+*/
 async function populateUI() {
   try {
     const res    = await fetch('/cbt/ansofra/api/details', {
@@ -365,9 +362,8 @@ async function populateUI() {
   } catch (err) { console.error('populateUI:', err); }
 }
 
-/* ══════════════════════════════════════════════════════════
-   FETCH — subject list (sidebar + table)
-══════════════════════════════════════════════════════════ */
+/*    FETCH — subject list (sidebar + table)
+*/
 async function fetchSubjectList(department) {
   try {
     const res    = await fetch('/cbt/ansofra/api/getAllSebject', {
@@ -401,9 +397,8 @@ async function fetchSubjectList(department) {
   } catch (err) { console.error('fetchSubjectList:', err); }
 }
 
-/* ══════════════════════════════════════════════════════════
-   FETCH — exam details
-══════════════════════════════════════════════════════════ */
+/*    FETCH — exam details
+*/
 async function fetchExamDetails(department) {
   const btn    = document.getElementById('start-btn');
   const btnTxt = document.getElementById('start-btn-text');
@@ -470,9 +465,8 @@ async function fetchExamDetails(department) {
   }
 }
 
-/* ══════════════════════════════════════════════════════════
-   FETCH — subject count
-══════════════════════════════════════════════════════════ */
+/*    FETCH — subject count
+*/
 async function fetchSubjectCount(department) {
   try {
     const res    = await fetch('/cbt/ansofra/api/countSubject', {
@@ -484,9 +478,8 @@ async function fetchSubjectCount(department) {
   } catch (err) { console.error('fetchSubjectCount:', err); }
 }
 
-/* ══════════════════════════════════════════════════════════
-   LAUNCH EXAM
-══════════════════════════════════════════════════════════ */
+/*    LAUNCH EXAM
+*/
 async function launchExam() {
   const btn    = document.getElementById('start-btn');
   const btnTxt = document.getElementById('start-btn-text');
@@ -550,11 +543,10 @@ async function launchExam() {
   startTimer();
 }
 
-/* ══════════════════════════════════════════════════════════
-   BUILD SUBJECT TABS  — exact user pattern, kept intact
+/*    BUILD SUBJECT TABS  — exact user pattern, kept intact
    Fetches subject list, builds the header tabs,
    then auto-loads the first subject's questions.
-══════════════════════════════════════════════════════════ */
+*/
 async function buildSubjectTabs(department) {
   // Use passed dept or read from sidebar (supports both call patterns)
   const dept = department || document.getElementById('sb-course').textContent.trim();
@@ -585,11 +577,10 @@ async function buildSubjectTabs(department) {
   }
 }
 
-/* ══════════════════════════════════════════════════════════
-   SWITCH SUBJECT  — exact user API pattern, kept intact.
+/*    SWITCH SUBJECT  — exact user API pattern, kept intact.
    Fetches questions for the clicked subject, then renders
    the first question one at a time (slider behaviour).
-══════════════════════════════════════════════════════════ */
+*/
 async function switchSubject(department, subject, idx) {
   // Update active tab highlight
   document.querySelectorAll('.subject-tab')
@@ -636,12 +627,11 @@ async function switchSubject(department, subject, idx) {
   renderCurrentQuestion();
 }
 
-/* ══════════════════════════════════════════════════════════
-   RENDER CURRENT QUESTION  — shows ONE question at a time.
+/*    RENDER CURRENT QUESTION  — shows ONE question at a time.
    Reads from examState.questions[currentSubject][currentQuestion].
    Handles: selection highlight, flag state, prev/next,
             question counter, submit on last question.
-══════════════════════════════════════════════════════════ */
+*/
 function renderCurrentQuestion() {
   const si = examState.currentSubject;
   const qi = examState.currentQuestion;
@@ -703,9 +693,8 @@ function renderCurrentQuestion() {
   updateProgress();
 }
 
-/* ══════════════════════════════════════════════════════════
-   ANSWER & FLAG ACTIONS
-══════════════════════════════════════════════════════════ */
+/*    ANSWER & FLAG ACTIONS
+*/
 function selectAnswer(oi) {
   examState.answers[examState.currentSubject][examState.currentQuestion] = oi;
   renderCurrentQuestion();
@@ -722,9 +711,8 @@ function goToQuestion(qi) {
   renderCurrentQuestion();
 }
 
-/* ══════════════════════════════════════════════════════════
-   NAVIGATION — next / prev (one question at a time)
-══════════════════════════════════════════════════════════ */
+/*    NAVIGATION — next / prev (one question at a time)
+*/
 function nextQ() {
   const si        = examState.currentSubject;
   const questions = examState.questions[si] || [];
@@ -776,10 +764,9 @@ function prevQ() {
   }
 }
 
-/* ══════════════════════════════════════════════════════════
-   QUESTION GRID (sidebar dots)
+/*    QUESTION GRID (sidebar dots)
    Green = answered, Red = current, Gold = flagged, dim = unattempted
-══════════════════════════════════════════════════════════ */
+*/
 function updateGrid() {
   const si        = examState.currentSubject;
   const questions = examState.questions[si] || [];
@@ -793,10 +780,9 @@ function updateGrid() {
   }).join('');
 }
 
-/* ══════════════════════════════════════════════════════════
-   PROGRESS PANEL (sidebar bars)
+/*    PROGRESS PANEL (sidebar bars)
    Shows attempted / total for every subject
-══════════════════════════════════════════════════════════ */
+*/
 function updateProgress() {
   const rows = [];
   for (let si = 0; si < examState.totalSubjects; si++) {
@@ -821,9 +807,8 @@ function updateProgress() {
   document.getElementById('progress-list').innerHTML = rows.join('');
 }
 
-/* ══════════════════════════════════════════════════════════
-   TIMER
-══════════════════════════════════════════════════════════ */
+/*    TIMER
+*/
 function startTimer() {
   renderTimerDisplay();
   examState.timerInterval = setInterval(() => {
@@ -848,9 +833,8 @@ function renderTimerDisplay() {
   if (s <= 120) el.classList.add('danger');
 }
 
-/* ══════════════════════════════════════════════════════════
-   MODAL & SUBMIT
-══════════════════════════════════════════════════════════ */
+/*    MODAL & SUBMIT
+*/
 function openModal()  { document.getElementById('submit-modal').classList.add('open'); }
 function closeModal() { document.getElementById('submit-modal').classList.remove('open'); }
 
@@ -915,9 +899,8 @@ function backToDash() {
 
 function logout() { localStorage.removeItem('cbt_session'); window.location.href = 'login.html'; }
 
-/* ══════════════════════════════════════════════════════════
-   DATE / TIME HELPERS
-══════════════════════════════════════════════════════════ */
+/*    DATE / TIME HELPERS
+*/
 function buildDatetime(dateStr, timeStr) {
   let d = String(dateStr).trim();
   if (/^\d{2}[\/\-]\d{2}[\/\-]\d{4}$/.test(d)) {
