@@ -15,12 +15,8 @@
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     body{font-family:'Source Sans 3',sans-serif;min-height:100vh;background:var(--off-white);-webkit-font-smoothing:antialiased;}
-
-    /* ── LAYOUT ── */
     #dashboard-page{display:flex;flex-direction:column;min-height:100vh;}
     .dash-body{display:flex;flex:1;min-height:calc(100vh - 60px);}
-
-    /* ── TOP BAR ── */
     .top-bar{background:var(--navy);color:var(--white);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px;box-shadow:0 2px 12px rgba(0,0,0,0.2);position:sticky;top:0;z-index:200;}
     .top-bar-left{display:flex;align-items:center;gap:14px;}
     .top-bar-emblem{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-family:'Merriweather',serif;font-size:13px;font-weight:700;}
@@ -31,8 +27,6 @@
     .nav-avatar{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-family:'Merriweather',serif;font-size:12px;font-weight:700;color:var(--white);}
     .btn-logout{background:rgba(192,57,43,0.75);color:var(--white);padding:6px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:background 0.18s;}
     .btn-logout:hover{background:var(--red);}
-
-    /* ── SIDEBAR ── */
     .sidebar{width:248px;flex-shrink:0;background:var(--navy);color:var(--white);padding:28px 16px;display:flex;flex-direction:column;gap:18px;}
     .profile-card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:22px 16px;text-align:center;}
     .profile-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--navy-mid),var(--navy-light));border:3px solid rgba(255,255,255,0.2);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-family:'Merriweather',serif;font-size:26px;font-weight:700;color:var(--white);}
@@ -52,14 +46,9 @@
     .instruction-list{display:flex;flex-direction:column;gap:8px;}
     .instruction-item{display:flex;gap:9px;font-size:11px;color:rgba(255,255,255,0.65);line-height:1.5;}
     .instruction-item .num{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px;}
-
-    /* ── MAIN CONTENT ── */
     .main-content{flex:1;overflow-y:auto;}
-
-    /* ── WELCOME SCREEN ── */
     #welcome-screen{padding:40px;animation:fadeUp 0.4s ease;}
     @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
-
     .welcome-hero{background:var(--navy);border-radius:20px;padding:50px 48px;color:var(--white);text-align:center;position:relative;overflow:hidden;margin-bottom:32px;}
     .welcome-hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 30px,rgba(255,255,255,0.015) 30px,rgba(255,255,255,0.015) 60px);}
     .welcome-hero::after{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(192,57,43,0.2),transparent 70%);right:-120px;bottom:-120px;}
@@ -68,15 +57,12 @@
     .welcome-name{font-family:'Merriweather',serif;font-size:34px;font-weight:900;line-height:1.1;margin-bottom:10px;}
     .welcome-name span{color:var(--gold);}
     .welcome-sub{font-size:14px;color:rgba(255,255,255,0.6);max-width:480px;margin:0 auto 32px;line-height:1.7;}
-
     .start-btn{display:inline-flex;align-items:center;gap:10px;background:var(--red);color:var(--white);padding:16px 44px;border-radius:12px;font-family:'Source Sans 3',sans-serif;font-size:16px;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;box-shadow:0 6px 24px rgba(192,57,43,0.4);letter-spacing:0.3px;}
     .start-btn:hover{background:var(--red-hover);transform:translateY(-2px);box-shadow:0 10px 32px rgba(192,57,43,0.5);}
     .start-btn:active{transform:translateY(0);}
     .start-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none;}
     .start-btn .arrow{font-size:20px;transition:transform 0.2s;}
     .start-btn:not(:disabled):hover .arrow{transform:translateX(4px);}
-
-    /* exam status badge */
     .exam-status-badge{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:600;letter-spacing:0.3px;}
     .exam-status-badge.pending{background:rgba(240,180,41,0.18);color:var(--gold);border:1px solid rgba(240,180,41,0.3);}
     .exam-status-badge.live{background:rgba(26,127,75,0.18);color:#2ecc71;border:1px solid rgba(46,204,113,0.3);}
@@ -85,16 +71,12 @@
     .status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
     .status-dot.pulse{animation:dotPulse 1.2s ease-in-out infinite;}
     @keyframes dotPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
-
-    /* info cards */
     .info-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px;}
     .info-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px 20px;box-shadow:var(--shadow-sm);}
     .info-card .ic-icon{font-size:28px;margin-bottom:10px;}
     .info-card .ic-label{font-size:11px;text-transform:uppercase;letter-spacing:0.9px;color:var(--text-muted);margin-bottom:4px;}
     .info-card .ic-value{font-family:'Merriweather',serif;font-size:20px;font-weight:700;color:var(--navy);}
     .info-card .ic-sub{font-size:12px;color:var(--text-muted);margin-top:2px;}
-
-    /* subject table */
     .subjects-section{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-sm);}
     .subjects-section-head{padding:18px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
     .subjects-section-head h3{font-family:'Merriweather',serif;font-size:16px;color:var(--navy);}
@@ -105,8 +87,6 @@
     .subject-table tr:last-child td{border-bottom:none;}
     .subject-table tr:hover td{background:#f8faff;}
     .subj-color{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:middle;}
-
-    /* ── EXAM SCREEN ── */
     #exam-screen{display:none;flex-direction:column;flex:1;}
     .subject-nav{background:var(--navy-dark);padding:0 28px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;}
     .subject-nav::-webkit-scrollbar{display:none;}
@@ -146,6 +126,7 @@
     .nav-actions{display:flex;justify-content:space-between;align-items:center;margin-top:22px;}
     .btn-nav-prev{background:var(--white);color:var(--navy);border:1.5px solid var(--border);padding:11px 22px;border-radius:8px;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.18s;}
     .btn-nav-prev:hover{border-color:var(--navy);background:#f0f4ff;}
+    .btn-nav-prev:disabled{opacity:0.4;cursor:not-allowed;}
     .btn-nav-next{background:var(--navy);color:var(--white);padding:11px 22px;border-radius:8px;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all 0.18s;}
     .btn-nav-next:hover{background:var(--navy-light);}
     .btn-flag-q{background:var(--white);color:var(--gold);border:1.5px solid var(--gold);padding:10px 18px;border-radius:8px;font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.18s;}
@@ -153,14 +134,10 @@
     .btn-flag-q.flagged{background:var(--gold);color:#1a2340;}
     .btn-submit-exam{background:var(--red);color:var(--white);padding:11px 22px;border-radius:8px;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all 0.18s;}
     .btn-submit-exam:hover{background:var(--red-hover);}
-
-    /* timer */
     .timer-badge{background:rgba(192,57,43,0.85);color:var(--white);padding:6px 16px;border-radius:20px;font-size:17px;font-weight:700;letter-spacing:1px;min-width:92px;text-align:center;font-variant-numeric:tabular-nums;}
     .timer-badge.warning{background:var(--gold);color:#1a2340;}
     .timer-badge.danger{background:var(--red);animation:pulse 1s infinite;}
     @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.65;}}
-
-    /* modal */
     .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:9px;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all 0.18s;}
     .btn-ghost{background:var(--white);color:var(--navy);border:1.5px solid var(--border);}
     .btn-ghost:hover{border-color:var(--navy);background:#f0f4ff;}
@@ -177,8 +154,6 @@
     .modal p{font-size:14px;color:#556;line-height:1.6;}
     .modal-actions{display:flex;gap:12px;margin-top:26px;}
     .modal-actions .btn{flex:1;}
-
-    /* result */
     #result-screen{display:none;min-height:100vh;background:linear-gradient(135deg,var(--navy-dark),var(--navy));align-items:center;justify-content:center;flex-direction:column;padding:40px 20px;}
     .result-card{background:var(--white);border-radius:20px;padding:48px 44px;max-width:560px;width:100%;text-align:center;box-shadow:var(--shadow-lg);}
     .result-title{font-family:'Merriweather',serif;font-size:24px;color:var(--navy);margin-bottom:4px;}
@@ -191,7 +166,6 @@
     .result-row:last-child{border-bottom:none;}
     .result-row .sname{color:#333;}
     .result-row .spts{font-weight:700;color:var(--navy);}
-
     @media(max-width:768px){
       .sidebar{display:none;}
       .question-area{padding:18px 16px;}
@@ -204,20 +178,13 @@
 <body>
 
 <div id="dashboard-page">
-
-  <!-- Top bar -->
   <div class="top-bar">
     <div class="top-bar-left">
       <div class="top-bar-emblem">ET</div>
-      <div class="top-bar-title">
-        EduTest CBT
-        <small id="top-session-label">Candidate Dashboard</small>
-      </div>
+      <div class="top-bar-title">EduTest CBT<small id="top-session-label">Candidate Dashboard</small></div>
     </div>
     <div class="top-bar-right">
-      <div id="timer-wrap" style="display:none">
-        <div class="timer-badge" id="timer">00:00:00</div>
-      </div>
+      <div id="timer-wrap" style="display:none"><div class="timer-badge" id="timer">00:00:00</div></div>
       <div class="nav-user">
         <div class="nav-avatar" id="nav-avatar">--</div>
         <span id="nav-name">Candidate</span>
@@ -227,13 +194,11 @@
   </div>
 
   <div class="dash-body">
-
-    <!-- Sidebar -->
     <div class="sidebar">
       <div class="profile-card">
         <div class="profile-avatar" id="sidebar-avatar">--</div>
-        <div class="profile-name"   id="sidebar-name">—</div>
-        <div class="profile-reg"    id="sidebar-reg">—</div>
+        <div class="profile-name" id="sidebar-name">—</div>
+        <div class="profile-reg"  id="sidebar-reg">—</div>
         <div class="profile-badge">UTME Candidate</div>
         <div class="profile-details">
           <div class="profile-row"><span class="lbl">State</span>  <span class="val" id="sb-state">—</span></div>
@@ -243,22 +208,18 @@
           <div class="profile-row"><span class="lbl">Phone</span>  <span class="val" id="sb-phone">—</span></div>
         </div>
       </div>
-
       <div class="side-panel" id="subjects-side">
         <h4>Subjects</h4>
         <div class="subject-list" id="subject-list-side"></div>
       </div>
-
       <div class="side-panel progress-panel" id="progress-side" style="display:none">
         <h4>Progress</h4>
         <div id="progress-list"></div>
       </div>
-
       <div class="side-panel" id="q-panel" style="display:none">
         <h4>Questions</h4>
         <div class="q-grid" id="q-grid"></div>
       </div>
-
       <div class="side-panel" id="instructions-side">
         <h4>Instructions</h4>
         <div class="instruction-list">
@@ -270,83 +231,46 @@
       </div>
     </div>
 
-    <!-- Main content -->
     <div class="main-content">
-
-      <!-- WELCOME SCREEN -->
       <div id="welcome-screen">
         <div class="welcome-hero">
           <div class="welcome-greeting">Welcome back, Candidate</div>
           <div class="welcome-name" id="hero-name">Loading…</div>
-          <div class="welcome-sub">
-            Review your details below, then start when you are prepared.
-            The timer begins the moment you click <em>Start Examination</em>.
-          </div>
+          <div class="welcome-sub">Review your details below, then start when you are prepared. The timer begins the moment you click <em>Start Examination</em>.</div>
           <button class="start-btn" id="start-btn" onclick="launchExam()" disabled>
             <span id="start-btn-text">Checking exam status…</span>
             <span class="arrow">→</span>
           </button>
           <div><div class="exam-status-badge loading" id="exam-status-badge">
             <span class="status-dot" style="background:rgba(255,255,255,0.4)"></span>
-            <span id="exam-status-text">Loading exam information…</span>
+            <span>Loading exam information…</span>
           </div></div>
         </div>
-
         <div class="info-cards">
-          <div class="info-card">
-            <div class="ic-icon">📋</div>
-            <div class="ic-label">Registration No.</div>
-            <div class="ic-value" id="ic-reg" style="font-size:14px">—</div>
-          </div>
-          <div class="info-card">
-            <div class="ic-icon">⏱</div>
-            <div class="ic-label">Duration</div>
-            <div class="ic-value" id="ic-dura">—</div>
-            <div class="ic-sub" id="ic-dura-sub"></div>
-          </div>
-          <div class="info-card">
-            <div class="ic-icon">📚</div>
-            <div class="ic-label">Subjects</div>
-            <div class="ic-value" id="count-ub">—</div>
-            <div class="ic-sub">for your department</div>
-          </div>
-          <div class="info-card">
-            <div class="ic-icon">📅</div>
-            <div class="ic-label">Exam Date &amp; Time</div>
-            <div class="ic-value" id="next-date" style="font-size:14px">—</div>
-            <div class="ic-sub" id="next-time">—</div>
-          </div>
+          <div class="info-card"><div class="ic-icon">📋</div><div class="ic-label">Registration No.</div><div class="ic-value" id="ic-reg" style="font-size:14px">—</div></div>
+          <div class="info-card"><div class="ic-icon">⏱</div><div class="ic-label">Duration</div><div class="ic-value" id="ic-dura">—</div><div class="ic-sub" id="ic-dura-sub"></div></div>
+          <div class="info-card"><div class="ic-icon">📚</div><div class="ic-label">Subjects</div><div class="ic-value" id="count-ub">—</div><div class="ic-sub">for your department</div></div>
+          <div class="info-card"><div class="ic-icon">📅</div><div class="ic-label">Exam Date &amp; Time</div><div class="ic-value" id="next-date" style="font-size:14px">—</div><div class="ic-sub" id="next-time">—</div></div>
         </div>
-
         <div class="subjects-section">
-          <div class="subjects-section-head">
-            <h3>Examination Subjects</h3>
-            <span id="subj-table-meta">—</span>
-          </div>
+          <div class="subjects-section-head"><h3>Examination Subjects</h3><span id="subj-table-meta">—</span></div>
           <table class="subject-table">
-            <thead>
-              <tr><th>#</th><th>Subject</th><th>Questions</th><th>Max Score</th></tr>
-            </thead>
-            <tbody id="subject-table-body">
-              <tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:20px">Loading subjects…</td></tr>
-            </tbody>
+            <thead><tr><th>#</th><th>Subject</th><th>Questions</th><th>Max Score</th></tr></thead>
+            <tbody id="subject-table-body"><tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:20px">Loading subjects…</td></tr></tbody>
           </table>
         </div>
       </div>
 
-      <!-- EXAM SCREEN -->
       <div id="exam-screen">
         <div class="subject-nav" id="subject-nav"></div>
         <div class="exam-body">
           <div class="question-area" id="question-area"></div>
         </div>
       </div>
-
     </div>
   </div>
 </div>
 
-<!-- Result -->
 <div id="result-screen">
   <div class="result-card">
     <div class="result-title">Examination Complete</div>
@@ -360,7 +284,6 @@
   </div>
 </div>
 
-<!-- Submit Modal -->
 <div class="modal-overlay" id="submit-modal">
   <div class="modal">
     <div class="modal-icon">⚠️</div>
@@ -377,16 +300,19 @@
 /* ══════════════════════════════════════════════════════════
    STATE
 ══════════════════════════════════════════════════════════ */
-let SUBJECTS  = [];   // populated from backend
-let user      = null; // email
-let userData  = null; // full profile object
+let SUBJECTS  = [];
+let user      = null;
+let userData  = null;
 
 let examState = {
   currentSubject:  0,
   currentQuestion: 0,
-  answers:  [],
-  flagged:  [],
-  timerSeconds:   0,  // set from backend duration × 60
+  answers:   [],     // answers[subjectIdx][questionIdx] = optionIndex | -1
+  flagged:   [],     // flagged[subjectIdx][questionIdx] = bool
+  questions: [],     // questions[subjectIdx] = fetched question array for that subject
+  subjects:  [],     // subjects[subjectIdx] = { department, subject } reference
+  totalSubjects: 0,
+  timerSeconds:   0,
   timerInterval:  null,
   started: false,
 };
@@ -395,12 +321,9 @@ let examState = {
    INIT
 ══════════════════════════════════════════════════════════ */
 window.addEventListener('load', () => {
-  const raw = localStorage.getItem('cbt_session') || 'sholadanielek@gmail.com';
+  const raw = localStorage.getItem('cbt_session') || "sholadanielek@gmail.com";
   if (!raw) { window.location.href = 'login.html'; return; }
-  // try {
-    const parsed =raw;
-    user = parsed || parsed;
-  // } catch { user = raw; }
+  user = raw;
   populateUI();
 });
 
@@ -410,47 +333,35 @@ window.addEventListener('load', () => {
 async function populateUI() {
   try {
     const res    = await fetch('/cbt/ansofra/api/details', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ email: user }),
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: user }),
     });
     const result = await res.json();
+    if (result.status !== 'success' || !result.response?.[0]) { console.error('Profile error:', result); return; }
 
-    if (result.status !== 'success' || !result.response?.[0]) {
-      console.error('Profile error:', result); return;
-    }
-
-    const p   = result.response[0];
-    userData  = p;
-
+    const p  = result.response[0];
+    userData = p;
     const initials = p.fullname.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
 
-    // Top bar
-    document.getElementById('nav-avatar').textContent = initials;
-    document.getElementById('nav-name').textContent   = p.firstName || p.fullname.split(' ')[0];
-
-    // Sidebar
-    document.getElementById('sidebar-avatar').textContent = initials;
-    document.getElementById('sidebar-name').textContent   = p.fullname;
-    document.getElementById('sidebar-reg').textContent    = p.regNum;
-    document.getElementById('sb-state').textContent       = p.state      || '—';
-    document.getElementById('sb-year').textContent        = p.year       || '—';
-    document.getElementById('sb-course').textContent      = p.department || '—';
-    document.getElementById('sb-gender').textContent      = p.gender     || '—';
-    document.getElementById('sb-phone').textContent       = p.phone      || '—';
-    document.getElementById('ic-reg').textContent         = p.regNum;
-
-    // Hero
+    document.getElementById('nav-avatar').textContent      = initials;
+    document.getElementById('nav-name').textContent        = p.firstName || p.fullname.split(' ')[0];
+    document.getElementById('sidebar-avatar').textContent  = initials;
+    document.getElementById('sidebar-name').textContent    = p.fullname;
+    document.getElementById('sidebar-reg').textContent     = p.regNum;
+    document.getElementById('sb-state').textContent        = p.state      || '—';
+    document.getElementById('sb-year').textContent         = p.year       || '—';
+    document.getElementById('sb-course').textContent       = p.department || '—';
+    document.getElementById('sb-gender').textContent       = p.gender     || '—';
+    document.getElementById('sb-phone').textContent        = p.phone      || '—';
+    document.getElementById('ic-reg').textContent          = p.regNum;
     document.getElementById('hero-name').innerHTML =
       `Welcome, <span>${p.firstName || p.fullname.split(' ')[0]}</span>`;
 
-    // Parallel requests
     await Promise.all([
       fetchSubjectList(p.department),
       fetchExamDetails(p.department),
       fetchSubjectCount(p.department),
     ]);
-
   } catch (err) { console.error('populateUI:', err); }
 }
 
@@ -460,23 +371,18 @@ async function populateUI() {
 async function fetchSubjectList(department) {
   try {
     const res    = await fetch('/cbt/ansofra/api/getAllSebject', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ department }),
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ department }),
     });
     const result = await res.json();
     const list   = result.response || [];
-
     const palette = ['#3498db','#e74c3c','#2ecc71','#f39c12','#9b59b6','#1abc9c'];
 
-    // Sidebar
     document.getElementById('subject-list-side').innerHTML = list.map((s, i) => `
       <div class="subject-list-item">
-        <span class="subject-dot" style="background:${palette[i % palette.length]}"></span>
-        ${s.subject}
+        <span class="subject-dot" style="background:${palette[i % palette.length]}"></span>${s.subject}
       </div>`).join('');
 
-    // Table
     const tbody = document.getElementById('subject-table-body');
     if (!list.length) {
       tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:20px">No subjects configured yet.</td></tr>`;
@@ -488,15 +394,15 @@ async function fetchSubjectList(department) {
           <td>${s.numQuestion ?? s.num_question ?? '—'}</td>
           <td>${s.maxScore   ?? s.max_score    ?? '—'}</td>
         </tr>`).join('');
-      const totalQ = list.reduce((t,s) => t+(parseInt(s.numQuestion??s.num_question)||0), 0);
+      const totalQ = list.reduce((t, s) => t + (parseInt(s.numQuestion ?? s.num_question) || 0), 0);
       document.getElementById('subj-table-meta').textContent =
-        `${list.length} subject${list.length!==1?'s':''} · ${totalQ} total questions`;
+        `${list.length} subject${list.length !== 1 ? 's' : ''} · ${totalQ} total questions`;
     }
   } catch (err) { console.error('fetchSubjectList:', err); }
 }
 
 /* ══════════════════════════════════════════════════════════
-   FETCH — exam details → compute window status → update UI
+   FETCH — exam details
 ══════════════════════════════════════════════════════════ */
 async function fetchExamDetails(department) {
   const btn    = document.getElementById('start-btn');
@@ -508,49 +414,39 @@ async function fetchExamDetails(department) {
     badge.innerHTML = `<span class="status-dot ${dot}" style="${dotStyle}"></span>${text}`;
   };
 
-  // try {
+  try {
     const res    = await fetch('/cbt/ansofra/api/getExamdetails', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ department:department }),
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ department }),
     });
-
     const result = await res.json();
-    /* ── No exam configured ────────────────────────────────── */
+
     if (result.status !== 'success' || !result.response?.[0]) {
-      setStatus('ended','','background:var(--text-muted)', 'No exam scheduled yet. You will be notified by email.');
+      setStatus('ended','','background:var(--text-muted)','No exam scheduled yet. You will be notified by email.');
       btnTxt.textContent = 'Exam Not Scheduled'; btn.disabled = true; return;
     }
 
     const exam         = result.response[0];
     const durationMins = parseInt(exam.duration) || 120;
+    const startDT      = buildDatetime(exam.date, exam.start);
+    const endDT        = buildDatetime(exam.date, exam.end);
+    const now          = new Date();
 
-    /* ── Parse date + start/end into Date objects ──────────── */
-    const startDT = buildDatetime(exam.date, exam.start);
-    const endDT   = buildDatetime(exam.date, exam.end);
-    const now     = new Date();
-
-    /* ── Fill info cards ───────────────────────────────────── */
     document.getElementById('ic-dura').textContent     = `${durationMins} mins`;
     document.getElementById('ic-dura-sub').textContent = formatDuration(durationMins);
     document.getElementById('next-date').textContent   = niceDate(exam.date);
-    document.getElementById('next-time').textContent   =
-      `${niceTime(exam.start)} — ${niceTime(exam.end)}`;
+    document.getElementById('next-time').textContent   = `${niceTime(exam.start)} — ${niceTime(exam.end)}`;
 
-    /* ── Store duration for timer ──────────────────────────── */
     examState.timerSeconds = durationMins * 60;
 
-    /* ── Window check ──────────────────────────────────────── */
     if (now < startDT) {
-      /* PENDING */
-      const diff    = startDT - now;
-      const hh      = Math.floor(diff / 3_600_000);
-      const mm      = Math.floor((diff % 3_600_000) / 60_000);
-      const label   = hh > 0 ? `${hh}h ${mm}m` : `${mm} min${mm!==1?'s':''}`;
+      const diff  = startDT - now;
+      const hh    = Math.floor(diff / 3_600_000);
+      const mm    = Math.floor((diff % 3_600_000) / 60_000);
+      const label = hh > 0 ? `${hh}h ${mm}m` : `${mm} min${mm !== 1 ? 's' : ''}`;
       setStatus('pending','','background:var(--gold)',
         `Exam starts in <strong style="margin-left:4px">${label}</strong>`);
       btnTxt.textContent = 'Exam Not Started Yet'; btn.disabled = true;
-      // Auto-enable at start time (only if within 24 h)
       const msLeft = startDT - now;
       if (msLeft < 86_400_000) {
         setTimeout(() => {
@@ -560,23 +456,18 @@ async function fetchExamDetails(department) {
           }
         }, msLeft);
       }
-
     } else if (now >= startDT && now < endDT) {
-      /* LIVE */
       setStatus('live','pulse','background:#2ecc71','Exam is live — you may begin now');
       btnTxt.textContent = 'Start Examination'; btn.disabled = false;
-
     } else {
-      /* ENDED */
       setStatus('ended','','background:var(--red)','This examination window has closed.');
       btnTxt.textContent = 'Exam Has Ended'; btn.disabled = true;
     }
-
-  // } catch (err) {
-  //   console.error('fetchExamDetails:', err);
-  //   setStatus('ended','','background:var(--text-muted)','Could not load exam details. Please refresh.');
-  //   btnTxt.textContent = 'Unable to Load'; btn.disabled = true;
-  // }
+  } catch (err) {
+    console.error('fetchExamDetails:', err);
+    setStatus('ended','','background:var(--text-muted)','Could not load exam details. Please refresh.');
+    btnTxt.textContent = 'Unable to Load'; btn.disabled = true;
+  }
 }
 
 /* ══════════════════════════════════════════════════════════
@@ -585,9 +476,8 @@ async function fetchExamDetails(department) {
 async function fetchSubjectCount(department) {
   try {
     const res    = await fetch('/cbt/ansofra/api/countSubject', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ department }),
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ department }),
     });
     const result = await res.json();
     document.getElementById('count-ub').textContent = result.response ?? '—';
@@ -596,181 +486,454 @@ async function fetchSubjectCount(department) {
 
 /* ══════════════════════════════════════════════════════════
    LAUNCH EXAM
-   Re-checks the live window at the moment of click, then
-   fetches questions and starts the session.
 ══════════════════════════════════════════════════════════ */
 async function launchExam() {
   const btn    = document.getElementById('start-btn');
   const btnTxt = document.getElementById('start-btn-text');
+  btn.disabled = true; btnTxt.textContent = 'Verifying…';
 
-  btn.disabled = true;
-  btnTxt.textContent = 'Verifying…';
-  
+  const department = userData?.department
+    || document.getElementById('sb-course').textContent.trim();
 
-  // try {
-    const department = userData?.department
-      || document.getElementById('sb-course').textContent.trim();
+  const res    = await fetch('/cbt/ansofra/api/getExamdetails', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ department }),
+  });
+  const result = await res.json();
 
-    /* ── Re-fetch exam details fresh at click time ─────────── */
-    const res    = await fetch('/cbt/ansofra/api/getExamdetails', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ department:department }),
-    });
-    const result = await res.json();
+  if (result.status !== 'success' || !result.response?.[0]) {
+    setLaunchError('No exam has been scheduled for your department yet.');
+    btn.disabled = false; btnTxt.textContent = 'Exam Not Scheduled'; return;
+  }
 
-    /* ── No exam configured ────────────────────────────────── */
-    if (result.status !== 'success' || !result.response?.[0]) {
-      setLaunchError('No exam has been scheduled for your department yet. You will be notified by email.');
-      btn.disabled = false; btnTxt.textContent = 'Exam Not Scheduled'; return;
-    }
+  const exam         = result.response[0];
+  const durationMins = parseInt(exam.duration) || 120;
+  const startDT      = buildDatetime(exam.date, exam.start);
+  const endDT        = buildDatetime(exam.date, exam.end);
+  const now          = new Date();
 
-    const exam         = result.response[0];
-    const durationMins = parseInt(exam.duration) || 120;
-    const startDT      = buildDatetime(exam.date, exam.start);
-    const endDT        = buildDatetime(exam.date, exam.end);
-    const now          = new Date();
+  if (now < startDT) {
+    const diff  = startDT - now;
+    const hh    = Math.floor(diff / 3_600_000);
+    const mm    = Math.floor((diff % 3_600_000) / 60_000);
+    setLaunchError(`The exam has not started yet. It begins in ${hh > 0 ? hh+'h '+mm+'m' : mm+' min'}.`);
+    btn.disabled = false; btnTxt.textContent = 'Exam Not Started Yet'; return;
+  }
+  if (now >= endDT) {
+    setLaunchError('The examination window has closed.');
+    btnTxt.textContent = 'Exam Has Ended'; return;
+  }
 
-    /* ── Not started yet ───────────────────────────────────── */
-    if (now < startDT) {
-      const diff  = startDT - now;
-      const hh    = Math.floor(diff / 3_600_000);
-      const mm    = Math.floor((diff % 3_600_000) / 60_000);
-      const label = hh > 0 ? `${hh}h ${mm}m` : `${mm} min${mm!==1?'s':''}`;
-      setLaunchError(`The exam has not started yet. It begins in ${label}.`);
-      btn.disabled = false; btnTxt.textContent = 'Exam Not Started Yet'; return;
-    }
+  // Set effective timer
+  const windowMs   = endDT - now;
+  const durationMs = durationMins * 60_000;
+  examState.timerSeconds  = Math.floor(Math.min(durationMs, windowMs) / 1_000);
+  examState.currentSubject  = 0;
+  examState.currentQuestion = 0;
+  examState.started         = true;
+  examState.questions       = [];   // will be filled per-subject on demand
+  examState.answers         = [];
+  examState.flagged         = [];
 
-    /* ── Window closed ─────────────────────────────────────── */
-    if (now >= endDT) {
-      setLaunchError('The examination window has closed. You can no longer start the exam.');
-      btnTxt.textContent = 'Exam Has Ended';
-      /* leave btn disabled — window is permanently closed */ return;
-    }
+  // Switch UI to exam mode
+  document.getElementById('welcome-screen').style.display    = 'none';
+  document.getElementById('exam-screen').style.display       = 'flex';
+  document.getElementById('timer-wrap').style.display        = 'block';
+  document.getElementById('top-session-label').textContent   = 'Exam In Progress';
+  document.getElementById('subjects-side').style.display     = 'none';
+  document.getElementById('instructions-side').style.display = 'none';
+  document.getElementById('progress-side').style.display     = 'block';
+  document.getElementById('q-panel').style.display           = 'block';
 
-    /* ── STEP 1: Set timer from remaining window vs full duration */
-    const windowMs    = endDT - now;
-    const durationMs  = durationMins * 60_000;
-    examState.timerSeconds = Math.floor(Math.min(durationMs, windowMs) / 1_000);
-
-    /* ── STEP 2: Fetch questions from backend ──────────────── */
-    btnTxt.textContent = 'Loading questions…';
-    await fetchExamQuestions(department);
-
-    if (!SUBJECTS.length) {
-      setLaunchError('Questions could not be loaded. Please try again.');
-      btn.disabled = false; btnTxt.textContent = 'Start Examination'; return;
-    }
-
-    /* ── STEP 3: Initialise answer/flag arrays ─────────────── */
-    examState.answers        = SUBJECTS.map(s => Array(s.questions.length).fill(-1));
-    examState.flagged        = SUBJECTS.map(s => Array(s.questions.length).fill(false));
-    examState.currentSubject  = 0;
-    examState.currentQuestion = 0;
-    examState.started         = true;
-
-    /* ── STEP 4: Switch UI to exam mode ─────────────────────── */
-    document.getElementById('welcome-screen').style.display      = 'none';
-    document.getElementById('exam-screen').style.display         = 'flex';
-    document.getElementById('timer-wrap').style.display          = 'block';
-    document.getElementById('top-session-label').textContent     = 'Exam In Progress';
-    document.getElementById('subjects-side').style.display       = 'none';
-    document.getElementById('instructions-side').style.display   = 'none';
-    document.getElementById('progress-side').style.display       = 'block';
-    document.getElementById('q-panel').style.display             = 'block';
-
-    /* ── STEP 5: Build subject tabs from backend (async),
-                  then load + display the first subject's questions */
-    await buildSubjectTabs();
-
-    // Trigger first subject load — switchSubject fetches questions,
-    // renders the first question, and calls notifyActiveSubject
-    const firstSubject = examState.subjectNames?.[0] || '';
-    if (firstSubject) {
-      await switchSubject(0, department, firstSubject);
-    }
-
-    startTimer();
-
-  // } catch (err) {
-  //   console.error('launchExam:', err);
-  //   setLaunchError('A network error occurred. Please check your connection and try again.');
-  //   document.getElementById('start-btn').disabled = false;
-  //   document.getElementById('start-btn-text').textContent = 'Start Examination';
-  // }
+  // Build tabs then load first subject
+  await buildSubjectTabs(department);
+  startTimer();
 }
 
 /* ══════════════════════════════════════════════════════════
-   FETCH — exam questions
-   Expected shape per subject:
-   { name:"English Language", color:"#3498db",
-     questions:[{ q:"...", opts:["A","B","C","D"], ans:0 }, …] }
+   BUILD SUBJECT TABS  — exact user pattern, kept intact
+   Fetches subject list, builds the header tabs,
+   then auto-loads the first subject's questions.
 ══════════════════════════════════════════════════════════ */
-async function fetchExamQuestions(department) {
-  // try {
-    const res    = await fetch('/cbt/ansofra/api/display/qesution', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ department:departments }),
-    });
-    const result = await res.json();
-    if (result.status === 'success' && Array.isArray(result.response) && result.response.length) {
-      SUBJECTS = result.response;
+async function buildSubjectTabs(department) {
+  // Use passed dept or read from sidebar (supports both call patterns)
+  const dept = department || document.getElementById('sb-course').textContent.trim();
+
+  const res    = await fetch('/cbt/ansofra/api/getAllSebject', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ department: dept }),
+  });
+  const result = await res.json();
+  const list   = result.response || [];
+
+  examState.totalSubjects = list.length;
+
+  let output = '';
+  for (let i = 0; i < list.length; i++) {
+    // Escape single quotes in subject name for inline onclick safety
+    const safeSubject = list[i].subject.replace(/'/g, "\\'");
+    output += `<div class="subject-tab ${i === 0 ? 'active' : ''}" id="tab-${i}"
+                    onclick="switchSubject('${dept}', '${safeSubject}', ${i})">
+                 ${list[i].subject}<span class="q-count" id="qcount-${i}"></span>
+               </div>`;
+  }
+  document.getElementById('subject-nav').innerHTML = output;
+
+  // Auto-load first subject
+  if (list.length > 0) {
+    await switchSubject(dept, list[0].subject, 0);
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   SWITCH SUBJECT  — exact user API pattern, kept intact.
+   Fetches questions for the clicked subject, then renders
+   the first question one at a time (slider behaviour).
+══════════════════════════════════════════════════════════ */
+async function switchSubject(department, subject, idx) {
+  // Update active tab highlight
+  document.querySelectorAll('.subject-tab')
+    .forEach((t, i) => t.classList.toggle('active', i === idx));
+
+  // Update current subject index and reset to first question
+  examState.currentSubject  = idx;
+  examState.currentQuestion = 0;
+
+  // Show loading placeholder while fetching
+  document.getElementById('question-area').innerHTML = `
+    <div style="padding:40px;text-align:center;color:var(--text-muted);font-size:14px;">
+      Loading ${subject} questions…
+    </div>`;
+
+  const regNum = document.getElementById('sidebar-reg').textContent.trim();
+
+  const api = await fetch('/cbt/ansofra/api/display/qesution', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ department, subject, regNum }),
+  });
+  const result = await api.json();
+
+  // Parse question list — backend sends JSON string inside response[0].question
+  const rawData      = result.response[0];
+  const questionList = typeof rawData.question === 'string'
+    ? JSON.parse(rawData.question)
+    : rawData.question;
+
+  // Store questions for this subject index
+  examState.questions[idx] = questionList;
+
+  // Initialise answer and flag arrays if not already set for this subject
+  if (!examState.answers[idx] || examState.answers[idx].length !== questionList.length) {
+    examState.answers[idx] = Array(questionList.length).fill(-1);
+    examState.flagged[idx] = Array(questionList.length).fill(false);
+  }
+
+  // Update the question count badge on the tab
+  const qCountEl = document.getElementById(`qcount-${idx}`);
+  if (qCountEl) qCountEl.textContent = ` (${questionList.length}Q)`;
+
+  // Render first question of this subject
+  renderCurrentQuestion();
+}
+
+/* ══════════════════════════════════════════════════════════
+   RENDER CURRENT QUESTION  — shows ONE question at a time.
+   Reads from examState.questions[currentSubject][currentQuestion].
+   Handles: selection highlight, flag state, prev/next,
+            question counter, submit on last question.
+══════════════════════════════════════════════════════════ */
+function renderCurrentQuestion() {
+  const si = examState.currentSubject;
+  const qi = examState.currentQuestion;
+
+  const questionList = examState.questions[si];
+  if (!questionList || !questionList.length) return;
+
+  const q     = questionList[qi];
+  const total = questionList.length;
+  const sel   = examState.answers[si][qi];          // -1 = not answered
+  const flag  = examState.flagged[si][qi] || false;
+
+  // Determine if this is the very last question of the very last subject
+  const isLastSubject  = si === examState.totalSubjects - 1;
+  const isLastQuestion = qi === total - 1;
+  const isLast         = isLastSubject && isLastQuestion;
+
+  // Build A–E options, skipping any that are empty
+  const optKeys   = ['optionA','optionB','optionC','optionD','optionE'];
+  const optLabels = ['A','B','C','D','E'];
+  const opts = optKeys
+    .map((k, i) => ({ label: optLabels[i], text: String(q[k] || '').trim() }))
+    .filter(o => o.text !== '');
+
+  const optionsHtml = opts.map((o, oi) => `
+    <div class="option-item ${sel === oi ? 'selected' : ''}"
+         onclick="selectAnswer(${oi})">
+      <div class="option-letter">${o.label}</div>
+      <div class="option-text">${o.text}</div>
+    </div>`).join('');
+
+  const prevDisabled = (si === 0 && qi === 0) ? 'disabled' : '';
+
+  const actionBtn = isLast
+    ? `<button class="btn-submit-exam" onclick="openModal()">Submit Exam</button>`
+    : `<button class="btn-nav-next" onclick="nextQ()">Next →</button>`;
+
+  document.getElementById('question-area').innerHTML = `
+    <div class="subj-header">
+      <h2>${q.subject || subject || ''}</h2>
+      <div class="prog-info">
+        Question <strong>${qi + 1}</strong> of <strong>${total}</strong>
+      </div>
+    </div>
+    <div class="question-card">
+      <div class="q-number">Question ${qi + 1}</div>
+      <div class="question-text">${q.questiontext}</div>
+      <div class="options">${optionsHtml}</div>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-nav-prev" onclick="prevQ()" ${prevDisabled}>← Previous</button>
+      <button class="btn-flag-q ${flag ? 'flagged' : ''}" onclick="toggleFlag()">
+        ${flag ? '⚑ Flagged' : '⚐ Flag'}
+      </button>
+      ${actionBtn}
+    </div>`;
+
+  updateGrid();
+  updateProgress();
+}
+
+/* ══════════════════════════════════════════════════════════
+   ANSWER & FLAG ACTIONS
+══════════════════════════════════════════════════════════ */
+function selectAnswer(oi) {
+  examState.answers[examState.currentSubject][examState.currentQuestion] = oi;
+  renderCurrentQuestion();
+}
+
+function toggleFlag() {
+  const si = examState.currentSubject, qi = examState.currentQuestion;
+  examState.flagged[si][qi] = !examState.flagged[si][qi];
+  renderCurrentQuestion();
+}
+
+function goToQuestion(qi) {
+  examState.currentQuestion = qi;
+  renderCurrentQuestion();
+}
+
+/* ══════════════════════════════════════════════════════════
+   NAVIGATION — next / prev (one question at a time)
+══════════════════════════════════════════════════════════ */
+function nextQ() {
+  const si        = examState.currentSubject;
+  const questions = examState.questions[si] || [];
+
+  if (examState.currentQuestion < questions.length - 1) {
+    // Move to next question within same subject
+    examState.currentQuestion++;
+    renderCurrentQuestion();
+  } else {
+    // Move to the next subject tab if available
+    const nextIdx = si + 1;
+    if (nextIdx < examState.totalSubjects) {
+      // Get next subject name from its tab element
+      const nextTab = document.getElementById(`tab-${nextIdx}`);
+      const nextSubject = nextTab
+        ? nextTab.textContent.replace(/\(.*\)/, '').trim()
+        : '';
+      const dept = userData?.department
+        || document.getElementById('sb-course').textContent.trim();
+      switchSubject(dept, nextSubject, nextIdx);
     }
-  // } 
-  // catch (err) { console.warn('fetchExamQuestions:', err); }
+  }
 }
-/* ── Notify backend which subject is currently active ────────
-   Fires on exam launch (first subject) and on every tab switch.
-   Adjust the endpoint + payload to match your backend schema. */
-async function notifyActiveSubject(subjectName, department) {
-  const regNum = document.getElementById('sidebar-reg').textContent;
-  // try {
-    await fetch('/cbt/ansofra/api/display/qesution', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({
-        regNum:regNum,
-        department: department,
-        subject:    subjectName,
-      }),
+
+function prevQ() {
+  const si = examState.currentSubject;
+
+  if (examState.currentQuestion > 0) {
+    // Move back within same subject
+    examState.currentQuestion--;
+    renderCurrentQuestion();
+  } else if (si > 0) {
+    // Move to last question of previous subject
+    const prevIdx = si - 1;
+    const prevTab = document.getElementById(`tab-${prevIdx}`);
+    const prevSubject = prevTab
+      ? prevTab.textContent.replace(/\(.*\)/, '').trim()
+      : '';
+    const dept = userData?.department
+      || document.getElementById('sb-course').textContent.trim();
+    // After load, jump to last question of that subject
+    switchSubject(dept, prevSubject, prevIdx).then(() => {
+      const prevQuestions = examState.questions[prevIdx] || [];
+      if (prevQuestions.length > 1) {
+        examState.currentQuestion = prevQuestions.length - 1;
+        renderCurrentQuestion();
+      }
     });
-  // } catch (err) {
-  //   // Non-fatal — log and continue; don't block the candidate
-  //   console.warn('notifyActiveSubject:', err);
-  // }
+  }
 }
+
+/* ══════════════════════════════════════════════════════════
+   QUESTION GRID (sidebar dots)
+   Green = answered, Red = current, Gold = flagged, dim = unattempted
+══════════════════════════════════════════════════════════ */
+function updateGrid() {
+  const si        = examState.currentSubject;
+  const questions = examState.questions[si] || [];
+  document.getElementById('q-grid').innerHTML = questions.map((_, qi) => {
+    let cls = 'q-dot';
+    if (qi === examState.currentQuestion)               cls += ' current';
+    else if (examState.flagged[si]?.[qi])               cls += ' flagged';
+    else if (examState.answers[si]?.[qi] !== -1
+          && examState.answers[si]?.[qi] !== undefined) cls += ' answered';
+    return `<div class="${cls}" onclick="goToQuestion(${qi})">${qi + 1}</div>`;
+  }).join('');
+}
+
+/* ══════════════════════════════════════════════════════════
+   PROGRESS PANEL (sidebar bars)
+   Shows attempted / total for every subject
+══════════════════════════════════════════════════════════ */
+function updateProgress() {
+  const rows = [];
+  for (let si = 0; si < examState.totalSubjects; si++) {
+    const questions = examState.questions[si];
+    if (!questions) continue;                        // not loaded yet
+    const total   = questions.length;
+    const answers = examState.answers[si] || [];
+    const done    = answers.filter(a => a !== -1 && a !== undefined).length;
+    const pct     = total ? Math.round((done / total) * 100) : 0;
+    // Get subject name from tab element
+    const tab     = document.getElementById(`tab-${si}`);
+    const name    = tab ? tab.textContent.replace(/\(.*\)/, '').trim() : `Subject ${si + 1}`;
+    rows.push(`
+      <div class="prog-row">
+        <span class="pname">${name.split(' ')[0]}</span>
+        <span class="pscore">${done}/${total}</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-bar-fill" style="width:${pct}%"></div>
+      </div>`);
+  }
+  document.getElementById('progress-list').innerHTML = rows.join('');
+}
+
+/* ══════════════════════════════════════════════════════════
+   TIMER
+══════════════════════════════════════════════════════════ */
+function startTimer() {
+  renderTimerDisplay();
+  examState.timerInterval = setInterval(() => {
+    examState.timerSeconds--;
+    renderTimerDisplay();
+    if (examState.timerSeconds <= 0) {
+      clearInterval(examState.timerInterval);
+      finalSubmit();
+    }
+  }, 1000);
+}
+
+function renderTimerDisplay() {
+  const s  = examState.timerSeconds;
+  const hh = Math.floor(s / 3600);
+  const mm = Math.floor((s % 3600) / 60);
+  const ss = s % 60;
+  const el = document.getElementById('timer');
+  el.textContent = `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+  el.className = 'timer-badge';
+  if (s <= 600) el.classList.add('warning');
+  if (s <= 120) el.classList.add('danger');
+}
+
+/* ══════════════════════════════════════════════════════════
+   MODAL & SUBMIT
+══════════════════════════════════════════════════════════ */
+function openModal()  { document.getElementById('submit-modal').classList.add('open'); }
+function closeModal() { document.getElementById('submit-modal').classList.remove('open'); }
+
+function finalSubmit() {
+  clearInterval(examState.timerInterval);
+  closeModal();
+
+  let totalScore = 0, maxTotal = 0;
+  const rows = [];
+
+  for (let si = 0; si < examState.totalSubjects; si++) {
+    const questions = examState.questions[si] || [];
+    const answers   = examState.answers[si]   || [];
+    let correct = 0;
+    questions.forEach((q, qi) => {
+      // Match selected option label (A/B/C/D/E) against stored correct answer
+      const optKeys = ['optionA','optionB','optionC','optionD','optionE'];
+      const opts    = optKeys
+        .map((k, i) => ({ label: ['A','B','C','D','E'][i], text: String(q[k] || '').trim() }))
+        .filter(o => o.text !== '');
+      const selectedLabel = answers[qi] !== undefined && answers[qi] !== -1
+        ? (opts[answers[qi]]?.label || '') : '';
+      if (selectedLabel && selectedLabel === String(q.answer || '').trim().toUpperCase()) {
+        correct++;
+      }
+    });
+    const max   = questions.length * 10;
+    const score = correct * 10;
+    totalScore += score;
+    maxTotal   += max;
+
+    const tab  = document.getElementById(`tab-${si}`);
+    const name = tab ? tab.textContent.replace(/\(.*\)/, '').trim() : `Subject ${si+1}`;
+    rows.push(`
+      <div class="result-row">
+        <span class="sname">${name}</span>
+        <span class="spts">${score}/${max} (${correct}/${questions.length} correct)</span>
+      </div>`);
+  }
+
+  document.getElementById('result-total').textContent = totalScore;
+  document.getElementById('result-out').textContent   = `out of ${maxTotal}`;
+  document.getElementById('result-breakdown').innerHTML = rows.join('');
+  document.getElementById('dashboard-page').style.display = 'none';
+  document.getElementById('result-screen').style.display  = 'flex';
+}
+
+function backToDash() {
+  document.getElementById('result-screen').style.display         = 'none';
+  document.getElementById('dashboard-page').style.display        = 'flex';
+  document.getElementById('exam-screen').style.display           = 'none';
+  document.getElementById('welcome-screen').style.display        = 'block';
+  document.getElementById('timer-wrap').style.display            = 'none';
+  document.getElementById('top-session-label').textContent       = 'Candidate Dashboard';
+  document.getElementById('subjects-side').style.display         = 'block';
+  document.getElementById('instructions-side').style.display     = 'block';
+  document.getElementById('progress-side').style.display         = 'none';
+  document.getElementById('q-panel').style.display               = 'none';
+  examState.timerSeconds = 0;
+  examState.started      = false;
+}
+
+function logout() { localStorage.removeItem('cbt_session'); window.location.href = 'login.html'; }
 
 /* ══════════════════════════════════════════════════════════
    DATE / TIME HELPERS
 ══════════════════════════════════════════════════════════ */
-/**
- * Build a proper JS Date from a date string and time string.
- * Accepts date as YYYY-MM-DD, DD/MM/YYYY, or DD-MM-YYYY.
- * Accepts time as HH:MM, HH:MM:SS, or H:MM AM/PM.
- */
 function buildDatetime(dateStr, timeStr) {
-  // ── Normalise date to YYYY-MM-DD ──
   let d = String(dateStr).trim();
   if (/^\d{2}[\/\-]\d{2}[\/\-]\d{4}$/.test(d)) {
     const sep = d.includes('/') ? '/' : '-';
     const [dd, mm, yyyy] = d.split(sep);
     d = `${yyyy}-${mm}-${dd}`;
   }
-
-  // ── Normalise time to HH:MM:SS (24-hour) ──
   let t = String(timeStr).trim();
   const ampm = t.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i);
   if (ampm) {
     let hh = parseInt(ampm[1]);
-    const mm = ampm[2], ss = ampm[3]||'00', period = ampm[4].toUpperCase();
-    if (period==='AM' && hh===12) hh=0;
-    if (period==='PM' && hh!==12) hh+=12;
+    const mm = ampm[2], ss = ampm[3]||'00', p = ampm[4].toUpperCase();
+    if (p==='AM' && hh===12) hh=0;
+    if (p==='PM' && hh!==12) hh+=12;
     t = `${String(hh).padStart(2,'0')}:${mm}:${ss}`;
-  } else if (/^\d{1,2}:\d{2}$/.test(t)) {
-    t += ':00';
-  }
-
+  } else if (/^\d{1,2}:\d{2}$/.test(t)) { t += ':00'; }
   return new Date(`${d}T${t}`);
 }
 
@@ -778,8 +941,7 @@ function niceDate(dateStr) {
   try {
     let iso = String(dateStr).trim();
     if (/^\d{2}[\/\-]\d{2}[\/\-]\d{4}$/.test(iso)) {
-      const [dd,mm,yyyy] = iso.split(/[\/\-]/);
-      iso = `${yyyy}-${mm}-${dd}`;
+      const [dd,mm,yyyy] = iso.split(/[\/\-]/); iso = `${yyyy}-${mm}-${dd}`;
     }
     return new Date(iso).toLocaleDateString('en-NG',
       { weekday:'short', day:'numeric', month:'short', year:'numeric' });
@@ -805,355 +967,6 @@ function setLaunchError(msg) {
   badge.className = 'exam-status-badge ended';
   badge.innerHTML = `<span class="status-dot" style="background:var(--red)"></span>${msg}`;
 }
-
-/* ══════════════════════════════════════════════════════════
-   SUBJECT TABS
-══════════════════════════════════════════════════════════ */
-async function buildSubjectTabs() {
-  const department = userData?.department
-    || document.getElementById('sb-course').textContent.trim();
-
-  try {
-    const res    = await fetch('/cbt/ansofra/api/getAllSebject', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ department }),
-    });
-    const result = await res.json();
-    const list   = result.response || [];
-
-    // Cache subject names so switchSubject can reference them by index
-    examState.subjectNames = list.map(s => s.subject);
-
-    document.getElementById('subject-nav').innerHTML = list.map((s, i) => `
-      <div class="subject-tab ${i===0?'active':''}" id="tab-${i}"
-           onclick="switchSubject(${i}, '${department}', '${s.subject.replace(/'/g,"\\'")}')">
-        ${s.subject}
-        <span class="q-count" id="qcount-${i}"></span>
-      </div>`).join('');
-  } catch (err) {
-    console.error('buildSubjectTabs:', err);
-  }
-}
-async function switchSubject(idx, department, subjectName) {
-  // Update active tab highlight
-  document.querySelectorAll('.subject-tab')
-    .forEach((t, i) => t.classList.toggle('active', i === idx));
-
-  // Reset per-question state for this subject index
-  examState.currentSubject  = idx;
-  examState.currentQuestion = 0;
-
-  // Notify backend of active subject (non-blocking)
-  notifyActiveSubject(subjectName, department);
-
-  // Show loading placeholder
-  document.getElementById('question-area').innerHTML =
-    `<div style="padding:40px;text-align:center;color:var(--text-muted)">
-       Loading ${subjectName} questions…
-     </div>`;
-
-  try {
-    const regNum = document.getElementById('sidebar-reg').textContent.trim();
-
-    const res    = await fetch('/cbt/ansofra/api/display/qesution', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ department:department, subject: subjectName, regNum :regNum}),
-    });
-    const result = await res.json();
-
-    /* ── Parse backend response ──────────────────────────────────
-       Expected: result.response[0].question  = JSON string array
-       Each item: { subject, questiontext, optionA, optionB,
-                    optionC, optionD, optionE, answer }
-    ─────────────────────────────────────────────────────────── */
-    const raw        = result.response[0];
-    const questionList = typeof raw.question === 'string'
-      ? JSON.parse(raw.question)
-      : raw.question;
-
-    // Store in a subject-keyed cache so we can navigate later
-    if (!examState.subjectQuestions) examState.subjectQuestions = {};
-    examState.subjectQuestions[idx] = questionList;
-
-    // Ensure answers/flagged arrays are sized for this subject
-    if (!examState.answers[idx] || examState.answers[idx].length !== questionList.length) {
-      examState.answers[idx] = Array(questionList.length).fill(-1);
-      examState.flagged[idx] = Array(questionList.length).fill(false);
-    }
-
-    // Update question count badge on the tab
-    const qCountEl = document.getElementById(`qcount-${idx}`);
-    if (qCountEl) qCountEl.textContent = `(${questionList.length}Q)`;
-
-    // Render the first question of this subject
-    renderApiQuestion();
-
-  } catch (err) {
-    console.error('switchSubject fetch:', err);
-    document.getElementById('question-area').innerHTML =
-      `<div style="padding:40px;text-align:center;color:var(--red)">
-         Failed to load questions. Please try again.
-       </div>`;
-  }
-}
-
-/* ══════════════════════════════════════════════════════════
-   RENDER QUESTION
-══════════════════════════════════════════════════════════ */
-function renderQuestion() {
-  const si=examState.currentSubject, qi=examState.currentQuestion;
-  const subj=SUBJECTS[si], q=subj.questions[qi];
-  const sel=examState.answers[si][qi], flag=examState.flagged[si][qi];
-  const isLast=si===SUBJECTS.length-1&&qi===subj.questions.length-1;
-  const L=['A','B','C','D'];
-  document.getElementById('question-area').innerHTML=`
-    <div class="subj-header">
-      <h2>${subj.name}</h2>
-      <div class="prog-info">Question <strong>${qi+1}</strong> of <strong>${subj.questions.length}</strong></div>
-    </div>
-    <div class="question-card">
-      <div class="q-number">Question ${qi+1}</div>
-      <div class="question-text">${q.q}</div>
-      <div class="options">${q.opts.map((o,oi)=>`
-        <div class="option-item ${sel===oi?'selected':''}" onclick="selectAnswer(${oi})">
-          <div class="option-letter">${L[oi]}</div>
-          <div class="option-text">${o}</div>
-        </div>`).join('')}
-      </div>
-    </div>
-    <div class="nav-actions">
-      <button class="btn-nav-prev" onclick="prevQ()" ${qi===0&&si===0?'disabled':''}>← Previous</button>
-      <button class="btn-flag-q ${flag?'flagged':''}" onclick="toggleFlag()">${flag?'⚑ Flagged':'⚐ Flag'}</button>
-      ${isLast?`<button class="btn-submit-exam" onclick="openModal()">Submit Exam</button>`
-               :`<button class="btn-nav-next" onclick="nextQ()">Next →</button>`}
-    </div>`;
-  updateGrid(); updateProgress();
-}
-
-/* ══════════════════════════════════════════════════════════
-   RENDER API QUESTION
-   Renders one question at a time from the API-fetched list.
-   Supports A–E options, flagging, prev/next, submit.
-══════════════════════════════════════════════════════════ */
-function renderApiQuestion() {
-  const si  = examState.currentSubject;
-  const qi  = examState.currentQuestion;
-  const questions = examState.subjectQuestions[si];
-
-  if (!questions || !questions.length) return;
-
-  const q       = questions[qi];
-  const sel     = examState.answers[si][qi];       // -1 = unanswered
-  const flag    = examState.flagged[si][qi] || false;
-  const total   = questions.length;
-  const isLast  = qi === total - 1
-    && si === (examState.subjectNames?.length || 1) - 1;
-
-  // Build options — skip empty ones (e.g. no option E)
-  const optKeys   = ['optionA','optionB','optionC','optionD','optionE'];
-  const optLabels = ['A','B','C','D','E'];
-  const opts = optKeys
-    .map((k, i) => ({ label: optLabels[i], text: q[k] }))
-    .filter(o => o.text && String(o.text).trim() !== '');
-
-  const optionsHtml = opts.map((o, oi) => `
-    <div class="option-item ${sel === oi ? 'selected' : ''}"
-         onclick="selectAnswer(${oi})" style="cursor:pointer">
-      <div class="option-letter">${o.label}</div>
-      <div class="option-text">${o.text}</div>
-    </div>`).join('');
-
-  const prevDisabled = (qi === 0 && si === 0) ? 'disabled' : '';
-  const actionBtn = isLast
-    ? `<button class="btn-submit-exam" onclick="openModal()">Submit Exam</button>`
-    : `<button class="btn-nav-next" onclick="nextQ()">Next →</button>`;
-
-  document.getElementById('question-area').innerHTML = `
-    <div class="subj-header">
-      <h2>${q.subject || examState.subjectNames?.[si] || ''}</h2>
-      <div class="prog-info">
-        Question <strong>${qi + 1}</strong> of <strong>${total}</strong>
-      </div>
-    </div>
-    <div class="question-card">
-      <div class="q-number">Question ${qi + 1}</div>
-      <div class="question-text">${q.questiontext}</div>
-      <div class="options">${optionsHtml}</div>
-    </div>
-    <div class="nav-actions">
-      <button class="btn-nav-prev" onclick="prevQ()" ${prevDisabled}>← Previous</button>
-      <button class="btn-flag-q ${flag ? 'flagged' : ''}" onclick="toggleFlag()">
-        ${flag ? '⚑ Flagged' : '⚐ Flag'}
-      </button>
-      ${actionBtn}
-    </div>`;
-
-  updateGrid();
-  updateProgress();
-}
-
-function selectAnswer(oi) {
-  const si = examState.currentSubject, qi = examState.currentQuestion;
-  examState.answers[si][qi] = oi;
-  // Re-render whichever mode is active
-  if (examState.subjectQuestions && examState.subjectQuestions[si]) {
-    renderApiQuestion();
-  } else {
-    renderQuestion();
-  }
-}
-function toggleFlag() {
-  const si = examState.currentSubject, qi = examState.currentQuestion;
-  examState.flagged[si][qi] = !examState.flagged[si][qi];
-  if (examState.subjectQuestions && examState.subjectQuestions[si]) {
-    renderApiQuestion();
-  } else {
-    renderQuestion();
-  }
-  updateGrid();
-}
-function goToQuestion(qi) {
-  examState.currentQuestion = qi;
-  const si = examState.currentSubject;
-  if (examState.subjectQuestions && examState.subjectQuestions[si]) {
-    renderApiQuestion();
-  } else {
-    renderQuestion();
-  }
-}
-function nextQ() {
-  const si = examState.currentSubject;
-  const questions = examState.subjectQuestions?.[si] || SUBJECTS[si]?.questions || [];
-  if (examState.currentQuestion < questions.length - 1) {
-    examState.currentQuestion++;
-    if (examState.subjectQuestions && examState.subjectQuestions[si]) {
-      renderApiQuestion();
-    } else {
-      renderQuestion();
-    }
-  } else {
-    // Move to the next subject tab
-    const nextIdx = si + 1;
-    const nextName = examState.subjectNames?.[nextIdx];
-    const dept = userData?.department || document.getElementById('sb-course').textContent.trim();
-    if (nextIdx < (examState.subjectNames?.length || SUBJECTS.length)) {
-      switchSubject(nextIdx, dept, nextName || SUBJECTS[nextIdx]?.name || '');
-    }
-  }
-}
-function prevQ() {
-  const si = examState.currentSubject;
-  if (examState.currentQuestion > 0) {
-    examState.currentQuestion--;
-    if (examState.subjectQuestions && examState.subjectQuestions[si]) {
-      renderApiQuestion();
-    } else {
-      renderQuestion();
-    }
-  } else if (si > 0) {
-    const prevIdx = si - 1;
-    const prevName = examState.subjectNames?.[prevIdx];
-    const dept = userData?.department || document.getElementById('sb-course').textContent.trim();
-    switchSubject(prevIdx, dept, prevName || SUBJECTS[prevIdx]?.name || '');
-  }
-}
-
-function updateGrid() {
-  const si = examState.currentSubject;
-  // Use API questions list if available, else fall back to SUBJECTS
-  const questions = examState.subjectQuestions?.[si] || SUBJECTS[si]?.questions || [];
-  document.getElementById('q-grid').innerHTML = questions.map((_, qi) => {
-    let c = 'q-dot';
-    if (qi === examState.currentQuestion)     c += ' current';
-    else if (examState.flagged[si]?.[qi])      c += ' flagged';
-    else if (examState.answers[si]?.[qi] !== -1 && examState.answers[si]?.[qi] !== undefined) c += ' answered';
-    return `<div class="${c}" onclick="goToQuestion(${qi})">${qi + 1}</div>`;
-  }).join('');
-}
-function updateProgress() {
-  // Use subjectNames + subjectQuestions (API mode) or SUBJECTS (static mode)
-  const names = examState.subjectNames || SUBJECTS.map(s => s.name);
-  document.getElementById('progress-list').innerHTML = names.map((name, si) => {
-    const questions = examState.subjectQuestions?.[si] || SUBJECTS[si]?.questions || [];
-    const total = questions.length;
-    if (!total) return '';
-    const answers = examState.answers[si] || [];
-    const done = answers.filter(a => a !== -1 && a !== undefined).length;
-    const pct  = Math.round((done / total) * 100);
-    return `<div class="prog-row">
-              <span class="pname">${name.split(' ')[0]}</span>
-              <span class="pscore">${done}/${total}</span>
-            </div>
-            <div class="prog-bar">
-              <div class="prog-bar-fill" style="width:${pct}%"></div>
-            </div>`;
-  }).join('');
-}
-
-/* ══════════════════════════════════════════════════════════
-   TIMER
-══════════════════════════════════════════════════════════ */
-function startTimer(){
-  renderTimerDisplay();
-  examState.timerInterval=setInterval(()=>{
-    examState.timerSeconds--;
-    renderTimerDisplay();
-    if(examState.timerSeconds<=0){clearInterval(examState.timerInterval);finalSubmit();}
-  },1000);
-}
-function renderTimerDisplay(){
-  const s=examState.timerSeconds;
-  const hh=Math.floor(s/3600),mm=Math.floor((s%3600)/60),ss=s%60;
-  const el=document.getElementById('timer');
-  el.textContent=`${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
-  el.className='timer-badge';
-  if(s<=600)el.classList.add('warning');
-  if(s<=120)el.classList.add('danger');
-}
-
-/* ══════════════════════════════════════════════════════════
-   MODAL & SUBMIT
-══════════════════════════════════════════════════════════ */
-function openModal(){document.getElementById('submit-modal').classList.add('open');}
-function closeModal(){document.getElementById('submit-modal').classList.remove('open');}
-
-function finalSubmit(){
-  clearInterval(examState.timerInterval); closeModal();
-  const scores=SUBJECTS.map((s,si)=>{
-    let correct=0;
-    s.questions.forEach((q,qi)=>{if(examState.answers[si][qi]===q.ans)correct++;});
-    const max=s.questions.length*10;
-    return{name:s.name,correct,total:s.questions.length,score:correct*10,max};
-  });
-  const total=scores.reduce((t,s)=>t+s.score,0);
-  const maxTotal=scores.reduce((t,s)=>t+s.max,0);
-  document.getElementById('result-total').textContent=total;
-  document.getElementById('result-out').textContent=`out of ${maxTotal}`;
-  document.getElementById('result-breakdown').innerHTML=scores.map(s=>
-    `<div class="result-row"><span class="sname">${s.name}</span>
-     <span class="spts">${s.score}/${s.max} (${s.correct}/${s.total} correct)</span></div>`
-  ).join('');
-  document.getElementById('dashboard-page').style.display='none';
-  document.getElementById('result-screen').style.display='flex';
-}
-
-function backToDash(){
-  document.getElementById('result-screen').style.display='none';
-  document.getElementById('dashboard-page').style.display='flex';
-  document.getElementById('exam-screen').style.display='none';
-  document.getElementById('welcome-screen').style.display='block';
-  document.getElementById('timer-wrap').style.display='none';
-  document.getElementById('top-session-label').textContent='Candidate Dashboard';
-  document.getElementById('subjects-side').style.display='block';
-  document.getElementById('instructions-side').style.display='block';
-  document.getElementById('progress-side').style.display='none';
-  document.getElementById('q-panel').style.display='none';
-  examState.timerSeconds=0; examState.started=false;
-}
-
-function logout(){localStorage.removeItem('cbt_session');window.location.href='login.html';}
 </script>
 </body>
 </html>
