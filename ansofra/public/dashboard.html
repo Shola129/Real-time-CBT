@@ -643,7 +643,7 @@ function renderCurrentQuestion() {
   const total = questionList.length;
   const sel   = examState.answers[si][qi];          // -1 = not answered
   const flag  = examState.flagged[si][qi] || false;
-  
+
   // Determine if this is the very last question of the very last subject
   const isLastSubject  = si === examState.totalSubjects - 1;
   const isLastQuestion = qi === total - 1;
@@ -838,10 +838,90 @@ function renderTimerDisplay() {
 function openModal()  { document.getElementById('submit-modal').classList.add('open'); }
 function closeModal() { document.getElementById('submit-modal').classList.remove('open'); }
 
-async function finalSubmit(){
+// async function finalSubmit(){
+//   clearInterval(examState.timerInterval);
+//   closeModal(); 
+//   console.log(examState.answers);
+// }
+
+async function finalSubmit() {
   clearInterval(examState.timerInterval);
-  closeModal(); 
-  console.log(examState.answers);
+  closeModal();
+
+  // Array to store picked options and correct answers
+  const pickedOptions = [];
+  const correctAnswers = [];
+
+  for (let si = 0; si < examState.totalSubjects; si++) {
+    const questions = examState.questions[si] || [];
+    const answers = examState.answers[si] || [];
+
+    questions.forEach((q, qi) => {
+      // Get option keys and labels
+      const optKeys = ['optionA', 'optionB', 'optionC', 'optionD', 'optionE'];
+      const opts = optKeys
+        .map((k, i) => ({ label: ['A', 'B', 'C', 'D', 'E'][i], text: String(q[k] || '').trim() }))
+        .filter(o => o.text !== '');
+
+      // Get picked option (selected answer)
+      const selectedIndex = answers[qi] !== undefined && answers[qi] !== -1 ? answers[qi] : null;
+      const pickedOpt = selectedIndex !== null ? (opts[selectedIndex]?.label || null) : null;
+
+      // Get correct answer
+      const correctOpt = String(q.answer || '').trim().toUpperCase() || null;
+
+      // Store in arrays
+      pickedOptions.push(pickedOpt);
+      correctAnswers.push(correctOpt);
+    });
+  }
+
+  // Log the arrays for verification
+  console.log("Picked Options Array:", pickedOptions);
+  console.log("Correct Answers Array:", correctAnswers);
+
+  // Calculate total score
+  let totalScore = 0, maxTotal = 0;
+  const rows = [];
+
+  for (let si = 0; si < examState.totalSubjects; si++) {
+    const questions = examState.questions[si] || [];
+    const answers = examState.answers[si] || [];
+    let correct = 0;
+
+    questions.forEach((q, qi) => {
+      const optKeys = ['optionA', 'optionB', 'optionC', 'optionD', 'optionE'];
+      const opts = optKeys
+        .map((k, i) => ({ label: ['A', 'B', 'C', 'D', 'E'][i], text: String(q[k] || '').trim() }))
+        .filter(o => o.text !== '');
+
+      const selectedLabel = answers[qi] !== undefined && answers[qi] !== -1
+        ? (opts[answers[qi]]?.label || '')
+        : '';
+      if (selectedLabel && selectedLabel === String(q.answer || '').trim().toUpperCase()) {
+        correct++;
+      }
+    });
+
+    const max = questions.length * 10;
+    const score = correct * 10;
+    totalScore += score;
+    maxTotal += max;
+
+    const tab = document.getElementById(`tab-${si}`);
+    const name = tab ? tab.textContent.replace(/\(.*\)/, '').trim() : `Subject ${si + 1}`;
+    rows.push(`
+      <div class="result-row">
+        <span class="sname">${name}</span>
+        <span class="spts">${score}/${max} (${correct}/${questions.length} correct)</span>
+      </div>`);
+  }
+
+  document.getElementById('result-total').textContent = totalScore;
+  document.getElementById('result-out').textContent = `out of ${maxTotal}`;
+  document.getElementById('result-breakdown').innerHTML = rows.join('');
+  document.getElementById('dashboard-page').style.display = 'none';
+  document.getElementById('result-screen').style.display = 'flex';
 }
 
 // function finalSubmit() {
