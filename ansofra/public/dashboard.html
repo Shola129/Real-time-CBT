@@ -283,7 +283,6 @@
     <button class="btn btn-primary" onclick="backToDash()">Back to Dashboard</button>
   </div>
 </div>
-
 <div class="modal-overlay" id="submit-modal">
   <div class="modal">
     <div class="modal-icon">⚠️</div>
@@ -314,6 +313,14 @@ let examState = {
   timerSeconds:   0,
   timerInterval:  null,
   started: false,
+  /*
+   * answerDetails[subjectIdx][questionIdx] stores the full answer payload:
+   * {
+   *   regNum, questionID, correctOtp, correctAns,
+   *   optionPicked, answerPicked, subject, department
+   * }
+   */
+  answerDetails: [],
 };
 
 /*    INIT
@@ -524,9 +531,10 @@ async function launchExam() {
   examState.currentSubject  = 0;
   examState.currentQuestion = 0;
   examState.started         = true;
-  examState.questions       = [];   // will be filled per-subject on demand
+  examState.questions       = [];
   examState.answers         = [];
   examState.flagged         = [];
+  examState.answerDetails   = [];   // reset full-detail store
 
   // Switch UI to exam mode
   document.getElementById('welcome-screen').style.display    = 'none';
@@ -548,7 +556,6 @@ async function launchExam() {
    then auto-loads the first subject's questions.
 */
 async function buildSubjectTabs(department) {
-  // Use passed dept or read from sidebar (supports both call patterns)
   const dept = department || document.getElementById('sb-course').textContent.trim();
 
   const res    = await fetch('/cbt/ansofra/api/getAllSebject', {
@@ -562,7 +569,6 @@ async function buildSubjectTabs(department) {
 
   let output = '';
   for (let i = 0; i < list.length; i++) {
-    // Escape single quotes in subject name for inline onclick safety
     const safeSubject = list[i].subject.replace(/'/g, "\\'");
     output += `<div class="subject-tab ${i === 0 ? 'active' : ''}" id="tab-${i}"
                     onclick="switchSubject('${dept}', '${safeSubject}', ${i})">
@@ -571,26 +577,20 @@ async function buildSubjectTabs(department) {
   }
   document.getElementById('subject-nav').innerHTML = output;
 
-  // Auto-load first subject
   if (list.length > 0) {
     await switchSubject(dept, list[0].subject, 0);
   }
 }
 
 /*    SWITCH SUBJECT  — exact user API pattern, kept intact.
-   Fetches questions for the clicked subject, then renders
-   the first question one at a time (slider behaviour).
 */
 async function switchSubject(department, subject, idx) {
-  // Update active tab highlight
   document.querySelectorAll('.subject-tab')
     .forEach((t, i) => t.classList.toggle('active', i === idx));
 
-  // Update current subject index and reset to first question
   examState.currentSubject  = idx;
   examState.currentQuestion = 0;
 
-  // Show loading placeholder while fetching
   document.getElementById('question-area').innerHTML = `
     <div style="padding:40px;text-align:center;color:var(--text-muted);font-size:14px;">
       Loading ${subject} questions…
@@ -604,35 +604,29 @@ async function switchSubject(department, subject, idx) {
   });
   const result = await api.json();
 
-  // Parse question list — backend sends JSON string inside response[0].question
   const rawData      = result.response[0];
   const questionList = typeof rawData.question === 'string'
     ? JSON.parse(rawData.question)
     : rawData.question;
 
-  // Store questions for this subject index
   examState.questions[idx] = questionList;
 
-  // Initialise answer and flag arrays if not already set for this subject
   if (!examState.answers[idx] || examState.answers[idx].length !== questionList.length) {
-    examState.answers[idx] = Array(questionList.length).fill(-1);
-    examState.flagged[idx] = Array(questionList.length).fill(false);
+    examState.answers[idx]       = Array(questionList.length).fill(-1);
+    examState.flagged[idx]       = Array(questionList.length).fill(false);
+    examState.answerDetails[idx] = Array(questionList.length).fill(null);
   }
 
-  // Update the question count badge on the tab
   const qCountEl = document.getElementById(`qcount-${idx}`);
   if (qCountEl) qCountEl.textContent = ` (${questionList.length}Q)`;
 
-  // Render first question of this subject
   renderCurrentQuestion();
 }
 
-/*    RENDER CURRENT QUESTION  — shows ONE question at a time.
-   Reads from examState.questions[currentSubject][currentQuestion].
-   Handles: selection highlight, flag state, prev/next,
-            question counter, submit on last question.
+/*    RENDER CURRENT QUESTION
 */
 function renderCurrentQuestion() {
+  const regNum = document.getElementById('sidebar-reg').textContent.trim();
   const si = examState.currentSubject;
   const qi = examState.currentQuestion;
 
@@ -641,27 +635,14 @@ function renderCurrentQuestion() {
 
   const q     = questionList[qi];
   const total = questionList.length;
-  const sel   = examState.answers[si][qi];          // -1 = not answered
   const flag  = examState.flagged[si][qi] || false;
 
-  // Determine if this is the very last question of the very last subject
+  // Which option index is currently selected for this question
+  const sel = examState.answers[si][qi];   // -1 = unanswered, 0–4 = option index
+
   const isLastSubject  = si === examState.totalSubjects - 1;
   const isLastQuestion = qi === total - 1;
   const isLast         = isLastSubject && isLastQuestion;
-
-  // Build A–E options, skipping any that are empty
-  const optKeys   = ['optionA','optionB','optionC','optionD','optionE'];
-  const optLabels = ['A','B','C','D','E'];
-  const opts = optKeys
-    .map((k, i) => ({ label: optLabels[i], text: String(q[k] || '').trim() }))
-    .filter(o => o.text !== '');
-
-  const optionsHtml = opts.map((o, oi) => `
-    <div class="option-item ${sel === oi ? 'selected' : ''}"
-         onclick="selectAnswer(${oi})">
-      <div class="option-letter">${o.label}</div>
-      <div class="option-text">${o.text}</div>
-    </div>`).join('');
 
   const prevDisabled = (si === 0 && qi === 0) ? 'disabled' : '';
 
@@ -669,9 +650,55 @@ function renderCurrentQuestion() {
     ? `<button class="btn-submit-exam" onclick="openModal()">Submit Exam</button>`
     : `<button class="btn-nav-next" onclick="nextQ()">Next →</button>`;
 
+  /*
+   * Build each option row.
+   * The onclick passes all required parameters to selectAnswer:
+   *   optionLabel  — "A" | "B" | "C" | "D" | "E"
+   *   answerText   — the text of the chosen option
+   *   subject      — from the question object
+   *   department   — from the question object
+   *   questionID   — from the question object
+   *   correctAss   — from the question object (correct option label, e.g. "B")
+   *   correctOpt   — from the question object (correct option text)
+   *   regNum       — candidate registration number
+   *   optionIndex  — numeric index (0–4) used to track selection state
+   *
+   * We use data-index to mark the currently selected option visually.
+   */
+  const optKeys   = ['optionA','optionB','optionC','optionD','optionE'];
+  const optLabels = ['A','B','C','D','E'];
+
+  const optionsHtml = optKeys.map((k, oi) => {
+    const optText = String(q[k] || '').trim();
+    if (!optText) return '';    // skip empty options
+
+    const isSelected = sel === oi;
+
+    // Safely escape values for the inline onclick attribute
+    const safe = v => String(v || '').replace(/\\/g, '\\\\').replace(/"/g, '&quot;');
+
+    return `
+      <div class="option-item ${isSelected ? 'selected' : ''}"
+           data-index="${oi}"
+           onclick="selectAnswer(
+             '${optLabels[oi]}',
+             '${safe(optText)}',
+             '${safe(q.subject)}',
+             '${safe(q.department)}',
+             '${safe(q.questionID)}',
+             '${safe(q.correctAss)}',
+             '${safe(q.correctOpt)}',
+             '${safe(regNum)}',
+             ${oi}
+           )">
+        <div class="option-letter">${optLabels[oi]}</div>
+        <div class="option-text">${optText}</div>
+      </div>`;
+  }).join('');
+
   document.getElementById('question-area').innerHTML = `
     <div class="subj-header">
-      <h2>${q.subject || subject || ''}</h2>
+      <h2>${q.subject || ''}</h2>
       <div class="prog-info">
         Question <strong>${qi + 1}</strong> of <strong>${total}</strong>
       </div>
@@ -694,9 +721,29 @@ function renderCurrentQuestion() {
 }
 
 /*    ANSWER & FLAG ACTIONS
+   selectAnswer stores:
+     1. The numeric option index into examState.answers  (for grid/progress tracking)
+     2. The full answer detail object into examState.answerDetails (for submission)
 */
-function selectAnswer(oi) {
-  examState.answers[examState.currentSubject][examState.currentQuestion] = oi;
+function selectAnswer(optionLabel, answerText, subject, department, questionID, correctAss, correctOpt, regNum, optionIndex) {
+  const si = examState.currentSubject;
+  const qi = examState.currentQuestion;
+
+  // 1. Store the selected option index (used by grid / progress / scoring)
+  examState.answers[si][qi] = optionIndex;
+
+  // 2. Store the full detail object for this question
+  examState.answerDetails[si][qi] = {
+    regNum:       regNum,
+    questionID:   questionID,
+    correctOtp:   correctOpt,   // correct option text
+    correctAns:   correctAss,   // correct option label (e.g. "B")
+    optionPicked: optionLabel,  // label of the option the candidate chose (e.g. "A")
+    answerPicked: answerText,   // text of the option the candidate chose
+    subject:      subject,
+    department:   department,
+  };
+
   renderCurrentQuestion();
 }
 
@@ -718,14 +765,11 @@ function nextQ() {
   const questions = examState.questions[si] || [];
 
   if (examState.currentQuestion < questions.length - 1) {
-    // Move to next question within same subject
     examState.currentQuestion++;
     renderCurrentQuestion();
   } else {
-    // Move to the next subject tab if available
     const nextIdx = si + 1;
     if (nextIdx < examState.totalSubjects) {
-      // Get next subject name from its tab element
       const nextTab = document.getElementById(`tab-${nextIdx}`);
       const nextSubject = nextTab
         ? nextTab.textContent.replace(/\(.*\)/, '').trim()
@@ -741,11 +785,9 @@ function prevQ() {
   const si = examState.currentSubject;
 
   if (examState.currentQuestion > 0) {
-    // Move back within same subject
     examState.currentQuestion--;
     renderCurrentQuestion();
   } else if (si > 0) {
-    // Move to last question of previous subject
     const prevIdx = si - 1;
     const prevTab = document.getElementById(`tab-${prevIdx}`);
     const prevSubject = prevTab
@@ -753,7 +795,6 @@ function prevQ() {
       : '';
     const dept = userData?.department
       || document.getElementById('sb-course').textContent.trim();
-    // After load, jump to last question of that subject
     switchSubject(dept, prevSubject, prevIdx).then(() => {
       const prevQuestions = examState.questions[prevIdx] || [];
       if (prevQuestions.length > 1) {
@@ -765,7 +806,6 @@ function prevQ() {
 }
 
 /*    QUESTION GRID (sidebar dots)
-   Green = answered, Red = current, Gold = flagged, dim = unattempted
 */
 function updateGrid() {
   const si        = examState.currentSubject;
@@ -781,18 +821,16 @@ function updateGrid() {
 }
 
 /*    PROGRESS PANEL (sidebar bars)
-   Shows attempted / total for every subject
 */
 function updateProgress() {
   const rows = [];
   for (let si = 0; si < examState.totalSubjects; si++) {
     const questions = examState.questions[si];
-    if (!questions) continue;                        // not loaded yet
+    if (!questions) continue;
     const total   = questions.length;
     const answers = examState.answers[si] || [];
     const done    = answers.filter(a => a !== -1 && a !== undefined).length;
     const pct     = total ? Math.round((done / total) * 100) : 0;
-    // Get subject name from tab element
     const tab     = document.getElementById(`tab-${si}`);
     const name    = tab ? tab.textContent.replace(/\(.*\)/, '').trim() : `Subject ${si + 1}`;
     rows.push(`
@@ -838,137 +876,100 @@ function renderTimerDisplay() {
 function openModal()  { document.getElementById('submit-modal').classList.add('open'); }
 function closeModal() { document.getElementById('submit-modal').classList.remove('open'); }
 
-// async function finalSubmit(){
-//   clearInterval(examState.timerInterval);
-//   closeModal(); 
-//   console.log(examState.answers);
-// }
-
 async function finalSubmit() {
   clearInterval(examState.timerInterval);
   closeModal();
 
-  // Array to store picked options and correct answers
-  const pickedOptions = [];
-  const correctAnswers = [];
+  const regNum = document.getElementById('sidebar-reg').textContent.trim();
+
+  /*
+   * ARRAY 1 — questionsArray
+   * One entry per question across all subjects.
+   * Each entry contains:
+   *   regNum, questionID, correctOtp (correct option text),
+   *   correctAns (correct option label), optionPicked (chosen label),
+   *   answerPicked (chosen text), subject, department
+   */
+  const questionsArray = [];
+
+  /*
+   * ARRAY 2 — scoresArray
+   * One entry per subject.
+   * Each entry contains: score, subject, department, regNum
+   */
+  const scoresArray = [];
+
+  const resultRows = [];
+  let grandTotal = 0;
+  let grandMax   = 0;
 
   for (let si = 0; si < examState.totalSubjects; si++) {
     const questions = examState.questions[si] || [];
-    const answers = examState.answers[si] || [];
+    const tab       = document.getElementById(`tab-${si}`);
+    const subjectName = tab ? tab.textContent.replace(/\(.*\)/, '').trim() : `Subject ${si + 1}`;
+    const dept = userData?.department
+      || document.getElementById('sb-course').textContent.trim();
+
+    let subjectScore = 0;
 
     questions.forEach((q, qi) => {
-      // Get option keys and labels
-      const optKeys = ['optionA', 'optionB', 'optionC', 'optionD', 'optionE'];
-      const opts = optKeys
-        .map((k, i) => ({ label: ['A', 'B', 'C', 'D', 'E'][i], text: String(q[k] || '').trim() }))
-        .filter(o => o.text !== '');
+      // Retrieve stored detail object; fall back to a "not answered" placeholder
+      const detail = (examState.answerDetails[si] && examState.answerDetails[si][qi])
+        ? examState.answerDetails[si][qi]
+        : {
+            regNum:       regNum,
+            questionID:   q.questionID   || '',
+            correctOtp:   q.correctOpt   || '',
+            correctAns:   q.correctAss   || '',
+            optionPicked: '',
+            answerPicked: '',
+            subject:      q.subject      || subjectName,
+            department:   q.department   || dept,
+          };
 
-      // Get picked option (selected answer)
-      const selectedIndex = answers[qi] !== undefined && answers[qi] !== -1 ? answers[qi] : null;
-      const pickedOpt = selectedIndex !== null ? (opts[selectedIndex]?.label || null) : null;
+      // Push into questionsArray (Array 1)
+      questionsArray.push(detail);
 
-      // Get correct answer
-      const correctOpt = String(q.answer || '').trim().toUpperCase() || null;
-
-      // Store in arrays
-      pickedOptions.push(pickedOpt);
-      correctAnswers.push(correctOpt);
-    });
-  }
-
-  // Log the arrays for verification
-  console.log("Picked Options Array:", pickedOptions);
-  console.log("Correct Answers Array:", correctAnswers);
-
-  // Calculate total score
-  let totalScore = 0, maxTotal = 0;
-  const rows = [];
-
-  for (let si = 0; si < examState.totalSubjects; si++) {
-    const questions = examState.questions[si] || [];
-    const answers = examState.answers[si] || [];
-    let correct = 0;
-
-    questions.forEach((q, qi) => {
-      const optKeys = ['optionA', 'optionB', 'optionC', 'optionD', 'optionE'];
-      const opts = optKeys
-        .map((k, i) => ({ label: ['A', 'B', 'C', 'D', 'E'][i], text: String(q[k] || '').trim() }))
-        .filter(o => o.text !== '');
-
-      const selectedLabel = answers[qi] !== undefined && answers[qi] !== -1
-        ? (opts[answers[qi]]?.label || '')
-        : '';
-      if (selectedLabel && selectedLabel === String(q.answer || '').trim().toUpperCase()) {
-        correct++;
+      // Mark correct if the candidate's chosen label matches the correct label
+      if (
+        detail.answerPicked &&
+        detail.answerPicked.toUpperCase() === String(detail.correctAns).toUpperCase()
+      ) {
+        subjectScore++;
       }
     });
 
-    const max = questions.length * 10;
-    const score = correct * 10;
-    totalScore += score;
-    maxTotal += max;
+    const subjectPoints = subjectScore * 1.5;
+    const subjectMax    = questions.length * 1.5;
+    grandTotal += subjectPoints;
+    grandMax   += subjectMax;
 
-    const tab = document.getElementById(`tab-${si}`);
-    const name = tab ? tab.textContent.replace(/\(.*\)/, '').trim() : `Subject ${si + 1}`;
-    rows.push(`
+    // Push into scoresArray (Array 2)
+    scoresArray.push({
+      score:      subjectPoints,
+      subject:    subjectName,
+      department: dept,
+      regNum:     regNum,
+    });
+
+    resultRows.push(`
       <div class="result-row">
-        <span class="sname">${name}</span>
-        <span class="spts">${score}/${max} (${correct}/${questions.length} correct)</span>
+        <span class="sname">${subjectName}</span>
+        <span class="spts">${subjectPoints}/${subjectMax} (${subjectScore}/${questions.length} correct)</span>
       </div>`);
   }
 
-  document.getElementById('result-total').textContent = totalScore;
-  document.getElementById('result-out').textContent = `out of ${maxTotal}`;
-  document.getElementById('result-breakdown').innerHTML = rows.join('');
+  // Log both arrays for verification / API submission
+  console.log('Questions Array (Array 1):', questionsArray);
+  console.log('Scores Array   (Array 2):', scoresArray);
+
+  // Render result screen
+  document.getElementById('result-total').textContent   = grandTotal;
+  document.getElementById('result-out').textContent     = `out of ${grandMax}`;
+  document.getElementById('result-breakdown').innerHTML = resultRows.join('');
   document.getElementById('dashboard-page').style.display = 'none';
-  document.getElementById('result-screen').style.display = 'flex';
+  document.getElementById('result-screen').style.display  = 'flex';
 }
-
-// function finalSubmit() {
-//   clearInterval(examState.timerInterval);
-//   closeModal();
-
-//   let totalScore = 0, maxTotal = 0;
-//   const rows = [];
-
-//   for (let si = 0; si < examState.totalSubjects; si++) {
-//     const questions = examState.questions[si] || [];
-//     const answers   = examState.answers[si]   || [];
-//     let correct = 0;
-//     questions.forEach((q, qi) => {
-//       // Match selected option label (A/B/C/D/E) against stored correct answer
-//       const optKeys = ['optionA','optionB','optionC','optionD','optionE'];
-//       const opts    = optKeys
-//         .map((k, i) => ({ label: ['A','B','C','D','E'][i], text: String(q[k] || '').trim() }))
-//         .filter(o => o.text !== '');
-//       const selectedLabel = answers[qi] !== undefined && answers[qi] !== -1
-//         ? (opts[answers[qi]]?.label || '') : '';
-//       if (selectedLabel && selectedLabel === String(q.answer || '').trim().toUpperCase()) {
-//         correct++;
-//       }
-//     });
-//     const max   = questions.length * 10;
-//     const score = correct * 10;
-//     totalScore += score;
-//     maxTotal   += max;
-
-//     const tab  = document.getElementById(`tab-${si}`);
-//     const name = tab ? tab.textContent.replace(/\(.*\)/, '').trim() : `Subject ${si+1}`;
-//     rows.push(`
-//       <div class="result-row">
-//         <span class="sname">${name}</span>
-//         <span class="spts">${score}/${max} (${correct}/${questions.length} correct)</span>
-//       </div>`);
-//   }
-
-//   document.getElementById('result-total').textContent = totalScore;
-//   document.getElementById('result-out').textContent   = `out of ${maxTotal}`;
-//   document.getElementById('result-breakdown').innerHTML = rows.join('');
-//   document.getElementById('dashboard-page').style.display = 'none';
-//   document.getElementById('result-screen').style.display  = 'flex';
-// }
-
-
 
 function backToDash() {
   document.getElementById('result-screen').style.display         = 'none';
