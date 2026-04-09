@@ -174,7 +174,6 @@ class Platform{
 
 
 
-
     //you can have as many tables as you want
 }
 ?>
