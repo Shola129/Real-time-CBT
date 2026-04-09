@@ -139,6 +139,30 @@ class Platform{
         "startedAt VARCHAR(255) NOT NULL"
     ];
 
+    public const SAVEQUESTIONS_TABLE = "save_question_attempted";
+    public const SAVEQUESTIONS_TABLE_COLUMNS = [
+        "save_question_attempted_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
+        "department VARCHAR(255) NOT NULL",
+        "subject VARCHAR(255) NOT NULL",
+        "regNum VARCHAR(255) NOT NULL",
+        "questionID VARCHAR(255) NOT NULL",
+        "correctOtp VARCHAR(255)",
+        "correctAns VARCHAR(255)",
+        "optionPicked VARCHAR(255)",
+        "answerPicked VARCHAR(255)",
+        "saveAt VARCHAR(255)",
+        "savequestID (255) NOT NULL",
+    ];
+
+    public const SAVESCORE_TABLE = "saveqestion";
+    public const SAVESCORE_TABLE_COLUMNS = [
+        "saveqestion BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
+        "score VARCHAR(255) NOT NULL",
+        "subject VARCHAR(255) NOT NULL",
+        "department VARCHAR(255) NOT NULL",
+        "regNum VARCHAR(255) NOT NULL"
+    ];
+
     //you can have as many tables as you want
 }
 ?>
