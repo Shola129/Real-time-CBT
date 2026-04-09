@@ -160,7 +160,8 @@ class Platform{
         "score VARCHAR(255) NOT NULL",
         "subject VARCHAR(255) NOT NULL",
         "department VARCHAR(255) NOT NULL",
-        "regNum VARCHAR(255) NOT NULL"
+        "regNum VARCHAR(255) NOT NULL",
+        "saveAt VARCHAR(255) NOT NULL"
     ];
 
     //you can have as many tables as you want

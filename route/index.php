@@ -324,12 +324,12 @@ elseif($url === $usersArea . "/display/qesution"){
 }
 
 elseif($url === $usersArea . "/save/questions/attempt"){
-    require_once __DIR__ . $appController . "/";
+    require_once __DIR__ . $appController . "/SaveQuestionATTController.php";
     exit();
 }
 
 elseif($url === $usersArea . "/save/scores"){
-    require_once __DIR__ . $appController . "/";
+    require_once __DIR__ . $appController . "/SaveScoreController.php";
     exit();
 }
 
