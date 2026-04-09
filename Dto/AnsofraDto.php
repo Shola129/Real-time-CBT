@@ -49,6 +49,13 @@ class AnsofraDto{
     public $dob;
     public $gender;
     public $state;
+    public $optionPicked;
+    public $answerPicked;
+    public $savequestID;
+    public $saveAt;
+    public $questionID;
+    public $correctAns;
+    public $score;
 
     public function __construct(array $inData){
         $allProp = get_object_vars($this);

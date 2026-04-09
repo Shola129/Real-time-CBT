@@ -154,10 +154,11 @@ class Platform{
         "savequestID VARCHAR(255) NOT NULL",
     ];
 
-    public const SAVESCORE_TABLE = "saveqestion";
+    public const SAVESCORE_TABLE = "save_scores";
     public const SAVESCORE_TABLE_COLUMNS = [
-        "saveqestion BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
+        "save_scores_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
         "score VARCHAR(255) NOT NULL",
+        "OverAll VARCHAR(255) NOT NULL",
         "subject VARCHAR(255) NOT NULL",
         "department VARCHAR(255) NOT NULL",
         "regNum VARCHAR(255) NOT NULL",

@@ -1,6 +1,6 @@
 <?php
 namespace NewdichControllerApp;
-use NewdichApp\command\SaveQuestionATT;
+use NewdichApp\Command\SaveQuestionATT;
 use NewdichDto\AnsofraDto;
 use NewdichMiddleware\Index;
 

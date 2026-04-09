@@ -891,7 +891,7 @@ async function finalSubmit() {
    *   answerPicked (chosen text), subject, department
    */
   const questionsArray = [];
-
+ let questionToSave = {};
   /*
    * ARRAY 2 — scoresArray
    * One entry per subject.
@@ -929,7 +929,7 @@ async function finalSubmit() {
 
       // Push into questionsArray (Array 1)
       questionsArray.push(detail);
-
+      questionToSave = detail;
       // Mark correct if the candidate's chosen label matches the correct label
       if (
         detail.answerPicked &&
@@ -952,16 +952,24 @@ async function finalSubmit() {
       regNum:     regNum,
     });
 
+    const scoreToSave = {
+      score:      subjectPoints,
+      subject:    subjectName,
+      department: dept,
+      regNum:     regNum,
+    };
+
     resultRows.push(`
       <div class="result-row">
         <span class="sname">${subjectName}</span>
         <span class="spts">${subjectPoints}/${subjectMax} (${subjectScore}/${questions.length} correct)</span>
       </div>`);
 
+      console.log(questionToSave);
       const api = await fetch("/cbt/ansofra/api/save/questions/attempt", {
         method:"POST",
         headers:{"Content-type":'application/json'},
-        body:JSON.stringify(questionsArray)
+        body:JSON.stringify(questionToSave)
       });
 
       const result1 = await api.json();
@@ -969,13 +977,19 @@ async function finalSubmit() {
         const api = await fetch("/cbt/ansofra/api/save/scores", {
             method:"POST",
             headers:{'Content-type':'application/json'},
-            body:JSON.stringify(scoresArray)
+            body:JSON.stringify(scoreToSave)
         });
 
         const result = await api.json();
         if(result.status === "success"){
            document.getElementById('result-screen').style.display  = 'flex';
         }
+         else{
+        console.log(result);
+      }
+      }
+      else{
+        console.log(result1);
       }
   }
 
