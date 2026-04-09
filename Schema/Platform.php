@@ -164,6 +164,7 @@ class Platform{
         "regNum VARCHAR(255) NOT NULL",
         "saveAt VARCHAR(255) NOT NULL"
     ];    
+    
   //you can have as many tables as you want
 }
 ?>
