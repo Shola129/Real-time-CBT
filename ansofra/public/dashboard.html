@@ -275,11 +275,11 @@
   <div class="result-card">
     <div class="result-title">Examination Complete</div>
     <div class="result-sub">Your answers have been submitted and recorded.</div>
-    <div class="result-circle">
+    <!-- <div class="result-circle">
       <div class="big" id="result-total">—</div>
       <div class="out" id="result-out">out of 400</div>
-    </div>
-    <div class="result-breakdown" id="result-breakdown"></div>
+    </div> -->
+    <div class="result-breakdown" id=""> You be notify your result on registered email soon </div>
     <button class="btn btn-primary" onclick="backToDash()">Back to Dashboard</button>
   </div>
 </div>
@@ -957,6 +957,26 @@ async function finalSubmit() {
         <span class="sname">${subjectName}</span>
         <span class="spts">${subjectPoints}/${subjectMax} (${subjectScore}/${questions.length} correct)</span>
       </div>`);
+
+      const api = await fetch("/cbt/ansofra/api/save/questions/attempt", {
+        method:"POST",
+        headers:{"Content-type":'application/json'},
+        body:JSON.stringify(questionsArray)
+      });
+
+      const result1 = await api.json();
+      if(result1.status === "success"){
+        const api = await fetch("/cbt/ansofra/api/save/scores", {
+            method:"POST",
+            headers:{'Content-type':'application/json'},
+            body:JSON.stringify(e)
+        });
+
+        const result = await api.json();
+        if(result.status === "success"){
+          
+        }
+      }
   }
 
   // Log both arrays for verification / API submission

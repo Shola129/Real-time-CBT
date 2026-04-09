@@ -151,7 +151,7 @@ class Platform{
         "optionPicked VARCHAR(255)",
         "answerPicked VARCHAR(255)",
         "saveAt VARCHAR(255)",
-        "savequestID (255) NOT NULL",
+        "savequestID VARCHAR(255) NOT NULL",
     ];
 
     public const SAVESCORE_TABLE = "saveqestion";
