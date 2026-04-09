@@ -323,6 +323,16 @@ elseif($url === $usersArea . "/display/qesution"){
     exit();
 }
 
+elseif($url === $usersArea . "/save/questions/attempt"){
+    require_once __DIR__ . $appController . "/";
+    exit();
+}
+
+elseif($url === $usersArea . "/save/scores"){
+    require_once __DIR__ . $appController . "/";
+    exit();
+}
+
 // /api endpoints
 // elseif($url === $docRoot . $rootDir . $usersArea."/register" || $url === $usersArea."/register"."/"){
 //     require_once __DIR__ . $appController."/RegisterController.php";
