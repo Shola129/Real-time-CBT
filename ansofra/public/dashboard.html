@@ -969,12 +969,12 @@ async function finalSubmit() {
         const api = await fetch("/cbt/ansofra/api/save/scores", {
             method:"POST",
             headers:{'Content-type':'application/json'},
-            body:JSON.stringify(e)
+            body:JSON.stringify(scoresArray)
         });
 
         const result = await api.json();
         if(result.status === "success"){
-          
+           document.getElementById('result-screen').style.display  = 'flex';
         }
       }
   }
@@ -984,11 +984,10 @@ async function finalSubmit() {
   console.log('Scores Array   (Array 2):', scoresArray);
 
   // Render result screen
-  document.getElementById('result-total').textContent   = grandTotal;
-  document.getElementById('result-out').textContent     = `out of ${grandMax}`;
-  document.getElementById('result-breakdown').innerHTML = resultRows.join('');
-  document.getElementById('dashboard-page').style.display = 'none';
-  document.getElementById('result-screen').style.display  = 'flex';
+  // document.getElementById('result-total').textContent   = grandTotal;
+  // document.getElementById('result-out').textContent     = `out of ${grandMax}`;
+  // document.getElementById('result-breakdown').innerHTML = resultRows.join('');
+  // document.getElementById('dashboard-page').style.display = 'none';
 }
 
 function backToDash() {
