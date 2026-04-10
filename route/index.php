@@ -333,6 +333,16 @@ elseif($url === $usersArea . "/save/scores"){
     exit();
 }
 
+elseif($url === $usersArea . "/get/scores/subject"){
+    require_once __DIR__ . $appController . "/GetScoresSubController.php";
+    exit();
+}
+
+elseif($url === $usersArea . "/save/result"){
+    require_once __DIR__ . $appController . "/ResultController.php";
+    exit();
+}
+
 // /api endpoints
 // elseif($url === $docRoot . $rootDir . $usersArea."/register" || $url === $usersArea."/register"."/"){
 //     require_once __DIR__ . $appController."/RegisterController.php";

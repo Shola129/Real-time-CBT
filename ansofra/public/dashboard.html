@@ -982,7 +982,8 @@ async function finalSubmit() {
 
         const result = await api.json();
         if(result.status === "success"){
-           document.getElementById('result-screen').style.display  = 'flex';
+          //  document.getElementById('result-screen').style.display  = 'flex';
+          await saveReult();
         }
          else{
         console.log(result);
@@ -991,6 +992,59 @@ async function finalSubmit() {
       else{
         console.log(result1);
       }
+  }
+
+async function saveReult(){
+    const regNum = document.getElementById("sidebar-reg").textContent;
+    const fullname = document.getElementById("sidebar-name").textContent;
+    const department = document.getElementById("sb-course").textContent;
+    const e = {regNum:regNum};
+    const api = await fetch("/cbt/ansofra/api/get/scores/subject", {
+        method:"POST",
+        headers:{'Content-type':'application/json'},
+        body:JSON.stringify(e)
+    });
+
+    const result = await api.json()
+    // const conert = JSON.parse(result);
+    if(result.status==="success"){
+      const response = result.response;
+      const convert = JSON.stringify(result);
+      const res = convert.response;
+      let total = 0;
+      let allData = '';
+      for (let index = 0; index < response.length; index++) {
+        total += parseFloat(response[index].score);
+      }
+
+
+      const d = {
+        regNum:regNum,
+        overAll:total,
+        fullname:fullname,
+        department:department,
+        subjectAndScore:res
+      };
+
+      console.log("data"+ JSON.stringify(d));
+      const seApi = await fetch("/cbt/ansofra/api/save/result", {
+          method:"POST",
+          headers:{'Content-type':'applicatin/json'},
+          body:JSON.stringify(d)
+      });
+
+      const resultApi = await seApi.json();
+      if(resultApi.status==="success"){
+           document.getElementById('result-screen').style.display  = 'flex';
+      }
+      else{
+        return console.log(resultApi);
+      }
+    }
+    else{
+      return console.log(result);
+    }
+
   }
 
   // Log both arrays for verification / API submission
