@@ -1172,13 +1172,8 @@ async function saveResult() {
   });
   const resultApi = await seApi.json();
 
-
-
-  
   if (resultApi.status === 'success') {
-    document.getElementById('result-screen').style.display = 'flex';
-  } else {
-    return console.log('Failed to save final result:', resultApi);
+     backToDash();
   }
 }
 

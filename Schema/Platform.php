@@ -182,12 +182,20 @@ class Platform{
     public const RESULT_TABLE = "results";
     public const RESULT_TABLE_COLUMNS = [
         "results_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
-        "subject_scores VARCHAR(255) NOT NULL",
+        "subject_scores TEXT",
         "overAll VARCHAR(255) NOT NULL",
         "department VARCHAR(255) NOT NULL",
         "fullname VARCHAR(255) NOT NULL",
         "regNum VARCHAR(255) NOT NULL",
         "createdAt VARCHAR(255) NOT NULL"
+    ];
+
+    public const STATUS_TABLE = "status";
+    public const STATUS_TABLE_COLUMNS = [
+        "status_id  BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
+        "regNum VARCHAR(255) NOT NULL",
+        "fullname VARCHAR(255) NOT NULL",
+        "status VARCHAR(255) NOT NULL",
     ];
   //you can have as many tables as you want
 }
