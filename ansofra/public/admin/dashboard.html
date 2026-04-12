@@ -8,18 +8,11 @@
 <style>
 
 :root {
-  --cream:       #faf8f2;
-  --white:       #ffffff;
-  --gold-light:  #fef3d0;
-  --gold-mid:    #f5d472;
-  --gold:        #e8b832;
-  --gold-dark:   #b8901e;
-  --gold-deep:   #8a6a12;
-  --ink:         #2a3440;
-  --ink-mid:     #4a5a68;
-  --ink-soft:    #7a8a96;
-  --border:      #ede8d8;
-  --border-gold: #f0d898;
+  --navy:#0a1f44;--navy-light:#122b5e;--navy-dark:#060f22;--navy-mid:#1a3a6e;
+  --white:#ffffff;--off-white:#f4f6fb;--red:#c0392b;--red-hover:#a93226;
+  --red-light:#fdecea;--border:#dde3f0;--text-muted:#8896b3;
+  --success:#1a7f4b;--gold:#f0b429;--gold-light:#fef7e4;--gold-dark:#b8860b;
+  --shadow-sm:0 2px 12px rgba(10,31,68,0.10);--shadow-lg:0 24px 80px rgba(0,0,0,0.30);
   --sidebar-w:   230px;
   --topbar-h:    58px;
   --r-sm:  6px;
@@ -36,8 +29,8 @@ html, body { height: 100%; }
 
 body {
   font-family: 'Georgia', 'Times New Roman', serif;
-  background: var(--cream);
-  color: var(--ink);
+  background: var(--off-white);
+  color: var(--navy);
   font-size: 14px;
   line-height: 1.6;
   overflow-x: hidden;
@@ -57,8 +50,8 @@ body {
 .sidebar {
   width: var(--sidebar-w);
   min-width: var(--sidebar-w);
-  background: var(--white);
-  border-right: 1px solid var(--border);
+  background: var(--navy);
+  border-right: 1px solid var(--navy-mid);
   display: flex; flex-direction: column;
   position: sticky; top: 0;
   height: 100vh;
@@ -70,40 +63,40 @@ body {
 
 .sidebar-brand {
   padding: 20px 18px 16px;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255,255,255,0.1);
   display: flex; align-items: center; gap: 10px;
   flex-shrink: 0; position: relative;
 }
 
 .brand-icon {
   width: 38px; height: 38px;
-  background: var(--gold-mid);
+  background: rgba(255,255,255,0.12);
   border-radius: var(--r-md);
   display: flex; align-items: center; justify-content: center;
-  color: var(--ink); font-size: 17px; flex-shrink: 0;
+  color: var(--gold); font-size: 17px; flex-shrink: 0;
 }
 
 .brand-text { line-height: 1.2; overflow: hidden; }
-.brand-name { font-size: 15px; font-weight: 700; color: var(--ink); white-space: nowrap; }
-.brand-sub  { font-size: 11px; color: var(--ink-soft); font-family: sans-serif; font-style: italic; white-space: nowrap; }
+.brand-name { font-size: 15px; font-weight: 700; color: var(--white); white-space: nowrap; }
+.brand-sub  { font-size: 11px; color: rgba(255,255,255,0.5); font-family: sans-serif; font-style: italic; white-space: nowrap; }
 
 .sidebar-close {
   display: none;
   width: 28px; height: 28px;
-  border: none; background: var(--gold-light);
+  border: none; background: rgba(255,255,255,0.1);
   border-radius: var(--r-pill);
-  cursor: pointer; font-size: 13px; color: var(--ink-mid);
+  cursor: pointer; font-size: 13px; color: var(--white);
   align-items: center; justify-content: center;
   flex-shrink: 0; margin-left: auto;
   transition: background .15s;
 }
-.sidebar-close:hover { background: var(--gold-mid); }
+.sidebar-close:hover { background: rgba(255,255,255,0.2); }
 
 .sidebar-nav { padding: 10px 8px; flex: 1; }
 
 .nav-section-label {
   font-size: 10px; text-transform: uppercase;
-  letter-spacing: .1em; color: var(--ink-soft);
+  letter-spacing: .1em; color: rgba(255,255,255,0.4);
   font-family: sans-serif; font-weight: 700;
   padding: 10px 10px 5px; white-space: nowrap;
 }
@@ -113,20 +106,20 @@ body {
   padding: 11px 12px;
   border-radius: var(--r-md);
   cursor: pointer; font-size: 13.5px;
-  color: var(--ink-mid); font-family: sans-serif; font-weight: 500;
+  color: rgba(255,255,255,0.65); font-family: sans-serif; font-weight: 500;
   transition: background .15s, color .15s, transform .1s;
   margin-bottom: 2px; user-select: none; white-space: nowrap;
 }
-.nav-item .ni { width: 20px; font-size: 15px; text-align: center; color: var(--ink-soft); flex-shrink: 0; transition: color .15s; }
+.nav-item .ni { width: 20px; font-size: 15px; text-align: center; color: rgba(255,255,255,0.4); flex-shrink: 0; transition: color .15s; }
 .nav-item .nl { flex: 1; overflow: hidden; text-overflow: ellipsis; }
-.nav-item:hover            { background: var(--gold-light); color: var(--gold-deep); transform: translateX(3px); }
-.nav-item:hover .ni        { color: var(--gold-dark); }
-.nav-item.active           { background: var(--gold-mid); color: var(--ink); font-weight: 700; }
-.nav-item.active .ni       { color: var(--ink); }
+.nav-item:hover            { background: rgba(255,255,255,0.1); color: var(--white); transform: translateX(3px); }
+.nav-item:hover .ni        { color: var(--gold); }
+.nav-item.active           { background: var(--red); color: var(--white); font-weight: 700; }
+.nav-item.active .ni       { color: var(--white); }
 
 .sidebar-footer {
-  padding: 14px 18px; border-top: 1px solid var(--border);
-  font-size: 11px; color: var(--ink-soft);
+  padding: 14px 18px; border-top: 1px solid rgba(255,255,255,0.1);
+  font-size: 11px; color: rgba(255,255,255,0.4);
   font-family: sans-serif; font-style: italic;
   flex-shrink: 0; white-space: nowrap; overflow: hidden;
 }
@@ -134,7 +127,7 @@ body {
 .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
 .topbar {
-  background: var(--white); border-bottom: 1px solid var(--border);
+  background: var(--navy-dark); border-bottom: 2px solid var(--navy-mid);
   padding: 0 20px; height: var(--topbar-h);
   display: flex; align-items: center; justify-content: space-between;
   gap: 12px; position: sticky; top: 0; z-index: 50; flex-shrink: 0;
@@ -145,19 +138,19 @@ body {
 .hamburger {
   display: none;
   width: 36px; height: 36px;
-  border: 1.5px solid var(--border-gold); border-radius: var(--r-md);
-  background: var(--white); cursor: pointer;
+  border: 1.5px solid rgba(255,255,255,0.15); border-radius: var(--r-md);
+  background: rgba(255,255,255,0.08); cursor: pointer;
   flex-direction: column; align-items: center; justify-content: center;
   gap: 5px; flex-shrink: 0; transition: background .15s;
 }
-.hamburger:hover { background: var(--gold-light); }
-.hamburger span { display: block; width: 16px; height: 2px; background: var(--ink-mid); border-radius: 2px; }
+.hamburger:hover { background: rgba(255,255,255,0.15); }
+.hamburger span { display: block; width: 16px; height: 2px; background: rgba(255,255,255,0.75); border-radius: 2px; }
 
-.page-title { font-size: 17px; font-weight: 700; color: var(--ink); white-space: nowrap; }
+.page-title { font-size: 17px; font-weight: 700; color: var(--white); white-space: nowrap; }
 
 .topbar-badge {
-  background: var(--gold-light); border: 1px solid var(--border-gold);
-  color: var(--gold-deep); font-size: 11px; font-family: sans-serif;
+  background: rgba(240,180,41,0.18); border: 1px solid rgba(240,180,41,0.3);
+  color: var(--gold); font-size: 11px; font-family: sans-serif;
   font-weight: 600; padding: 3px 10px; border-radius: var(--r-pill); white-space: nowrap;
 }
 
@@ -172,74 +165,74 @@ body {
 .btn {
   display: inline-flex; align-items: center; gap: 7px;
   padding: 8px 16px; font-size: 13px; font-family: sans-serif; font-weight: 600;
-  border-radius: var(--r-pill); border: 1.5px solid var(--border-gold);
-  background: var(--white); color: var(--ink-mid);
+  border-radius: var(--r-pill); border: 1.5px solid var(--border);
+  background: var(--white); color: var(--navy);
   cursor: pointer; transition: all .15s; white-space: nowrap;
 }
-.btn:hover { background: var(--gold-light); border-color: var(--gold-mid); color: var(--gold-deep); }
-.btn-primary { background: var(--gold-mid); border-color: var(--gold); color: var(--ink); }
-.btn-primary:hover { background: var(--gold); border-color: var(--gold-dark); }
+.btn:hover { background: var(--off-white); border-color: var(--navy); color: var(--navy); }
+.btn-primary { background: var(--navy); border-color: var(--navy-mid); color: var(--white); }
+.btn-primary:hover { background: var(--navy-light); border-color: var(--navy-light); }
 .btn-sm { padding: 5px 12px; font-size: 12px; }
-.btn-danger { border-color: #f0caca; color: #a03030; }
-.btn-danger:hover { background: #fff0f0; border-color: #e09090; }
-.btn-info { border-color: #b0d0ea; color: #1a5a9a; }
-.btn-info:hover { background: #eef4fc; border-color: #80aadd; }
+.btn-danger { border-color: rgba(192,57,43,0.3); color: var(--red); }
+.btn-danger:hover { background: var(--red-light); border-color: var(--red); }
+.btn-info { border-color: var(--border); color: var(--navy-mid); }
+.btn-info:hover { background: var(--off-white); border-color: var(--navy); }
 
 .stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; margin-bottom: 22px; }
-.stat-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 18px 16px; display: flex; flex-direction: column; gap: 8px; transition: border-color .15s; }
-.stat-card:hover { border-color: var(--border-gold); }
-.stat-icon { width: 36px; height: 36px; border-radius: var(--r-md); background: var(--gold-light); display: flex; align-items: center; justify-content: center; font-size: 15px; color: var(--gold-dark); }
-.stat-value { font-size: 24px; font-weight: 700; color: var(--ink); line-height: 1; }
-.stat-label { font-size: 12px; color: var(--ink-soft); font-family: sans-serif; }
+.stat-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 18px 16px; display: flex; flex-direction: column; gap: 8px; transition: border-color .15s; box-shadow: var(--shadow-sm); }
+.stat-card:hover { border-color: var(--gold); }
+.stat-icon { width: 36px; height: 36px; border-radius: var(--r-md); background: var(--navy); display: flex; align-items: center; justify-content: center; font-size: 15px; color: var(--gold); }
+.stat-value { font-size: 24px; font-weight: 700; color: var(--navy); line-height: 1; }
+.stat-label { font-size: 12px; color: var(--text-muted); font-family: sans-serif; }
 
-.panel { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); overflow: hidden; margin-bottom: 20px; }
-.panel-header { padding: 13px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
-.panel-title { font-size: 13.5px; font-weight: 700; color: var(--ink); font-family: sans-serif; display: flex; align-items: center; gap: 8px; }
-.panel-title i { color: var(--gold-dark); }
+.panel { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); overflow: hidden; margin-bottom: 20px; box-shadow: var(--shadow-sm); }
+.panel-header { padding: 13px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; background: var(--off-white); }
+.panel-title { font-size: 13.5px; font-weight: 700; color: var(--navy); font-family: sans-serif; display: flex; align-items: center; gap: 8px; }
+.panel-title i { color: var(--red); }
 .panel-body { padding: 18px; }
 
 .section-header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 18px; flex-wrap: wrap; }
-.section-title { font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 8px; }
-.section-title i { color: var(--gold-dark); font-size: 13px; }
+.section-title { font-size: 15px; font-weight: 700; color: var(--navy); display: flex; align-items: center; gap: 8px; }
+.section-title i { color: var(--red); font-size: 13px; }
 
 .table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
 table { width: 100%; border-collapse: collapse; font-family: sans-serif; font-size: 13px; min-width: 480px; }
-thead { background: var(--cream); }
-th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-soft); border-bottom: 1px solid var(--border); white-space: nowrap; }
-td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: var(--ink-mid); vertical-align: middle; }
+thead { background: var(--off-white); }
+th { padding: 10px 14px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); border-bottom: 1px solid var(--border); white-space: nowrap; }
+td { padding: 11px 14px; border-bottom: 1px solid var(--border); color: #1a2340; vertical-align: middle; }
 tbody tr:last-child td { border-bottom: none; }
-tbody tr:hover td { background: #fefdf8; }
+tbody tr:hover td { background: #f8faff; }
 
 .badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: var(--r-pill); font-size: 11px; font-family: sans-serif; font-weight: 600; }
-.badge-dept     { background: var(--gold-light); color: var(--gold-deep); border: 1px solid var(--border-gold); }
-.badge-score    { background: #f0f9ec; color: #3a7a28; border: 1px solid #c4e6b8; }
-.badge-duration { background: #f4f0fc; color: #6650a4; border: 1px solid #d4c8f4; }
-.badge-scheduled { background: #e8f4fd; color: #1565a0; border: 1px solid #b3d4f0; }
-.badge-completed { background: #f0f9ec; color: #3a7a28; border: 1px solid #c4e6b8; }
-.badge-cancelled { background: #fff0f0; color: #a03030; border: 1px solid #f0caca; }
+.badge-dept     { background: rgba(10,31,68,0.08); color: var(--navy-light); border: 1px solid rgba(10,31,68,0.15); }
+.badge-score    { background: rgba(26,127,75,0.1); color: var(--success); border: 1px solid rgba(26,127,75,0.2); }
+.badge-duration { background: var(--gold-light); color: var(--gold-dark); border: 1px solid rgba(240,180,41,0.3); }
+.badge-scheduled { background: rgba(10,31,68,0.08); color: var(--navy-light); border: 1px solid rgba(10,31,68,0.15); }
+.badge-completed { background: rgba(26,127,75,0.1); color: var(--success); border: 1px solid rgba(26,127,75,0.2); }
+.badge-cancelled { background: var(--red-light); color: var(--red); border: 1px solid rgba(192,57,43,0.2); }
 
 .form-group { display: flex; flex-direction: column; gap: 5px; }
-.form-label { font-size: 11px; font-family: sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--gold-deep); }
+.form-label { font-size: 11px; font-family: sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--navy-mid); }
 .form-control {
   padding: 9px 14px; border: 1.5px solid var(--border);
   border-radius: var(--r-pill); font-size: 13px; font-family: sans-serif;
-  background: var(--white); color: var(--ink);
+  background: var(--white); color: var(--navy);
   transition: border-color .15s, box-shadow .15s; width: 100%;
 }
-.form-control:focus { outline: none; border-color: var(--gold-mid); box-shadow: 0 0 0 3px rgba(245,212,114,.25); }
+.form-control:focus { outline: none; border-color: var(--navy-mid); box-shadow: 0 0 0 3px rgba(10,31,68,0.1); }
 textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height: 88px; }
 .form-row { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px,1fr)); gap: 14px; align-items: end; }
 
-.search-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 10px 14px; margin-bottom: 20px; }
-.search-field { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 130px; background: var(--cream); border: 1px solid var(--border); border-radius: var(--r-pill); padding: 6px 14px; }
-.search-field i { color: var(--gold-dark); font-size: 12px; flex-shrink: 0; }
-.search-field input, .search-field select { border: none; background: transparent; font-size: 13px; font-family: sans-serif; color: var(--ink); width: 100%; padding: 3px 0; }
+.search-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 10px 14px; margin-bottom: 20px; box-shadow: var(--shadow-sm); }
+.search-field { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 130px; background: var(--off-white); border: 1px solid var(--border); border-radius: var(--r-pill); padding: 6px 14px; }
+.search-field i { color: var(--navy-mid); font-size: 12px; flex-shrink: 0; }
+.search-field input, .search-field select { border: none; background: transparent; font-size: 13px; font-family: sans-serif; color: var(--navy); width: 100%; padding: 3px 0; }
 .search-field input:focus, .search-field select:focus { outline: none; }
-.search-field input::placeholder { color: var(--ink-soft); }
+.search-field input::placeholder { color: var(--text-muted); }
 
-.enrolment-bar { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 13px 18px; margin-bottom: 22px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: sans-serif; font-size: 13px; color: var(--ink-mid); }
-.enrolment-bar i { color: var(--gold-dark); font-size: 15px; }
-.enrolment-bar strong { color: var(--gold-deep); }
+.enrolment-bar { background: var(--navy); border-radius: var(--r-xl); padding: 13px 18px; margin-bottom: 22px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-family: sans-serif; font-size: 13px; color: rgba(255,255,255,0.7); }
+.enrolment-bar i { color: var(--gold); font-size: 15px; }
+.enrolment-bar strong { color: var(--gold); }
 
 /* Gallery grid */
 .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 14px; }
@@ -249,71 +242,72 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
   transition: border-color .2s, box-shadow .2s;
   aspect-ratio: 4/3;
   display: flex; align-items: center; justify-content: center;
+  box-shadow: var(--shadow-sm);
 }
-.gallery-card:hover { border-color: var(--border-gold); box-shadow: 0 4px 16px rgba(0,0,0,.08); }
+.gallery-card:hover { border-color: var(--gold); box-shadow: 0 4px 16px rgba(10,31,68,0.12); }
 .gallery-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .gallery-card .gallery-placeholder {
   width: 100%; height: 100%;
-  background: linear-gradient(135deg, var(--gold-light) 0%, var(--cream) 100%);
+  background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
   display: flex; flex-direction: column; align-items: center; justify-content: center;
-  gap: 8px; color: var(--gold-dark); font-family: sans-serif; font-size: 12px; font-weight: 600;
+  gap: 8px; color: rgba(255,255,255,0.6); font-family: sans-serif; font-size: 12px; font-weight: 600;
 }
-.gallery-card .gallery-placeholder i { font-size: 28px; color: var(--gold-mid); }
+.gallery-card .gallery-placeholder i { font-size: 28px; color: var(--gold); }
 
 /* Subjects grid */
 .subjects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 14px; margin-bottom: 20px; }
-.subject-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; transition: border-color .15s, box-shadow .15s; }
-.subject-card:hover { border-color: var(--border-gold); box-shadow: 0 2px 12px rgba(0,0,0,.06); }
+.subject-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 16px 18px; display: flex; flex-direction: column; gap: 10px; transition: border-color .15s, box-shadow .15s; box-shadow: var(--shadow-sm); }
+.subject-card:hover { border-color: var(--navy); box-shadow: 0 2px 12px rgba(10,31,68,0.1); }
 .subject-card-top { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; }
-.subject-card-name { font-size: 15px; font-weight: 700; color: var(--ink); }
-.subject-card-meta { font-size: 12px; font-family: sans-serif; color: var(--ink-soft); display: flex; flex-wrap: wrap; gap: 12px; }
+.subject-card-name { font-size: 15px; font-weight: 700; color: var(--navy); }
+.subject-card-meta { font-size: 12px; font-family: sans-serif; color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 12px; }
 .subject-card-meta span { display: flex; align-items: center; gap: 5px; }
-.subject-card-meta i { color: var(--gold-dark); }
+.subject-card-meta i { color: var(--red); }
 .subject-card-actions { display: flex; gap: 8px; padding-top: 6px; border-top: 1px solid var(--border); flex-wrap: wrap; }
 
 /* Department cards for subject browser */
 .dsb-dept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(175px,1fr)); gap: 14px; }
-.dsb-dept-card { background: var(--white); border: 1.5px solid var(--border-gold); border-radius: var(--r-xl); padding: 20px 18px 16px; cursor: pointer; transition: transform .18s cubic-bezier(.4,0,.2,1), box-shadow .18s, border-color .18s, background .18s; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; user-select: none; }
-.dsb-dept-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--gold-mid); opacity: 0; transition: opacity .18s; }
-.dsb-dept-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(184,144,30,.18); border-color: var(--gold); background: var(--gold-light); }
+.dsb-dept-card { background: var(--white); border: 1.5px solid var(--border); border-radius: var(--r-xl); padding: 20px 18px 16px; cursor: pointer; transition: transform .18s cubic-bezier(.4,0,.2,1), box-shadow .18s, border-color .18s, background .18s; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; user-select: none; box-shadow: var(--shadow-sm); }
+.dsb-dept-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--red); opacity: 0; transition: opacity .18s; }
+.dsb-dept-card:hover { transform: translateY(-4px); box-shadow: 0 8px 28px rgba(10,31,68,0.15); border-color: var(--navy); background: var(--off-white); }
 .dsb-dept-card:hover::before { opacity: 1; }
 .dsb-dept-card:active { transform: translateY(-1px); }
-.dsb-dept-icon { width: 44px; height: 44px; border-radius: var(--r-md); background: var(--gold-light); border: 1.5px solid var(--border-gold); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--gold-dark); transition: background .18s; }
-.dsb-dept-card:hover .dsb-dept-icon { background: var(--gold-mid); }
-.dsb-dept-name { font-size: 13.5px; font-weight: 700; color: var(--ink); font-family: sans-serif; line-height: 1.3; }
-.dsb-dept-code { font-size: 10px; font-family: sans-serif; font-weight: 700; letter-spacing: .08em; color: var(--gold-deep); background: var(--gold-light); border: 1px solid var(--border-gold); padding: 2px 9px; border-radius: var(--r-pill); display: inline-block; width: fit-content; }
-.dsb-dept-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; padding-top: 8px; border-top: 1px dashed var(--border-gold); font-family: sans-serif; font-size: 11px; color: var(--ink-soft); }
-.dsb-dept-count { display: flex; align-items: center; gap: 5px; font-weight: 700; color: var(--gold-deep); }
-.dsb-dept-arrow { font-size: 11px; color: var(--gold-dark); transition: transform .18s; }
+.dsb-dept-icon { width: 44px; height: 44px; border-radius: var(--r-md); background: var(--navy); border: 1.5px solid var(--navy-mid); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--gold); transition: background .18s; }
+.dsb-dept-card:hover .dsb-dept-icon { background: var(--navy-light); }
+.dsb-dept-name { font-size: 13.5px; font-weight: 700; color: var(--navy); font-family: sans-serif; line-height: 1.3; }
+.dsb-dept-code { font-size: 10px; font-family: sans-serif; font-weight: 700; letter-spacing: .08em; color: var(--red); background: var(--red-light); border: 1px solid rgba(192,57,43,0.2); padding: 2px 9px; border-radius: var(--r-pill); display: inline-block; width: fit-content; }
+.dsb-dept-footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px; padding-top: 8px; border-top: 1px dashed var(--border); font-family: sans-serif; font-size: 11px; color: var(--text-muted); }
+.dsb-dept-count { display: flex; align-items: center; gap: 5px; font-weight: 700; color: var(--navy); }
+.dsb-dept-arrow { font-size: 11px; color: var(--navy-mid); transition: transform .18s; }
 .dsb-dept-card:hover .dsb-dept-arrow { transform: translateX(4px); }
 
 /* Subjects drawer */
-.dsb-drawer-backdrop { position: fixed; inset: 0; background: rgba(30,24,10,.42); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
+.dsb-drawer-backdrop { position: fixed; inset: 0; background: rgba(6,15,34,0.72); z-index: 300; display: flex; align-items: center; justify-content: center; padding: 20px; opacity: 0; pointer-events: none; transition: opacity .25s ease; }
 .dsb-drawer-backdrop.open { opacity: 1; pointer-events: all; }
-.dsb-drawer { background: var(--white); border: 1.5px solid var(--border-gold); border-radius: var(--r-xl); box-shadow: 0 12px 48px rgba(0,0,0,.22); width: 100%; max-width: 620px; max-height: 88vh; overflow: hidden; display: flex; flex-direction: column; transform: translateY(24px) scale(.96); transition: transform .28s cubic-bezier(.4,0,.2,1); }
+.dsb-drawer { background: var(--white); border: 1.5px solid var(--border); border-radius: var(--r-xl); box-shadow: var(--shadow-lg); width: 100%; max-width: 620px; max-height: 88vh; overflow: hidden; display: flex; flex-direction: column; transform: translateY(24px) scale(.96); transition: transform .28s cubic-bezier(.4,0,.2,1); }
 .dsb-drawer-backdrop.open .dsb-drawer { transform: translateY(0) scale(1); }
-.dsb-drawer-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; background: linear-gradient(90deg,var(--gold-light) 0%,var(--cream) 100%); flex-shrink: 0; }
-.dsb-drawer-title { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 700; color: var(--ink); font-family: sans-serif; }
-.dsb-drawer-title i { color: var(--gold-dark); font-size: 14px; }
+.dsb-drawer-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--navy); flex-shrink: 0; }
+.dsb-drawer-title { display: flex; align-items: center; gap: 10px; font-size: 15px; font-weight: 700; color: var(--white); font-family: sans-serif; }
+.dsb-drawer-title i { color: var(--gold); font-size: 14px; }
 .dsb-drawer-body { overflow-y: auto; flex: 1; }
-.dsb-drawer-meta { padding: 12px 20px; background: var(--cream); border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 12px; font-family: sans-serif; font-size: 12px; color: var(--ink-soft); }
+.dsb-drawer-meta { padding: 12px 20px; background: var(--off-white); border-bottom: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 12px; font-family: sans-serif; font-size: 12px; color: var(--text-muted); }
 .dsb-drawer-meta span { display: flex; align-items: center; gap: 5px; }
-.dsb-drawer-meta i { color: var(--gold-dark); }
+.dsb-drawer-meta i { color: var(--red); }
 .dsb-subject-list { padding: 10px 16px 16px; }
 .dsb-subject-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 10px; border-radius: var(--r-lg); gap: 12px; flex-wrap: wrap; transition: background .12s; border-bottom: 1px solid var(--border); }
 .dsb-subject-row:last-child { border-bottom: none; }
-.dsb-subject-row:hover { background: var(--gold-light); }
+.dsb-subject-row:hover { background: var(--off-white); }
 .dsb-subject-info { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 120px; }
-.dsb-subject-name { font-size: 14px; font-weight: 700; color: var(--ink); font-family: sans-serif; }
-.dsb-subject-date { font-size: 11px; color: var(--ink-soft); font-family: sans-serif; }
+.dsb-subject-name { font-size: 14px; font-weight: 700; color: var(--navy); font-family: sans-serif; }
+.dsb-subject-date { font-size: 11px; color: var(--text-muted); font-family: sans-serif; }
 .dsb-subject-badges { display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
-.dsb-empty { padding: 36px 20px; text-align: center; font-family: sans-serif; font-size: 13px; color: var(--ink-soft); }
-.dsb-empty i { display: block; font-size: 28px; color: var(--border-gold); margin-bottom: 10px; }
+.dsb-empty { padding: 36px 20px; text-align: center; font-family: sans-serif; font-size: 13px; color: var(--text-muted); }
+.dsb-empty i { display: block; font-size: 28px; color: var(--border); margin-bottom: 10px; }
 
 /* Modal */
 .modal-backdrop {
   position: fixed; inset: 0;
-  background: rgba(30, 24, 10, .45);
+  background: rgba(6,15,34,0.72);
   z-index: 400;
   display: flex; align-items: center; justify-content: center;
   padding: 20px;
@@ -324,9 +318,9 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 
 .modal {
   background: var(--white);
-  border: 1px solid var(--border-gold);
+  border: 1px solid var(--border);
   border-radius: var(--r-xl);
-  box-shadow: var(--shadow-modal);
+  box-shadow: var(--shadow-lg);
   width: 100%;
   max-width: 540px;
   max-height: 90vh;
@@ -340,22 +334,22 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
   padding: 18px 22px 14px;
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  position: sticky; top: 0; background: var(--white); z-index: 2;
+  position: sticky; top: 0; background: var(--navy); z-index: 2;
   border-radius: var(--r-xl) var(--r-xl) 0 0;
 }
-.modal-title { font-size: 15px; font-weight: 700; color: var(--ink); display: flex; align-items: center; gap: 9px; }
-.modal-title i { color: var(--gold-dark); }
+.modal-title { font-size: 15px; font-weight: 700; color: var(--white); display: flex; align-items: center; gap: 9px; }
+.modal-title i { color: var(--gold); }
 .modal-close {
   width: 30px; height: 30px;
-  border: 1.5px solid var(--border-gold); border-radius: var(--r-pill);
-  background: var(--gold-light); cursor: pointer; font-size: 13px; color: var(--ink-mid);
+  border: 1.5px solid rgba(255,255,255,0.2); border-radius: var(--r-pill);
+  background: rgba(255,255,255,0.1); cursor: pointer; font-size: 13px; color: var(--white);
   display: flex; align-items: center; justify-content: center;
   flex-shrink: 0; transition: all .15s;
 }
-.modal-close:hover { background: var(--gold-mid); border-color: var(--gold); color: var(--ink); }
+.modal-close:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.35); }
 .modal-body { padding: 22px; display: flex; flex-direction: column; gap: 16px; }
 .modal-divider { height: 1px; background: var(--border); margin: 2px 0; }
-.modal-section-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; font-family: sans-serif; font-weight: 700; color: var(--ink-soft); margin-bottom: -4px; }
+.modal-section-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; font-family: sans-serif; font-weight: 700; color: var(--text-muted); margin-bottom: -4px; }
 .modal-footer {
   padding: 14px 22px 18px;
   border-top: 1px solid var(--border);
@@ -370,11 +364,11 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
   display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; margin-bottom: 22px;
 }
 .sch-empty {
-  background: var(--cream); border: 1.5px dashed var(--border-gold);
+  background: var(--off-white); border: 1.5px dashed var(--border);
   border-radius: var(--r-xl); padding: 36px; text-align: center;
-  color: var(--ink-soft); font-family: sans-serif; font-size: 13px;
+  color: var(--text-muted); font-family: sans-serif; font-size: 13px;
 }
-.sch-empty i { font-size: 26px; color: var(--border-gold); display: block; margin-bottom: 10px; }
+.sch-empty i { font-size: 26px; color: var(--border); display: block; margin-bottom: 10px; }
 
 /* Dept stats */
 .dept-stat-row {
@@ -383,16 +377,16 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 .dept-stat-mini {
   background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg);
   padding: 14px 16px; display: flex; align-items: center; gap: 12px;
-  transition: border-color .15s;
+  transition: border-color .15s; box-shadow: var(--shadow-sm);
 }
-.dept-stat-mini:hover { border-color: var(--border-gold); }
+.dept-stat-mini:hover { border-color: var(--gold); }
 .dept-stat-mini-icon {
   width: 34px; height: 34px; border-radius: var(--r-md);
-  background: var(--gold-light); display: flex; align-items: center;
-  justify-content: center; font-size: 14px; color: var(--gold-dark); flex-shrink: 0;
+  background: var(--navy); display: flex; align-items: center;
+  justify-content: center; font-size: 14px; color: var(--gold); flex-shrink: 0;
 }
-.dept-stat-mini-val { font-size: 20px; font-weight: 700; color: var(--ink); line-height: 1; }
-.dept-stat-mini-lbl { font-size: 11px; color: var(--ink-soft); font-family: sans-serif; }
+.dept-stat-mini-val { font-size: 20px; font-weight: 700; color: var(--navy); line-height: 1; }
+.dept-stat-mini-lbl { font-size: 11px; color: var(--text-muted); font-family: sans-serif; }
 
 @media (max-width: 900px) {
   .sidebar { position: fixed; left: 0; top: 0; bottom: 0; height: 100%; transform: translateX(calc(-1 * var(--sidebar-w) - 10px)); box-shadow: none; }
@@ -427,9 +421,9 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
   .dsb-drawer { max-width: 100%; }
 }
 
-.question-set-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 18px; margin-bottom: 16px; }
-.question-set-header { font-weight: 700; font-size: 16px; color: var(--gold-dark); margin-bottom: 12px; border-left: 4px solid var(--gold); padding-left: 12px; }
-.question-item { background: var(--cream); border-radius: var(--r-lg); padding: 14px; margin-top: 12px; }
+.question-set-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: 18px; margin-bottom: 16px; box-shadow: var(--shadow-sm); }
+.question-set-header { font-weight: 700; font-size: 16px; color: var(--red); margin-bottom: 12px; border-left: 4px solid var(--navy); padding-left: 12px; }
+.question-item { background: var(--off-white); border-radius: var(--r-lg); padding: 14px; margin-top: 12px; }
 </style>
 </head>
 <body>
@@ -617,7 +611,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         <span class="topbar-badge" id="topbarBadge">Overview</span>
       </div>
       <div class="topbar-right">
-        <button class="btn btn-sm"><i class="fas fa-bell"></i></button>
+        <button class="btn btn-sm" style="background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.75);"><i class="fas fa-bell"></i></button>
         <button class="btn btn-sm btn-primary"><i class="fas fa-user-circle"></i><span class="btn-label"> Admin</span></button>
       </div>
     </div>
@@ -696,18 +690,18 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 
       <!-- SUBJECTS with Department-Subject Browser -->
       <div id="subjects" class="page">
-        <div class="panel" style="border:2px solid var(--border-gold);margin-bottom:24px;">
-          <div class="panel-header" style="background:linear-gradient(90deg,var(--gold-light),var(--cream));">
-            <span class="panel-title"><i class="fas fa-sitemap"></i> Departments &amp; Subjects</span>
-            <span id="dsbTotalBadge" style="font-family:sans-serif;font-size:11px;color:var(--ink-soft);"></span>
+        <div class="panel" style="border:2px solid var(--navy-mid);margin-bottom:24px;">
+          <div class="panel-header" style="background:var(--navy);">
+            <span class="panel-title" style="color:var(--white);"><i class="fas fa-sitemap" style="color:var(--gold);"></i> Departments &amp; Subjects</span>
+            <span id="dsbTotalBadge" style="font-family:sans-serif;font-size:11px;color:rgba(255,255,255,0.55);"></span>
           </div>
           <div class="panel-body">
             <div class="dsb-dept-grid" id="dsbDeptGrid"></div>
           </div>
         </div>
 
-        <div class="search-bar" style="background:var(--gold-light);border:1px solid var(--gold);">
-          <div class="search-field" style="flex:2;"><i class="fas fa-book"></i><input type="text" id="subjectNameSearchInput" placeholder="Enter subject name to search…" /></div>
+        <div class="search-bar" style="background:var(--navy);border:1px solid var(--navy-mid);">
+          <div class="search-field" style="flex:2;background:rgba(255,255,255,0.08);border-color:rgba(255,255,255,0.15);"><i class="fas fa-book" style="color:var(--gold);"></i><input type="text" id="subjectNameSearchInput" placeholder="Enter subject name to search…" style="color:var(--white);" /></div>
           <button id="searchSubjectByNameBtn" class="btn btn-primary"><i class="fas fa-magnifying-glass"></i> Search Subject</button>
         </div>
         <div id="subjectNameSearchResults" class="subjects-grid" style="margin-bottom:20px;"></div>
@@ -755,8 +749,8 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 
       <!-- QUESTIONS -->
       <div id="questions" class="page">
-        <div class="panel" style="border:2px solid var(--gold);">
-          <div class="panel-header" style="background:var(--gold-light);"><span class="panel-title"><i class="fas fa-magnifying-glass"></i> Search Question Sets (by Department &amp; Subject)</span></div>
+        <div class="panel" style="border:2px solid var(--navy);">
+          <div class="panel-header" style="background:var(--navy);"><span class="panel-title" style="color:var(--white);"><i class="fas fa-magnifying-glass" style="color:var(--gold);"></i> Search Question Sets (by Department &amp; Subject)</span></div>
           <div class="panel-body">
             <div class="form-row">
               <div class="form-group"><label class="form-label">Department</label><input type="text" id="qsSearchDept" class="form-control" placeholder="e.g. Computer Science" /></div>
@@ -774,7 +768,6 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
             <div class="form-row">
               <div class="form-group"><label class="form-label">Department</label><input class="form-control" type="text" id="questionDept" placeholder="Computer Science" value="Computer Science" /></div>
               <div class="form-group"><label class="form-label">Subject</label><input class="form-control" type="text" id="questionSubject" placeholder="Algorithms" value="Algorithms" /></div>
-              <!-- <div class="form-group"><label class="form-label">Duration (min)</label><input class="form-control" type="number" id="questionDuration" placeholder="90" value="90" /></div> -->
             </div>
             <div style="display:flex;justify-content:flex-end;margin-top:18px;"><button id="nextToQuestionBtn" class="btn btn-primary">Next: Add Questions <i class="fas fa-arrow-right"></i></button></div>
           </div>
@@ -783,7 +776,6 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           <div class="info-bar">
             <div class="info-tag"><i class="fas fa-sitemap"></i> <span id="displayDept"></span></div>
             <div class="info-tag"><i class="fas fa-book"></i> <span id="displaySubject"></span></div>
-            <!-- <div class="info-tag"><i class="far fa-clock"></i> <span id="displayDuration"></span> min</div> -->
             <button id="changeDetailsBtn" class="btn btn-sm" style="margin-left:auto;"><i class="fas fa-pencil"></i> Change</button>
           </div>
           <form id="saveQuestion">
@@ -815,7 +807,6 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
                     <input type="text" id="correctAss" name="correctAss" class="form-control">
                   </div>
                   <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
-                    <!-- <button id="addAnotherQuestionBtn" class="btn"><i class="fas fa-plus"></i> Add Another</button> -->
                     <button id="saveQuestionBtn" class="btn btn-primary"><i class="fas fa-cloud-upload-alt"></i> Save Question</button>
                   </div>
                 </div>
@@ -865,8 +856,8 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           <div class="panel-body">
             <form id="departmentform">
               <div class="form-row">
-                <div class="form-group"><label class="form-label">Department Name <span style="color:#c44;font-size:10px;">*</span></label><input class="form-control" type="text" id="newDeptName" placeholder="e.g. Computer Science" name="department" /></div>
-                <div class="form-group"><label class="form-label">Department Code <span style="color:#c44;font-size:10px;">*</span></label><input class="form-control" type="text" id="newDeptCode" placeholder="e.g. CS" style="text-transform:uppercase;" name="DepartmentCode" /></div>
+                <div class="form-group"><label class="form-label">Department Name <span style="color:var(--red);font-size:10px;">*</span></label><input class="form-control" type="text" id="newDeptName" placeholder="e.g. Computer Science" name="department" /></div>
+                <div class="form-group"><label class="form-label">Department Code <span style="color:var(--red);font-size:10px;">*</span></label><input class="form-control" type="text" id="newDeptCode" placeholder="e.g. CS" style="text-transform:uppercase;" name="DepartmentCode" /></div>
                 <div class="form-group"><label class="form-label">Head of Department</label><input class="form-control" type="text" id="newDeptHOD" placeholder="e.g. Dr. Smith" name="HeadOfDepartment" /></div>
                 <div class="form-group"><label class="form-label">Description</label><input class="form-control" type="text" id="newDeptDesc" placeholder="Short description (optional)" name="Description" /></div>
               </div>
@@ -886,7 +877,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         <div class="panel">
           <div class="panel-header">
             <span class="panel-title"><i class="fas fa-building-columns"></i> Department List</span>
-            <span id="deptCount" style="font-family:sans-serif;font-size:12px;color:var(--ink-soft);"></span>
+            <span id="deptCount" style="font-family:sans-serif;font-size:12px;color:var(--text-muted);"></span>
           </div>
           <div class="table-wrap" id="displayAnyErr">
             <table>
@@ -917,18 +908,15 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 
         <div class="schedule-stats-grid">
           <div class="stat-card"><div class="stat-icon"><i class="fas fa-calendar-check"></i></div><div class="stat-value" id="schStatTotal">0</div><div class="stat-label">Total Scheduled</div></div>
-          <!-- <div class="stat-card"><div class="stat-icon" style="background:#e8f4fd;color:#1565a0;"><i class="fas fa-hourglass-half"></i></div><div class="stat-value" id="schStatUpcoming">0</div><div class="stat-label">Upcoming</div></div>
-          <div class="stat-card"><div class="stat-icon" style="background:#f0f9ec;color:#3a7a28;"><i class="fas fa-circle-check"></i></div><div class="stat-value" id="schStatCompleted">0</div><div class="stat-label">Completed</div></div>
-          <div class="stat-card"><div class="stat-icon" style="background:#fff0f0;color:#a03030;"><i class="fas fa-ban"></i></div><div class="stat-value" id="schStatCancelled">0</div><div class="stat-label">Cancelled</div></div> -->
         </div>
 
         <div class="search-bar">
-          <div class="search-field" style="flex:2;"><i class="fas fa-magnifying-glass"></i><input type="text" id="schSearchInput" placeholder="Search department" id/></div>
+          <div class="search-field" style="flex:2;"><i class="fas fa-magnifying-glass"></i><input type="text" id="schSearchInput" placeholder="Search department"/></div>
           <div class="search-field"><i class="fas fa-filter"></i><button id="schStatusFilter" onclick="seacrhDepSch()">Search</button></div>
         </div>
 
         <div class="panel">
-          <div class="panel-header"><span class="panel-title"><i class="fas fa-table-list"></i> Exam Schedule List</span><span id="schTableCount" style="font-family:sans-serif;font-size:12px;color:var(--ink-soft);"></span></div>
+          <div class="panel-header"><span class="panel-title"><i class="fas fa-table-list"></i> Exam Schedule List</span><span id="schTableCount" style="font-family:sans-serif;font-size:12px;color:var(--text-muted);"></span></div>
           <div class="table-wrap">
             <table>
               <thead>
@@ -941,7 +929,6 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
                   <th>Time (Start)</th>
                   <th>Time (End)</th>
                   <th>Duration</th>
-                  <!-- <th>Status</th> -->
                   <th>Edit</th>
                   <th>Send TIme Time</th>
                 </tr>
@@ -958,57 +945,6 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 </div>
 
 <script>
-// const DEPT_META = {
-//   'Computer Science': { icon:'fas fa-microchip',            code:'CS',  hod:'Dr. Ada Lovelace',    desc:'Software, algorithms, data structures' },
-//   'Mathematics':      { icon:'fas fa-square-root-variable',  code:'MTH', hod:'Prof. Isaac Newton',   desc:'Pure and applied mathematics' },
-//   'Physics':          { icon:'fas fa-atom',                  code:'PHY', hod:'Dr. Richard Feynman',  desc:'Classical and modern physics' },
-//   'Chemistry':        { icon:'fas fa-flask',                 code:'CHM', hod:'Dr. Marie Curie',      desc:'Organic, inorganic, physical chem' },
-//   'Literature':       { icon:'fas fa-feather-pointed',       code:'LIT', hod:'Prof. William Blake',   desc:'English and world literature' }
-// };
-
-// let subjectsList = [
-//   { dept:'Computer Science', name:'Algorithms',        duration:90, totalQs:20, created:new Date(2024,8,1) },
-//   { dept:'Computer Science', name:'Data Structures',   duration:60, totalQs:15, created:new Date(2024,8,1) },
-//   { dept:'Computer Science', name:'Operating Systems', duration:90, totalQs:18, created:new Date(2024,9,1) },
-//   { dept:'Mathematics',      name:'Calculus I',        duration:90, totalQs:25, created:new Date(2024,8,1) },
-//   { dept:'Mathematics',      name:'Linear Algebra',    duration:90, totalQs:22, created:new Date(2024,8,1) },
-//   { dept:'Physics',          name:'Mechanics',         duration:90, totalQs:20, created:new Date(2024,8,1) },
-//   { dept:'Physics',          name:'Electromagnetism',  duration:90, totalQs:18, created:new Date(2024,8,1) },
-//   { dept:'Chemistry',        name:'Organic Chemistry', duration:90, totalQs:22, created:new Date(2024,8,1) },
-//   { dept:'Literature',       name:'African Literature',duration:60, totalQs:15, created:new Date(2024,8,1) }
-// ];
-
-// let departmentsData = [
-//   { name:'Computer Science', code:'CS',  hod:'Dr. Ada Lovelace',   desc:'Software, algorithms, data structures', created:new Date(2024,8,1) },
-//   { name:'Mathematics',      code:'MTH', hod:'Prof. Isaac Newton',  desc:'Pure and applied mathematics',          created:new Date(2024,8,1) },
-//   { name:'Physics',          code:'PHY', hod:'Dr. Richard Feynman', desc:'Classical and modern physics',          created:new Date(2024,8,1) },
-//   { name:'Chemistry',        code:'CHM', hod:'Dr. Marie Curie',     desc:'Organic, inorganic, physical chem',     created:new Date(2024,8,1) },
-//   { name:'Literature',       code:'LIT', hod:'Prof. William Blake',  desc:'English and world literature',          created:new Date(2024,8,1) }
-// ];
-
-// let questionSetsData = [
-//   { dept:'Computer Science', subject:'Algorithms', questions:[
-//     { text:'What is the time complexity of merge sort?', options:['O(n)','O(n log n)','O(n^2)','O(log n)'], correct:'B' },
-//     { text:'Which algorithm uses divide and conquer?',   options:['Bubble Sort','Merge Sort','Insertion Sort','Selection Sort'], correct:'B' }
-//   ]},
-//   { dept:'Computer Science', subject:'Data Structures', questions:[
-//     { text:'What data structure uses LIFO?', options:['Queue','Stack','Array','Linked List'], correct:'B' }
-//   ]},
-//   { dept:'Mathematics', subject:'Calculus I', questions:[
-//     { text:'Derivative of sin(x) is?', options:['cos(x)','-cos(x)','sin(x)','-sin(x)'], correct:'A' }
-//   ]},
-//   { dept:'Physics', subject:'Mechanics', questions:[
-//     { text:"Newton's second law formula?", options:['F=ma','E=mc²','F=Gm1m2/r²','a=v/t'], correct:'A' }
-//   ]}
-// ];
-
-// let scheduledExams = [
-//   { id:1, dept:'Computer Science', deptCode:'CS',  deptID:'DEPT-CS-001',  subject:'Algorithms',       date:'2026-04-10', time:'09:00', duration:90, venue:'Computer Lab 1', maxStudents:50,  status:'Scheduled' },
-//   { id:2, dept:'Mathematics',      deptCode:'MTH', deptID:'DEPT-MTH-002', subject:'Calculus I',        date:'2026-04-15', time:'10:00', duration:90, venue:'Hall B',          maxStudents:80,  status:'Scheduled' },
-//   { id:3, dept:'Physics',          deptCode:'PHY', deptID:'DEPT-PHY-003', subject:'Mechanics',         date:'2026-03-20', time:'08:00', duration:90, venue:'Hall A',          maxStudents:60,  status:'Completed' },
-//   { id:4, dept:'Chemistry',        deptCode:'CHM', deptID:'DEPT-CHM-004', subject:'Organic Chemistry', date:'2026-03-25', time:'09:30', duration:75, venue:'Lab 3',           maxStudents:45,  status:'Cancelled' }
-// ];
-// let scheduleIdCounter = scheduledExams.length + 1;
 const getID = localStorage.getItem('cbt-admin-email');
 const getEmail = localStorage.getItem('cbt-admin-ID');
 if(!getID && !getEmail){
@@ -1127,85 +1063,12 @@ async function setLastSeen(){
 function renderDSB() {
   const gridEl = document.getElementById('dsbDeptGrid');
   const badgeEl = document.getElementById('dsbTotalBadge');
-  // if (!gridEl) return;
-  // const depts = Object.keys(DEPT_META);
-  // if (badgeEl) badgeEl.textContent = subjectsList.length + ' subjects across ' + depts.length + ' departments';
-  // gridEl.innerHTML = depts.map(d => {
-  //   const meta = DEPT_META[d];
-  //   const count = subjectsList.filter(s => s.dept === d).length;
-  //   return `<div class="dsb-dept-card" onclick="openDsbDrawer('${d.replace(/'/g,"\\'")}')">
-  //     <div class="dsb-dept-icon"><i class="${meta.icon}"></i></div>
-  //     <div><div class="dsb-dept-name">${d}</div><div class="dsb-dept-code">${meta.code}</div></div>
-  //     <div class="dsb-dept-footer"><div class="dsb-dept-count"><i class="fas fa-book" style="font-size:10px;"></i>&nbsp;${count} subject${count!==1?'s':''}</div><i class="fas fa-chevron-right dsb-dept-arrow"></i></div>
-  //   </div>`;
-  // }).join('');
 }
-
-// let _drawerDept = '';
-
-// window.openDsbDrawer = function(deptName) {
-//   _drawerDept = deptName;
-//   const meta = DEPT_META[deptName] || {};
-//   const subjects = subjectsList.filter(s => s.dept === deptName);
-//   const totalQs = subjects.reduce((a,s) => a+(s.totalQs||0), 0);
-//   document.getElementById('dsbDrawerTitle').innerHTML = `<i class="${meta.icon||'fas fa-building'}"></i> ${deptName} <span class="badge badge-dept" style="font-size:10px;">${meta.code}</span>`;
-//   document.getElementById('dsbDrawerBody').innerHTML = `
-//     <div class="dsb-drawer-meta">
-//       <span><i class="fas fa-user-tie"></i> ${meta.hod||'—'}</span>
-//       <span><i class="fas fa-book"></i> ${subjects.length} subject${subjects.length!==1?'s':''}</span>
-//       <span><i class="fas fa-circle-question"></i> ${totalQs} questions</span>
-//       <span><i class="fas fa-align-left"></i> ${meta.desc||''}</span>
-//     </div>
-//     <div class="dsb-subject-list">
-//       ${subjects.length === 0 ? `<div class="dsb-empty"><i class="fas fa-folder-open"></i>No subjects yet for this department.<br><small>Use the form below to add one.</small></div>` : subjects.map(s => {
-//         const idx = subjectsList.indexOf(s);
-//         return `<div class="dsb-subject-row">
-//           <div class="dsb-subject-info"><div class="dsb-subject-name">${s.name}</div><div class="dsb-subject-date">Added ${s.created?s.created.toLocaleDateString():'—'}</div></div>
-//           <div class="dsb-subject-badges">
-//             <span class="badge badge-duration"><i class="far fa-clock"></i> ${s.duration} min</span>
-//             <span class="badge badge-score"><i class="fas fa-circle-question"></i> ${s.totalQs||0} Qs</span>
-//             <button class="btn btn-sm" style="padding:4px 10px;" onclick="openEditModal(${idx})"><i class="fas fa-pen"></i></button>
-//             <button class="btn btn-sm btn-danger" style="padding:4px 10px;" onclick="deleteSubjectFromDrawer(${idx},'${deptName.replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i></button>
-//           </div>
-//         </div>`;
-//       }).join('')}
-//     </div>`;
-//   document.getElementById('dsbDrawerBackdrop').classList.add('open');
-//   document.body.style.overflow = 'hidden';
-// };
 
 window.closeDsbDrawer = function() {
   document.getElementById('dsbDrawerBackdrop').classList.remove('open');
   document.body.style.overflow = '';
 };
-
-// window.deleteSubjectFromDrawer = function(idx, deptName) {
-//   if (confirm('Remove subject: ' + subjectsList[idx]?.name + '?')) {
-//     subjectsList.splice(idx, 1);
-//     renderDSB();
-//     renderSubjects(document.getElementById('deptSearchInput')?.value || '');
-//     renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value || '');
-//     openDsbDrawer(deptName);
-//   }
-// };
-
-/*
-   EDIT SUBJECT MODAL
-   */
-// let editingIndex = -1;
-
-// window.openEditModal = function(idx) {
-//   const sub = subjectsList[idx];
-//   if (!sub) return;
-//   editingIndex = idx;
-//   document.getElementById('edit-dept').value = sub.dept;
-//   document.getElementById('edit-name').value = sub.name;
-//   document.getElementById('edit-duration').value = sub.duration;
-//   document.getElementById('edit-totalqs').value = sub.totalQs || 0;
-//   document.getElementById('edit-date').value = sub.created ? sub.created.toISOString().split('T')[0] : '';
-//   document.getElementById('editModal').classList.add('open');
-//   document.body.style.overflow = 'hidden';
-// };
 
 window.closeEditModal = function() {
   document.getElementById('editModal').classList.remove('open');
@@ -1213,24 +1076,6 @@ window.closeEditModal = function() {
   editingIndex = -1;
 };
 
-// window.saveEditSubject = function() {
-//   if (editingIndex < 0) return;
-//   const dept = document.getElementById('edit-dept').value.trim();
-//   const name = document.getElementById('edit-name').value.trim();
-//   const duration = parseInt(document.getElementById('edit-duration').value);
-//   const totalQs = parseInt(document.getElementById('edit-totalqs').value);
-//   if (!dept||!name||isNaN(duration)) { alert('Required fields missing'); return; }
-//   subjectsList[editingIndex] = { ...subjectsList[editingIndex], dept, name, duration, totalQs: isNaN(totalQs)?0:totalQs };
-//   closeEditModal();
-//   renderDSB();
-//   renderSubjects(document.getElementById('deptSearchInput')?.value||'');
-//   renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value||'');
-//   if (_drawerDept) openDsbDrawer(dept || _drawerDept);
-// };
-
-/*
-   SUBJECT SEARCH RENDERS
-   */
 function renderSubjectsByName(searchName) {
   const container = document.getElementById('subjectNameSearchResults');
   if (!container) return;
@@ -1268,31 +1113,15 @@ window.deleteSubject = function(i) {
   }
 };
 
-/*
-   SCHEDULE EXAM FUNCTIONS
-   */
 function populateSchDeptDropdown(selectId) {
   const sel = document.getElementById(selectId);
   if (!sel) return;
   const current = sel.value;
   sel.innerHTML = '<option value="">— Select Department —</option>';
-  // departmentsData.forEach(d => {
-  //   const opt = document.createElement('option');
-  //   opt.value = d.name;
-  //   opt.textContent = `${d.name} (${d.code})`;
-  //   if (d.name === current) opt.selected = true;
-  //   sel.appendChild(opt);
-  // });
 }
 
 function openScheduleModal() {
   populateSchDeptDropdown('schDept');
-  // document.getElementById('schSubject').value = '';
-  // document.getElementById('schDate').value = new Date().toISOString().split('T')[0];
-  // document.getElementById('schTime').value = '09:00';
-  // document.getElementById('schDuration').value = '90';
-  // document.getElementById('schMaxStudents').value = '';
-  // document.getElementById('schVenue').value = '';
   openGenericModal('scheduleModal');
 }
 
@@ -1323,22 +1152,6 @@ async function saveScheduledExam() {
   else{
     alert(result.response);
   }
-
-  // const deptName = document.getElementById('schDept').value;
-  // const subject = document.getElementById('schSubject').value.trim();
-  // const date = document.getElementById('schDate').value;
-  // const time = document.getElementById('schTime').value;
-  // const duration = parseInt(document.getElementById('schDuration').value) || 0;
-  // const maxStudents = parseInt(document.getElementById('schMaxStudents').value) || 0;
-  // const venue = document.getElementById('schVenue').value.trim();
-  // if (!deptName||!subject||!date||!time){ alert('Please fill all required fields (*).'); return; }
-  // const dept = departmentsData.find(d => d.name===deptName);
-  // const code = dept ? dept.code : 'N/A';
-  // const id = scheduleIdCounter++;
-  // scheduledExams.push({ id, dept:deptName, deptCode:code, deptID:`DEPT-${code}-${String(id).padStart(3,'0')}`, subject, date, time, duration, venue:venue||'TBA', maxStudents, status:'Scheduled' });
-  // closeGenericModal('scheduleModal');
-  // renderScheduleTable(document.getElementById('schSearchInput')?.value||'');
-  // updateScheduleStats();
 }
 
 async function displayScheduledTime(){
@@ -1463,7 +1276,6 @@ async function seacrhDepSch(){
 
     const result = await api.json();
     if(result.status==="success"){
-      // alert(result.response);
       displayScheduledTime();
       document.getElementById('editScheduleModal').style.display="none";
     }
@@ -1489,23 +1301,8 @@ async function seacrhDepSch(){
     }
   }
 
-
-/* Edit Schedule Exam functions */
-// let editingScheduleId = null;
-
 function openEditScheduleModal(timeid) {
-  // const exam = scheduledExams.find(e => e.id === id);
-  // if (!exam) return;
   document.getElementById("timeID").value=timeid;
-  // populateSchDeptDropdown('editSchDept');
-  // document.getElementById('editSchDept').value = exam.dept;
-  // document.getElementById('editSchSubject').value = exam.subject;
-  // document.getElementById('editSchDate').value = exam.date;
-  // document.getElementById('editSchTime').value = exam.time;
-  // document.getElementById('editSchDuration').value = exam.duration;
-  // document.getElementById('editSchMaxStudents').value = exam.maxStudents;
-  // document.getElementById('editSchVenue').value = exam.venue;
-  // document.getElementById('editSchStatus').value = exam.status;
   document.getElementById('editScheduleModal').classList.add('open');
   document.body.style.overflow = 'hidden';
 };
@@ -1517,64 +1314,10 @@ window.closeEditScheduleModal = function() {
 };
 
 window.saveEditScheduleExam = function() {
-  // if (editingScheduleId === null) return;
-  // const examIndex = scheduledExams.findIndex(e => e.id === editingScheduleId);
-  // if (examIndex === -1) return;
-  // const deptName = document.getElementById('editSchDept').value;
-  // const dept = departmentsData.find(d => d.name === deptName);
-  // const code = dept ? dept.code : 'N/A';
-  // scheduledExams[examIndex] = {
-  //   ...scheduledExams[examIndex],
-  //   dept: deptName,
-  //   deptCode: code,
-  //   subject: document.getElementById('editSchSubject').value.trim(),
-  //   date: document.getElementById('editSchDate').value,
-  //   time: document.getElementById('editSchTime').value,
-  //   duration: parseInt(document.getElementById('editSchDuration').value) || 0,
-  //   maxStudents: parseInt(document.getElementById('editSchMaxStudents').value) || 0,
-  //   venue: document.getElementById('editSchVenue').value.trim() || 'TBA',
-  //   status: document.getElementById('editSchStatus').value
-  // };
-  // closeEditScheduleModal();
-  // renderScheduleTable(document.getElementById('schSearchInput')?.value||'');
-  // updateScheduleStats();
 };
 
 function renderScheduleTable(filter) {
-  // const tbody = document.getElementById('scheduleTableBody');
-  // const noMsg = document.getElementById('noScheduleMsg');
-  // const countEl = document.getElementById('schTableCount');
-  // const statusVal = document.getElementById('schStatusFilter')?.value || '';
-  // const q = (filter||'').trim().toLowerCase();
-  // const list = scheduledExams.filter(ex => {
-  //   const matchText = !q || ex.dept.toLowerCase().includes(q) || ex.subject.toLowerCase().includes(q) || ex.deptCode.toLowerCase().includes(q) || ex.deptID.toLowerCase().includes(q);
-  //   const matchStatus = !statusVal || ex.status===statusVal;
-  //   return matchText && matchStatus;
-  // });
-  // if(countEl) countEl.textContent = list.length + ' exam' + (list.length!==1?'s':'');
-  // if(!list.length){ tbody.innerHTML=''; if(noMsg) noMsg.style.display='block'; return; }
-  // if(noMsg) noMsg.style.display='none';
-  // tbody.innerHTML = list.map((ex,i) => {
-  //   const badgeCls = ex.status==='Scheduled'?'badge-scheduled': ex.status==='Completed'?'badge-completed':'badge-cancelled';
-  //   const fmtDate = ex.date ? new Date(ex.date+'T00:00').toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}) : '—';
-  //   return `<tr><td style="font-weight:600;">${i+1}</td><td style="font-weight:700;">${ex.dept}</td><td><span class="badge badge-dept">${ex.deptCode}</span></td><td style="font-size:11px;">${ex.deptID}</td><td>${ex.subject}</td><td>${fmtDate}</td><td>${ex.time}</td><td>${ex.duration} min</td><td>${ex.venue}</td><td style="text-align:center;">${ex.maxStudents||'—'}</td><td><span class="badge ${badgeCls}">${ex.status}</span></td><td style="display:flex;gap:6px;"><button class="btn btn-sm btn-info" onclick="openEditScheduleModal(${ex.id})"><i class="fas fa-pen"></i></button><button class="btn btn-sm btn-danger" onclick="deleteScheduledExam(${ex.id})"><i class="fas fa-trash"></i></button></td></tr>`;
-  // }).join('');
 }
-
-// function updateScheduleStats() {
-//   document.getElementById('schStatTotal').textContent = scheduledExams.length;
-//   document.getElementById('schStatUpcoming').textContent = scheduledExams.filter(e=>e.status==='Scheduled').length;
-//   document.getElementById('schStatCompleted').textContent = scheduledExams.filter(e=>e.status==='Completed').length;
-//   document.getElementById('schStatCancelled').textContent = scheduledExams.filter(e=>e.status==='Cancelled').length;
-// }
-
-// window.deleteScheduledExam = function(id) {
-//   if(confirm('Remove this scheduled exam?')){
-//     scheduledExams = scheduledExams.filter(e=>e.id!==id);
-//     renderScheduleTable(document.getElementById('schSearchInput')?.value||'');
-//     updateScheduleStats();
-//   }
-// };
 
 function openGenericModal(id) {
   document.getElementById(id).classList.add('open');
@@ -1587,25 +1330,6 @@ function closeGenericModal(id) {
 document.getElementById('scheduleModal')?.addEventListener('click', function(e){ if(e.target === this) closeGenericModal('scheduleModal'); });
 document.getElementById('editScheduleModal')?.addEventListener('click', function(e){ if(e.target === this) closeEditScheduleModal(); });
 
-/*
-   QUESTION SETS
-   */
-// function renderQuestionSetsByDeptSubj(deptFilter, subjFilter) {
-//   const container = document.getElementById('questionSetsResultsContainer');
-//   const noMsg = document.getElementById('noQsSetsMsg');
-//   const filtered = questionSetsData.filter(qs => {
-//     let md = !deptFilter.trim() || qs.dept.toLowerCase().includes(deptFilter.toLowerCase());
-//     let ms = !subjFilter.trim() || qs.subject.toLowerCase().includes(subjFilter.toLowerCase());
-//     return md && ms;
-//   });
-//   if (!filtered.length) { container.innerHTML=''; noMsg.style.display='block'; return; }
-//   noMsg.style.display='none';
-//   container.innerHTML = filtered.map(qs => `<div class="panel question-set-card"><div class="question-set-header"><i class="fas fa-layer-group"></i> ${qs.dept} · ${qs.subject} (${qs.questions.length} questions)</div>${qs.questions.map((q,i)=>`<div class="question-item"><strong>Q${i+1}:</strong> ${q.text}<div style="margin-top:8px;">${q.options.map((opt,idx)=>`<div>${String.fromCharCode(65+idx)}. ${opt}</div>`).join('')}</div><span class="badge badge-score" style="margin-top:6px;display:inline-flex;">✓ Correct: ${q.correct}</span></div>`).join('')}</div>`).join('');
-// }
-
-/*
-   STUDENTS
-   */
 async function getStudentList() {
   const tbody = document.getElementById('studentTableBody');
   const e = {role:'user'};
@@ -1836,8 +1560,6 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
     }
  })
 
- //Questions
-
  document.getElementById("searchQuestionSetsBtn").addEventListener("click", async ()=>{
   const dep = document.getElementById("qsSearchDept").value.trim();
   const subject = document.getElementById("qsSearchSubject").value.trim();
@@ -1924,167 +1646,6 @@ document.getElementById("saveQuestionBtn").addEventListener("click", async ()=>{
     alert(result.response);
   }
 })
-
-
-/*
-   DEPARTMENTS
-   */
-// function renderDeptTable(filter) {
-//   const tbody = document.getElementById('deptTableBody');
-//   const noMsg = document.getElementById('noDeptMsg');
-//   const countEl = document.getElementById('deptCount');
-//   if(!tbody) return;
-//   const list = filter.trim() ? departmentsData.filter(d => d.name.toLowerCase().includes(filter.toLowerCase()) || d.code.toLowerCase().includes(filter.toLowerCase()) || (d.hod||'').toLowerCase().includes(filter.toLowerCase())) : departmentsData;
-//   if(countEl) countEl.textContent = list.length + ' department' + (list.length!==1?'s':'');
-//   if(!list.length){ tbody.innerHTML=''; if(noMsg) noMsg.style.display='block'; return; }
-//   if(noMsg) noMsg.style.display='none';
-//   tbody.innerHTML = list.map((d,i) => `<tr><td>${i+1}</td><td><div style="font-weight:700;">${d.name}</div>${d.desc?`<div style="font-size:11px;">${d.desc}</div>`:''}</td><td><span class="badge badge-dept">${d.code}</span></td><td>${d.hod||'<span style="font-style:italic;">Not assigned</span>'}</td><td>${d.desc||'—'}</td><td>${d.created.toLocaleDateString()}</td><td><button class="btn btn-sm btn-danger" onclick="deleteDepartment('${d.name.replace(/'/g,"\\'")}')"><i class="fas fa-trash"></i></button></td></tr>`).join('');
-// }
-
-// window.deleteDepartment = function(name) {
-//   if(confirm('Remove department: '+name+'?')){
-//     departmentsData = departmentsData.filter(d => d.name!==name);
-//     renderDeptTable(document.getElementById('deptListSearch')?.value||'');
-//     syncDeptStats();
-//     populateSchDeptDropdown('schDept');
-//     populateSchDeptDropdown('editSchDept');
-//   }
-// };
-
-// function syncDeptStats() {
-//   const total = departmentsData.length;
-//   document.getElementById('stat-depts').textContent = total;
-//   document.getElementById('deptTotalCount').textContent = total;
-//   document.getElementById('deptHODCount').textContent = departmentsData.filter(d=>d.hod).length;
-// }
-
-// document.getElementById("saveDeptBtn")?.addEventListener("click", async () => {
-//   const data = document.getElementById("departmentform");
-//   const form = new FormData(data);
-//   const time = new Date().toLocaleTimeString() + " " + new Date().toLocaleDateString();
-//   form.append("date_created", time);
-//   form.append("role", "set");
-//   try {
-//     const api = await fetch('/cbt/ansofra/apiadmin/set/department', { method:"POST", body:form });
-//     const result = await api.json();
-//     if(result.status==='success'){
-//       alert("save successful");
-//       renderDeptTable(document.getElementById('deptListSearch')?.value || '');
-//       syncDeptStats();
-//       document.getElementById('newDeptName').value = '';
-//       document.getElementById('newDeptCode').value = '';
-//       document.getElementById('newDeptHOD').value = '';
-//       document.getElementById('newDeptDesc').value = '';
-//       populateSchDeptDropdown('schDept');
-//       populateSchDeptDropdown('editSchDept');
-//     } else {
-//       alert(`${result.response}`);
-//     }
-//   } catch(e) { alert("Could not reach server"); }
-// });
-
-// document.getElementById("deptSearchBtn")?.addEventListener("click", async () => {
-//   const type = document.getElementById("deptListSearch").value.trim();
-//   const e = {DepartmentCode:type};
-//   try {
-//     const api = await fetch('/cbt/ansofra/apiadmin/search/dep/code', { method:'POST', headers:{'Content-type':'application/json'}, body:JSON.stringify(e) });
-//     const results = await api.json();
-//     if(results.status==="success"){
-//       const response = results.response;
-//       let output = "";
-//       for(let i=0; i<response.length; i++){
-//         const r = response[i];
-//         output += `<tr><td>${i+1}</td><td><div style="font-weight:700;">${r.department}</div></td><td><span class="badge badge-dept">${r.DepartmentCode}</span></td><td>${r.HeadOfDepartment}</td><td>${r.Description}</td><td>${r.Date_Created}</td><td><button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button></td></tr>`;
-//       }
-//       document.getElementById("deptTableBody").innerHTML = output;
-//     } else {
-//       renderDeptTable(type);
-//     }
-//   } catch(e) { renderDeptTable(type); }
-// });
-
-// document.getElementById('clearDeptBtn')?.addEventListener('click', () => {
-//   ['newDeptName','newDeptCode','newDeptHOD','newDeptDesc'].forEach(id => document.getElementById(id).value='');
-// });
-// document.getElementById('deptListSearch')?.addEventListener('keyup', function(e){ if(e.key==='Enter') renderDeptTable(this.value); });
-
-// /*
-//    DASHBOARD API CALLS
-//    */
-// const getID = localStorage.getItem('cbt-admin-email');
-// const getEmail = localStorage.getItem('cbt-admin-ID');
-
-// async function getDetail() {
-//   try {
-//     const api = await fetch('/cbt/ansofra/apiadmin/Details', { method:'POST', body:{email:getEmail, ID:getID} });
-//     const result = await api.json();
-//     if(result.status==="success"){
-//       document.getElementById("profile-id").textContent = result.response.ID;
-//       document.getElementById("profile-email").textContent = result.response.email;
-//       document.getElementById("profile-name").textContent = result.response.fullname;
-//     }
-//   } catch(e) {}
-// }
-
-// async function getTotalStudent() {
-//   try {
-//     const api = await fetch('/cbt/ansofra/apiadmin/TotalStudents', { method:'POST', body:{role:'user'} });
-//     const result = await api.json();
-//     document.getElementById("stat-students").textContent = result.status==="success" ? result.response : "00";
-//   } catch(e) { document.getElementById("stat-students").textContent = "00"; }
-// }
-
-// async function getTotalSubject() {
-//   try {
-//     const api = await fetch('/cbt/ansofra/apiadmin/TotalSubjects', { method:'POST', body:{role:'set'} });
-//     const result = await api.json();
-//     document.getElementById("stat-subjects").textContent = result.status==="success" ? result.response : subjectsList.length;
-//   } catch(e) { document.getElementById("stat-subjects").textContent = subjectsList.length; }
-// }
-
-// async function getLastLogin() {
-//   try {
-//     const api = await fetch("/cbt/ansofra/apiadmin/Get/LastLogin", { method:"POST", body:{email:getEmail, ID:getID} });
-//     const result = await api.json();
-//     if(result.status==="success"){
-//       document.getElementById('last-seen-display').textContent = result.response.last_seen;
-//       document.getElementById('last-login').textContent = result.response.last_login;
-//     }
-//   } catch(e) {}
-// }
-document.getElementById("deptFilter").addEventListener("change", async ()=>{
-  const tbody = document.getElementById('studentTableBody');
-  const seletedValue = document.getElementById('deptFilter').value.trim();
-  if(seletedValue===''){
-    alert("Select department");
-  } else {
-    const e = {department:seletedValue};
-    const api = await fetch('/cbt/ansofra/apiadmin/selected/department', {
-        method:"POST", body:JSON.stringify(e)
-    });
-    const result = await api.json();
-    const response = result.response;
-    if(result.status==="success"){
-        let output ='';
-        for(let i=0; i<response.length; i++){
-          output+=`
-                  <tr>
-                    <td style="font-weight:600">${response[i].regNum}</td>
-                    <td>${response[i].fullname}</td>
-                    <td><span class="badge badge-dept">${response[i].department}</span></td>
-                    <td>${response[i].email}</td>
-                    <td>${response[i].role}</td>
-                    <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
-                  </tr>`;
-        }
-        tbody.innerHTML = output;
-    } else {
-      document.getElementById("studentCount").textContent="No record of user found in that department";
-      document.getElementById("table-wrap").style.display="none";
-    }
-  }
-});
-
 
  document.getElementById("saveDeptBtn").addEventListener("click", async()=>{
     const data = document.getElementById("departmentform");
@@ -2190,9 +1751,6 @@ document.getElementById("deptSearchBtn").addEventListener("click", async ()=>{
     } 
   })
 
-/*
-   NAVIGATION
-   */
 window.showSection = function(id, navEl){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.getElementById(id)?.classList.add('active');
@@ -2201,21 +1759,16 @@ window.showSection = function(id, navEl){
   const titles = { dashboard:'Dashboard', students:'Students', subjects:'Subjects', questions:'Questions', results:'Results', departments:'Departments', schedule:'Schedule Exam' };
   document.getElementById('pageTitle').textContent = titles[id] || id;
   if(id === 'students') getStudentList();
-  if(id === 'questions'){ 
-    // document.getElementById('questionStep1').style.display = ''; document.getElementById('questionStep2').style.display = 'none'; renderQuestionSetsByDeptSubj('','');
-   }
+  if(id === 'questions'){ }
   if(id === 'departments'){
       updateDeptStats();
-    //  renderDeptTable(''); syncDeptStats(); 
     }
   if(id === 'subjects'){
     getDepartment();
-    //  renderDSB(); renderSubjects(''); renderSubjectsByName(''); 
     }
   if(id === 'schedule'){
      displayScheduledTime()
      totalexamSche();
-    //  renderScheduleTable(''); updateScheduleStats(); populateSchDeptDropdown('schDept'); populateSchDeptDropdown('editSchDept');
      }
   closeSidebar();
 };
@@ -2223,29 +1776,8 @@ window.showSection = function(id, navEl){
 window.openSidebar = function(){ document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('visible'); document.body.style.overflow='hidden'; };
 window.closeSidebar = function(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('visible'); document.body.style.overflow=''; };
 
-/*
-   EVENT LISTENERS
-   */
 document.getElementById('searchSubjectByNameBtn')?.addEventListener('click',()=>renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value||''));
 document.getElementById('searchSubjectBtn')?.addEventListener('click',()=>renderSubjects(document.getElementById('deptSearchInput')?.value||''));
-// document.getElementById('searchQuestionSetsBtn')?.addEventListener('click',()=>renderQuestionSetsByDeptSubj(document.getElementById('qsSearchDept')?.value||'',document.getElementById('qsSearchSubject')?.value||''));
-
-// document.getElementById('saveSubjectBtn')?.addEventListener('click',function(){
-//   const dept = document.getElementById('newDeptSelect')?.value.trim();
-//   const name = document.getElementById('newSubject')?.value.trim();
-//   const dur = document.getElementById('newDuration')?.value;
-//   if(!dept){ alert('Please choose a department'); return; }
-//   if(!name){ alert('Please enter a subject name'); return; }
-//   if(!dur){ alert('Please enter a duration'); return; }
-//   subjectsList.push({ dept, name, duration:+dur, created:new Date(), totalQs:0 });
-//   renderDSB();
-//   renderSubjects(document.getElementById('deptSearchInput')?.value||'');
-//   renderSubjectsByName(document.getElementById('subjectNameSearchInput')?.value||'');
-//   document.getElementById('newSubject').value = '';
-//   document.getElementById('newDuration').value = '90';
-//   document.getElementById('newDeptSelect').value = '';
-//   openDsbDrawer(dept);
-// });
 
 document.getElementById('nextToQuestionBtn')?.addEventListener('click', () => {
   const dept = document.getElementById('questionDept').value.trim();
@@ -2260,12 +1792,6 @@ document.getElementById('changeDetailsBtn')?.addEventListener('click', () => {
   document.getElementById('questionStep2').style.display = 'none';
   document.getElementById('questionStep1').style.display = '';
 });
-// document.getElementById('saveQuestionBtn')?.addEventListener('click', () => {
-//   if(!document.getElementById('questionText').value.trim()){ alert('Enter question'); return; }
-//   alert('Question saved (demo).');
-//   ['questionText','optionA','optionB','optionC','optionD'].forEach(id => document.getElementById(id).value='');
-//   document.getElementById('correctAnswer').value='';
-// });
 document.getElementById('addAnotherQuestionBtn')?.addEventListener('click', () => {
   if(!document.getElementById('questionText').value.trim()){ alert('Enter question first'); return; }
   alert('Saved. Add another.');
@@ -2273,30 +1799,12 @@ document.getElementById('addAnotherQuestionBtn')?.addEventListener('click', () =
   document.getElementById('correctAnswer').value='';
 });
 
-/*
-   INIT
-   */
 document.addEventListener('DOMContentLoaded', async () => {
-  // getDetail();
-  // getTotalStudent();
-  // getTotalSubject();
-  // getLastLogin();
-  // renderDeptTable('');
-  // syncDeptStats();
-  // renderDSB();
-  // renderSubjects('');
-  // renderSubjectsByName('');
-  // renderScheduleTable('');
-  // updateScheduleStats();
-  // renderQuestionSetsByDeptSubj('','');
-  // populateSchDeptDropdown('schDept');
-  // populateSchDeptDropdown('editSchDept');
   getDetail();
   await getTotalStudent();
   await getTotalSubject();
   await getLastLogin();
   await setTimeLogin();
-  // renderDeptTable('');
   totalDepartment();
 });
 </script>
