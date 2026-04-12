@@ -858,32 +858,20 @@ function renderTimerDisplay() {
 function openModal()  { document.getElementById('submit-modal').classList.add('open'); }
 function closeModal() { document.getElementById('submit-modal').classList.remove('open'); }
 
+
 async function finalSubmit() {
   clearInterval(examState.timerInterval);
   closeModal();
 
-  const regNum = document.getElementById('sidebar-reg').textContent.trim();
-  const dept   = userData?.department || document.getElementById('sb-course').textContent.trim();
-
-  /*
-   * ARRAY 1 — questionsArray
-   * ALL questions across every subject (both attempted and unattempted).
-   * Unattempted questions have empty optionPicked / answerPicked.
-   */
-  const questionsArray = [];
-  let   questionToSave  = {};
-  // let scoresObj = {};
-  /*
-   * ARRAY 2 — scoresArray
-   * One entry per subject: { score, subject, department, regNum }
-   */
-  const scoresArray = [];
+  const regNum   = document.getElementById('sidebar-reg').textContent.trim();
+  const dept     = userData?.department || document.getElementById('sb-course').textContent.trim();
+  const fullname = document.getElementById('nav-name').textContent.trim();
 
   const resultRows = [];
   let grandTotal = 0;
   let grandMax   = 0;
 
-  // ── Step 1: Build both arrays from all subjects ──────────────────────────
+  // ── Loop through every subject ───────────────────────────────────────────
   for (let si = 0; si < examState.totalSubjects; si++) {
     const questions   = examState.questions[si] || [];
     const tab         = document.getElementById(`tab-${si}`);
@@ -891,8 +879,15 @@ async function finalSubmit() {
 
     let subjectScore = 0;
 
+    /*
+     * OBJECT 1 — questionToSave
+     * Key: "question attempted"
+     * Value: one object whose keys are question indices ("0", "1", …)
+     * and values are the full detail for that question (attempted or not).
+     */
+    const questionAttemptedMap = {};
+
     questions.forEach((q, qi) => {
-      // Use stored detail if candidate answered, otherwise build unattempted placeholder
       const detail = (examState.answerDetails[si] && examState.answerDetails[si][qi])
         ? examState.answerDetails[si][qi]
         : {
@@ -904,11 +899,15 @@ async function finalSubmit() {
             answerPicked: '',
             subject:      q.subject      || subjectName,
             department:   q.department   || dept,
+            questiontext: q.questiontext || '',
           };
 
-      // Collect ALL questions (attempted + unattempted) into questionsArray
-      questionsArray.push(detail);
-       questionToSave = detail;
+      // Always include questiontext from the question object
+      detail.questiontext = q.questiontext || detail.questiontext || '';
+
+      // Store in the map under its index as string key
+      questionAttemptedMap[String(qi)] = detail;
+
       // Score: compare candidate's chosen answer text against correctAns label
       if (
         detail.answerPicked &&
@@ -918,23 +917,26 @@ async function finalSubmit() {
       }
     });
 
+    // Wrap it under the "question attempted" key — one plain object, not array
+    const questionToSave = {
+      "question attempted": questionAttemptedMap
+    };
+
     const subjectPoints = subjectScore * 1.5;
     const subjectMax    = questions.length * 1.5;
     grandTotal += subjectPoints;
     grandMax   += subjectMax;
 
-    scoresArray.push({
-      score:      subjectPoints,
-      subject:    subjectName,
-      department: dept,
+    /*
+     * OBJECT 2 — scoreToSave
+     * One plain object per subject — not an array.
+     */
+    const scoreToSave = {
       regNum:     regNum,
-    });
-
-  const scoreToSave = {
-      score:      subjectPoints,
-      subject:    subjectName,
       department: dept,
-      regNum:     regNum,
+      subject:    subjectName,
+      fullname:   fullname,
+      totalScore: subjectPoints,
     };
 
     resultRows.push(`
@@ -942,69 +944,205 @@ async function finalSubmit() {
         <span class="sname">${subjectName}</span>
         <span class="spts">${subjectPoints}/${subjectMax} (${subjectScore}/${questions.length} correct)</span>
       </div>`);
-      // ── Step 2: Save ALL questions (one request, full array) ─────────────────
-  const attemptApi    = await fetch('/cbt/ansofra/api/save/questions/attempt', {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(questionToSave),   // full questionsArray, not a single object
-  });
-  const attemptResult = await attemptApi.json();
-  console.log('Save attempt result:', attemptResult);
 
-  if (attemptResult.status !== 'success') {
-    console.log('Failed to save question attempts:', attemptResult);
-    return;
+    // Build the full payload sent to the attempt API
+    const e = {
+      questionToSave: questionToSave,
+      regNum:         regNum,
+      department:     dept,
+      fullname:       fullname,
+    };
+
+    console.log('Attempt payload for subject', subjectName, e);
+
+    const attemptApi    = await fetch('/cbt/ansofra/api/save/questions/attempt', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify(e),
+    });
+    const attemptResult = await attemptApi.json();
+    console.log('Save attempt result:', attemptResult);
+
+    if (attemptResult.status !== 'success') {
+      console.log('Failed to save question attempts:', attemptResult);
+      return;
+    }
+
+    console.log('Score payload for subject', subjectName, scoreToSave);
+
+    // const scoresApi    = await fetch('/cbt/ansofra/api/save/scores', {
+    //   method:  'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body:    JSON.stringify(scoreToSave),
+    // });
+    // const scoresResult = await scoresApi.json();
+    // console.log('Save scores result:', scoresResult);
+
+    // if (scoresResult.status !== 'success') {
+    //   console.log('Failed to save scores:', scoresResult);
+    //   return;
+    // }
   }
 
-  // ── Step 3: Save scores (one request, full array) ────────────────────────
-  const scoresApi    = await fetch('/cbt/ansofra/api/save/scores', {
-    method:  'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify(scoreToSave),      // full scoresArray, not a single object
-  });
-  const scoresResult = await scoresApi.json();
-  console.log('Save scores result:', scoresResult);
-
-  if (scoresResult.status !== 'success') {
-    console.log('Failed to save scores:', scoresResult);
-    return;
-  }
-  }
-
-  console.log('Questions Array (Array 1):', questionToSave);
-  console.log('Scores Array   (Array 2):', scoresArray);
-
-  // // ── Step 2: Save ALL questions (one request, full array) ─────────────────
-  // const attemptApi    = await fetch('/cbt/ansofra/api/save/questions/attempt', {
-  //   method:  'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body:    JSON.stringify(questionToSave),   // full questionsArray, not a single object
-  // });
-  // const attemptResult = await attemptApi.json();
-  // console.log('Save attempt result:', attemptResult);
-
-  // if (attemptResult.status !== 'success') {
-  //   console.log('Failed to save question attempts:', attemptResult);
-  //   return;
-  // }
-
-  // // ── Step 3: Save scores (one request, full array) ────────────────────────
-  // const scoresApi    = await fetch('/cbt/ansofra/api/save/scores', {
-  //   method:  'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body:    JSON.stringify(scoreToSave),      // full scoresArray, not a single object
-  // });
-  // const scoresResult = await scoresApi.json();
-  // console.log('Save scores result:', scoresResult);
-
-  // if (scoresResult.status !== 'success') {
-  //   console.log('Failed to save scores:', scoresResult);
-  //   return;
-  // }
-
-  // ── Step 4: Save final result ────────────────────────────────────────────
+  // ── Save final result ────────────────────────────────────────────────────
   await saveResult();
 }
+// async function finalSubmit() {
+//   clearInterval(examState.timerInterval);
+//   closeModal();
+
+//   const regNum = document.getElementById('sidebar-reg').textContent.trim();
+//   const dept   = userData?.department || document.getElementById('sb-course').textContent.trim();
+//   const fullname = document.getElementById("nav-name").textContent.trim();
+
+//   /*
+//    * ARRAY 1 — questionsArray
+//    * ALL questions across every subject (both attempted and unattempted).
+//    * Unattempted questions have empty optionPicked / answerPicked.
+//    */
+//   const questionsArray = [];
+//   let   questionToSave  = {};
+//   // let scoresObj = {};
+//   /*
+//    * ARRAY 2 — scoresArray
+//    * One entry per subject: { score, subject, department, regNum }
+//    */
+//   const scoresArray = [];
+
+//   const resultRows = [];
+//   let grandTotal = 0;
+//   let grandMax   = 0;
+
+//   // ── Step 1: Build both arrays from all subjects ──────────────────────────
+//   for (let si = 0; si < examState.totalSubjects; si++) {
+//     const questions   = examState.questions[si] || [];
+//     const tab         = document.getElementById(`tab-${si}`);
+//     const subjectName = tab ? tab.textContent.replace(/\(.*\)/, '').trim() : `Subject ${si + 1}`;
+
+//     let subjectScore = 0;
+
+//     questions.forEach((q, qi) => {
+//       // Use stored detail if candidate answered, otherwise build unattempted placeholder
+//       const detail = (examState.answerDetails[si] && examState.answerDetails[si][qi])
+//         ? examState.answerDetails[si][qi]
+//         : {
+//             regNum:       regNum,
+//             questionID:   q.questionID   || '',
+//             correctOtp:   q.correctOpt   || '',
+//             correctAns:   q.correctAss   || '',
+//             optionPicked: '',
+//             answerPicked: '',
+//             subject:      q.subject      || subjectName,
+//             department:   q.department   || dept,
+//           };
+
+//       // Collect ALL questions (attempted + unattempted) into questionsArray
+//       questionsArray.push(detail);
+//       questionToSave = questionsArray;
+//       // Score: compare candidate's chosen answer text against correctAns label
+//       if (
+//         detail.answerPicked &&
+//         detail.answerPicked.toUpperCase() === String(detail.correctAns).toUpperCase()
+//       ) {
+//         subjectScore++;
+//       }
+//     });
+
+//     const subjectPoints = subjectScore * 1.5;
+//     const subjectMax    = questions.length * 1.5;
+//     grandTotal += subjectPoints;
+//     grandMax   += subjectMax;
+
+//     scoresArray.push({
+//       score:      subjectPoints,
+//       subject:    subjectName,
+//       department: dept,
+//       regNum:     regNum,
+//     });
+
+//   const scoreToSave = {
+//       score:      subjectPoints,
+//       subject:    subjectName,
+//       department: dept,
+//       regNum:     regNum,
+//     };
+
+//     resultRows.push(`
+//       <div class="result-row">
+//         <span class="sname">${subjectName}</span>
+//         <span class="spts">${subjectPoints}/${subjectMax} (${subjectScore}/${questions.length} correct)</span>
+//       </div>`);
+
+//       const e = {
+//         questionToSave:Object.assign({}, ...questionsArray),
+//         regNum:regNum,
+//         department:dept,
+//         fullname:fullname
+//       }
+  
+//   console.log(e);
+//   const attemptApi    = await fetch('/cbt/ansofra/api/save/questions/attempt', {
+//     method:  'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//     body:    JSON.stringify(e),   
+//   });
+//   const attemptResult = await attemptApi.json();
+//   console.log('Save attempt result:', attemptResult);
+
+//   if (attemptResult.status !== 'success') {
+//     console.log('Failed to save question attempts:', attemptResult);
+//     return;
+//   }
+
+  
+//   // const scoresApi    = await fetch('/cbt/ansofra/api/save/scores', {
+//   //   method:  'POST',
+//   //   headers: { 'Content-Type': 'application/json' },
+//   //   body:    JSON.stringify(scoreToSave),      // full scoresArray, not a single object
+//   // });
+//   // const scoresResult = await scoresApi.json();
+//   // console.log('Save scores result:', scoresResult);
+
+//   // if (scoresResult.status !== 'success') {
+//   //   console.log('Failed to save scores:', scoresResult);
+//   //   return;
+//   // }
+//   }
+
+//   console.log('Questions Array (Array 1):', questionToSave);
+//   console.log('Scores Array   (Array 2):', scoreToSave);
+
+//   // // ── Step 2: Save ALL questions (one request, full array) ─────────────────
+//   // const attemptApi    = await fetch('/cbt/ansofra/api/save/questions/attempt', {
+//   //   method:  'POST',
+//   //   headers: { 'Content-Type': 'application/json' },
+//   //   body:    JSON.stringify(questionToSave),   // full questionsArray, not a single object
+//   // });
+//   // const attemptResult = await attemptApi.json();
+//   // console.log('Save attempt result:', attemptResult);
+
+//   // if (attemptResult.status !== 'success') {
+//   //   console.log('Failed to save question attempts:', attemptResult);
+//   //   return;
+//   // }
+
+//   // // ── Step 3: Save scores (one request, full array) ────────────────────────
+//   // const scoresApi    = await fetch('/cbt/ansofra/api/save/scores', {
+//   //   method:  'POST',
+//   //   headers: { 'Content-Type': 'application/json' },
+//   //   body:    JSON.stringify(scoreToSave),      // full scoresArray, not a single object
+//   // });
+//   // const scoresResult = await scoresApi.json();
+//   // console.log('Save scores result:', scoresResult);
+
+//   // if (scoresResult.status !== 'success') {
+//   //   console.log('Failed to save scores:', scoresResult);
+//   //   return;
+//   // }
+
+//   // ── Step 4: Save final result ────────────────────────────────────────────
+//   await saveResult();
+// }
 
 async function saveResult() {
   const regNum     = document.getElementById('sidebar-reg').textContent.trim();

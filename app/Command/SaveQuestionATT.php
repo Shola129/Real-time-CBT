@@ -15,13 +15,9 @@ class SaveQuestionATT{
     public function process(){
         $data = [
             "department"=>$this->dto->department,
-            "subject"=>$this->dto->subject,
             "regNum"=>$this->dto->regNum,
-            "questionID"=>$this->dto->questionID,
-            "correctOtp"=>$this->dto->correctOtp,
-            "correctAns"=>$this->dto->correctAns,
-            "optionPicked"=>$this->dto->optionPicked,
-            "answerPicked"=>$this->dto->answerPicked,
+            "questionToSave"=>$this->dto->questionToSave,
+            "fullname"=>$this->dto->fullname,
             "saveAt"=>date("Y-m-d H:i:s"),
             "savequestID"=>"SAVE/QUES/ANS/".$this->dto->otp,
         ];
