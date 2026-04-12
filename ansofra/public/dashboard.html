@@ -411,6 +411,9 @@ async function fetchExamDetails(department) {
   };
   // console.log(e);
   // try {
+
+
+  
     const res    = await fetch('/cbt/ansofra/api/getExamdetails', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(e),
