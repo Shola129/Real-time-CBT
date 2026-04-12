@@ -917,7 +917,7 @@ async function finalSubmit() {
 
       // Add to the main object with a unique key
       const key = `question_${questionCounter}`;
-      questionsAttemptedObject[key] = questionObj[0];
+      questionsAttemptedObject[key] = questionObj;
       questionCounter++;
     });
 
@@ -945,58 +945,33 @@ async function finalSubmit() {
     //   body: JSON.stringify(subjectScoreObject),
     // });
     // const scoresResult = await scoresApi.json();
-
-      const finalQuestionsObject = {
-      regNum: regNum,
-      fullname: fullname,
-      department: dept,
-      totalQuestions: questionCounter,
-      submittedAt: new Date().toISOString(),
-      questionToSave: questionsAttemptedObject,
-    };
-
-    console.log('Questions Attempted Object (Single Object):', finalQuestionsObject);
-
-    // Save all questions in one request
-    const attemptApi = await fetch('/cbt/ansofra/api/save/questions/attempt', {
-      method:'POST',
-      headers:{'Content-type':'application/json'},
-      body:JSON.stringify(finalQuestionsObject)
-    });
-    const attemptResult = await attemptApi.json();
-    console.log('Save attempt result:', attemptResult);
-
-    if (attemptResult.status !== 'success') {
-      console.log('Failed to save question attempts:', attemptResult);
-      return;
-    }
   }
 
   // Create the final questions attempted object with metadata
-  // const finalQuestionsObject = {
-  //   regNum: regNum,
-  //   fullname: fullname,
-  //   department: dept,
-  //   totalQuestions: questionCounter,
-  //   submittedAt: new Date().toISOString(),
-  //   questionToSave: JSON.stringify(questionsAttemptedObject),
-  // };
+  const finalQuestionsObject = {
+    regNum: regNum,
+    fullname: fullname,
+    department: dept,
+    totalQuestions: questionCounter,
+    submittedAt: new Date().toISOString(),
+    questionToSave: JSON.stringify(questionsAttemptedObject),
+  };
 
-  // console.log('Questions Attempted Object (Single Object):', finalQuestionsObject);
+  console.log('Questions Attempted Object (Single Object):', finalQuestionsObject);
 
-  // // Save all questions in one request
-  // const attemptApi = await fetch('/cbt/ansofra/api/save/questions/attempt', {
-  //   method:'POST',
-  //   headers:{'Content-type':'application/json'},
-  //   body:JSON.stringify(finalQuestionsObject)
-  // });
-  // const attemptResult = await attemptApi.json();
-  // console.log('Save attempt result:', attemptResult);
+  // Save all questions in one request
+  const attemptApi = await fetch('/cbt/ansofra/api/save/questions/attempt', {
+    method:'POST',
+    headers:{'Content-type':'application/json'},
+    body:JSON.stringify(finalQuestionsObject)
+  });
+  const attemptResult = await attemptApi.json();
+  console.log('Save attempt result:', attemptResult);
 
-  // if (attemptResult.status !== 'success') {
-  //   console.log('Failed to save question attempts:', attemptResult);
-  //   return;
-  // }
+  if (attemptResult.status !== 'success') {
+    console.log('Failed to save question attempts:', attemptResult);
+    return;
+  }
 
   // Save final result
   // await saveResult();

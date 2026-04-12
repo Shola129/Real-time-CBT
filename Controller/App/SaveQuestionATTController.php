@@ -6,13 +6,12 @@ use NewdichMiddleware\Index;
 
 $data = json_decode(file_get_contents("php://input"), true);
 $qestionToSave = $data['questionToSave'];
-$qestions = json_decode($qestionToSave, true);
 $mid = new Index();
 $cleanData = [];
 
 foreach($data as $key=>$val){
   if($key==="questionToSave"){
-    $cleanData[$key]=$qestions;
+    $cleanData[$key]=$qestionToSave;
   }
   else{
       $cleanData[$key]=$mid->cleanData($val);
