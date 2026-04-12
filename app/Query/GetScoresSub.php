@@ -18,7 +18,7 @@ class GetScoresSub{
         ];
 
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->get($where, 0, 1);
+        $mig = $newMig->get($where, 0, 20);
         return $mig;
     }
 }

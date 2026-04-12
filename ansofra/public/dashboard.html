@@ -936,15 +936,13 @@ async function finalSubmit() {
       expectedScore:  parseFloat(subjectTotalQuestions) * 1.5 
     };
 
-    console.log(`Score for ${subjectName}:`, subjectScoreObject);
-
     // Save each subject score individually
-    // const scoresApi = await fetch('/cbt/ansofra/api/save/scores', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify(subjectScoreObject),
-    // });
-    // const scoresResult = await scoresApi.json();
+    const scoresApi = await fetch('/cbt/ansofra/api/save/scores', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(subjectScoreObject),
+    });
+    const scoresResult = await scoresApi.json();
   }
 
   // Create the final questions attempted object with metadata
@@ -957,7 +955,7 @@ async function finalSubmit() {
     questionToSave: JSON.stringify(questionsAttemptedObject),
   };
 
-  console.log('Questions Attempted Object (Single Object):', finalQuestionsObject);
+ 
 
   // Save all questions in one request
   const attemptApi = await fetch('/cbt/ansofra/api/save/questions/attempt', {
@@ -966,15 +964,15 @@ async function finalSubmit() {
     body:JSON.stringify(finalQuestionsObject)
   });
   const attemptResult = await attemptApi.json();
-  console.log('Save attempt result:', attemptResult);
+  // console.log('Save attempt result:', attemptResult);
 
-  if (attemptResult.status !== 'success') {
-    console.log('Failed to save question attempts:', attemptResult);
-    return;
-  }
+  // if (attemptResult.status !== 'success') {
+  //   console.log('Failed to save question attempts:', attemptResult);
+  //   return;
+  // }
 
   // Save final result
-  // await saveResult();
+  await saveResult();
 }
 
 
@@ -1139,45 +1137,33 @@ async function saveResult() {
   const regNum     = document.getElementById('sidebar-reg').textContent.trim();
   const fullname   = document.getElementById('sidebar-name').textContent.trim();
   const department = document.getElementById('sb-course').textContent.trim();
-
+  const e = {regNum:regNum};
   // Fetch all saved subject scores for this candidate from the server
   const api    = await fetch('/cbt/ansofra/api/get/scores/subject', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify({ regNum }),
+    body:    JSON.stringify(e),
   });
   const result = await api.json();
 
-  if (result.status !== 'success') {
-    return console.log('Failed to fetch subject scores:', result);
-  }
 
-  const response = result.response;   // array of { subject, score, … } returned by the server
+  const response = result.response;  
 
-  // Sum all subject scores into a single overall total
   let overAll = 0;
   for (let index = 0; index < response.length; index++) {
     overAll += parseFloat(response[index].score);
   }
 
-  /*
-   * ONE object sent to save/result:
-   *   regNum          — candidate registration number
-   *   fullname        — candidate full name
-   *   department      — candidate department
-   *   overAll         — total score (sum of all subjects)
-   *   subjectAndScore — full array from get/scores/subject
-   *                     (contains each subject's name, score, and any other fields)
-   */
+
   const d = {
     regNum:          regNum,
     fullname:        fullname,
     department:      department,
     overAll:         overAll,
-    subjectAndScore: response,   // raw server array, NOT re-stringified
+    subjectAndScore: JSON.stringify(response),  
   };
 
-  console.log('Final result object:', JSON.stringify(d));
+ 
 
   const seApi     = await fetch('/cbt/ansofra/api/save/result', {
     method:  'POST',
@@ -1186,6 +1172,9 @@ async function saveResult() {
   });
   const resultApi = await seApi.json();
 
+
+
+  
   if (resultApi.status === 'success') {
     document.getElementById('result-screen').style.display = 'flex';
   } else {
