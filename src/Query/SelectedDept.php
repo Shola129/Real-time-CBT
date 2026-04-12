@@ -14,7 +14,7 @@ class SelectedDept{
 
      public function process(){
         $where = [
-            'regNum'=>$this->dto->regNum
+            'department'=>$this->dto->department
         ];
 
         $newMig = new Migration(null, $this->table);

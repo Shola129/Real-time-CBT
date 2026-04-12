@@ -4,7 +4,7 @@ use NewdichDto\AnsofraDto;
 use NewdichMiddleware\Index;
 use NewdichSrc\Query\StudentInfo;
 
-$data = $_POST;
+$data = json_decode(file_get_contents("php://input"), true);
 $cleanData = [];
 $mid = new Index();
 

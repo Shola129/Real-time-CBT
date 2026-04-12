@@ -13,7 +13,7 @@ class SearchRegNo{
 
      public function process(){
         $where = [
-            'department'=>$this->dto->department
+            'regNum'=>$this->dto->regNum,
         ];
 
         $newMig = new Migration(null, $this->table);

@@ -679,7 +679,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           <div class="table-wrap" id="table-wrap">
             <table>
               <thead>
-                <tr><th>Reg. No.</th><th>Name</th><th>Department</th><th>Email</th><th>Role</th><th>Del</th></tr>
+                <tr><th>S/N</th><th>Reg. No.</th><th>Name</th><th>Department</th><th>Email</th><th>Role</th><th>Del</th></tr>
               </thead>
               <tbody id="studentTableBody"></tbody>
             </table>
@@ -1334,7 +1334,9 @@ async function getStudentList() {
   const tbody = document.getElementById('studentTableBody');
   const e = {role:'user'};
   const api = await fetch('/cbt/ansofra/apiadmin/GET/students', {
-      method:"POST", body:e
+      method:"POST", 
+      headers:{'Content-type':'application/json'},
+      body:JSON.stringify(e)
   });
   const result = await api.json();
   const response = result.response;
@@ -1342,13 +1344,14 @@ async function getStudentList() {
       let display = '';
       for(let i=0; i<response.length; i++){
           display+=`<tr>
-            <td style="font-weight:600">${response[i].regNum}</td>
-            <td>${response[i].fullname}</td>
-            <td><span class="badge badge-dept">${response[i].department}</span></td>
-            <td>${response[i].email}</td>
-            <td>${response[i].role}</td>
-            <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
-          </tr>`;
+                      <td>${i + 1}</td>
+                      <td style="font-weight:600">${response[i].regNum}</td>
+                      <td>${response[i].fullname}</td>
+                      <td><span class="badge badge-dept">${response[i].department}</span></td>
+                      <td>${response[i].email}</td>
+                      <td>${response[i].role}</td>
+                      <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
+                    </tr>`;
       }
       tbody.innerHTML = display;
   } else {
@@ -1365,7 +1368,9 @@ document.getElementById("searchStudentRegNo").addEventListener("click", async fu
   } else {
     const e = {regNum:regNo};
     const api = await fetch('/cbt/ansofra/apiadmin/search/regNum', {
-        method:"POST", body:e
+        method:"POST",
+        headers:{'Content-type':'application/json'},
+        body:JSON.stringify(e)
     });
     const result = await api.json();
     const response = result.response;
@@ -1373,15 +1378,17 @@ document.getElementById("searchStudentRegNo").addEventListener("click", async fu
         let output ='';
         for(let i=0; i<response.length; i++){
           output+=`<tr>
-            <td style="font-weight:600">${response[i].regNum}</td>
-            <td>${response[i].fullname}</td>
-            <td><span class="badge badge-dept">${response[i].department}</span></td>
-            <td>${response[i].email}</td>
-            <td>${response[i].role}</td>
-            <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
-          </tr>`;
+                    <td>${i + 1}</td>
+                    <td style="font-weight:600">${response[i].regNum}</td>
+                    <td>${response[i].fullname}</td>
+                    <td><span class="badge badge-dept">${response[i].department}</span></td>
+                    <td>${response[i].email}</td>
+                    <td>${response[i].role}</td>
+                    <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNum}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
+                  </tr>`;
         }
         tbody.innerHTML = output;
+        console.log(output);
     } else {
       document.getElementById("studentCount").textContent="Registriation number not found";
       document.getElementById("table-wrap").style.display="none";
@@ -1397,7 +1404,9 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
   } else {
     const e = {department:seletedValue};
     const api = await fetch('/cbt/ansofra/apiadmin/selected/department', {
-        method:"POST", body:e
+        method:"POST",
+        headers:{'Content-type':'application'}, 
+        body:JSON.stringify(e)
     });
     const result = await api.json();
     const response = result.response;
@@ -1406,6 +1415,7 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
         for(let i=0; i<response.length; i++){
           output+=`
                   <tr>
+                    <td>${i+1}</td>
                     <td style="font-weight:600">${response[i].regNum}</td>
                     <td>${response[i].fullname}</td>
                     <td><span class="badge badge-dept">${response[i].department}</span></td>
@@ -1463,6 +1473,7 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
       });
 
       const result = await api.json();
+      console.log(result);
       if(result.status==="success"){
         const  response = result.response;
         let output = '';
