@@ -7,6 +7,7 @@ use NewdichDto\AnsofraDto;
 class Result{
     private $dto;
     private $table = Platform::RESULT_TABLE;
+    private $table2 = Platform::STATUS_TABLE;
 
     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
@@ -24,7 +25,19 @@ class Result{
 
         $newMig = new Migration(null, $this->table);
         $mig = $newMig->save($data);
-        return $mig;
+        $decode = json_decode($mig, true);
+        if($decode["status"]==="success"){
+            $where = [
+                'regNum'=>$this->dto->regNum
+            ];
+            $data = [
+                'status'=>'completed',
+            ];
+
+            $newMig2 = new Migration(null, $this->table2);
+            $mig2 = $newMig2->edit($data, $where);
+            return $mig2;
+        }
     }
 }
 

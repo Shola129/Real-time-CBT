@@ -296,8 +296,7 @@
 </div>
 
 <script>
-/*    STATE
-*/
+/*    STATE*/
 let SUBJECTS  = [];
 let user      = null;
 let userData  = null;
@@ -313,18 +312,10 @@ let examState = {
   timerSeconds:   0,
   timerInterval:  null,
   started: false,
-  /*
-   * answerDetails[subjectIdx][questionIdx] stores the full answer payload:
-   * {
-   *   regNum, questionID, correctOtp, correctAns,
-   *   optionPicked, answerPicked, subject, department
-   * }
-   */
   answerDetails: [],
 };
 
-/*    INIT
-*/
+/*    INIT*/
 window.addEventListener('load', () => {
   const raw = localStorage.getItem('cbt_session') || "sholadanielek@gmail.com";
   if (!raw) { window.location.href = 'login.html'; return; }
@@ -332,10 +323,9 @@ window.addEventListener('load', () => {
   populateUI();
 });
 
-/*    FETCH — candidate profile
-*/
+/*    FETCH — candidate profile*/
 async function populateUI() {
-  try {
+  // try {
     const res    = await fetch('/cbt/ansofra/api/details', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email: user }),
@@ -366,11 +356,10 @@ async function populateUI() {
       fetchExamDetails(p.department),
       fetchSubjectCount(p.department),
     ]);
-  } catch (err) { console.error('populateUI:', err); }
+  // } catch (err) { console.error('populateUI:', err); }
 }
 
-/*    FETCH — subject list (sidebar + table)
-*/
+/*    FETCH — subject list (sidebar + table)*/
 async function fetchSubjectList(department) {
   try {
     const res    = await fetch('/cbt/ansofra/api/getAllSebject', {
@@ -404,28 +393,38 @@ async function fetchSubjectList(department) {
   } catch (err) { console.error('fetchSubjectList:', err); }
 }
 
-/*    FETCH — exam details
-*/
+/*    FETCH — exam details*/
 async function fetchExamDetails(department) {
   const btn    = document.getElementById('start-btn');
   const btnTxt = document.getElementById('start-btn-text');
   const badge  = document.getElementById('exam-status-badge');
-
+  const fullname = document.getElementById("sidebar-name").textContent.trim();
+  const regNum = document.getElementById("sidebar-reg").textContent.trim();
+  const e = {
+    fullname:fullname,
+    department:department,
+    regNum:regNum
+  };
   const setStatus = (cls, dot, dotStyle, text) => {
     badge.className = `exam-status-badge ${cls}`;
     badge.innerHTML = `<span class="status-dot ${dot}" style="${dotStyle}"></span>${text}`;
   };
-
-  try {
+  // console.log(e);
+  // try {
     const res    = await fetch('/cbt/ansofra/api/getExamdetails', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ department }),
+      body: JSON.stringify(e),
     });
     const result = await res.json();
 
-    if (result.status !== 'success' || !result.response?.[0]) {
+    if (result.status === 'failed' || !result.response?.[0]) {
       setStatus('ended','','background:var(--text-muted)','No exam scheduled yet. You will be notified by email.');
       btnTxt.textContent = 'Exam Not Scheduled'; btn.disabled = true; return;
+    }
+    
+    else if(result.status === 'fail'){
+      setStatus('ended','','background:var(--text-muted)','You have attempted or sitting for exam.');
+      btnTxt.textContent = 'Exam Attempted already'; btn.disabled = true; return;
     }
 
     const exam         = result.response[0];
@@ -465,15 +464,14 @@ async function fetchExamDetails(department) {
       setStatus('ended','','background:var(--red)','This examination window has closed.');
       btnTxt.textContent = 'Exam Has Ended'; btn.disabled = true;
     }
-  } catch (err) {
-    console.error('fetchExamDetails:', err);
-    setStatus('ended','','background:var(--text-muted)','Could not load exam details. Please refresh.');
-    btnTxt.textContent = 'Unable to Load'; btn.disabled = true;
-  }
+  // } catch (err) {
+  //   console.error('fetchExamDetails:', err);
+  //   setStatus('ended','','background:var(--text-muted)','Could not load exam details. Please refresh.');
+  //   btnTxt.textContent = 'Unable to Load'; btn.disabled = true;
+  // }
 }
 
-/*    FETCH — subject count
-*/
+/*    FETCH — subject count*/
 async function fetchSubjectCount(department) {
   try {
     const res    = await fetch('/cbt/ansofra/api/countSubject', {
@@ -485,8 +483,7 @@ async function fetchSubjectCount(department) {
   } catch (err) { console.error('fetchSubjectCount:', err); }
 }
 
-/*    LAUNCH EXAM
-*/
+/*    LAUNCH EXAM*/
 async function launchExam() {
   const btn    = document.getElementById('start-btn');
   const btnTxt = document.getElementById('start-btn-text');
@@ -504,6 +501,10 @@ async function launchExam() {
   if (result.status !== 'success' || !result.response?.[0]) {
     setLaunchError('No exam has been scheduled for your department yet.');
     btn.disabled = false; btnTxt.textContent = 'Exam Not Scheduled'; return;
+  }
+  else if(result.status === 'fail'){
+    setStatus('ended','','background:var(--text-muted)','You have attempted or sitting for exam.');
+    btnTxt.textContent = 'Exam Attempted already'; btn.disabled = true; return;
   }
 
   const exam         = result.response[0];
@@ -553,8 +554,7 @@ async function launchExam() {
 
 /*    BUILD SUBJECT TABS  — exact user pattern, kept intact
    Fetches subject list, builds the header tabs,
-   then auto-loads the first subject's questions.
-*/
+   then auto-loads the first subject's questions.*/
 async function buildSubjectTabs(department) {
   const dept = department || document.getElementById('sb-course').textContent.trim();
 
@@ -582,8 +582,7 @@ async function buildSubjectTabs(department) {
   }
 }
 
-/*    SWITCH SUBJECT  — exact user API pattern, kept intact.
-*/
+/*    SWITCH SUBJECT  — exact user API pattern, kept intact.*/
 async function switchSubject(department, subject, idx) {
   document.querySelectorAll('.subject-tab')
     .forEach((t, i) => t.classList.toggle('active', i === idx));
@@ -623,8 +622,7 @@ async function switchSubject(department, subject, idx) {
   renderCurrentQuestion();
 }
 
-/*    RENDER CURRENT QUESTION
-*/
+/*    RENDER CURRENT QUESTION*/
 function renderCurrentQuestion() {
   const regNum = document.getElementById('sidebar-reg').textContent.trim();
   const si = examState.currentSubject;
@@ -705,8 +703,7 @@ function renderCurrentQuestion() {
   updateProgress();
 }
 
-/*    ANSWER & FLAG ACTIONS
-*/
+/*    ANSWER & FLAG ACTIONS*/
 function selectAnswer(optionLabel, answerText, subject, department, questionID, correctAss, correctOpt, regNum, optionIndex) {
   const si = examState.currentSubject;
   const qi = examState.currentQuestion;
@@ -740,8 +737,7 @@ function goToQuestion(qi) {
   renderCurrentQuestion();
 }
 
-/*    NAVIGATION — next / prev (one question at a time)
-*/
+/*    NAVIGATION — next / prev (one question at a time)*/
 function nextQ() {
   const si        = examState.currentSubject;
   const questions = examState.questions[si] || [];
@@ -787,8 +783,7 @@ function prevQ() {
   }
 }
 
-/*    QUESTION GRID (sidebar dots)
-*/
+/*    QUESTION GRID (sidebar dots)*/
 function updateGrid() {
   const si        = examState.currentSubject;
   const questions = examState.questions[si] || [];
@@ -802,8 +797,7 @@ function updateGrid() {
   }).join('');
 }
 
-/*    PROGRESS PANEL (sidebar bars)
-*/
+/*    PROGRESS PANEL (sidebar bars)*/
 function updateProgress() {
   const rows = [];
   for (let si = 0; si < examState.totalSubjects; si++) {
@@ -827,8 +821,7 @@ function updateProgress() {
   document.getElementById('progress-list').innerHTML = rows.join('');
 }
 
-/*    TIMER
-*/
+/*    TIMER*/
 function startTimer() {
   renderTimerDisplay();
   examState.timerInterval = setInterval(() => {
@@ -853,8 +846,7 @@ function renderTimerDisplay() {
   if (s <= 120) el.classList.add('danger');
 }
 
-/*    MODAL & SUBMIT
-*/
+/*    MODAL & SUBMIT*/
 function openModal()  { document.getElementById('submit-modal').classList.add('open'); }
 function closeModal() { document.getElementById('submit-modal').classList.remove('open'); }
 
@@ -976,162 +968,6 @@ async function finalSubmit() {
 }
 
 
-// async function finalSubmit() {
-//   clearInterval(examState.timerInterval);
-//   closeModal();
-
-//   const regNum = document.getElementById('sidebar-reg').textContent.trim();
-//   const dept   = userData?.department || document.getElementById('sb-course').textContent.trim();
-//   const fullname = document.getElementById("nav-name").textContent.trim();
-
-//   /*
-//    * ARRAY 1 — questionsArray
-//    * ALL questions across every subject (both attempted and unattempted).
-//    * Unattempted questions have empty optionPicked / answerPicked.
-//    */
-//   const questionsArray = [];
-//   let   questionToSave  = {};
-//   // let scoresObj = {};
-//   /*
-//    * ARRAY 2 — scoresArray
-//    * One entry per subject: { score, subject, department, regNum }
-//    */
-//   const scoresArray = [];
-
-//   const resultRows = [];
-//   let grandTotal = 0;
-//   let grandMax   = 0;
-
-//   // ── Step 1: Build both arrays from all subjects ──────────────────────────
-//   for (let si = 0; si < examState.totalSubjects; si++) {
-//     const questions   = examState.questions[si] || [];
-//     const tab         = document.getElementById(`tab-${si}`);
-//     const subjectName = tab ? tab.textContent.replace(/\(.*\)/, '').trim() : `Subject ${si + 1}`;
-
-//     let subjectScore = 0;
-
-//     questions.forEach((q, qi) => {
-//       // Use stored detail if candidate answered, otherwise build unattempted placeholder
-//       const detail = (examState.answerDetails[si] && examState.answerDetails[si][qi])
-//         ? examState.answerDetails[si][qi]
-//         : {
-//             regNum:       regNum,
-//             questionID:   q.questionID   || '',
-//             correctOtp:   q.correctOpt   || '',
-//             correctAns:   q.correctAss   || '',
-//             optionPicked: '',
-//             answerPicked: '',
-//             subject:      q.subject      || subjectName,
-//             department:   q.department   || dept,
-//           };
-
-//       // Collect ALL questions (attempted + unattempted) into questionsArray
-//       questionsArray.push(detail);
-//       questionToSave = questionsArray;
-//       // Score: compare candidate's chosen answer text against correctAns label
-//       if (
-//         detail.answerPicked &&
-//         detail.answerPicked.toUpperCase() === String(detail.correctAns).toUpperCase()
-//       ) {
-//         subjectScore++;
-//       }
-//     });
-
-//     const subjectPoints = subjectScore * 1.5;
-//     const subjectMax    = questions.length * 1.5;
-//     grandTotal += subjectPoints;
-//     grandMax   += subjectMax;
-
-//     scoresArray.push({
-//       score:      subjectPoints,
-//       subject:    subjectName,
-//       department: dept,
-//       regNum:     regNum,
-//     });
-
-//   const scoreToSave = {
-//       score:      subjectPoints,
-//       subject:    subjectName,
-//       department: dept,
-//       regNum:     regNum,
-//     };
-
-//     resultRows.push(`
-//       <div class="result-row">
-//         <span class="sname">${subjectName}</span>
-//         <span class="spts">${subjectPoints}/${subjectMax} (${subjectScore}/${questions.length} correct)</span>
-//       </div>`);
-
-//       const e = {
-//         questionToSave:Object.assign({}, ...questionsArray),
-//         regNum:regNum,
-//         department:dept,
-//         fullname:fullname
-//       }
-  
-//   console.log(e);
-//   const attemptApi    = await fetch('/cbt/ansofra/api/save/questions/attempt', {
-//     method:  'POST',
-//     headers: { 'Content-Type': 'application/json' },
-//     body:    JSON.stringify(e),   
-//   });
-//   const attemptResult = await attemptApi.json();
-//   console.log('Save attempt result:', attemptResult);
-
-//   if (attemptResult.status !== 'success') {
-//     console.log('Failed to save question attempts:', attemptResult);
-//     return;
-//   }
-
-  
-//   // const scoresApi    = await fetch('/cbt/ansofra/api/save/scores', {
-//   //   method:  'POST',
-//   //   headers: { 'Content-Type': 'application/json' },
-//   //   body:    JSON.stringify(scoreToSave),      // full scoresArray, not a single object
-//   // });
-//   // const scoresResult = await scoresApi.json();
-//   // console.log('Save scores result:', scoresResult);
-
-//   // if (scoresResult.status !== 'success') {
-//   //   console.log('Failed to save scores:', scoresResult);
-//   //   return;
-//   // }
-//   }
-
-//   console.log('Questions Array (Array 1):', questionToSave);
-//   console.log('Scores Array   (Array 2):', scoreToSave);
-
-//   // // ── Step 2: Save ALL questions (one request, full array) ─────────────────
-//   // const attemptApi    = await fetch('/cbt/ansofra/api/save/questions/attempt', {
-//   //   method:  'POST',
-//   //   headers: { 'Content-Type': 'application/json' },
-//   //   body:    JSON.stringify(questionToSave),   // full questionsArray, not a single object
-//   // });
-//   // const attemptResult = await attemptApi.json();
-//   // console.log('Save attempt result:', attemptResult);
-
-//   // if (attemptResult.status !== 'success') {
-//   //   console.log('Failed to save question attempts:', attemptResult);
-//   //   return;
-//   // }
-
-//   // // ── Step 3: Save scores (one request, full array) ────────────────────────
-//   // const scoresApi    = await fetch('/cbt/ansofra/api/save/scores', {
-//   //   method:  'POST',
-//   //   headers: { 'Content-Type': 'application/json' },
-//   //   body:    JSON.stringify(scoreToSave),      // full scoresArray, not a single object
-//   // });
-//   // const scoresResult = await scoresApi.json();
-//   // console.log('Save scores result:', scoresResult);
-
-//   // if (scoresResult.status !== 'success') {
-//   //   console.log('Failed to save scores:', scoresResult);
-//   //   return;
-//   // }
-
-//   // ── Step 4: Save final result ────────────────────────────────────────────
-//   await saveResult();
-// }
 
 async function saveResult() {
   const regNum     = document.getElementById('sidebar-reg').textContent.trim();
@@ -1165,7 +1001,7 @@ async function saveResult() {
 
  
 
-  const seApi     = await fetch('/cbt/ansofra/api/save/result', {
+  const seApi = await fetch('/cbt/ansofra/api/save/result', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
     body:    JSON.stringify(d),
@@ -1194,8 +1030,7 @@ function backToDash() {
 
 function logout() { localStorage.removeItem('cbt_session'); window.location.href = 'login.html'; }
 
-/*    DATE / TIME HELPERS
-*/
+/*    DATE / TIME HELPERS*/
 function buildDatetime(dateStr, timeStr) {
   let d = String(dateStr).trim();
   if (/^\d{2}[\/\-]\d{2}[\/\-]\d{4}$/.test(d)) {

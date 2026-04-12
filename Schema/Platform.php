@@ -196,6 +196,7 @@ class Platform{
         "regNum VARCHAR(255) NOT NULL",
         "fullname VARCHAR(255) NOT NULL",
         "status VARCHAR(255) NOT NULL",
+        "startAt VARCHAR(255) NOT NULL",
     ];
   //you can have as many tables as you want
 }
