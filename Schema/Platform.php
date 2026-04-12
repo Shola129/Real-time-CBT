@@ -159,10 +159,11 @@ class Platform{
         "save_question_attempted_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
         "department VARCHAR(255) NOT NULL",
         "regNum VARCHAR(255) NOT NULL",
-        "questionToSave VARCHAR(255) NOT NULL",
+        "questionToSave TEXT",
         "fullname VARCHAR(225) NOT NULL",
         "savequestID VARCHAR(225) NOT NULL",
-        "saveAt VARCHAR(225) NOT NULL"
+        "saveAt VARCHAR(225) NOT NULL",
+        "totalQuestions VARCHAR(225) NOT NULL"
     ];
 
     public const SAVESCORE_TABLE = "save_scores";
@@ -172,8 +173,11 @@ class Platform{
         "subject VARCHAR(255) NOT NULL",
         "department VARCHAR(255) NOT NULL",
         "regNum VARCHAR(255) NOT NULL",
-        "saveAt VARCHAR(255) NOT NULL"
-    ];    
+        "saveAt VARCHAR(255) NOT NULL",
+        "expectedScore VARCHAR(255) NOT NULL",
+        "correctAnswers VARCHAR(255) NOT NULL",
+        "totalQuestions VARCHAR(255) NOT NULL"
+    ];
 
     public const RESULT_TABLE = "results";
     public const RESULT_TABLE_COLUMNS = [

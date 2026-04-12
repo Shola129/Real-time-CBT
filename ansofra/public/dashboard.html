@@ -858,107 +858,110 @@ function renderTimerDisplay() {
 function openModal()  { document.getElementById('submit-modal').classList.add('open'); }
 function closeModal() { document.getElementById('submit-modal').classList.remove('open'); }
 
-
 async function finalSubmit() {
   clearInterval(examState.timerInterval);
   closeModal();
 
-  const regNum   = document.getElementById('sidebar-reg').textContent.trim();
-  const dept     = userData?.department || document.getElementById('sb-course').textContent.trim();
-  const fullname = document.getElementById('nav-name').textContent.trim();
+  const regNum = document.getElementById('sidebar-reg').textContent.trim();
+  const dept   = userData?.department || document.getElementById('sb-course').textContent.trim();
+  const fullname = document.getElementById("sidebar-name").textContent.trim();
 
-  const resultRows = [];
-  let grandTotal = 0;
-  let grandMax   = 0;
+  // Object to store all question attempts (both attempted and unattempted)
+  const questionsAttemptedObject = {};
 
-  // ── Loop through every subject ───────────────────────────────────────────
+  // Counter for sequential keys
+  let questionCounter = 0;
+
+  // Iterate through all subjects to collect questions
   for (let si = 0; si < examState.totalSubjects; si++) {
-    const questions   = examState.questions[si] || [];
-    const tab         = document.getElementById(`tab-${si}`);
+    const questions = examState.questions[si] || [];
+    const tab = document.getElementById(`tab-${si}`);
     const subjectName = tab ? tab.textContent.replace(/\(.*\)/, '').trim() : `Subject ${si + 1}`;
 
     let subjectScore = 0;
-
-    /*
-     * OBJECT 1 — questionToSave
-     * Key: "question attempted"
-     * Value: one object whose keys are question indices ("0", "1", …)
-     * and values are the full detail for that question (attempted or not).
-     */
-    const questionAttemptedMap = {};
+    let subjectTotalQuestions = questions.length;
 
     questions.forEach((q, qi) => {
-      const detail = (examState.answerDetails[si] && examState.answerDetails[si][qi])
+      // Get the stored detail if question was attempted
+      const storedDetail = (examState.answerDetails[si] && examState.answerDetails[si][qi])
         ? examState.answerDetails[si][qi]
-        : {
-            regNum:       regNum,
-            questionID:   q.questionID   || '',
-            correctOtp:   q.correctOpt   || '',
-            correctAns:   q.correctAss   || '',
-            optionPicked: '',
-            answerPicked: '',
-            subject:      q.subject      || subjectName,
-            department:   q.department   || dept,
-            questiontext: q.questiontext || '',
-          };
+        : null;
 
-      // Always include questiontext from the question object
-      detail.questiontext = q.questiontext || detail.questiontext || '';
+      // Build the question object with all required fields
+      let questionObj = {
+        regNum: regNum,
+        questionID: q.questionID || '',
+        questiontext: q.questiontext || '',
+        correctOtp: q.correctOpt || '',
+        correctAns: q.correctAss || '',
+        optionPicked: '',
+        answerPicked: '',
+        subject: q.subject || subjectName,
+        department: q.department || dept,
+        fullname: fullname,
+        attempted: false
+      };
 
-      // Store in the map under its index as string key
-      questionAttemptedMap[String(qi)] = detail;
-
-      // Score: compare candidate's chosen answer text against correctAns label
-      if (
-        detail.answerPicked &&
-        detail.answerPicked.toUpperCase() === String(detail.correctAns).toUpperCase()
-      ) {
-        subjectScore++;
+      // If question was attempted, update with the selected answer
+      if (storedDetail && examState.answers[si] && examState.answers[si][qi] !== -1) {
+        questionObj.optionPicked = storedDetail.optionPicked || '';
+        questionObj.answerPicked = storedDetail.answerPicked || '';
+        questionObj.attempted = true;
+        
+        // Calculate score for this question (1.5 marks per correct answer)
+        if (questionObj.answerPicked && 
+            questionObj.answerPicked.toUpperCase() === String(questionObj.correctAns).toUpperCase()) {
+          subjectScore++;
+        }
       }
+
+      // Add to the main object with a unique key
+      const key = `question_${questionCounter}`;
+      questionsAttemptedObject[key] = questionObj[0];
+      questionCounter++;
     });
 
-    // Wrap it under the "question attempted" key — one plain object, not array
-    const questionToSave = {
-      "question attempted": questionAttemptedMap
-    };
+    
+    const subjectPoints =  parseFloat(subjectScore) * 1.5;
 
-    const subjectPoints = subjectScore * 1.5;
-    const subjectMax    = questions.length * 1.5;
-    grandTotal += subjectPoints;
-    grandMax   += subjectMax;
-
-    /*
-     * OBJECT 2 — scoreToSave
-     * One plain object per subject — not an array.
-     */
-    const scoreToSave = {
-      regNum:     regNum,
+    // Create a separate object for each subject's score (not an array)
+    const subjectScoreObject = {
+      regNum: regNum,
       department: dept,
-      subject:    subjectName,
-      fullname:   fullname,
-      totalScore: subjectPoints,
+      subject: subjectName,
+      fullname: fullname,
+      score: subjectPoints,
+      totalQuestions: subjectTotalQuestions,
+      correctAnswers: subjectScore,
+      expectedScore:  parseFloat(subjectTotalQuestions) * 1.5 
     };
 
-    resultRows.push(`
-      <div class="result-row">
-        <span class="sname">${subjectName}</span>
-        <span class="spts">${subjectPoints}/${subjectMax} (${subjectScore}/${questions.length} correct)</span>
-      </div>`);
+    console.log(`Score for ${subjectName}:`, subjectScoreObject);
 
-    // Build the full payload sent to the attempt API
-    const e = {
-      questionToSave: JSON.stringify(questionToSave),
-      regNum:         regNum,
-      department:     dept,
-      fullname:       fullname,
+    // Save each subject score individually
+    // const scoresApi = await fetch('/cbt/ansofra/api/save/scores', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(subjectScoreObject),
+    // });
+    // const scoresResult = await scoresApi.json();
+
+      const finalQuestionsObject = {
+      regNum: regNum,
+      fullname: fullname,
+      department: dept,
+      totalQuestions: questionCounter,
+      submittedAt: new Date().toISOString(),
+      questionToSave: questionsAttemptedObject,
     };
 
-    console.log('Attempt payload for subject', subjectName, e);
+    console.log('Questions Attempted Object (Single Object):', finalQuestionsObject);
 
-    const attemptApi    = await fetch('/cbt/ansofra/api/save/questions/attempt', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify(e),
+    // Save all questions in one request
+    const attemptApi = await fetch('/cbt/ansofra/api/save/questions/attempt', {
+      method:'POST',
+      headers:{'Content-type':'application/json'},
+      body:JSON.stringify(finalQuestionsObject)
     });
     const attemptResult = await attemptApi.json();
     console.log('Save attempt result:', attemptResult);
@@ -967,26 +970,39 @@ async function finalSubmit() {
       console.log('Failed to save question attempts:', attemptResult);
       return;
     }
-
-    console.log('Score payload for subject', subjectName, scoreToSave);
-
-    // const scoresApi    = await fetch('/cbt/ansofra/api/save/scores', {
-    //   method:  'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body:    JSON.stringify(scoreToSave),
-    // });
-    // const scoresResult = await scoresApi.json();
-    // console.log('Save scores result:', scoresResult);
-
-    // if (scoresResult.status !== 'success') {
-    //   console.log('Failed to save scores:', scoresResult);
-    //   return;
-    // }
   }
 
-  // ── Save final result ────────────────────────────────────────────────────
-  await saveResult();
+  // Create the final questions attempted object with metadata
+  // const finalQuestionsObject = {
+  //   regNum: regNum,
+  //   fullname: fullname,
+  //   department: dept,
+  //   totalQuestions: questionCounter,
+  //   submittedAt: new Date().toISOString(),
+  //   questionToSave: JSON.stringify(questionsAttemptedObject),
+  // };
+
+  // console.log('Questions Attempted Object (Single Object):', finalQuestionsObject);
+
+  // // Save all questions in one request
+  // const attemptApi = await fetch('/cbt/ansofra/api/save/questions/attempt', {
+  //   method:'POST',
+  //   headers:{'Content-type':'application/json'},
+  //   body:JSON.stringify(finalQuestionsObject)
+  // });
+  // const attemptResult = await attemptApi.json();
+  // console.log('Save attempt result:', attemptResult);
+
+  // if (attemptResult.status !== 'success') {
+  //   console.log('Failed to save question attempts:', attemptResult);
+  //   return;
+  // }
+
+  // Save final result
+  // await saveResult();
 }
+
+
 // async function finalSubmit() {
 //   clearInterval(examState.timerInterval);
 //   closeModal();

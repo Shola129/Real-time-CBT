@@ -5,13 +5,20 @@ use NewdichDto\AnsofraDto;
 use NewdichMiddleware\Index;
 
 $data = json_decode(file_get_contents("php://input"), true);
+$qestionToSave = $data['questionToSave'];
+$qestions = json_decode($qestionToSave, true);
 $mid = new Index();
 $cleanData = [];
 
 foreach($data as $key=>$val){
-    $cleanData[$key]=$mid->cleanData($val);
+  if($key==="questionToSave"){
+    $cleanData[$key]=$qestions;
+  }
+  else{
+      $cleanData[$key]=$mid->cleanData($val);
+  }
 }
-
+$cleanData["otp"] = $mid->otp();
 $dto = new AnsofraDto($cleanData);
 $logic = new SaveQuestionATT($dto);
 $log = $logic->process();

@@ -18,7 +18,8 @@ class SaveQuestionATT{
             "regNum"=>$this->dto->regNum,
             "questionToSave"=>$this->dto->questionToSave,
             "fullname"=>$this->dto->fullname,
-            "saveAt"=>date("Y-m-d H:i:s"),
+            "saveAt"=>$this->dto->submittedAt,
+            "totalQuestions"=>$this->dto->totalQuestions,
             "savequestID"=>"SAVE/QUES/ANS/".$this->dto->otp,
         ];
 

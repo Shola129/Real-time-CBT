@@ -20,7 +20,10 @@ class SaveScore{
             'subject'=>$this->dto->subject,
             'department'=>$this->dto->department,
             'regNum'=>$this->dto->regNum,
-            'saveAt'=>date("Y-m-d H:i:s")
+            'saveAt'=>date("Y-m-d H:i:s"),
+            'expectedScore'=>$this->dto->expectedScore,
+            'correctAnswers'=>$this->dto->correctAnswers,
+            'totalQuestions'=>$this->dto->totalQuestions,
         ];
 
         $newMig = new Migration(null, $this->table);

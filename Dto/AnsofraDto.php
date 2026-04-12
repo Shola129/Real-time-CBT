@@ -59,6 +59,10 @@ class AnsofraDto{
     public $subjectAndScore;
     public $overAll;
     public $questionToSave;
+    public $totalQuestions;
+    public $submittedAt;
+    public $correctAnswers;
+    public $expectedScore;
 
     public function __construct(array $inData){
         $allProp = get_object_vars($this);
