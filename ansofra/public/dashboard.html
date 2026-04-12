@@ -947,7 +947,7 @@ async function finalSubmit() {
 
     // Build the full payload sent to the attempt API
     const e = {
-      questionToSave: questionToSave,
+      questionToSave: JSON.stringify(questionToSave),
       regNum:         regNum,
       department:     dept,
       fullname:       fullname,
