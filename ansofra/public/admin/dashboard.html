@@ -1473,7 +1473,7 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
       });
 
       const result = await api.json();
-      console.log(result);
+      // console.log(result);
       if(result.status==="success"){
         const  response = result.response;
         let output = '';
