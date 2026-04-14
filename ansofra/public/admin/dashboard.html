@@ -235,7 +235,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 .enrolment-bar strong { color: var(--gold); }
 
 /* Gallery grid */
-.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 14px; }
+.gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(30%,1fr)); gap: 14px; }
 .gallery-card {
   background: var(--white); border: 1px solid var(--border);
   border-radius: var(--r-xl); overflow: hidden;
@@ -640,16 +640,20 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         <div class="section-header"><div class="section-title"><i class="fas fa-images"></i> Gallery</div></div>
         <div id="dashDeptGrid" class="gallery-grid">
           <div class="gallery-card">
-            <div class="gallery-placeholder"><i class="fas fa-image"></i><span>Gallery Image 1</span></div>
+            <img src="../public/assets/1969-Ford-Mustang-Fastback-3.jpg" alt="">
+            <!-- <div class="gallery-placeholder"><i class="fas fa-image"></i><span>Gallery Image 1</span></div> -->
           </div>
           <div class="gallery-card">
-            <div class="gallery-placeholder"><i class="fas fa-car"></i><span>1969 Ford Mustang</span></div>
+            <img src="../public/assets/157598.jpg" alt="" srcset="">
+            <!-- <div class="gallery-placeholder"><i class="fas fa-car"></i><span>1969 Ford Mustang</span></div> -->
           </div>
           <div class="gallery-card">
-            <div class="gallery-placeholder"><i class="fas fa-car-side"></i><span><img src="public/assets/logo.jpg" alt=""></span></div>
+            <img src="../public/assets/2025-bmw-m5-fire-red-14.jpg" alt="" srcset="">
+            <!-- <div class="gallery-placeholder"><i class="fas fa-car-side"></i><span><img src="public/assets/logo.jpg" alt=""></span></div> -->
           </div>
           <div class="gallery-card">
-            <div class="gallery-placeholder"><i class="fas fa-image"></i><span>157598.jpg</span></div>
+             <img src="../public/assets/2025-bmw-m5-fire-red-09.jpg" alt="" srcset="">
+            <!-- <div class="gallery-placeholder"><i class="fas fa-image"></i><span>157598.jpg</span></div> -->
           </div>
         </div>
       </div>
@@ -961,7 +965,7 @@ async function getDetail(){
   });
   const result = await api.json();
   const response = result.response[0];
-  console.log(result);
+  // console.log(result);
   if(result.status==="success"){
     document.getElementById("profile-id").textContent=response.ID;
     document.getElementById("profile-email").textContent=response.email;
@@ -1045,7 +1049,7 @@ async function setLastLogin(){
        body:JSON.stringify(e)
   });
   const result = await api.json();
-  console.log(result);
+  // console.log(result);
 }
 
 async function setLastSeen(){
@@ -1056,7 +1060,7 @@ async function setLastSeen(){
       body:JSON.stringify(e)
   });
   const result = await api.json();
-  console.log(result);
+  // console.log(result);
 }
 
 
@@ -1185,7 +1189,7 @@ async function displayScheduledTime(){
                 </td>
                 <td>
                   <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}')">
-                    <i class="fas fa-trash"></i>
+                   Send Out
                   </button>  
                 </td>
               </tr>
@@ -1480,18 +1484,18 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
         for (let index = 0; index < response.length; index++) {
           output +=`
             <div class="dsb-drawer-meta">
-                <span><i class="fas fa-user-tie"></i> ${ HeadOfDepartment||'—'}</span>
-                <span><i class="fas fa-book"></i> ${response[index].subject.length} subject${response[index].subject.length!==1?'s':''}</span>
-                <span><i class="fas fa-align-left"></i> ${Description||''}</span>
-            </div>
-            <div class="dsb-subject-list"> 
-               <div class="dsb-subject-row">
+              <span><i class="fas fa-book"></i> ${index + 1 }</span>
               <div class="dsb-subject-info"><div class="dsb-subject-name">${response[index].subject}</div><div class="dsb-subject-date">Added ${response[index].Date_Created || '—'}</div></div>
-                <div class="dsb-subject-badges">
+                <span><i class="fas fa-user-tie"></i> ${ HeadOfDepartment||'—'}</span>
+                <span>Depart Code ${response[index].DepartmentCode}</span>
+                 <div class="dsb-subject-badges">
                   <button class="btn btn-sm" style="padding:4px 10px;" onclick="openEditModal('${response[index].subjectID}', '${response[index].subject}')"><i class="fas fa-pen"></i></button>
                   <button class="btn btn-sm btn-danger" style="padding:4px 10px;" onclick="deleteSubjectFromDrawer('${response[index].subjectID}', '${response[index].subject}')"><i class="fas fa-trash"></i></button>
                 </div>
-            </div>;
+            </div>
+            <div class="dsb-subject-list"> 
+               <div class="dsb-subject-row">
+            </div>
           </div>`;
         }
         document.getElementById('dsbDrawerTitle').innerHTML = ` ${department} <span class="badge badge-dept" style="font-size:10px;">${DepartmentCode}</span>`;
@@ -1783,6 +1787,24 @@ window.showSection = function(id, navEl){
      }
   closeSidebar();
 };
+
+document.getElementById("ReleaseResult").addEventListener("click", async ()=>{
+  const e = {status:"completed"};
+
+  const api = await fetch("/cbt/ansofra/apiadmin/release/result", {
+    method:"POST",
+    headers:{"Content-type":"application/json"},
+    body:JSON.stringify(e)
+  });
+
+  const result = await api.json();
+  if(result.status==="success"){
+
+  }
+  else{
+    alert("Error while sending result out");
+  }
+})
 
 window.openSidebar = function(){ document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('visible'); document.body.style.overflow='hidden'; };
 window.closeSidebar = function(){ document.getElementById('sidebar').classList.remove('open'); document.getElementById('sidebarOverlay').classList.remove('visible'); document.body.style.overflow=''; };

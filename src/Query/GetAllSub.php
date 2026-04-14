@@ -15,7 +15,7 @@ class GetAllSub{
     public function process(){
         $where = [
             'department'=>$this->dto->department,
-            'DepartmentCode'=>$this->dto->DepartmentCode
+            // 'DepartmentCode'=>$this->dto->DepartmentCode
         ];
 
         $newMig = new Migration(null, $this->table);

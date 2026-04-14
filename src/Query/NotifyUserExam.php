@@ -23,26 +23,46 @@ class NotifyUserExam{
         $mig = $newMig->get($where, 0, 20);
         $decodeMig = json_decode($mig, true);
         if($decodeMig['status']==="success"){
-            $reponse = $decodeMig['reponse'];
+            // $reponse = $decodeMig["response"][0];
+            // $time = $this->dto->timeSchedule;
+            // $allEamil = $reponse["email"];
+            // $a = count($allEamil);
+            // $holdEmail = "";
+            // for($i=0; $i<$a; $i++){
+            //     $holdEmail=$allEmail[$i];
+            // }
+            // $body = "Th time set for cbt exam is $time";
+            // $newMail = new Index();
+            // $mail = $newMail->sendOtp('TimeTable', $body, $holdEmail);
+            // $decodeMail = json_decode($mail, true);
+            // if($decodeMail['status']==="success"){
+            //     return json_encode([
+            //         'status'=>'success',
+            //         'response'=>'time scheduled have being saved and sent to the registered user department to ready'
+            //     ], JSON_PRETTY_PRINT);
+            // }
+            // else{
+            //     return $mail;
+            // }
+
+            $response = $decodeMig["response"];
             $time = $this->dto->timeSchedule;
-            $allEamil = $reponse["email"];
-            $a = count($allEamil);
-            $holdEmail = "";
-            for($i=0; $i<$a; $i++){
-                $holdEmail=$allEmail[$i];
-            }
-            $body = "Th time set for cbt exam is $time";
-            $newMail = new Index();
-            $mail = $newMail->sendOtp('TimeTable', $body, $holdEmail);
-            $decodeMail = json_decode($mail, true);
-            if($decodeMail['status']==="success"){
-                return json_encode([
-                    'status'=>'success',
-                    'response'=>'time scheduled have being saved and sent to the registered user department to ready'
-                ], JSON_PRETTY_PRINT);
-            }
-            else{
-                return $mail;
+            foreach($response as $row){
+                $email = $row["email"];
+                
+                $body = "The time set for CBT exam is $email";
+                $newMail = new Index();
+                $mail = $newMail->sendOtp('TimeTable', $body, $email);
+                $decodeMail = json_decode($mail, true);
+                if($decodeMail['status']==="success"){
+                    return json_encode([
+                        'status'=>'success',
+                        'response'=>'time scheduled have being saved and sent to the registered user department to ready'
+                    ], JSON_PRETTY_PRINT);
+                }
+                else{
+                    return $mail;
+                }
             }
         }
         else{

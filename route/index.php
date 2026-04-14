@@ -271,6 +271,11 @@ elseif($url === $adminArea . "/Search/Dep/Sch"){
     exit();
 }
 
+elseif($url === $adminArea . "/release/result"){
+    require_once __DIR__ . $srcController . "/RelResultController.php";
+    exit();
+}
+
 // EndPoint for user's area
 
 elseif($url === $usersArea . "/register"){
