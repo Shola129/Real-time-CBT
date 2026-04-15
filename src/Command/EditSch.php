@@ -15,8 +15,7 @@ class EditSch{
 
     public function process(){
         $get = [
-            "DepartmentCode"=>$this->dto->DepartmentCode,
-            "department"=>$this->dto->department
+            "department"=>$this->dto->department,
         ];
 
         $newMig2 = new Migration(null, $this->table2);
@@ -29,7 +28,7 @@ class EditSch{
             'date'=> $this->dto->date,
             'start'=> $this->dto->start,
             'end'=> $this->dto->end,
-            'duration'=> $this->dto->duration.'hrs',
+            'duration'=> $this->dto->duration."mins",
             'role'=> 'set'
         ];
 

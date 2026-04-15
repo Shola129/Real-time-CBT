@@ -50,7 +50,7 @@ class NotifyUserExam{
             foreach($response as $row){
                 $email = $row["email"];
                 
-                $body = "The time set for CBT exam is $email";
+                $body = "The time set for CBT exam is $time";
                 $newMail = new Index();
                 $mail = $newMail->sendOtp('TimeTable', $body, $email);
                 $decodeMail = json_decode($mail, true);

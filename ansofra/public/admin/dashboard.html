@@ -433,7 +433,8 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 <!-- MODAL 1 — Edit Subject -->
 <div class="modal-backdrop" id="editModal" onclick="if(event.target===this)closeEditModal()">
   <form id="editSub">
-      <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal" role
+      ="dialog" aria-modal="true">
         <div class="modal-header">
           <div class="modal-title"><i class="fas fa-pen-to-square"></i> Edit Subject</div>
           <button class="modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
@@ -1273,6 +1274,11 @@ async function seacrhDepSch(){
   async function EditScheduleExam() {
     const data =  document.getElementById("formdata2");
      const form = new FormData(data);
+     const obj = {};
+     form.forEach((key, val)=>{
+      obj[key]=val;
+     })
+    //  console.log(obj);
     const api = await fetch("/cbt/ansofra/apiadmin/EditSchedule", {
         method:"POST",
         body:form
