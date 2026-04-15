@@ -343,43 +343,39 @@ class InsertData{
                                     <div class='details-grid'>
                                         <div class='detail-row'>
                                             <span class='detail-label'>Full Name:</span>
-                                            <span class='detail-value' id='fullname-display'>—</span>
-                                        </div>
-                                        <div class='detail-row'>
-                                            <span class='detail-label'>Email Address:</span>
-                                            <span class='detail-value email-value' id='email-display'>—</span>
+                                            <span class='detail-value' id='fullname-display'>$fullname</span>
                                         </div>
                                         <div class='detail-row'>
                                             <span class='detail-label'>Registration Number:</span>
-                                            <span class='detail-value reg-value' id='regNum-display'>—</span>
+                                            <span class='detail-value reg-value' id='regNum-display'>$regNum1</span>
                                         </div>
                                         <div class='detail-row'>
                                             <span class='detail-label'>Department:</span>
-                                            <span class='detail-value' id='department-display'>—</span>
+                                            <span class='detail-value' id='department-display'>$department</span>
                                         </div>
                                         <div class='detail-row'>
                                             <span class='detail-label'>Year of Study:</span>
-                                            <span class='detail-value' id='year-display'>—</span>
+                                            <span class='detail-value' id='year-display'>$year</span>
                                         </div>
                                         <div class='detail-row'>
                                             <span class='detail-label'>Date of Birth:</span>
-                                            <span class='detail-value' id='dob-display'>—</span>
+                                            <span class='detail-value' id='dob-display'>$dob</span>
                                         </div>
                                         <div class='detail-row'>
                                             <span class='detail-label'>Gender:</span>
-                                            <span class='detail-value' id='gender-display'>—</span>
+                                            <span class='detail-value' id='gender-display'>$gender</span>
                                         </div>
                                         <div class='detail-row'>
                                             <span class='detail-label'>State:</span>
-                                            <span class='detail-value' id='state-display'>—</span>
+                                            <span class='detail-value' id='state-display'>$state</span>
                                         </div>
                                         <div class='detail-row'>
                                             <span class='detail-label'>Phone Number:</span>
-                                            <span class='detail-value' id='phone-display'>—</span>
+                                            <span class='detail-value' id='phone-display'>$phone</span>
                                         </div>
                                         <div class='detail-row'>
                                             <span class='detail-label'>Date Created:</span>
-                                            <span class='detail-value' id='date_created-display'>—</span>
+                                            <span class='detail-value' id='date_created-display'>$date_created</span>
                                         </div>
                                     </div>
                                 </div>
