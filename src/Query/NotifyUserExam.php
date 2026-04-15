@@ -46,11 +46,13 @@ class NotifyUserExam{
             // }
 
             $response = $decodeMig["response"];
-            $time = $this->dto->timeSchedule;
+            $start = $this->dto->start;
+            $end = $this->dto->end;
+            $date = $this->dto->date;
             foreach($response as $row){
                 $email = $row["email"];
                 
-                $body = "The time set for CBT exam is $time";
+                $body = "The time set for CBT exam to startby  $start end $end on $date";
                 $newMail = new Index();
                 $mail = $newMail->sendOtp('TimeTable', $body, $email);
                 $decodeMail = json_decode($mail, true);

@@ -1189,7 +1189,7 @@ async function displayScheduledTime(){
                     </button>
                 </td>
                 <td>
-                  <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}')">
+                  <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}', '${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].data}')">
                    Send Out
                   </button>  
                 </td>
@@ -1253,7 +1253,7 @@ async function seacrhDepSch(){
                     </button>
                 </td>
                 <td>
-                  <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}')">
+                  <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}', '${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].date}')">
                     <i class="fas fa-trash"></i>
                   </button>  
                 </td>
@@ -1294,8 +1294,8 @@ async function seacrhDepSch(){
     }
   }
 
-  async function sendTimeOut(dep){
-    const e = {department:dep};
+  async function sendTimeOut(dep, start, end, duration ,date){
+    const e = {department:dep, start:start, end:end, date:date};
     const api = await fetch("/cbt/ansofra/apiadmin/notify/user/ofExam", {
         method:"POST",
         headers:{"Content-type":'application/json'},
