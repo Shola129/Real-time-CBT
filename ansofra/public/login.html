@@ -67,20 +67,20 @@
       <div class="alert error" id="login-alert"></div>
 
       <div class="form-group">
-        <label>Registration Number</label>
-        <input type="text" id="email" placeholder="e.g. 2026/UTME/0012345" autocomplete="username"/>
+        <label>Email</label>
+        <input type="email" id="email" placeholder="e.g. example@gmail.com" autocomplete="username"/>
       </div>
 
       <div class="form-group">
-        <label>Password</label>
-        <input type="password" id="inp-pass" placeholder="Enter your password" autocomplete="current-password"/>
+        <label>Registration Number</label>
+        <input type="text" id="regNum" placeholder="e.g. 2026/UTME/0012345" autocomplete="current-registration number"/>
       </div>
 
       <div class="remember-row">
         <label>
           <input type="checkbox" id="remember"/> Remember me
         </label>
-        <a href="#" class="forgot-link">Forgot password?</a>
+        <a href="#" class="forgot-link">Forgot registration number?</a>
       </div>
 
       <button class="btn btn-primary" onclick="doLogin()">Sign In →</button>
@@ -105,19 +105,19 @@
 <script>
  async function doLogin() {
     const email  = document.getElementById('email').value.trim();
-    const pass = document.getElementById('inp-pass').value;
+    const regNum = document.getElementById('regNum').value;
     const alert = document.getElementById('login-alert');
     alert.className = 'alert';
 
 
-    if (!email || !pass) {
-      alert.textContent = 'Please enter your email and password.';
+    if (!email || !regNum) {
+      alert.textContent = 'Please enter your email and registration number.';
       alert.classList.add('error', 'show');
       return;
     }
 
     else{
-      const e = {email:email, password:pass};
+      const e = {email:email, regNum:regNum};
 
       const api = await fetch("/cbt/ansofra/api/login", {
           method:"POST",
@@ -128,10 +128,11 @@
       const result = await api.json();
       console.log(result);
       if(result.status==="success"){
+        localStorage.setItem("cbt_session", email);
         window.location.href = '/cbt/ansofra/dashboard';
       }
       else if(result.status==="fail"){
-          alert.textContent = 'Invalid password. Please try again.';
+          alert.textContent = 'Invalid registration number. Please try again.';
           alert.classList.add('error', 'show');
           return;
       }
@@ -144,10 +145,10 @@
 
     // // Load users from localStorage
     // const users = JSON.parse(localStorage.getItem('cbt_users') || '[]');
-    // const user  = users.find(u => u.reg === reg && u.password === pass);
+    // const user  = users.find(u => u.reg === reg && u.registration number === pass);
 
     // if (!user) {
-    //   alert.textContent = 'Invalid registration number or password. Please try again.';
+    //   alert.textContent = 'Invalid registration number or registration number. Please try again.';
     //   alert.classList.add('error', 'show');
     //   return;
     // }
