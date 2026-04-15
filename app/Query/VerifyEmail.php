@@ -34,7 +34,7 @@ class VerifyEmail{
             $decodeMig = json_decode($mig, true);
             if($decodeMig["status"]==="success"){
                 $email = $this->dto->email;
-                $name = $this->dto->name;
+                $name = $this->dto->fullname;
                 $body = "
                         <!DOCTYPE html>
                             <html lang='en'>
@@ -306,7 +306,7 @@ class VerifyEmail{
                                     <!-- MAIN CONTENT -->
                                     <div class='email-body'>
                                         <div class='greeting'>
-                                            <strong>Hello, <span id='user-name-greeting'>Valued User</span>!</strong>
+                                            <strong>Hello, <span id='user-name-greeting'>User</span>!</strong>
                                         </div>
 
                                         <div class='message-text'>
@@ -316,10 +316,6 @@ class VerifyEmail{
 
                                         <!-- User information section: name and email dynamic placeholders -->
                                         <div class='user-details'>
-                                            <div class='detail-row'>
-                                                <span class='detail-label'>👤 Name:</span>
-                                                <span class='detail-value' id='user-name-display'>$name</span>
-                                            </div>
                                             <div class='detail-row'>
                                                 <span class='detail-label'>📧 Email:</span>
                                                 <span class='detail-value email-value' id='user-email-display'>$email</span>
@@ -375,7 +371,7 @@ class VerifyEmail{
             }   
         }
         else{
-            return json_decode([
+            return json_encode([
                 'status'=>'failed',
                 'response'=>'email already exit'
             ], JSON_PRETTY_PRINT);

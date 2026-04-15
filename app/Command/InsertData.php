@@ -3,6 +3,7 @@ namespace NewdichApp\Command;
 use NewdichDto\AnsofraDto;
 use NewdichSchema\Platform;
 use NewdichSchema\Migration;
+use NewdichMail\Index;
 
 class InsertData{
     private $dto;
@@ -36,11 +37,12 @@ class InsertData{
                 "gender"=>$this->dto->gender ?? '',
                 "year"=>$this->dto->year ?? '',
                 "dob"=>$this->dto->dob,
-                "phone"=>$this->dto->phone
+                "phone"=>$this->dto->phone,
+                "status"=>"set"
             ];
 
             $newMig2 = new Migration(null, $this->table);
-            $mig2 = $newMig2->saveUnique($col, $val, $data);
+            $mig2 = $newMig2->saveUnique($col, $val ,$data);
             $decodeMig2 = json_decode($mig2, true);
             if($decodeMig["status"]==="success"){
                $email= $this->dto->email;
@@ -422,13 +424,13 @@ class InsertData{
                $mail = $newmail->sendOtp("Welcome On Board", $body, $email);
                $decodeMail = json_decode($mail, true);
                if($decodeMail["status"]==="success"){
-                    return json_decode([
+                    return json_encode([
                         "status"=>"success",
                         "response"=>"successfully regsitered",
                     ], JSON_PRETTY_PRINT);
                }
                else{
-                    return json_decode([
+                    return json_encode([
                         "status"=>"success",
                         "response"=>"successfully regsitered",
                 ], JSON_PRETTY_PRINT);

@@ -1004,6 +1004,7 @@
     });
 
     const result = await api.json();
+    console.log(result);
     if(result.status==="success"){
       showAlert('reg-success','🎉 Account created successfully! Redirecting to login…','success');
       setTimeout(() => window.location.href = '/cbt/ansofra/login', 2000);
