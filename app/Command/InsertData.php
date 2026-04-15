@@ -53,7 +53,6 @@ class InsertData{
                $year=$this->dto->year;
                $dob=$this->dto->dob;
                $phone=$this->dto->phone;
-               $newmail = new Index();
 
                $body = "
                 <!DOCTYPE html>
@@ -419,7 +418,21 @@ class InsertData{
                     </body>
                 </html>
                ";
-               $mail = $newmail->sendOtp("Welcome On Board", $email);
+               $newmail = new Index();
+               $mail = $newmail->sendOtp("Welcome On Board", $body, $email);
+               $decodeMail = json_decode($mail, true);
+               if($decodeMail["status"]==="success"){
+                    return json_decode([
+                        "status"=>"success",
+                        "response"=>"successfully regsitered",
+                    ], JSON_PRETTY_PRINT);
+               }
+               else{
+                    return json_decode([
+                        "status"=>"success",
+                        "response"=>"successfully regsitered",
+                ], JSON_PRETTY_PRINT);
+               }
             }
         }
         else{
