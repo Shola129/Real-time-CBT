@@ -276,6 +276,21 @@ elseif($url === $adminArea . "/release/result"){
     exit();
 }
 
+elseif($url === $adminArea . "/display/result"){
+    require_once __DIR__ . $srcController . "/DisResultController.php";
+    exit();
+}
+
+elseif($url === $adminArea . "/reset/password"){
+    require_once __DIR__ . $srcController . "/ResetPwdController.php";
+    exit();
+}
+
+elseif($url === $adminArea . "/edit/profile"){
+    require_once __DIR__ . $srcController . "/EditProfileController.php";
+    exit();
+}
+
 // EndPoint for user's area
 
 elseif($url === $usersArea . "/register"){

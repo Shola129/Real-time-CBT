@@ -1,27 +1,31 @@
 <?php
-namespace NewdichSrc\Query;
+namespace NewdichSrc\Command;
+use NewdichDto\AnsofraDto;
 use NewdichSchema\Platform;
 use NewdichSchema\Migration;
-use NewdichDto\AnsofraDto;
 
-class TotalStudents{
+class EditProfile{
     private $dto;
-    private $table = Platform::USERS_TABLE;
-    // private $table = Platform::ADMINS_TABLE;
+    private $table = Platform::ADMINS_TABLE;
 
     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
     }
 
     public function process(){
+        $data = [
+            'password'=>$this->dto->password,
+        ];
+
         $where = [
-            'role'=>'user'
+            'email'=>$this->dto->email,
         ];
 
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->count($where);
+        $mig = $newMig->edit($data, $where);
         return $mig;
     }
 }
+
 
 ?>

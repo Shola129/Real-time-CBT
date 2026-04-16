@@ -825,10 +825,25 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         <div class="panel">
           <div class="panel-header"><span class="panel-title"><i class="fas fa-chart-simple"></i> Exam Results</span></div>
           <div class="table-wrap">
-            <table>
-              <thead><tr><th>Student</th><th>Subject</th><th>Department</th><th>Score</th><th>Date</th></tr></thead>
-              <tbody>
-                <tr><td>John Doe</td><td>Mathematics</td><td><span class="badge badge-dept">Mathematics</span></td><td><span class="badge badge-score">85%</span></td><td>Mar 2026</td></tr>
+            <table id="display-error">
+              <thead>
+                <tr>
+                  <th>S/N</th>
+                  <th>Student</th>
+                  <th>Reg. No.</th>
+                  <th>Department</th>
+                  <th>Score</th>
+                  <th>Date Submitted</th>
+                </tr>
+              </thead>
+              <tbody id="display-result">
+                <tr>
+                  <td>John Doe</td>
+                  <td>Mathematics</td>
+                  <td><span class="badge badge-dept">Mathematics</span></td>
+                  <td><span class="badge badge-score">85%</span></td>
+                  <td>Mar 2026</td>
+                </tr>
                 <tr><td>Emily Clarke</td><td>Physics</td><td><span class="badge badge-dept">Physics</span></td><td><span class="badge badge-score">92%</span></td><td>Mar 2026</td></tr>
                 <tr><td>Michael Chen</td><td>Chemistry</td><td><span class="badge badge-dept">Chemistry</span></td><td><span class="badge badge-score">78%</span></td><td>Mar 2026</td></tr>
               </tbody>
@@ -837,6 +852,39 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         </div>
       </div>
 
+      <script>
+        async function results(){
+          const e ={status:"completed"};
+         
+          const api = await fetch("/cbt/ansofra/apiadmin/display/result", {
+              method:"POST",
+              headers:{"Content-type":"apllication/json"},
+              body:JSON.stringify(e)
+          });
+
+          const result = await api.json();
+          if(result.status==="success"){
+            const response = result.response;
+            let output = "";
+            for (let index = 0; index < response.length; index++) {
+              output+=`
+                    <tr>
+                      <td>${index + 1}</td>
+                      <td>${response[index].fullname}</td>
+                      <td>${response[index].regNum}</td>
+                      <td><span class="badge badge-dept">${response[index].department}</span></td>
+                      <td><span class="badge badge-score">${response[index].overAll}</span></td>
+                      <td>${response[index].createdAt}</td>
+                    </tr>
+                `;
+            }
+            document.getElementById("display-result").innerHTML=output;
+          }
+          else{
+            document.getElementById("display-error").textContent="No result completed yet";
+          }
+        }
+      </script>
       <!-- DEPARTMENTS -->
       <div id="departments" class="page">
         <div class="dept-stat-row">
@@ -981,6 +1029,7 @@ async function totalDepartment(){
   const e = {role:'set'};
   const api = await fetch("/cbt/ansofra/apiadmin/total/department", {
       method:'POST',
+      headers:{"Content-type":"application/json"},
       body:JSON.stringify(e)
   });
 
@@ -995,6 +1044,7 @@ async function getTotalStudent(){
   const e ={role:'user'};
   const api = await fetch('/cbt/ansofra/apiadmin/TotalStudents', {
       method:'POST', 
+      headers:{"Content-type":"application/json"},
       body:JSON.stringify(e)
   });
   const result = await api.json();
@@ -1780,16 +1830,17 @@ window.showSection = function(id, navEl){
   const titles = { dashboard:'Dashboard', students:'Students', subjects:'Subjects', questions:'Questions', results:'Results', departments:'Departments', schedule:'Schedule Exam' };
   document.getElementById('pageTitle').textContent = titles[id] || id;
   if(id === 'students') getStudentList();
-  if(id === 'questions'){ }
-  if(id === 'departments'){
-      updateDeptStats();
-    }
+  if(id === 'questions'){}
+  if(id === 'departments'){updateDeptStats();}
   if(id === 'subjects'){
     getDepartment();
     }
   if(id === 'schedule'){
      displayScheduledTime()
      totalexamSche();
+     }
+     if(id === 'results'){
+      results();
      }
   closeSidebar();
 };

@@ -2,18 +2,18 @@
 namespace NewdichControllerSrc;
 use NewdichDto\AnsofraDto;
 use NewdichMiddleware\Index;
-use NewdichSrc\Query\TotalStudents;
+use NewdichSrc\Query\DisResult;
 
 $data = json_decode(file_get_contents("php://input"), true);
-$cleanData = [];
 $mid = new Index();
+$cleanData = [];
 
-foreach($data as $key=>$value){
-    $cleanData[$key]=$mid->cleanData($value);
+foreach($data as $key=>$val){
+    $cleanData[$key]=$mid->cleanData($val);
 }
 
 $dto = new AnsofraDto($cleanData);
-$logic = new TotalStudents($dto);
+$logic = new DisResult($dto);
 $log = $logic->process();
 echo $log;
 exit();
