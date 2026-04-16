@@ -20,7 +20,9 @@ class Result{
             'department'=>$this->dto->department,
             'fullname'=>$this->dto->fullname,
             'regNum'=>$this->dto->regNum,
-            'createdAt'=>date("Y-m-d H:i:s")
+            'createdAt'=>date("Y-m-d H:i:s"),
+            'status'=>'completed',
+            'publish'=>'pending',
         ];
 
         $newMig = new Migration(null, $this->table);

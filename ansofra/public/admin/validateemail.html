@@ -3,585 +3,177 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Exam Board · Register</title>
+<title>Exam Board · Sign-up</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-<link rel="stylesheet" href="public/css/Admin-style.css" />
 <style>
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: var(--cream);
-}
-.register-container {
-  max-width: 450px;
-  width: 90%;
-  background: var(--white);
-  border-radius: var(--r-xl);
-  border: 1px solid var(--border-gold);
-  padding: 30px 28px;
-}
-.register-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-.register-header i {
-  font-size: 28px;
-  color: var(--gold-dark);
-}
-.register-header h3 {
-  margin: 8px 0 0;
-}
-.btn-register {
-  width: 100%;
-}
-.links {
-  text-align: center;
-  margin-top: 16px;
-}
-.links a {
-  color: var(--gold-deep);
-  text-decoration: none;
-}
-.links a:hover {
-  text-decoration: underline;
-}
-.error-message {
-  color: #dc3545;
-  font-size: 11px;
-  margin-top: 4px;
-  display: none;
-  font-family: sans-serif;
-}
-.error-message.visible {
-  display: block;
-}
-.input-error {
-  border-color: #dc3545 !important;
-}
-.input-success {
-  border-color: #28a745 !important;
-}
-.password-strength {
-  margin-top: 5px;
-  font-size: 11px;
-  font-family: sans-serif;
-}
-.strength-weak { color: #dc3545; }
-.strength-medium { color: #ffc107; }
-.strength-strong { color: #28a745; }
-
-
-:root {
-  --cream:       #faf8f2;
-  --white:       #ffffff;
-  --gold-light:  #fef3d0;
-  --gold-mid:    #f5d472;
-  --gold:        #e8b832;
-  --gold-dark:   #b8901e;
-  --gold-deep:   #8a6a12;
-  --ink:         #2a3440;
-  --ink-mid:     #4a5a68;
-  --ink-soft:    #7a8a96;
-  --border:      #ede8d8;
-  --border-gold: #f0d898;
-  --sidebar-w:   230px;
-  --topbar-h:    58px;
-  --r-sm:  6px;
-  --r-md:  10px;
-  --r-lg:  16px;
-  --r-xl:  24px;
-  --r-pill:99px;
-  --shadow-md: 0 4px 24px rgba(0,0,0,.14);
-  --shadow-modal: 0 8px 40px rgba(0,0,0,.18);
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; }
-
-body {
-  font-family: 'Georgia', 'Times New Roman', serif;
-  background: var(--cream);
-  color: var(--ink);
-  font-size: 14px;
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-
-/* app shell & sidebar etc (existing) */
-.app { display: flex; min-height: 100vh; }
-.sidebar-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,.38);
-  z-index: 90;
-  opacity: 0; pointer-events: none;
-  transition: opacity .3s ease;
-}
-.sidebar-overlay.visible { opacity: 1; pointer-events: all; }
-.sidebar {
-  width: var(--sidebar-w);
-  min-width: var(--sidebar-w);
-  background: var(--white);
-  border-right: 1px solid var(--border);
-  display: flex; flex-direction: column;
-  position: sticky; top: 0;
-  height: 100vh;
-  overflow-y: auto;
-  flex-shrink: 0;
-  transition: transform .3s cubic-bezier(.4,0,.2,1);
-  z-index: 100;
-}
-.sidebar-brand {
-  padding: 20px 18px 16px;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 10px;
-}
-.brand-icon {
-  width: 38px; height: 38px;
-  background: var(--gold-mid);
-  border-radius: var(--r-md);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--ink); font-size: 17px;
-}
-.brand-name { font-size: 15px; font-weight: 700; color: var(--ink); }
-.brand-sub  { font-size: 11px; color: var(--ink-soft); font-family: sans-serif; font-style: italic; }
-.sidebar-close {
-  display: none;
-  width: 28px; height: 28px;
-  border: none; background: var(--gold-light);
-  border-radius: var(--r-pill);
-  cursor: pointer;
-  margin-left: auto;
-}
-.sidebar-nav { padding: 10px 8px; flex: 1; }
-.nav-section-label {
-  font-size: 10px; text-transform: uppercase;
-  letter-spacing: .1em; color: var(--ink-soft);
-  font-family: sans-serif; font-weight: 700;
-  padding: 10px 10px 5px;
-}
-.nav-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 11px 12px;
-  border-radius: var(--r-md);
-  cursor: pointer;
-  color: var(--ink-mid);
-  font-family: sans-serif; font-weight: 500;
-  transition: all .15s;
-}
-.nav-item .ni { width: 20px; font-size: 15px; color: var(--ink-soft); }
-.nav-item:hover { background: var(--gold-light); color: var(--gold-deep); transform: translateX(3px); }
-.nav-item.active { background: var(--gold-mid); color: var(--ink); font-weight: 700; }
-.sidebar-footer {
-  padding: 14px 18px; border-top: 1px solid var(--border);
-  font-size: 11px; color: var(--ink-soft);
-  font-family: sans-serif; font-style: italic;
-}
-.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-.topbar {
-  background: var(--white); border-bottom: 1px solid var(--border);
-  padding: 0 20px; height: var(--topbar-h);
-  display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 50;
-}
-.hamburger {
-  display: none;
-  width: 36px; height: 36px;
-  border: 1.5px solid var(--border-gold);
-  border-radius: var(--r-md);
-  background: var(--white);
-  flex-direction: column; align-items: center; justify-content: center;
-  gap: 5px;
-}
-.hamburger span { width: 16px; height: 2px; background: var(--ink-mid); }
-.page-title { font-size: 17px; font-weight: 700; }
-.topbar-badge { background: var(--gold-light); border: 1px solid var(--border-gold); color: var(--gold-deep); font-size: 11px; padding: 3px 10px; border-radius: var(--r-pill); }
-.content { padding: 24px; flex: 1; overflow-y: auto; }
-.page { display: none; }
-.page.active { display: block; animation: fadeIn .2s ease; }
-@keyframes fadeIn { from { opacity: .6; transform: translateY(5px); } to { opacity: 1; transform: none; } }
-.btn {
-  display: inline-flex; align-items: center; gap: 7px;
-  padding: 8px 16px; font-size: 13px; font-family: sans-serif; font-weight: 600;
-  border-radius: var(--r-pill); border: 1.5px solid var(--border-gold);
-  background: var(--white); cursor: pointer;
-}
-.btn-primary { background: var(--gold-mid); border-color: var(--gold); color: var(--ink); }
-.btn-primary:hover { background: var(--gold); }
-.form-control {
-  padding: 9px 14px; border: 1.5px solid var(--border);
-  border-radius: var(--r-pill); font-size: 13px; font-family: sans-serif;
-  background: var(--white); width: 100%;
-}
-.form-control:focus { outline: none; border-color: var(--gold-mid); }
-.form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
-.form-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--gold-deep); font-family: sans-serif; }
-.panel { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); overflow: hidden; margin-bottom: 20px; }
-.panel-header { padding: 13px 18px; border-bottom: 1px solid var(--border); }
-.panel-title { font-size: 13.5px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-.panel-body { padding: 18px; }
-.badge { display: inline-flex; padding: 3px 10px; border-radius: var(--r-pill); font-size: 11px; font-weight: 600; background: var(--gold-light); color: var(--gold-deep); }
-.stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; margin-bottom: 22px; }
-.stat-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 18px 16px; }
-.dept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 14px; }
-@media (max-width: 900px) {
-  .sidebar { position: fixed; transform: translateX(calc(-1 * var(--sidebar-w) - 10px)); }
-  .sidebar.open { transform: translateX(0); }
-  .sidebar-close { display: flex; }
-  .hamburger { display: flex; }
-  .stat-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-}
+  :root {
+    --navy:        #0a1628;
+    --navy-mid:    #122040;
+    --navy-light:  #1e3a6e;
+    --navy-soft:   #2d5298;
+    --red:         #c0392b;
+    --red-dark:    #922b21;
+    --red-light:   #f9e0de;
+    --white:       #ffffff;
+    --off-white:   #f4f6fb;
+    --border:      #d0d8ea;
+    --ink-mid:     #3a4f72;
+    --ink-soft:    #6b7fa3;
+    --r-md:  10px;
+    --r-lg:  16px;
+    --r-xl:  24px;
+    --r-pill:99px;
+    --shadow-md: 0 4px 24px rgba(10,22,40,.18);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: var(--off-white);
+    color: var(--navy); font-size: 14px; line-height: 1.6;
+  }
+  .register-container {
+    max-width: 440px; width: 90%;
+    background: var(--white);
+    border-radius: var(--r-xl);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    padding: 32px 28px;
+  }
+  .register-header { text-align: center; margin-bottom: 24px; }
+  .header-icon {
+    width: 56px; height: 56px; background: var(--navy);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px; border: 2px solid var(--red);
+  }
+  .header-icon i { font-size: 22px; color: var(--white); }
+  .register-header h3 { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .register-header p { font-size: 12px; font-family: sans-serif; color: var(--ink-soft); }
+  .step-indicator {
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px; margin-bottom: 22px; font-family: sans-serif;
+  }
+  .step { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
+  .step.active { background: var(--navy); color: var(--white); }
+  .step.inactive { background: var(--border); color: var(--ink-soft); }
+  .step-line { width: 32px; height: 2px; background: var(--border); border-radius: 1px; }
+  .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+  .form-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--navy-soft); font-family: sans-serif; }
+  .form-control {
+    padding: 10px 14px; border: 1.5px solid var(--border);
+    border-radius: var(--r-pill); font-size: 13px; font-family: sans-serif;
+    background: var(--white); width: 100%; color: var(--navy);
+    transition: border-color .15s;
+  }
+  .form-control:focus { outline: none; border-color: var(--navy-soft); }
+  .form-control::placeholder { color: var(--ink-soft); }
+  .input-error  { border-color: var(--red) !important; }
+  .input-success { border-color: #27ae60 !important; }
+  .error-message { color: var(--red); font-size: 11px; margin-top: 3px; display: none; font-family: sans-serif; }
+  .error-message.visible { display: block; }
+  .btn-register {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 12px 20px;
+    background: var(--navy); color: var(--white);
+    border: none; border-radius: var(--r-pill);
+    font-size: 13px; font-family: sans-serif; font-weight: 700;
+    cursor: pointer; margin-top: 4px;
+    transition: background .18s, transform .12s; letter-spacing: .03em;
+  }
+  .btn-register:hover { background: var(--navy-light); transform: translateY(-1px); }
+  .btn-register:active { transform: translateY(0); }
+  .links { text-align: center; margin-top: 18px; font-family: sans-serif; font-size: 12px; color: var(--ink-soft); }
+  .links a { color: var(--red); text-decoration: none; font-weight: 600; }
+  .links a:hover { text-decoration: underline; }
+  .divider-line { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
 </style>
 </head>
 <body>
 <form id="data">
-    <div class="register-container">
-      <div class="register-header">
-        <i class="fas fa-user-plus"></i>
-        <h3>Admin Sign-up Page</h3>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Full name *</label>
-        <input type="text" id="regName" class="form-control" placeholder="John Admin" name="fullname">
-        <div class="error-message" id="nameError">Full name is required</div>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Email *</label>
-        <input type="email" id="regEmail" class="form-control" placeholder="admin@example.com" name="email">
-        <div class="error-message" id="emailError">Please enter a valid email address</div>
-      </div>
-      
-      <!-- <div class="form-group">
-        <label class="form-label">Phone Number *</label>
-        <input type="tel" id="regPhone" class="form-control" placeholder="+1234567890 or 08012345678" name="phone">
-        <div class="error-message" id="phoneError">Please enter a valid phone number (10-15 digits)</div>
-      </div> -->
-      
-      <!-- <div class="form-group">
-        <label class="form-label">Select Department *</label>
-        <select id="regDepartment" class="form-control">
-          <option value="">Select a department</option>
-          <option value="Computer Science">Computer Science</option>
-          <option value="Mathematics">Mathematics</option>
-          <option value="Physics">Physics</option>
-          <option value="Chemistry">Chemistry</option>
-          <option value="Literature">Literature</option>
-          <option value="Engineering">Engineering</option>
-          <option value="Business">Business</option>
-        </select>
-        <div class="error-message" id="deptError">Please select a department</div>
-      </div>
-      -->
-      <!-- <div class="form-group">
-        <label class="form-label">Password *</label>
-        <input type="password" id="regPassword" class="form-control" placeholder="min 6 chars" name="password">
-        <div class="password-strength" id="passwordStrength"></div>
-        <div class="error-message" id="passwordError">Password must be at least 6 characters long and contain at least one number and one letter</div>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Confirm Password *</label>
-        <input type="password" id="regComPassword" class="form-control" placeholder="confirm password">
-        <div class="error-message" id="confirmPasswordError">Passwords do not match</div>
-      </div> -->
-      
-      <button id="registerBtn" class="btn btn-primary btn-register">
-        <i class="fas fa-check-circle"></i> Register
-      </button>
-      
-      <div class="links">
-        <a href="#" id="loginLink">Already have an account? Sign in</a> &nbsp;|&nbsp; 
-        <a href="#" id="backLink">Back</a>
-      </div>
+  <div class="register-container">
+    <div class="register-header">
+      <div class="header-icon"><i class="fas fa-user-plus"></i></div>
+      <h3>Create Admin Account</h3>
+      <p>Step 1 of 2 &mdash; Identity verification</p>
     </div>
+    <div class="step-indicator">
+      <div class="step active">1</div>
+      <div class="step-line"></div>
+      <div class="step inactive">2</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Full Name *</label>
+      <input type="text" id="regName" class="form-control" placeholder="John Admin" name="fullname">
+      <div class="error-message" id="nameError">Full name is required</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Email *</label>
+      <input type="email" id="regEmail" class="form-control" placeholder="admin@example.com" name="email">
+      <div class="error-message" id="emailError">Please enter a valid email address</div>
+    </div>
+
+    <button id="registerBtn" type="button" class="btn-register">
+      <i class="fas fa-paper-plane"></i> Send Verification Code
+    </button>
+
+    <hr class="divider-line" />
+    <div class="links">
+      <a href="#" id="loginLink">Already have an account? Sign in</a> &nbsp;&middot;&nbsp;
+      <a href="#" id="backLink" style="color:var(--ink-soft);font-weight:400;">Back</a>
+    </div>
+  </div>
 </form>
 
-<!-- <script src="auth-common.js"></script> -->
 <script>
-  // Get DOM elements
   const nameInput = document.getElementById('regName');
   const emailInput = document.getElementById('regEmail');
-//   const phoneInput = document.getElementById('regPhone');
-//   const deptSelect = document.getElementById('regDepartment');
-//   const passwordInput = document.getElementById('regPassword');
-//   const confirmPasswordInput = document.getElementById('regComPassword');
-  const registerBtn = document.getElementById('registerBtn');
-  
-  // Error message elements
   const nameError = document.getElementById('nameError');
   const emailError = document.getElementById('emailError');
-  const phoneError = document.getElementById('phoneError');
-  const deptError = document.getElementById('deptError');
-  const passwordError = document.getElementById('passwordError');
-  const confirmPasswordError = document.getElementById('confirmPasswordError');
-  
-  // Validation functions
+
   function validateName() {
     const name = nameInput.value.trim();
-    if(name === '') {
-      nameInput.classList.add('input-error');
-      nameInput.classList.remove('input-success');
-      nameError.classList.add('visible');
-      return false;
-    } else if(name.length < 2) {
-      nameInput.classList.add('input-error');
-      nameInput.classList.remove('input-success');
-      nameError.textContent = 'Name must be at least 2 characters';
-      nameError.classList.add('visible');
-      return false;
-    } else {
-      nameInput.classList.remove('input-error');
-      nameInput.classList.add('input-success');
-      nameError.classList.remove('visible');
-      return true;
-    }
+    if (!name) { nameInput.classList.add('input-error'); nameInput.classList.remove('input-success'); nameError.classList.add('visible'); return false; }
+    else if (name.length < 2) { nameInput.classList.add('input-error'); nameInput.classList.remove('input-success'); nameError.textContent = 'Name must be at least 2 characters'; nameError.classList.add('visible'); return false; }
+    else { nameInput.classList.remove('input-error'); nameInput.classList.add('input-success'); nameError.classList.remove('visible'); return true; }
   }
-  
+
   function validateEmail() {
     const email = emailInput.value.trim();
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if(email === '') {
-      emailInput.classList.add('input-error');
-      emailInput.classList.remove('input-success');
-      emailError.textContent = 'Email is required';
-      emailError.classList.add('visible');
-      return false;
-    } else if(!emailRegex.test(email)) {
-      emailInput.classList.add('input-error');
-      emailInput.classList.remove('input-success');
-      emailError.textContent = 'Please enter a valid email address (e.g., name@example.com)';
-      emailError.classList.add('visible');
-      return false;
-    } else {
-      emailInput.classList.remove('input-error');
-      emailInput.classList.add('input-success');
-      emailError.classList.remove('visible');
-      return true;
-    }
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email) { emailInput.classList.add('input-error'); emailInput.classList.remove('input-success'); emailError.textContent = 'Email is required'; emailError.classList.add('visible'); return false; }
+    else if (!re.test(email)) { emailInput.classList.add('input-error'); emailInput.classList.remove('input-success'); emailError.textContent = 'Please enter a valid email address'; emailError.classList.add('visible'); return false; }
+    else { emailInput.classList.remove('input-error'); emailInput.classList.add('input-success'); emailError.classList.remove('visible'); return true; }
   }
-  
-//   function validatePhone() {
-//     const phone = phoneInput.value.trim();
-//     // Remove any non-digit characters for validation
-//     const phoneDigits = phone.replace(/\D/g, '');
-    
-//     if(phone === '') {
-//       phoneInput.classList.add('input-error');
-//       phoneInput.classList.remove('input-success');
-//       phoneError.textContent = 'Phone number is required';
-//       phoneError.classList.add('visible');
-//       return false;
-//     } else if(phoneDigits.length < 10 || phoneDigits.length > 15) {
-//       phoneInput.classList.add('input-error');
-//       phoneInput.classList.remove('input-success');
-//       phoneError.textContent = 'Phone number must be between 10 and 15 digits';
-//       phoneError.classList.add('visible');
-//       return false;
-//     } else {
-//       phoneInput.classList.remove('input-error');
-//       phoneInput.classList.add('input-success');
-//       phoneError.classList.remove('visible');
-//       return true;
-//     }
-//   }
-  
-//   // function validateDepartment() {
-//   //   const dept = deptSelect.value;
-//   //   if(dept === '') {
-//   //     deptSelect.classList.add('input-error');
-//   //     deptSelect.classList.remove('input-success');
-//   //     deptError.classList.add('visible');
-//   //     return false;
-//   //   } else {
-//   //     deptSelect.classList.remove('input-error');
-//   //     deptSelect.classList.add('input-success');
-//   //     deptError.classList.remove('visible');
-//   //     return true;
-//   //   }
-//   // }
-  
-//   function checkPasswordStrength(password) {
-//     const strengthDiv = document.getElementById('passwordStrength');
-//     if(password.length === 0) {
-//       strengthDiv.innerHTML = '';
-//       return false;
-//     }
-    
-//     let strength = 0;
-//     let strengthText = '';
-//     let strengthClass = '';
-    
-//     // Check length
-//     if(password.length >= 6) strength++;
-//     if(password.length >= 8) strength++;
-    
-//     // Check for numbers
-//     if(/\d/.test(password)) strength++;
-    
-//     // Check for lowercase letters
-//     if(/[a-z]/.test(password)) strength++;
-    
-//     // Check for uppercase letters
-//     if(/[A-Z]/.test(password)) strength++;
-    
-//     // Check for special characters
-//     if(/[!@#$%^&*(),.?":{}|<>]/.test(password)) strength++;
-    
-//     if(strength <= 2) {
-//       strengthText = 'Weak';
-//       strengthClass = 'strength-weak';
-//     } else if(strength <= 4) {
-//       strengthText = 'Medium';
-//       strengthClass = 'strength-medium';
-//     } else {
-//       strengthText = 'Strong';
-//       strengthClass = 'strength-strong';
-//     }
-    
-//     strengthDiv.innerHTML = `Password strength: <span class="${strengthClass}">${strengthText}</span>`;
-//     return strength >= 3;
-//   }
-  
-//   function validatePassword() {
-//     const password = passwordInput.value;
-//     if(password === '') {
-//       passwordInput.classList.add('input-error');
-//       passwordInput.classList.remove('input-success');
-//       passwordError.textContent = 'Password is required';
-//       passwordError.classList.add('visible');
-//       return false;
-//     } else if(password.length < 6) {
-//       passwordInput.classList.add('input-error');
-//       passwordInput.classList.remove('input-success');
-//       passwordError.textContent = 'Password must be at least 6 characters';
-//       passwordError.classList.add('visible');
-//       return false;
-//     } else if(!/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) {
-//       passwordInput.classList.add('input-error');
-//       passwordInput.classList.remove('input-success');
-//       passwordError.textContent = 'Password must contain at least one letter and one number';
-//       passwordError.classList.add('visible');
-//       return false;
-//     } else {
-//       passwordInput.classList.remove('input-error');
-//       passwordInput.classList.add('input-success');
-//       passwordError.classList.remove('visible');
-//       return true;
-//     }
-//   }
-  
-//   function validateConfirmPassword() {
-//     const password = passwordInput.value;
-//     const confirmPassword = confirmPasswordInput.value;
-    
-//     if(confirmPassword === '') {
-//       confirmPasswordInput.classList.add('input-error');
-//       confirmPasswordInput.classList.remove('input-success');
-//       confirmPasswordError.textContent = 'Please confirm your password';
-//       confirmPasswordError.classList.add('visible');
-//       return false;
-//     } else if(password !== confirmPassword) {
-//       confirmPasswordInput.classList.add('input-error');
-//       confirmPasswordInput.classList.remove('input-success');
-//       confirmPasswordError.textContent = 'Passwords do not match';
-//       confirmPasswordError.classList.add('visible');
-//       return false;
-//     } else {
-//       confirmPasswordInput.classList.remove('input-error');
-//       confirmPasswordInput.classList.add('input-success');
-//       confirmPasswordError.classList.remove('visible');
-//       return true;
-//     }
-//   }
-  
-  function validateAllFields() {
-    const isNameValid = validateName();
-    const isEmailValid = validateEmail();
-    // const isPhoneValid = validatePhone();
-    // const isDeptValid = validateDepartment();
-    // const isPasswordValid = validatePassword();
-    // const isConfirmPasswordValid = validateConfirmPassword();
-    
-    return isEmailValid && isNameValid ;
-  }
-  
 
-  nameInput.addEventListener('input', validateName);
-  nameInput.addEventListener('blur', validateName);
-  
-  emailInput.addEventListener('input', validateEmail);
-  emailInput.addEventListener('blur', validateEmail);
-  
-//   phoneInput.addEventListener('input', validatePhone);
-//   phoneInput.addEventListener('blur', validatePhone);
-  
-  // deptSelect.addEventListener('change', validateDepartment);
-  // deptSelect.addEventListener('blur', validateDepartment);
-  
-//   passwordInput.addEventListener('input', () => {
-//     validatePassword();
-//     checkPasswordStrength(passwordInput.value);
-//     if(confirmPasswordInput.value) {
-//       validateConfirmPassword();
-//     }
-//   });
-//   passwordInput.addEventListener('blur', validatePassword);
-  
-//   confirmPasswordInput.addEventListener('input', validateConfirmPassword);
-//   confirmPasswordInput.addEventListener('blur', validateConfirmPassword);
-  
-  // Register button click with validation
+  nameInput.addEventListener('input', validateName); nameInput.addEventListener('blur', validateName);
+  emailInput.addEventListener('input', validateEmail); emailInput.addEventListener('blur', validateEmail);
+
   document.getElementById('registerBtn').addEventListener('click', async (e) => {
     e.preventDefault();
-    
-    // Validate all fields
-    if(validateAllFields()) {
-        // const data = document.getElementById('data');
-        // const form = new FormData(data);
-        const email = document.getElementById('regEmail').value.trim();
-        const fullname = document.getElementById('regName').value.trim();
-        const e = {
-            email:email,
-            fullname:fullname
-        };
-        const api =await fetch('/cbt/ansofra/apiadmin/validateEmail', {
-            method:'POST',
-            headers:{'Content-type':'application/json'},
-            body:JSON.stringify(e)
-        });
-        
-        const result = await api.json();
-        if(result.status==='failed'){
-            localStorage.setItem('cbt-email', document.getElementById('regEmail').value.trim());
-            localStorage.setItem('cbt-name', document.getElementById('regName').value.trim());
-            window.location.href="/cbt/ansofra/ilease/otp/verification";
-            return;
-        }
-        else{
-           alert('result'+result.response);
-        }
+    if (validateName() && validateEmail()) {
+      const email = emailInput.value.trim();
+      const fullname = nameInput.value.trim();
+      const api = await fetch('/cbt/ansofra/apiadmin/validateEmail', {
+        method: 'POST', headers: { 'Content-type': 'application/json' },
+        body: JSON.stringify({ email, fullname })
+      });
+      const result = await api.json();
+      if (result.status === 'failed') {
+        localStorage.setItem('cbt-email', email);
+        localStorage.setItem('cbt-name', fullname);
+        window.location.href = "/cbt/ansofra/ilease/otp/verification";
+      } else { alert('Error: ' + result.response); }
     } else {
-      // Scroll to the first error
       const firstError = document.querySelector('.input-error');
-      if(firstError) {
-        firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-      alert('Please fill all fields correctly before registering.');
+      if (firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   });
-  
-  document.getElementById('loginLink').addEventListener('click', (e) => {
-    e.preventDefault();
-    window.location.href = '/cbt/ansofra/ilease/login';
-  });
-  
-  document.getElementById('backLink').addEventListener('click', (e) => {
-    e.preventDefault();
-    window.location.href = '/cbt/ansofra/ilease';
-  });
+
+  document.getElementById('loginLink').addEventListener('click', (e) => { e.preventDefault(); window.location.href = '/cbt/ansofra/ilease/login'; });
+  document.getElementById('backLink').addEventListener('click', (e) => { e.preventDefault(); window.location.href = '/cbt/ansofra/ilease'; });
 </script>
 </body>
 </html>

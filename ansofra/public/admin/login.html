@@ -5,468 +5,267 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Exam Board · Login</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-<link rel="stylesheet" href="public/css/Admin-style.css" />
 <style>
-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background: var(--cream);
-}
-.login-container {
-  max-width: 420px;
-  width: 90%;
-  background: var(--white);
-  border-radius: var(--r-xl);
-  border: 1px solid var(--border-gold);
-  padding: 30px 28px;
-}
-.login-header {
-  text-align: center;
-  margin-bottom: 20px;
-}
-.login-header i {
-  font-size: 28px;
-  color: var(--gold-dark);
-}
-.login-header h3 {
-  margin: 8px 0 0;
-}
-.btn-login {
-  width: 100%;
-  margin-top: 8px;
-}
-.links {
-  text-align: center;
-  margin-top: 18px;
-}
-.links a {
-  color: var(--gold-deep);
-  text-decoration: none;
-}
-.links a:hover {
-  text-decoration: underline;
-}
-.links .back-link {
-  color: var(--ink-soft);
-}
-.error-message {
-  color: #dc3545;
-  font-size: 11px;
-  margin-top: 4px;
-  display: none;
-  font-family: sans-serif;
-}
-.error-message.visible {
-  display: block;
-}
-.input-error {
-  border-color: #dc3545 !important;
-}
-.input-success {
-  border-color: #28a745 !important;
-}
-.general-error {
-  background-color: #f8d7da;
-  color: #721c24;
-  padding: 10px;
-  border-radius: var(--r-md);
-  margin-bottom: 15px;
-  font-size: 13px;
-  font-family: sans-serif;
-  display: none;
-}
-.general-error.visible {
-  display: block;
-}
-
-
-:root {
-  --cream:       #faf8f2;
-  --white:       #ffffff;
-  --gold-light:  #fef3d0;
-  --gold-mid:    #f5d472;
-  --gold:        #e8b832;
-  --gold-dark:   #b8901e;
-  --gold-deep:   #8a6a12;
-  --ink:         #2a3440;
-  --ink-mid:     #4a5a68;
-  --ink-soft:    #7a8a96;
-  --border:      #ede8d8;
-  --border-gold: #f0d898;
-  --sidebar-w:   230px;
-  --topbar-h:    58px;
-  --r-sm:  6px;
-  --r-md:  10px;
-  --r-lg:  16px;
-  --r-xl:  24px;
-  --r-pill:99px;
-  --shadow-md: 0 4px 24px rgba(0,0,0,.14);
-  --shadow-modal: 0 8px 40px rgba(0,0,0,.18);
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { height: 100%; }
-
-body {
-  font-family: 'Georgia', 'Times New Roman', serif;
-  background: var(--cream);
-  color: var(--ink);
-  font-size: 14px;
-  line-height: 1.6;
-  overflow-x: hidden;
-}
-
-/* app shell & sidebar etc (existing) */
-.app { display: flex; min-height: 100vh; }
-.sidebar-overlay {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,.38);
-  z-index: 90;
-  opacity: 0; pointer-events: none;
-  transition: opacity .3s ease;
-}
-.sidebar-overlay.visible { opacity: 1; pointer-events: all; }
-.sidebar {
-  width: var(--sidebar-w);
-  min-width: var(--sidebar-w);
-  background: var(--white);
-  border-right: 1px solid var(--border);
-  display: flex; flex-direction: column;
-  position: sticky; top: 0;
-  height: 100vh;
-  overflow-y: auto;
-  flex-shrink: 0;
-  transition: transform .3s cubic-bezier(.4,0,.2,1);
-  z-index: 100;
-}
-.sidebar-brand {
-  padding: 20px 18px 16px;
-  border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; gap: 10px;
-}
-.brand-icon {
-  width: 38px; height: 38px;
-  background: var(--gold-mid);
-  border-radius: var(--r-md);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--ink); font-size: 17px;
-}
-.brand-name { font-size: 15px; font-weight: 700; color: var(--ink); }
-.brand-sub  { font-size: 11px; color: var(--ink-soft); font-family: sans-serif; font-style: italic; }
-.sidebar-close {
-  display: none;
-  width: 28px; height: 28px;
-  border: none; background: var(--gold-light);
-  border-radius: var(--r-pill);
-  cursor: pointer;
-  margin-left: auto;
-}
-.sidebar-nav { padding: 10px 8px; flex: 1; }
-.nav-section-label {
-  font-size: 10px; text-transform: uppercase;
-  letter-spacing: .1em; color: var(--ink-soft);
-  font-family: sans-serif; font-weight: 700;
-  padding: 10px 10px 5px;
-}
-.nav-item {
-  display: flex; align-items: center; gap: 12px;
-  padding: 11px 12px;
-  border-radius: var(--r-md);
-  cursor: pointer;
-  color: var(--ink-mid);
-  font-family: sans-serif; font-weight: 500;
-  transition: all .15s;
-}
-.nav-item .ni { width: 20px; font-size: 15px; color: var(--ink-soft); }
-.nav-item:hover { background: var(--gold-light); color: var(--gold-deep); transform: translateX(3px); }
-.nav-item.active { background: var(--gold-mid); color: var(--ink); font-weight: 700; }
-.sidebar-footer {
-  padding: 14px 18px; border-top: 1px solid var(--border);
-  font-size: 11px; color: var(--ink-soft);
-  font-family: sans-serif; font-style: italic;
-}
-.main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
-.topbar {
-  background: var(--white); border-bottom: 1px solid var(--border);
-  padding: 0 20px; height: var(--topbar-h);
-  display: flex; align-items: center; justify-content: space-between;
-  position: sticky; top: 0; z-index: 50;
-}
-.hamburger {
-  display: none;
-  width: 36px; height: 36px;
-  border: 1.5px solid var(--border-gold);
-  border-radius: var(--r-md);
-  background: var(--white);
-  flex-direction: column; align-items: center; justify-content: center;
-  gap: 5px;
-}
-.hamburger span { width: 16px; height: 2px; background: var(--ink-mid); }
-.page-title { font-size: 17px; font-weight: 700; }
-.topbar-badge { background: var(--gold-light); border: 1px solid var(--border-gold); color: var(--gold-deep); font-size: 11px; padding: 3px 10px; border-radius: var(--r-pill); }
-.content { padding: 24px; flex: 1; overflow-y: auto; }
-.page { display: none; }
-.page.active { display: block; animation: fadeIn .2s ease; }
-@keyframes fadeIn { from { opacity: .6; transform: translateY(5px); } to { opacity: 1; transform: none; } }
-.btn {
-  display: inline-flex; align-items: center; gap: 7px;
-  padding: 8px 16px; font-size: 13px; font-family: sans-serif; font-weight: 600;
-  border-radius: var(--r-pill); border: 1.5px solid var(--border-gold);
-  background: var(--white); cursor: pointer;
-}
-.btn-primary { background: var(--gold-mid); border-color: var(--gold); color: var(--ink); }
-.btn-primary:hover { background: var(--gold); }
-.form-control {
-  padding: 9px 14px; border: 1.5px solid var(--border);
-  border-radius: var(--r-pill); font-size: 13px; font-family: sans-serif;
-  background: var(--white); width: 100%;
-}
-.form-control:focus { outline: none; border-color: var(--gold-mid); }
-.form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
-.form-label { font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--gold-deep); font-family: sans-serif; }
-.panel { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-xl); overflow: hidden; margin-bottom: 20px; }
-.panel-header { padding: 13px 18px; border-bottom: 1px solid var(--border); }
-.panel-title { font-size: 13.5px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
-.panel-body { padding: 18px; }
-.badge { display: inline-flex; padding: 3px 10px; border-radius: var(--r-pill); font-size: 11px; font-weight: 600; background: var(--gold-light); color: var(--gold-deep); }
-.stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 14px; margin-bottom: 22px; }
-.stat-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--r-lg); padding: 18px 16px; }
-.dept-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px,1fr)); gap: 14px; }
-@media (max-width: 900px) {
-  .sidebar { position: fixed; transform: translateX(calc(-1 * var(--sidebar-w) - 10px)); }
-  .sidebar.open { transform: translateX(0); }
-  .sidebar-close { display: flex; }
-  .hamburger { display: flex; }
-  .stat-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-}
+  :root {
+    --navy:        #0a1628;
+    --navy-mid:    #122040;
+    --navy-light:  #1e3a6e;
+    --navy-soft:   #2d5298;
+    --red:         #c0392b;
+    --red-dark:    #922b21;
+    --red-light:   #f9e0de;
+    --white:       #ffffff;
+    --off-white:   #f4f6fb;
+    --border:      #d0d8ea;
+    --ink-mid:     #3a4f72;
+    --ink-soft:    #6b7fa3;
+    --r-md:  10px;
+    --r-lg:  16px;
+    --r-xl:  24px;
+    --r-pill:99px;
+    --shadow-md: 0 4px 24px rgba(10,22,40,.18);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background: var(--off-white);
+    color: var(--navy);
+    font-size: 14px;
+    line-height: 1.6;
+  }
+  .login-container {
+    max-width: 420px;
+    width: 90%;
+    background: var(--white);
+    border-radius: var(--r-xl);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    padding: 32px 28px;
+  }
+  .login-header {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .header-icon {
+    width: 56px; height: 56px;
+    background: var(--navy);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 14px;
+    border: 2px solid var(--red);
+  }
+  .header-icon i { font-size: 22px; color: var(--white); }
+  .login-header h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .login-header p {
+    font-size: 12px;
+    font-family: sans-serif;
+    color: var(--ink-soft);
+  }
+  .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
+  .form-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .06em; color: var(--navy-soft);
+    font-family: sans-serif;
+  }
+  .form-control {
+    padding: 10px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--r-pill);
+    font-size: 13px; font-family: sans-serif;
+    background: var(--white);
+    width: 100%;
+    color: var(--navy);
+    transition: border-color .15s;
+  }
+  .form-control:focus { outline: none; border-color: var(--navy-soft); }
+  .form-control::placeholder { color: var(--ink-soft); }
+  .input-error  { border-color: var(--red) !important; }
+  .input-success { border-color: #27ae60 !important; }
+  .error-message {
+    color: var(--red); font-size: 11px;
+    margin-top: 3px; display: none; font-family: sans-serif;
+  }
+  .error-message.visible { display: block; }
+  .general-error {
+    background: var(--red-light);
+    border-left: 3px solid var(--red);
+    color: var(--red-dark);
+    padding: 10px 12px;
+    border-radius: var(--r-md);
+    margin-bottom: 14px;
+    font-size: 12px; font-family: sans-serif;
+    display: none;
+  }
+  .general-error.visible { display: block; }
+  .btn-login {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%; padding: 12px 20px;
+    background: var(--navy); color: var(--white);
+    border: none; border-radius: var(--r-pill);
+    font-size: 13px; font-family: sans-serif; font-weight: 700;
+    cursor: pointer; margin-top: 6px;
+    transition: background .18s, transform .12s;
+    letter-spacing: .03em;
+  }
+  .btn-login:hover { background: var(--navy-light); transform: translateY(-1px); }
+  .btn-login:active { transform: translateY(0); }
+  .links {
+    text-align: center; margin-top: 18px;
+    font-family: sans-serif; font-size: 12px;
+    color: var(--ink-soft);
+  }
+  .links a { color: var(--red); text-decoration: none; font-weight: 600; }
+  .links a:hover { text-decoration: underline; }
+  .links .back-link { color: var(--ink-soft); font-weight: 400; }
+  .divider-line {
+    border: none; border-top: 1px solid var(--border);
+    margin: 20px 0;
+  }
 </style>
 </head>
 <body>
 <div class="login-container">
   <div class="login-header">
-    <i class="fas fa-lock"></i>
-    <h3>Admin Sign-in Page</h3>
+    <div class="header-icon"><i class="fas fa-lock"></i></div>
+    <h3>Admin Sign-in</h3>
+    <p>Exam Board Administration Portal</p>
   </div>
-  
-  <div id="generalError" class="general-error"></div>
-  
- <form id="data">
-     <div class="form-group">
-        <label class="form-label">Email *</label>
-        <input type="email" id="loginEmail" class="form-control" placeholder="admin@exam.com" value="admin@exam.com" name="email">
-        <div class="error-message" id="emailError">Please enter a valid email address</div>
-      </div>
 
-      <div class="form-group">
-        <label class="form-label">ID *</label>
-        <input type="text" id="ID" class="form-control" placeholder="ADMIN/34HIN/123456" name="ID">
-        <div class="error-message" id="IDError">Please enter a valid email address</div>
-      </div>
-      
-      <div class="form-group">
-        <label class="form-label">Password *</label>
-        <input type="password" id="loginPassword" class="form-control" placeholder="••••••" name="password">
-        <div class="error-message" id="passwordError">Password is required</div>
-      </div>
-      
-      <button id="loginBtn" class="btn btn-primary btn-login">
-        <i class="fas fa-sign-in-alt"></i> Login
-      </button>
- </form>
-  
+  <div id="generalError" class="general-error"></div>
+
+  <form id="data">
+    <div class="form-group">
+      <label class="form-label">Email *</label>
+      <input type="email" id="loginEmail" class="form-control" placeholder="admin@exam.com" value="admin@exam.com" name="email">
+      <div class="error-message" id="emailError">Please enter a valid email address</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Admin ID *</label>
+      <input type="text" id="ID" class="form-control" placeholder="ADMIN/34HIN/123456" name="ID">
+      <div class="error-message" id="IDError">Please enter a valid ID</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Password *</label>
+      <input type="password" id="loginPassword" class="form-control" placeholder="••••••" name="password">
+      <div class="error-message" id="passwordError">Password is required</div>
+    </div>
+
+    <button id="loginBtn" type="button" class="btn-login">
+      <i class="fas fa-sign-in-alt"></i> Login
+    </button>
+  </form>
+
+  <hr class="divider-line" />
+
   <div class="links">
-    <a href="#" id="registerLink">Create account</a> &nbsp;|&nbsp; 
+    <a href="#" id="registerLink">Create account</a> &nbsp;&middot;&nbsp;
     <a href="#" id="backLink" class="back-link">Back</a>
   </div>
 </div>
 
-<!-- <script src="auth-common.js"></script> -->
 <script>
-  // Get DOM elements
   const emailInput = document.getElementById('loginEmail');
   const passwordInput = document.getElementById('loginPassword');
   const IDInput = document.getElementById("ID");
-  const loginBtn = document.getElementById('loginBtn');
   const generalError = document.getElementById('generalError');
-  
-  // Error message elements
   const emailError = document.getElementById('emailError');
   const passwordError = document.getElementById('passwordError');
   const IDError = document.getElementById('IDError');
-  // Validation functions
+
   function validateEmail() {
     const email = emailInput.value.trim();
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
-    if(email === '') {
-      emailInput.classList.add('input-error');
-      emailInput.classList.remove('input-success');
-      emailError.textContent = 'Email is required';
-      emailError.classList.add('visible');
-      return false;
-    } else if(!emailRegex.test(email)) {
-      emailInput.classList.add('input-error');
-      emailInput.classList.remove('input-success');
-      emailError.textContent = 'Please enter a valid email address (e.g., name@example.com)';
-      emailError.classList.add('visible');
-      return false;
+    if (!email) {
+      emailInput.classList.add('input-error'); emailInput.classList.remove('input-success');
+      emailError.textContent = 'Email is required'; emailError.classList.add('visible'); return false;
+    } else if (!emailRegex.test(email)) {
+      emailInput.classList.add('input-error'); emailInput.classList.remove('input-success');
+      emailError.textContent = 'Please enter a valid email address'; emailError.classList.add('visible'); return false;
     } else {
-      emailInput.classList.remove('input-error');
-      emailInput.classList.add('input-success');
-      emailError.classList.remove('visible');
-      return true;
+      emailInput.classList.remove('input-error'); emailInput.classList.add('input-success');
+      emailError.classList.remove('visible'); return true;
     }
   }
-  
+
   function validatePassword() {
     const password = passwordInput.value;
-    
-    if(password === '') {
-      passwordInput.classList.add('input-error');
-      passwordInput.classList.remove('input-success');
-      passwordError.textContent = 'Password is required';
-      passwordError.classList.add('visible');
-      return false;
-    } else if(password.length < 6) {
-      passwordInput.classList.add('input-error');
-      passwordInput.classList.remove('input-success');
-      passwordError.textContent = 'Password must be at least 6 characters';
-      passwordError.classList.add('visible');
-      return false;
+    if (!password) {
+      passwordInput.classList.add('input-error'); passwordInput.classList.remove('input-success');
+      passwordError.textContent = 'Password is required'; passwordError.classList.add('visible'); return false;
+    } else if (password.length < 6) {
+      passwordInput.classList.add('input-error'); passwordInput.classList.remove('input-success');
+      passwordError.textContent = 'Password must be at least 6 characters'; passwordError.classList.add('visible'); return false;
     } else {
-      passwordInput.classList.remove('input-error');
-      passwordInput.classList.add('input-success');
-      passwordError.classList.remove('visible');
-      return true;
+      passwordInput.classList.remove('input-error'); passwordInput.classList.add('input-success');
+      passwordError.classList.remove('visible'); return true;
     }
   }
 
-  function validateID(){
+  function validateID() {
     const IDIN = IDInput.value;
-    if(!IDIN){
-      IDInput.classList.add('input-error');
-      IDInput.classList.remove("input-success");
-      IDError.textContent = 'ID is required';
-      IDError.classList.add('visible');
+    if (!IDIN) {
+      IDInput.classList.add('input-error'); IDInput.classList.remove('input-success');
+      IDError.textContent = 'ID is required'; IDError.classList.add('visible'); return false;
+    } else if (!IDIN.startsWith('ADMIN')) {
+      IDInput.classList.add('input-error'); IDInput.classList.remove('input-success');
+      IDError.textContent = 'ID must start with ADMIN'; IDError.classList.add('visible'); return false;
+    } else {
+      IDInput.classList.remove('input-error'); IDInput.classList.add('input-success');
+      IDError.classList.remove('visible'); return true;
     }
-    else if(!IDIN.startsWith('ADMIN')){
-        IDInput.classList.add('input-error');
-        IDInput.classList.remove("input-success");
-        IDError.textContent = 'ID must start with ADMIN';
-        IDError.classList.add('visible');
-    }
-    // else if(!IDIN.endsWith(NU)){
-    //   ID.classList.add('input-error');
-    //   ID.classList.remove("input-success");
-    //   IDError.textContent = 'ID must end number';
-    //   IDError.classList.add('visible');
-    // }
+  }
 
-    else {
-      IDInput.classList.remove('input-error');
-      IDInput.classList.add('input-success');
-      IDError.classList.remove('visible');
-      return true;
-    }
-  }
-  
-  function validateAllFields() {
-    const isEmailValid = validateEmail();
-    const isPasswordValid = validatePassword();
-    const isID = validateID();
-    
-    return isEmailValid && isPasswordValid && IDInput;
-  }
-  
-  function clearGeneralError() {
-    generalError.classList.remove('visible');
-    generalError.textContent = '';
-  }
-  
-  function showGeneralError(message) {
-    generalError.textContent = message;
-    generalError.classList.add('visible');
-  }
-  
-  // Real-time validation
-  emailInput.addEventListener('input', () => {
-    validateEmail();
-    clearGeneralError();
-  });
+  function clearGeneralError() { generalError.classList.remove('visible'); generalError.textContent = ''; }
+  function showGeneralError(msg) { generalError.textContent = msg; generalError.classList.add('visible'); }
+
+  emailInput.addEventListener('input', () => { validateEmail(); clearGeneralError(); });
   emailInput.addEventListener('blur', validateEmail);
-  
-  passwordInput.addEventListener('input', () => {
-    validatePassword();
-    clearGeneralError();
-  });
+  passwordInput.addEventListener('input', () => { validatePassword(); clearGeneralError(); });
   passwordInput.addEventListener('blur', validatePassword);
-  
-  IDInput.addEventListener('input', () => {
-    validateID();
-    clearGeneralError();
-  });
-  IDInput.addEventListener('blur', validateEmail);
+  IDInput.addEventListener('input', () => { validateID(); clearGeneralError(); });
+  IDInput.addEventListener('blur', validateID);
 
-  // Login button click with validation
   document.getElementById('loginBtn').addEventListener('click', async (e) => {
     e.preventDefault();
     clearGeneralError();
-    
-    // Validate all fields
-    if(validateAllFields()) {
+    const isEmailValid = validateEmail();
+    const isPasswordValid = validatePassword();
+    const isID = validateID();
+    if (isEmailValid && isPasswordValid && isID) {
       const data = document.getElementById('data');
       const form = new FormData(data);
-      const obj = {};
-      form.forEach((val, key)=>{
-        obj[key]=val;
-      })
-
-      console.log(obj);
-      const api = await fetch('/cbt/ansofra/apiadmin/login', {
-          method:'POST',
-          body:form
-      });
-      
+      const api = await fetch('/cbt/ansofra/apiadmin/login', { method: 'POST', body: form });
       const result = await api.json();
       const response = result.response[0];
-      if(result.status==='success'){
-          localStorage.setItem('cbt-admin-email', response.email);
-          localStorage.setItem('cbt-admin-ID', response.ID);
-          window.localStorage.href="/cbt/ansofra/ilease/dashboard";
-          return;
-      }
-      else{
-        //  alert(result);
+      if (result.status === 'success') {
+        localStorage.setItem('cbt-admin-email', response.email);
+        localStorage.setItem('cbt-admin-ID', response.ID);
+        window.location.href = "/cbt/ansofra/ilease/dashboard";
+      } else {
+        showGeneralError(result.response || 'Invalid credentials. Please try again.');
         console.log(result);
       }
     }
   });
-  
+
   document.getElementById('registerLink').addEventListener('click', (e) => {
-    e.preventDefault();
-    window.location.href = '/cbt/ansofra/ilease/validateEmail';
+    e.preventDefault(); window.location.href = '/cbt/ansofra/ilease/validateEmail';
   });
-  
   document.getElementById('backLink').addEventListener('click', (e) => {
-    e.preventDefault();
-    window.location.href = '/cbt/ansofra/ilease';
+    e.preventDefault(); window.location.href = '/cbt/ansofra/ilease';
   });
-  
-  // Optional: Add "Forgot Password" functionality (optional enhancement)
-  // You can uncomment this if you want to add forgot password feature
-  /*
-  const forgotPasswordLink = document.createElement('a');
-  forgotPasswordLink.href = '#';
-  forgotPasswordLink.textContent = 'Forgot Password?';
-  forgotPasswordLink.style.cssText = 'display: block; text-align: center; margin-top: 12px; font-size: 12px; color: var(--gold-deep);';
-  forgotPasswordLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    alert('Password reset functionality would be implemented here.');
-  });
-  document.querySelector('.links').insertBefore(forgotPasswordLink, document.querySelector('.links').firstChild);
-  */
 </script>
 </body>
 </html>

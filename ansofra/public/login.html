@@ -162,10 +162,10 @@
   document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 
   // Auto-fill if remembered
-  window.addEventListener('load', () => {
-    const session = JSON.parse(localStorage.getItem('cbt_session') || 'null');
-    if (session) window.location.href = 'dashboard.html';
-  });
+  // window.addEventListener('load', () => {
+  //   const session =localStorage.getItem('cbt_session');
+  //   if (session) window.location.href = 'dashboard.html';
+  // });
 </script>
 </body>
 </html>
