@@ -29,8 +29,8 @@ class RelResult{
                 $fullname = $row["fullname"];
                 $department = $row["department"];
                 $regNum = $row["regNum"];
-                $subjectScores = $row["subject_scores"];
-                foreach($subjectScoresas as $col){
+                $subjectScores = json_decode($row["subject_scores"], true);
+                foreach($subjectScores as $col){
                     $scores = $col["score"];
                     $subject = $col["subject"];
                     $table = "<table>
