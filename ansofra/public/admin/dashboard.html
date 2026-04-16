@@ -754,7 +754,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
 
       <!-- QUESTIONS -->
       <div id="questions" class="page">
-        <div class="panel" style="border:2px solid var(--navy);">
+        <div class="panel" style="border:2px solid var(--navy);" id="panel">
           <div class="panel-header" style="background:var(--navy);"><span class="panel-title" style="color:var(--white);"><i class="fas fa-magnifying-glass" style="color:var(--gold);"></i> Search Question Sets (by Department &amp; Subject)</span></div>
           <div class="panel-body">
             <div class="form-row">
@@ -778,18 +778,21 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           </div>
         </div>
         <div id="questionStep2" style="display:none;">
-          <div class="info-bar">
+          <div class="info-bar" style="display: flex; justify-content: space-around; padding: 20px; background-color:#dde3f0; border-radius: 15px; gap: 20px;">
             <div class="info-tag"><i class="fas fa-sitemap"></i> <span id="displayDept"></span></div>
             <div class="info-tag"><i class="fas fa-book"></i> <span id="displaySubject"></span></div>
             <button id="changeDetailsBtn" class="btn btn-sm" style="margin-left:auto;"><i class="fas fa-pencil"></i> Change</button>
-          </div>
+          </div><br>
           <form id="saveQuestion">
              <div class="panel">
                 <div class="panel-header"><span class="panel-title"><i class="fas fa-circle-question"></i> Enter Question</span></div>
                 <div class="panel-body">
                   <div class="step-title"><span class="step-badge"></span> Question details</div>
                   <div class="form-group" style="margin-bottom:14px;"><label class="form-label">Question Text</label><textarea id="questionstext" class="form-control" id="questionText" placeholder="Type the question here…" name="questiontext"></textarea></div>
-                  <div class="form-group"><label for="form-label">Upload image if any diagram</label><input type="file" name="media[]" id="media" multiple></div>
+                  <div class="form-group" style="padding: 15px;">
+                    <label for="form-label">Upload image if any diagram</label>
+                    <input type="file" name="media[]" id="media" multiple>
+                  </div>
                   <div class="form-group" style="margin-bottom:6px;"><label class="form-label">Answer Options</label></div>
                   <div class="options-grid">
                   <input class="form-control" type="text" id="optionA" placeholder="Option A"   name="optionA"/>
@@ -823,7 +826,10 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
       <!-- RESULTS -->
       <div id="results" class="page">
         <div class="panel">
-          <div class="panel-header"><span class="panel-title"><i class="fas fa-chart-simple"></i> Exam Results</span></div>
+          <div class="panel-header"><span class="panel-title"><i class="fas fa-chart-simple"></i> Exam Results</span> <div style="float: right;">
+            <button style="padding: 15px; border-radius: 5px; background-color:#1a7f4b;font-family: sans-serif; font-weight: bold; border: none;" onclick="releaseResult()"> Publish All Results </button>
+          </div>
+        </div>
           <div class="table-wrap">
             <table id="display-error">
               <thead>
@@ -1845,23 +1851,24 @@ window.showSection = function(id, navEl){
   closeSidebar();
 };
 
-// document.getElementById("ReleaseResult").addEventListener("click", async ()=>{
-//   const e = {status:"completed"};
+ async function releaseResult(){
+  const e = {status:"completed"};
 
-//   const api = await fetch("/cbt/ansofra/apiadmin/release/result", {
-//     method:"POST",
-//     headers:{"Content-type":"application/json"},
-//     body:JSON.stringify(e)
-//   });
+  const api = await fetch("/cbt/ansofra/apiadmin/release/result", {
+    method:"POST",
+    headers:{"Content-type":"application/json"},
+    body:JSON.stringify(e)
+  });
 
-//   const result = await api.json();
-//   if(result.status==="success"){
+  const result = await api.json();
+  console.log(result);
+  if(result.status==="success"){
 
-//   }
-//   else{
-//     alert("Error while sending result out");
-//   }
-// })
+  }
+  else{
+    alert("Error while sending result out");
+  }
+}
 
 
 window.openSidebar = function(){ document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('visible'); document.body.style.overflow='hidden'; };
