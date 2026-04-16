@@ -3,7 +3,7 @@
 <head>
     <meta charset='UTF-8'>
     <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes'>
-    <title>Welcome - Your Registration Details</title>
+    <title>Your Exam Score Report</title>
     <style>
         /* Reset & base styles for email client compatibility */
         * {
@@ -21,7 +21,7 @@
 
         /* main email container – classic card style */
         .email-container {
-            max-width: 600px;
+            max-width: 580px;
             margin: 0 auto;
             background-color: #ffffff;
             border-radius: 20px;
@@ -56,7 +56,7 @@
             margin: 8px 0 6px 0;
         }
 
-        .welcome-badge {
+        .score-badge {
             background-color: #d32f2f;
             color: white;
             display: inline-block;
@@ -90,81 +90,110 @@
             color: #0a2b4e;
         }
 
-        .message-text {
-            color: #2c3e4e;
-            margin-bottom: 28px;
-            font-size: 15px;
-            background: #f9fbfd;
-            padding: 14px 18px;
-            border-radius: 16px;
-            border: 1px solid #eef2fa;
+        .score-summary {
+            background: linear-gradient(135deg, #e8f0fe 0%, #ffffff 100%);
+            border-radius: 18px;
+            padding: 18px 22px;
+            margin: 20px 0 24px 0;
+            text-align: center;
+            border: 1px solid #d4e2f5;
         }
 
-        /* user details card */
-        .user-details-card {
-            background: linear-gradient(135deg, #f0f5ff 0%, #ffffff 100%);
-            border-radius: 20px;
-            padding: 8px 0;
+        .overall-score {
+            font-size: 42px;
+            font-weight: 800;
+            color: #0a2b4e;
+            display: inline-block;
+            background: white;
+            padding: 8px 28px;
+            border-radius: 60px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            margin: 8px 0;
+        }
+
+        .score-label {
+            font-size: 14px;
+            color: #5f7a92;
+            letter-spacing: 1px;
+        }
+
+        /* timetable table styling – clean & classic */
+        .timetable-wrapper {
             margin: 24px 0 20px 0;
-            border: 1px solid #dce5f2;
-            overflow: hidden;
+            overflow-x: auto;
+            border-radius: 18px;
+            border: 1px solid #e2e9f0;
+            background: white;
         }
 
-        .section-title {
+        .score-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+            min-width: 280px;
+        }
+
+        .score-table th {
             background-color: #0a2b4e;
             color: white;
-            padding: 12px 20px;
-            font-size: 15px;
             font-weight: 600;
-            letter-spacing: 0.5px;
-        }
-
-        .details-grid {
-            padding: 8px 0;
-        }
-
-        .detail-row {
-            display: flex;
-            align-items: baseline;
-            padding: 12px 20px;
-            border-bottom: 1px solid #e9edf2;
-        }
-
-        .detail-row:last-child {
-            border-bottom: none;
-        }
-
-        .detail-label {
-            width: 130px;
-            font-weight: 700;
-            color: #0a2b4e;
-            font-size: 13px;
-            text-transform: uppercase;
+            padding: 14px 16px;
+            text-align: left;
+            font-size: 15px;
             letter-spacing: 0.3px;
         }
 
-        .detail-value {
-            flex: 1;
+        .score-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e9edf2;
             color: #1e2f3c;
-            font-size: 15px;
-            font-weight: 500;
-            word-break: break-word;
+            background-color: #ffffff;
         }
 
-        .detail-value.email-value, .detail-value.reg-value {
+        .score-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .score-table tr:hover td {
+            background-color: #fafcff;
+        }
+
+        .subject-cell {
+            font-weight: 600;
+            color: #0a2b4e;
+        }
+
+        .score-cell {
+            font-weight: 700;
+            color: #1e2f3c;
+        }
+
+        .score-cell.high {
+            color: #1e7e34;
+        }
+
+        .score-cell.low {
+            color: #d32f2f;
+        }
+
+        .reg-info {
+            background-color: #f0f5ff;
+            border-radius: 14px;
+            padding: 12px 18px;
+            margin: 20px 0 10px;
+            text-align: center;
+            font-size: 14px;
+            border: 1px solid #dce5f2;
+        }
+
+        .reg-number {
+            font-weight: 700;
             color: #0a2b4e;
             font-family: monospace;
-            font-size: 14px;
+            font-size: 16px;
         }
 
-        .highlight-value {
-            background-color: #eef3fc;
-            padding: 4px 10px;
-            border-radius: 20px;
-            display: inline-block;
-        }
-
-        .info-box {
+        .info-message {
             background-color: #fff8e7;
             border-left: 4px solid #f5a623;
             padding: 14px 18px;
@@ -172,30 +201,6 @@
             margin: 24px 0 16px;
             font-size: 13px;
             color: #8a6e2b;
-        }
-
-        .action-button {
-            text-align: center;
-            margin: 28px 0 20px;
-        }
-
-        .dashboard-btn {
-            display: inline-block;
-            background-color: #0a2b4e;
-            color: white;
-            font-weight: 600;
-            padding: 12px 32px;
-            border-radius: 40px;
-            text-decoration: none;
-            font-size: 15px;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: all 0.2s ease;
-        }
-
-        .dashboard-btn:hover {
-            background-color: #123e66;
-            transform: translateY(-1px);
         }
 
         .important-note {
@@ -243,14 +248,12 @@
             .email-header {
                 padding: 22px 20px;
             }
-            .detail-label {
-                width: 100px;
-                font-size: 11px;
+            .overall-score {
+                font-size: 32px;
+                padding: 6px 20px;
             }
-            .detail-value {
-                font-size: 13px;
-            }
-            .section-title {
+            .score-table th, .score-table td {
+                padding: 10px 12px;
                 font-size: 13px;
             }
         }
@@ -260,103 +263,59 @@
     <div class='email-container'>
         <!-- HEADER: deep blue background, white text, red accent border -->
         <div class='email-header'>
-            <div class='header-icon'>🎓</div>
-            <h1>Registration Confirmed!</h1>
-            <div class='welcome-badge'>Welcome Aboard</div>
+            <div class='header-icon'>📊</div>
+            <h1>Exam Score Report</h1>
+            <div class='score-badge'>📝 Your Results Are Ready</div>
         </div>
 
         <!-- MAIN CONTENT -->
         <div class='email-body'>
             <div class='greeting'>
-                <strong>Dear <span id='fullname-display-greeting'>Valued User</span>,</strong>
+                <strong>Dear <span id='fullname-display'>$name</span>,</strong>
             </div>
 
-            <div class='message-text'>
-                Thank you for successfully registering with us! Your account has been created and is now active. 
-                Below are your complete registration details. Please review them carefully and keep this information for your records.
+            <!-- Overall Score Summary -->
+            <div class='score-summary'>
+                <div class='score-label'>🎯 YOUR OVERALL SCORE</div>
+                <div class='overall-score' id='overall-score-display'>$score</div>
             </div>
 
-            <!-- User Details Card -->
-            <div class='user-details-card'>
-                <div class='section-title'>
-                    📋 REGISTRATION INFORMATION
-                </div>
-                <div class='details-grid'>
-                    <div class='detail-row'>
-                        <span class='detail-label'>Full Name:</span>
-                        <span class='detail-value' id='fullname-display'>—</span>
-                    </div>
-                    <div class='detail-row'>
-                        <span class='detail-label'>Email Address:</span>
-                        <span class='detail-value email-value' id='email-display'>—</span>
-                    </div>
-                    <div class='detail-row'>
-                        <span class='detail-label'>Registration Number:</span>
-                        <span class='detail-value reg-value' id='regNum-display'>—</span>
-                    </div>
-                    <div class='detail-row'>
-                        <span class='detail-label'>Department:</span>
-                        <span class='detail-value' id='department-display'>—</span>
-                    </div>
-                    <div class='detail-row'>
-                        <span class='detail-label'>Year of Study:</span>
-                        <span class='detail-value' id='year-display'>—</span>
-                    </div>
-                    <div class='detail-row'>
-                        <span class='detail-label'>Date of Birth:</span>
-                        <span class='detail-value' id='dob-display'>—</span>
-                    </div>
-                    <div class='detail-row'>
-                        <span class='detail-label'>Gender:</span>
-                        <span class='detail-value' id='gender-display'>—</span>
-                    </div>
-                    <div class='detail-row'>
-                        <span class='detail-label'>State:</span>
-                        <span class='detail-value' id='state-display'>—</span>
-                    </div>
-                    <div class='detail-row'>
-                        <span class='detail-label'>Phone Number:</span>
-                        <span class='detail-value' id='phone-display'>—</span>
-                    </div>
-                    <div class='detail-row'>
-                        <span class='detail-label'>Date Created:</span>
-                        <span class='detail-value' id='date_created-display'>—</span>
-                    </div>
-                </div>
+            <!-- Scores Table - Dynamic from PHP data -->
+            <div class='timetable-wrapper'>
+                <table class='score-table' cellpadding='0' cellspacing='0'>
+                    <thead>
+                        <tr>
+                            <th>📖 Subjects</th>
+                            <th>⭐ Scores</th>
+                        </tr>
+                    </thead>
+                    <tbody id='score-table-body'>
+                        <!-- Dynamic rows will be injected here -->
+                        <tr>
+                            <td class='subject-cell'></td>
+                            <td class='score-cell'></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
 
-            <div class='info-box'>
-                <strong>ℹ️ Next Steps:</strong><br>
-                • You can now log in using your email and registration number.<br>
-                • Complete your profile setup and explore available resources.<br>
-                • Keep your registration number safe for future reference.
-            </div>
-
-            <!-- <div class='action-button'>
-                <a href='#' class='dashboard-btn' style='color: white; text-decoration: none;'>🔐 Login to Your Account</a>
-            </div> -->
-
-            <!-- Important security note with red accent -->
-            <div class='important-note'>
-                <i>🛡️ Important Reminders:</i><br>
-                • Never share your registration number or password with anyone.<br>
-                • If any details above are incorrect, contact support immediately.<br>
-                • Keep your email and phone number updated for important notifications.<br>
-                • This is an automated message — please save this email for reference.
-            </div>
+            <!-- Registration Information -->
+            <div class='reg-info'>
+                📌 <strong>Registration Number:</strong> <span class='reg-number' id='regNum-display'></span>
+            
 
             <!-- additional helpful note -->
-            <div class='footer-note'>
-                <p>📞 <strong>Need assistance?</strong> Contact our support team at <span style='color:#0a2b4e;'>support@universityportal.com</span></p>
-                <p style='margin-top: 8px; font-size: 11px;'>✨ Please review your details and confirm accuracy.</p>
-            </div>
+            <!-- <div class='footer-note'>
+                <p>📞 <strong>Need clarification?</strong> Contact academic affairs at <span style='color:#0a2b4e;'>academics@university.edu</span></p>
+                <p style='margin-top: 8px; font-size: 11px;'>✨ This is your official score report — please save for reference.</p>
+            </div> -->
         </div>
 
         <!-- FOOTER: subtle blue-white pattern -->
-        <div class='email-footer'>
-            <p style='margin-bottom:4px;'>© 2026 Registration Portal — All Rights Reserved</p>
-            <p>This is your official registration confirmation.</p>
-        </div>
+        <!-- <div class='email-footer'>
+            <p style='margin-bottom:4px;'>© 2026 Academic Records Office — Official Score Report</p>
+            <p>Accuracy and integrity in academic reporting.</p>
+        </div> -->
     </div>
 </body>
 </html>

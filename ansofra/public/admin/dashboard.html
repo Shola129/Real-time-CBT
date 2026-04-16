@@ -840,6 +840,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
                   <th>Department</th>
                   <th>Score</th>
                   <th>Date Submitted</th>
+                  <th>Publish</th>
                 </tr>
               </thead>
               <tbody id="display-result">
@@ -881,6 +882,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
                       <td><span class="badge badge-dept">${response[index].department}</span></td>
                       <td><span class="badge badge-score">${response[index].overAll}</span></td>
                       <td>${response[index].createdAt}</td>
+                      <td>${response[index].publish}</td>
                     </tr>
                 `;
             }

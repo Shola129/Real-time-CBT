@@ -33,25 +33,350 @@ class RelResult{
                 foreach($subjectScores as $col){
                     $scores = $col["score"];
                     $subject = $col["subject"];
-                    $table = "<table>
-                                <td>
-                                    <tr>Subjects</tr>
-                                    <tr>Scores</tr>
-                                </td>
-                                <td>
-                                    <tr>$scores</tr>
-                                    <tr>$subject</tr>
-                                </td>
-                            </table>";
-                $body = "Dear $fullname, your overall score is $score with $table. RegNumber $regNum";;
+                    $body = "<!DOCTYPE html>
+                                <html lang='en'>
+                                <head>
+                                    <meta charset='UTF-8'>
+                                    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=yes'>
+                                    <title>Your Exam Score Report</title>
+                                    <style>
+                                        /* Reset & base styles for email client compatibility */
+                                        * {
+                                            margin: 0;
+                                            padding: 0;
+                                            box-sizing: border-box;
+                                        }
+
+                                        body {
+                                            background-color: #eef2f7;
+                                            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+                                            line-height: 1.5;
+                                            padding: 24px 16px;
+                                        }
+
+                                        /* main email container – classic card style */
+                                        .email-container {
+                                            max-width: 580px;
+                                            margin: 0 auto;
+                                            background-color: #ffffff;
+                                            border-radius: 20px;
+                                            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05), 0 2px 6px rgba(0, 0, 0, 0.03);
+                                            overflow: hidden;
+                                            border: 1px solid #e0e7ed;
+                                        }
+
+                                        /* header area: blue + white + red accent */
+                                        .email-header {
+                                            background: linear-gradient(135deg, #0a2b4e 0%, #0f3b6f 100%);
+                                            padding: 28px 32px 24px 32px;
+                                            text-align: center;
+                                            border-bottom: 4px solid #d32f2f;
+                                        }
+
+                                        .header-icon {
+                                            font-size: 48px;
+                                            margin-bottom: 10px;
+                                            display: inline-block;
+                                            background: rgba(255,255,255,0.12);
+                                            padding: 12px;
+                                            border-radius: 60px;
+                                            line-height: 1;
+                                        }
+
+                                        .email-header h1 {
+                                            color: white;
+                                            font-size: 26px;
+                                            font-weight: 600;
+                                            letter-spacing: -0.2px;
+                                            margin: 8px 0 6px 0;
+                                        }
+
+                                        .score-badge {
+                                            background-color: #d32f2f;
+                                            color: white;
+                                            display: inline-block;
+                                            padding: 5px 16px;
+                                            border-radius: 40px;
+                                            font-size: 13px;
+                                            font-weight: 500;
+                                            margin-top: 12px;
+                                            letter-spacing: 0.3px;
+                                            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+                                        }
+
+                                        /* body content */
+                                        .email-body {
+                                            padding: 32px 32px 28px 32px;
+                                            background: #ffffff;
+                                        }
+
+                                        .greeting {
+                                            font-size: 18px;
+                                            color: #1a2c3e;
+                                            margin-bottom: 20px;
+                                            font-weight: 500;
+                                            border-left: 4px solid #d32f2f;
+                                            padding-left: 18px;
+                                            background: #fefaf9;
+                                            border-radius: 0 12px 12px 0;
+                                        }
+
+                                        .greeting strong {
+                                            color: #0a2b4e;
+                                        }
+
+                                        .score-summary {
+                                            background: linear-gradient(135deg, #e8f0fe 0%, #ffffff 100%);
+                                            border-radius: 18px;
+                                            padding: 18px 22px;
+                                            margin: 20px 0 24px 0;
+                                            text-align: center;
+                                            border: 1px solid #d4e2f5;
+                                        }
+
+                                        .overall-score {
+                                            font-size: 42px;
+                                            font-weight: 800;
+                                            color: #0a2b4e;
+                                            display: inline-block;
+                                            background: white;
+                                            padding: 8px 28px;
+                                            border-radius: 60px;
+                                            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+                                            margin: 8px 0;
+                                        }
+
+                                        .score-label {
+                                            font-size: 14px;
+                                            color: #5f7a92;
+                                            letter-spacing: 1px;
+                                        }
+
+                                        /* timetable table styling – clean & classic */
+                                        .timetable-wrapper {
+                                            margin: 24px 0 20px 0;
+                                            overflow-x: auto;
+                                            border-radius: 18px;
+                                            border: 1px solid #e2e9f0;
+                                            background: white;
+                                        }
+
+                                        .score-table {
+                                            width: 100%;
+                                            border-collapse: collapse;
+                                            font-size: 15px;
+                                            min-width: 280px;
+                                        }
+
+                                        .score-table th {
+                                            background-color: #0a2b4e;
+                                            color: white;
+                                            font-weight: 600;
+                                            padding: 14px 16px;
+                                            text-align: left;
+                                            font-size: 15px;
+                                            letter-spacing: 0.3px;
+                                        }
+
+                                        .score-table td {
+                                            padding: 12px 16px;
+                                            border-bottom: 1px solid #e9edf2;
+                                            color: #1e2f3c;
+                                            background-color: #ffffff;
+                                        }
+
+                                        .score-table tr:last-child td {
+                                            border-bottom: none;
+                                        }
+
+                                        .score-table tr:hover td {
+                                            background-color: #fafcff;
+                                        }
+
+                                        .subject-cell {
+                                            font-weight: 600;
+                                            color: #0a2b4e;
+                                        }
+
+                                        .score-cell {
+                                            font-weight: 700;
+                                            color: #1e2f3c;
+                                        }
+
+                                        .score-cell.high {
+                                            color: #1e7e34;
+                                        }
+
+                                        .score-cell.low {
+                                            color: #d32f2f;
+                                        }
+
+                                        .reg-info {
+                                            background-color: #f0f5ff;
+                                            border-radius: 14px;
+                                            padding: 12px 18px;
+                                            margin: 20px 0 10px;
+                                            text-align: center;
+                                            font-size: 14px;
+                                            border: 1px solid #dce5f2;
+                                        }
+
+                                        .reg-number {
+                                            font-weight: 700;
+                                            color: #0a2b4e;
+                                            font-family: monospace;
+                                            font-size: 16px;
+                                        }
+
+                                        .info-message {
+                                            background-color: #fff8e7;
+                                            border-left: 4px solid #f5a623;
+                                            padding: 14px 18px;
+                                            border-radius: 14px;
+                                            margin: 24px 0 16px;
+                                            font-size: 13px;
+                                            color: #8a6e2b;
+                                        }
+
+                                        .important-note {
+                                            background-color: #fff5f5;
+                                            border-left: 4px solid #d32f2f;
+                                            padding: 14px 18px;
+                                            border-radius: 14px;
+                                            margin: 28px 0 10px 0;
+                                            font-size: 13px;
+                                            color: #a12626;
+                                        }
+
+                                        .important-note i {
+                                            font-style: normal;
+                                            font-weight: 600;
+                                        }
+
+                                        .footer-note {
+                                            margin-top: 24px;
+                                            border-top: 1px dashed #cbdbe0;
+                                            padding-top: 20px;
+                                            text-align: center;
+                                            font-size: 12px;
+                                            color: #5f7a92;
+                                        }
+
+                                        .email-footer {
+                                            background-color: #f8fafc;
+                                            padding: 18px 32px;
+                                            text-align: center;
+                                            font-size: 11px;
+                                            color: #4a627a;
+                                            border-top: 1px solid #e2e9f0;
+                                        }
+
+                                        .red-dot {
+                                            color: #d32f2f;
+                                            font-weight: bold;
+                                        }
+
+                                        @media (max-width: 560px) {
+                                            .email-body {
+                                                padding: 24px 20px;
+                                            }
+                                            .email-header {
+                                                padding: 22px 20px;
+                                            }
+                                            .overall-score {
+                                                font-size: 32px;
+                                                padding: 6px 20px;
+                                            }
+                                            .score-table th, .score-table td {
+                                                padding: 10px 12px;
+                                                font-size: 13px;
+                                            }
+                                        }
+                                    </style>
+                                </head>
+                                <body>
+                                    <div class='email-container'>
+                                        <!-- HEADER: deep blue background, white text, red accent border -->
+                                        <div class='email-header'>
+                                            <div class='header-icon'>📊</div>
+                                            <h1>Exam Score Report</h1>
+                                            <div class='score-badge'>📝 Your Results Are Ready</div>
+                                        </div>
+
+                                        <!-- MAIN CONTENT -->
+                                        <div class='email-body'>
+                                            <div class='greeting'>
+                                                <strong>Dear <span id='fullname-display'>$fullname</span>,</strong>
+                                            </div>
+
+                                            <!-- Overall Score Summary -->
+                                            <div class='score-summary'>
+                                                <div class='score-label'>🎯 YOUR OVERALL SCORE</div>
+                                                <div class='overall-score' id='overall-score-display'>$score</div>
+                                            </div>
+
+                                            <!-- Scores Table - Dynamic from PHP data -->
+                                            <div class='timetable-wrapper'>
+                                                <table class='score-table' cellpadding='0' cellspacing='0'>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>📖 Subjects</th>
+                                                            <th>⭐ Scores</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody id='score-table-body'>
+                                                        <!-- Dynamic rows will be injected here -->
+                                                        <tr>
+                                                            <td class='subject-cell'>$subject</td>
+                                                            <td class='score-cell'>$scores</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <!-- Registration Information -->
+                                            <div class='reg-info'>
+                                                📌 <strong>Registration Number:</strong> <span class='reg-number' id='regNum-display'>$regNum</span>
+                                            
+
+                                            <!-- additional helpful note -->
+                                            <!-- <div class='footer-note'>
+                                                <p>📞 <strong>Need clarification?</strong> Contact academic affairs at <span style='color:#0a2b4e;'>academics@university.edu</span></p>
+                                                <p style='margin-top: 8px; font-size: 11px;'>✨ This is your official score report — please save for reference.</p>
+                                            </div> -->
+                                        </div>
+
+                                        <!-- FOOTER: subtle blue-white pattern -->
+                                        <!-- <div class='email-footer'>
+                                            <p style='margin-bottom:4px;'>© 2026 Academic Records Office — Official Score Report</p>
+                                            <p>Accuracy and integrity in academic reporting.</p>
+                                        </div> -->
+                                    </div>
+                                </body>
+                                </html>";
+                // $body = "Dear $fullname, your overall score is $score with $table. RegNumber $regNum";;
                 $newMail = new Index();
-                $mail = $newMail->sendOtp('TimeTable', $body, $email);
+                $mail = $newMail->sendOtp('CBT Result', $body, $email);
                 $decodeMail = json_decode($mail, true);
                 if($decodeMail['status']==="success"){
-                    return json_encode([
-                        'status'=>'success',
-                        'response'=>'time scheduled have being saved and sent to the registered user department to ready'
-                    ], JSON_PRETTY_PRINT);
+                    $data = [
+                        'publish'=>'completed'
+                    ];
+
+                    $where = [
+                        'regNum'=>$regNum
+                    ];
+                    $newMig2 = new Migration(null, $this->table);
+                    $mig2 = $newMig2->edit($data, $where);
+                    $decodeMig2 = json_decode($mig2, true);
+                    if($decodeMig2["status"]==="success"){
+                            return json_encode([
+                            'status'=>'success',
+                            'response'=>'time scheduled have being saved and sent to the registered user department to ready'
+                        ], JSON_PRETTY_PRINT);
+                    }else{
+                        return $mig2;
+                    }
                 }
                 else{
                     return $mail;

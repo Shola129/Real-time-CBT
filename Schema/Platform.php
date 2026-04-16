@@ -189,7 +189,8 @@ class Platform{
         "regNum VARCHAR(255) NOT NULL",
         "createdAt VARCHAR(255) NOT NULL",
         "email VARCHAR(255) NOT NULL",
-        "status VARCHAR(255) NOT NULL"
+        "status VARCHAR(255) NOT NULL",
+        "publish VARCHAR(255) NOT NULL",
     ];
 
     public const STATUS_TABLE = "status";
