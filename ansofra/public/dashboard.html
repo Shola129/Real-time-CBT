@@ -199,6 +199,7 @@
         <div class="profile-avatar" id="sidebar-avatar">--</div>
         <div class="profile-name" id="sidebar-name">—</div>
         <div class="profile-reg"  id="sidebar-reg">—</div>
+        <div id="sidebar-email" hidden>-</div>
         <div class="profile-badge">UTME Candidate</div>
         <div class="profile-details">
           <div class="profile-row"><span class="lbl">State</span>  <span class="val" id="sb-state">—</span></div>
@@ -348,6 +349,7 @@ async function populateUI() {
     document.getElementById('sb-gender').textContent       = p.gender     || '—';
     document.getElementById('sb-phone').textContent        = p.phone      || '—';
     document.getElementById('ic-reg').textContent          = p.regNum;
+    document.getElementById('sidebar-email').textContent = p.email;
     document.getElementById('hero-name').innerHTML =
       `Welcome, <span>${p.firstName || p.fullname.split(' ')[0]}</span>`;
 
@@ -356,6 +358,7 @@ async function populateUI() {
       fetchExamDetails(p.department),
       fetchSubjectCount(p.department),
     ]);
+    
   // } catch (err) { console.error('populateUI:', err); }
 }
 
@@ -611,13 +614,14 @@ async function switchSubject(department, subject, idx) {
   examState.questions[idx] = questionList;
 
   if (!examState.answers[idx] || examState.answers[idx].length !== questionList.length) {
-    examState.answers[idx]       = Array(questionList.length).fill(-1);
-    examState.flagged[idx]       = Array(questionList.length).fill(false);
-    examState.answerDetails[idx] = Array(questionList.length).fill(null);
+    examState.answers[idx]       = Array(questionList).fill(-1);
+    examState.flagged[idx]       = Array(questionList).fill(false);
+    examState.answerDetails[idx] = Array(questionList).fill(null);
+    // renderCurrentQuestion();
   }
 
   const qCountEl = document.getElementById(`qcount-${idx}`);
-  if (qCountEl) qCountEl.textContent = ` (${questionList.length}Q)`;
+  // if (qCountEl) qCountEl.textContent = ` (${questionList}Q)` || "NO questions";
 
   renderCurrentQuestion();
 }
@@ -973,6 +977,7 @@ async function saveResult() {
   const regNum     = document.getElementById('sidebar-reg').textContent.trim();
   const fullname   = document.getElementById('sidebar-name').textContent.trim();
   const department = document.getElementById('sb-course').textContent.trim();
+  const email = document.getElementById('sidebar-email').textContent.trim();
   const e = {regNum:regNum};
   // Fetch all saved subject scores for this candidate from the server
   const api    = await fetch('/cbt/ansofra/api/get/scores/subject', {
@@ -992,10 +997,11 @@ async function saveResult() {
 
 
   const d = {
-    regNum:          regNum,
-    fullname:        fullname,
-    department:      department,
-    overAll:         overAll,
+    regNum: regNum,
+    fullname: fullname,
+    department:department,
+    overAll: overAll,
+    email: email,
     subjectAndScore: JSON.stringify(response),  
   };
 
@@ -1007,7 +1013,7 @@ async function saveResult() {
     body:    JSON.stringify(d),
   });
   const resultApi = await seApi.json();
-
+  console.log(resultApi);
   if (resultApi.status === 'success') {
      backToDash();
   }

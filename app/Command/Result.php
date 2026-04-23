@@ -23,6 +23,7 @@ class Result{
             'createdAt'=>date("Y-m-d H:i:s"),
             'status'=>'completed',
             'publish'=>'pending',
+            'email'=>$this->dto->email,
         ];
 
         $newMig = new Migration(null, $this->table);
@@ -39,6 +40,9 @@ class Result{
             $newMig2 = new Migration(null, $this->table2);
             $mig2 = $newMig2->edit($data, $where);
             return $mig2;
+        }
+        else{
+            return $mig;
         }
     }
 }

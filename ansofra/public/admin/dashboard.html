@@ -124,6 +124,14 @@ body {
   flex-shrink: 0; white-space: nowrap; overflow: hidden;
 }
 
+.sidebar-footer1 {
+  padding: 0px 25px 5px;
+   /* border-top: 1px solid rgba(255,255,255,0.1); */
+  font-size: 11px; color: rgba(255,255,255,0.4);
+  font-family: sans-serif; font-style: italic;
+  /* flex-shrink: 0; white-space: nowrap; overflow: hidden; */
+}
+
 .main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
 
 .topbar {
@@ -586,13 +594,13 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
     <div class="sidebar-brand">
       <div class="brand-icon"><i class="fas fa-pen-nib"></i></div>
       <div class="brand-text">
-        <div class="brand-name">Exam Board</div>
+        <div class="brand-name">EduTest CBT</div>
         <div class="brand-sub">Admin Portal</div>
       </div>
       <button class="sidebar-close" onclick="closeSidebar()"><i class="fas fa-times"></i></button>
     </div>
     <nav class="sidebar-nav">
-      <div class="nav-section-label">Navigation</div>
+      <!-- <div class="nav-section-label">Navigation</div> -->
       <div class="nav-item active" onclick="showSection('dashboard',this)"><i class="fas fa-chart-pie ni"></i><span class="nl">Dashboard</span></div>
       <div class="nav-item" onclick="showSection('students',this)"><i class="fas fa-users ni"></i><span class="nl">Students</span></div>
       <div class="nav-item" onclick="showSection('subjects',this)"><i class="fas fa-book-open ni"></i><span class="nl">Subjects</span></div>
@@ -601,9 +609,14 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
       <div class="nav-item" onclick="showSection('departments',this)"><i class="fas fa-building ni"></i><span class="nl">Departments</span></div>
       <div class="nav-item" onclick="showSection('schedule',this)"><i class="fas fa-calendar-days ni"></i><span class="nl">Schedule Exam</span></div>
     </nav>
-    <div class="sidebar-footer">Academic Year 2025 / 26</div>
+    <div style="margin-left: 10px;">
+      <span class="sidebar-footer" style="font-weight: bold; font-size: 11px;">&copy; <span id="current-time"></span> Shola Daniel Ekundayo.</span>
+    <span class="sidebar-footer1" style=" margin-top: -19px; color: #dde3f0; font-size: 10px; justify-self: space-around;">All rights reserved. <a href="https://www.shola.site" style="color: white; text-decoration-line: none; font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;">Portfolio</a></span>
+    </div>
   </aside>
-
+  <script>
+    document.getElementById("current-time").textContent=new Date().getFullYear();
+  </script>
   <div class="main">
     <div class="topbar">
       <div class="topbar-left">
@@ -641,19 +654,19 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
         <div class="section-header"><div class="section-title"><i class="fas fa-images"></i> Gallery</div></div>
         <div id="dashDeptGrid" class="gallery-grid">
           <div class="gallery-card">
-            <img src="../public/assets/1969-Ford-Mustang-Fastback-3.jpg" alt="">
+            <img src="../public/assets/check-mark-on-list-display-on-virtual-screen.jpg" alt="">
             <!-- <div class="gallery-placeholder"><i class="fas fa-image"></i><span>Gallery Image 1</span></div> -->
           </div>
           <div class="gallery-card">
-            <img src="../public/assets/157598.jpg" alt="" srcset="">
+            <img src="../public/assets/codeless-google-docs-track-changes-featured-image-1024x667.jpg" alt="" srcset="">
             <!-- <div class="gallery-placeholder"><i class="fas fa-car"></i><span>1969 Ford Mustang</span></div> -->
           </div>
           <div class="gallery-card">
-            <img src="../public/assets/2025-bmw-m5-fire-red-14.jpg" alt="" srcset="">
+            <img src="../public/assets/download.webp" alt="" srcset="">
             <!-- <div class="gallery-placeholder"><i class="fas fa-car-side"></i><span><img src="public/assets/logo.jpg" alt=""></span></div> -->
           </div>
           <div class="gallery-card">
-             <img src="../public/assets/2025-bmw-m5-fire-red-09.jpg" alt="" srcset="">
+             <img src="../public/assets/electronic-signature-online-contract-concept-businessman-using-laptop-to-e-signing-digital.jpg" alt="" srcset="">
             <!-- <div class="gallery-placeholder"><i class="fas fa-image"></i><span>157598.jpg</span></div> -->
           </div>
         </div>
@@ -666,14 +679,8 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           <button id="searchStudentRegNo" class="btn btn-primary btn-sm">Search</button>
           <div class="search-field">
             <i class="fas fa-building"></i>
-            <select id="deptFilter">
-              <option selected>Choose department</option>
-              <option value="Computer Science">Computer Science</option>
-              <option value="Mathematics">Mathematics</option>
-              <option value="Physics">Physics</option>
-              <option value="Chemistry">Chemistry</option>
-              <option value="Literature">Literature</option>
-            </select>
+            <input type="text" placeholder="Choose department" id="deptFilter">
+            <button id="seacrhStudentDep" class="btn btn-primary btn-sm">Search</button>
           </div>
         </div>
         <div class="panel">
@@ -684,7 +691,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
           <div class="table-wrap" id="table-wrap">
             <table>
               <thead>
-                <tr><th>S/N</th><th>Reg. No.</th><th>Name</th><th>Department</th><th>Email</th><th>Role</th><th>Del</th></tr>
+                <tr><th>S/N</th><th>Reg. No.</th><th>Name</th><th>Department</th><th>Email</th><th>Role</th></tr>
               </thead>
               <tbody id="studentTableBody"></tbody>
             </table>
@@ -725,14 +732,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
                 <div class="form-row">
                   <div class="form-group">
                     <label class="form-label">Department</label>
-                    <select class="form-control" id="newDeptSelect" style="border-radius:var(--r-pill);" name="department">
-                      <option value="">— Choose Department —</option>
-                      <option value="Computer Science">Computer Science</option>
-                      <option value="Mathematics">Mathematics</option>
-                      <option value="Physics">Physics</option>
-                      <option value="Chemistry">Chemistry</option>
-                      <option value="Literature">Literature</option>
-                    </select>
+                    <input type="text" class="form-control" id="newDeptSelect" style="border-radius:var(--r-pill);" name="department">
                   </div>
                   <div class="form-group">
                     <label class="form-label">Department code</label>
@@ -802,7 +802,7 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
                     <input class="form-control" type="text" id="optionE" placeholder="optionE" name="optionE" />
                   </div>
                   <div class="form-group" style="max-width:260px;margin-bottom:20px;">
-                    <label class="form-label">Correct Answer</label>
+                    <!-- <label class="form-label">Correct Answer</label>
                     <select class="form-control" id="correctAnswer" name="correctOtp">
                       <option value="">Select correct answer…</option>
                       <option value="A">A</option>
@@ -810,9 +810,9 @@ textarea.form-control { border-radius: var(--r-lg); resize: vertical; min-height
                       <option value="C">C</option>
                       <option value="D">D</option>
                       <option value="E">E</option>
-                    </select><br>
+                    </select><br> -->
                     <label for="form-label">Write Ans</label>
-                    <input type="text" id="correctAss" name="correctAss" class="form-control">
+                    <input type="text" id="correctAss" name="correctAss" class="form-control" placeholder="enter correct option">
                   </div>
                   <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
                     <button id="saveQuestionBtn" class="btn btn-primary"><i class="fas fa-cloud-upload-alt"></i> Save Question</button>
@@ -1418,7 +1418,6 @@ async function getStudentList() {
                       <td><span class="badge badge-dept">${response[i].department}</span></td>
                       <td>${response[i].email}</td>
                       <td>${response[i].role}</td>
-                      <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
                     </tr>`;
       }
       tbody.innerHTML = display;
@@ -1452,7 +1451,6 @@ document.getElementById("searchStudentRegNo").addEventListener("click", async fu
                     <td><span class="badge badge-dept">${response[i].department}</span></td>
                     <td>${response[i].email}</td>
                     <td>${response[i].role}</td>
-                    <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNum}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
                   </tr>`;
         }
         tbody.innerHTML = output;
@@ -1489,7 +1487,7 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
                     <td><span class="badge badge-dept">${response[i].department}</span></td>
                     <td>${response[i].email}</td>
                     <td>${response[i].role}</td>
-                    <td><button class="btn btn-sm btn-danger" onclick="alert('${response[i].regNo}', '${response[i].fullname}')"><i class="fas fa-trash"></i></button></td>
+                    
                   </tr>`;
         }
         tbody.innerHTML = output;
