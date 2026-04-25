@@ -524,7 +524,11 @@
           </div>
           <div class="form-group">
             <label>Chosen Course</label>
-            <input type="text" id="inp-course" placeholder="e.g. Computer Science"/>
+            <!-- <input type="text" id="inp-course" placeholder="e.g. Computer Science"/> -->
+             <select id="inp-course">
+              <option value="">Select Department</option>
+              <div id="display-dep"></div>
+             </select>
           </div>
           <div class="btn-row">
             <button class="btn btn-ghost" onclick="prevStep(2)">← Back</button>
@@ -556,7 +560,8 @@
 
         <div class="auth-footer">Already registered?<a href="/cbt/ansofra/login">Sign in here</a></div>
       </div>
-
+      <select name="" id="">
+      </select>
     </div>
   </div>
 </div>
@@ -870,6 +875,26 @@
   }
 
  
+
+  async function getDepartment(){
+    const e = {role:'set'}
+    const api  = await fetch("/cbt/ansofra/api/get/department/set/list", {
+      method:"POST",
+      headers:{"Content-type":"application/json"},
+      body:JSON.stringify(e)
+    });
+
+    const result =  await api.json();
+    const response = result.response;
+    let output = '';
+
+    for (let index = 0; index < response.length; index++) {
+      output +=`
+         <option value="${response[index].department}">${response[index].department}</option>
+      `;
+    }
+    document.getElementById('display-dep').innerHTML=output;
+  }
     //  RESEND OTP
 
   async function resendOtp() {

@@ -363,6 +363,11 @@ elseif($url === $usersArea . "/save/result"){
     exit();
 }
 
+
+elseif($url === $usersArea. "/get/department/set/list"){
+    require_once __DIR__ . $appController . "/GetDepListController.php";
+    exit();
+}
 // /api endpoints
 // elseif($url === $docRoot . $rootDir . $usersArea."/register" || $url === $usersArea."/register"."/"){
 //     require_once __DIR__ . $appController."/RegisterController.php";
