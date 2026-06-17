@@ -379,4 +379,7 @@ else{
     require_once __DIR__ . "/.."."$rootDir/public/error/404.html";
     exit();
 }
+
+
+
 ?>
