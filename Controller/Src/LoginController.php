@@ -3,7 +3,7 @@ namespace NewdichControllerSrc;
 use NewdichDto\AnsofraDto;
 use NewdichMiddleware\Index;
 use NewdichSrc\Query\Login;
-
+use NewdichAuth\Authentication;
 $data = $_POST;
 $mid = new Index();
 $cleanData = [];
@@ -21,23 +21,33 @@ $logic = new Login($dto);
 $log = $logic->process();
 $decode = json_decode($log, true);
 if($decode["status"]==="success"){
-    $response = $decode["response"][0];
-    $pass  = $response["password"];
-    $password = $cleanData["password"];
-    if($pass === $password){
-        echo json_encode([
-            'status'=>'success',
-            'response'=>'verification successful'
-        ], JSON_PRETTY_PRINT);
+    $newAuth = new Authentication();
+    $auth = $newAuth->auth($cleanData["email"], "admin");
+    $decode = json_decode($auth, true);
+    if($decode["status"]==="successs"){
+        echo $auth;
+        exit();
+    }else{
+        echo $auth;
         exit();
     }
-    else{
-        echo  json_encode([
-            'status'=>'failed',
-            'response'=>'incorrect password'
-        ], JSON_PRETTY_PRINT);
-        exit();
-    }
+    // $response = $decode["response"][0];
+    // $pass  = $response["password"];
+    // $password = $cleanData["password"];
+    // if($pass === $password){
+    //     echo json_encode([
+    //         'status'=>'success',
+    //         'response'=>'verification successful'
+    //     ], JSON_PRETTY_PRINT);
+    //     exit();
+    // }
+    // else{
+    //     echo  json_encode([
+    //         'status'=>'failed',
+    //         'response'=>'incorrect password'
+    //     ], JSON_PRETTY_PRINT);
+    //     exit();
+    // }
 }
 else{
     echo json_encode([

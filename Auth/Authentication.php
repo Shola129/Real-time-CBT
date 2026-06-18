@@ -32,7 +32,7 @@ use PDOException;
             setcookie($this->jwtKey, $authhash, [
                 "expires"=> time() + (int)$this->jwtExpiry,
                 "path" => $this->rootdir,
-                "domain" => $this->domain, //must be empty if domain is ip address
+                // "domain" => $this->domain, //must be empty if domain is ip address
                 "secure" => $this->jwtSecureLevel,
                 "httponly" => true,
                 "samesite" => $this->jwtSameSite
