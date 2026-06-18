@@ -9,10 +9,10 @@ $mid = new Index();
 $cleanData = [];
 foreach($data as $key=>$val){
     if($key==="password"){
-        $cleanData["key"]=$mid->hashData($val);
+        $cleanData[$key]=$mid->hashData($val);
     }
     else{
-        $cleanData["key"]=$mid->cleanData($val);
+        $cleanData[$key]=$mid->cleanData($val);
     }
 }
 

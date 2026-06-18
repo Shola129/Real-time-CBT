@@ -64,6 +64,7 @@ class AnsofraDto{
     public $correctAnswers;
     public $expectedScore;
     public $status;
+    public $portal_name;
     
     public function __construct(array $inData){
         $allProp = get_object_vars($this);

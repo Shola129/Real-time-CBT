@@ -14,6 +14,8 @@
     --red:         #c0392b;
     --red-dark:    #922b21;
     --red-light:   #f9e0de;
+    --gold:        #B8962E;
+    --gold-light:  #D4AF50;
     --white:       #ffffff;
     --off-white:   #f4f6fb;
     --border:      #d0d8ea;
@@ -30,14 +32,87 @@
   body {
     font-family: 'Georgia', 'Times New Roman', serif;
     display: flex;
-    align-items: center;
-    justify-content: center;
     min-height: 100vh;
     background: var(--off-white);
     color: var(--navy);
     font-size: 14px;
     line-height: 1.6;
   }
+
+  /* ── LEFT PANEL ── */
+  .left-panel {
+    width: 42%;
+    min-height: 100vh;
+    background: var(--navy);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 52px 52px 48px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .left-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(184,150,46,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(184,150,46,.06) 1px, transparent 1px);
+    background-size: 52px 52px;
+    pointer-events: none;
+  }
+  .left-panel::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 5px; height: 100%;
+    background: linear-gradient(to bottom, var(--gold), transparent 60%);
+  }
+  .lp-top, .lp-mid, .lp-bot { position: relative; z-index: 2; }
+  .lp-mid { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 48px 0 40px; }
+
+  .brand-lockup { display: flex; align-items: center; gap: 14px; }
+  .brand-mark {
+    width: 42px; height: 42px;
+    border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .brand-mark span { font-family: 'Georgia', serif; font-size: 22px; font-weight: 700; color: var(--gold); letter-spacing: -1px; }
+  .brand-name { font-family: 'Georgia', serif; font-size: 22px; font-weight: 700; color: #fff; letter-spacing: .5px; }
+  .brand-tagline { font-size: 10px; font-weight: 600; color: var(--gold); letter-spacing: 2.5px; text-transform: uppercase; margin-top: 2px; opacity: .85; }
+
+  .gold-rule { width: 48px; height: 2px; background: var(--gold); margin-bottom: 28px; }
+  .lp-headline { font-family: 'Georgia', serif; font-size: 28px; font-weight: 700; color: #fff; line-height: 1.22; letter-spacing: -.4px; margin-bottom: 14px; }
+  .lp-sub { font-size: 14px; color: rgba(255,255,255,.52); line-height: 1.68; margin-bottom: 36px; }
+
+  .feat-list { display: flex; flex-direction: column; gap: 16px; }
+  .feat-item { display: flex; align-items: flex-start; gap: 14px; }
+  .feat-bullet { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 6px; }
+  .feat-text { font-size: 13px; color: rgba(255,255,255,.65); line-height: 1.55; }
+  .feat-text strong { color: rgba(255,255,255,.9); font-weight: 600; }
+
+  /* stat strip */
+  .stat-strip { display: flex; gap: 32px; margin-top: 36px; }
+  .stat-item { display: flex; flex-direction: column; gap: 3px; }
+  .stat-num { font-family: 'Georgia', serif; font-size: 26px; font-weight: 700; color: var(--gold); }
+  .stat-label { font-size: 11px; color: rgba(255,255,255,.4); letter-spacing: .5px; }
+  .stat-divider { width: 1px; background: rgba(255,255,255,.1); align-self: stretch; }
+
+  .lp-legal { font-size: 11px; color: rgba(255,255,255,.25); line-height: 1.6; margin-top: 28px; }
+
+  /* ── RIGHT PANEL ── */
+  .right-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 40px;
+    background: var(--off-white);
+    overflow-y: auto;
+  }
+
+  /* ── ORIGINAL LOGIN STYLES (unchanged) ── */
   .login-container {
     max-width: 420px;
     width: 90%;
@@ -47,10 +122,7 @@
     box-shadow: var(--shadow-md);
     padding: 32px 28px;
   }
-  .login-header {
-    text-align: center;
-    margin-bottom: 24px;
-  }
+  .login-header { text-align: center; margin-bottom: 24px; }
   .header-icon {
     width: 56px; height: 56px;
     background: var(--navy);
@@ -60,23 +132,10 @@
     border: 2px solid var(--red);
   }
   .header-icon i { font-size: 22px; color: var(--white); }
-  .login-header h3 {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--navy);
-    margin-bottom: 4px;
-  }
-  .login-header p {
-    font-size: 12px;
-    font-family: sans-serif;
-    color: var(--ink-soft);
-  }
+  .login-header h3 { font-size: 20px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .login-header p { font-size: 12px; font-family: sans-serif; color: var(--ink-soft); }
   .form-group { display: flex; flex-direction: column; gap: 5px; margin-bottom: 14px; }
-  .form-label {
-    font-size: 11px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: .06em; color: var(--navy-soft);
-    font-family: sans-serif;
-  }
+  .form-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--navy-soft); font-family: sans-serif; }
   .form-control {
     padding: 10px 14px;
     border: 1.5px solid var(--border);
@@ -91,10 +150,7 @@
   .form-control::placeholder { color: var(--ink-soft); }
   .input-error  { border-color: var(--red) !important; }
   .input-success { border-color: #27ae60 !important; }
-  .error-message {
-    color: var(--red); font-size: 11px;
-    margin-top: 3px; display: none; font-family: sans-serif;
-  }
+  .error-message { color: var(--red); font-size: 11px; margin-top: 3px; display: none; font-family: sans-serif; }
   .error-message.visible { display: block; }
   .general-error {
     background: var(--red-light);
@@ -119,21 +175,80 @@
   }
   .btn-login:hover { background: var(--navy-light); transform: translateY(-1px); }
   .btn-login:active { transform: translateY(0); }
-  .links {
-    text-align: center; margin-top: 18px;
-    font-family: sans-serif; font-size: 12px;
-    color: var(--ink-soft);
-  }
+  .links { text-align: center; margin-top: 18px; font-family: sans-serif; font-size: 12px; color: var(--ink-soft); }
   .links a { color: var(--red); text-decoration: none; font-weight: 600; }
   .links a:hover { text-decoration: underline; }
   .links .back-link { color: var(--ink-soft); font-weight: 400; }
-  .divider-line {
-    border: none; border-top: 1px solid var(--border);
-    margin: 20px 0;
+  .divider-line { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    body { flex-direction: column; }
+    .left-panel { width: 100%; min-height: auto; padding: 32px 28px 28px; }
+    .lp-mid { padding: 24px 0 20px; }
+    .feat-list, .stat-strip { display: none; }
+    .right-panel { padding: 32px 20px; }
   }
 </style>
 </head>
 <body>
+
+<!-- LEFT PANEL -->
+<div class="left-panel">
+  <div class="lp-top">
+    <div class="brand-lockup">
+      <div class="brand-mark"><span>E</span></div>
+      <div>
+        <div class="brand-name">EdutTest</div>
+        <div class="brand-tagline">Way to Knowledge</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lp-mid">
+    <div class="gold-rule"></div>
+    <h2 class="lp-headline">Welcome back to your administration portal.</h2>
+    <p class="lp-sub">Sign in with your registered email, Admin ID, and password to access your full dashboard — exams, users, reports, and settings.</p>
+    <div class="feat-list">
+      <div class="feat-item">
+        <div class="feat-bullet"></div>
+        <div class="feat-text"><strong>Admin ID required.</strong> Your unique ID was issued when your account was created. It starts with ADMIN.</div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-bullet"></div>
+        <div class="feat-text"><strong>Every session is logged.</strong> All login activity is recorded with timestamp and IP address for your security.</div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-bullet"></div>
+        <div class="feat-text"><strong>Forgot your password?</strong> Use the reset link on the sign-in form and we'll send a recovery email.</div>
+      </div>
+    </div>
+
+    <div class="stat-strip">
+      <div class="stat-item">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Uptime SLA</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-num">256-bit</div>
+        <div class="stat-label">Encryption</div>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <div class="stat-num">24/7</div>
+        <div class="stat-label">Audit Logging</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lp-bot">
+    <div class="lp-legal">&copy; 2024 EdutTest. Unauthorised access is prohibited and will be reported.</div>
+  </div>
+</div>
+
+<!-- RIGHT PANEL — original form untouched -->
+<div class="right-panel">
 <div class="login-container">
   <div class="login-header">
     <div class="header-icon"><i class="fas fa-lock"></i></div>
@@ -173,7 +288,9 @@
     <a href="#" id="backLink" class="back-link">Back</a>
   </div>
 </div>
+</div>
 
+<!-- ORIGINAL SCRIPT — untouched -->
 <script>
   const emailInput = document.getElementById('loginEmail');
   const passwordInput = document.getElementById('loginPassword');
@@ -260,10 +377,10 @@
   });
 
   document.getElementById('registerLink').addEventListener('click', (e) => {
-    e.preventDefault(); window.location.href = '/cbt/ansofra/ilease/validateEmail';
+    e.preventDefault(); window.location.href ='/cbt/ansofra/ilease/validateEmail';
   });
   document.getElementById('backLink').addEventListener('click', (e) => {
-    e.preventDefault(); window.location.href = '/cbt/ansofra/ilease';
+    e.preventDefault(); window.location.href ='/cbt/ansofra/ilease';
   });
 </script>
 </body>

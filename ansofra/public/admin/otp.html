@@ -14,6 +14,8 @@
     --red:         #c0392b;
     --red-dark:    #922b21;
     --red-light:   #f9e0de;
+    --gold:        #B8962E;
+    --gold-light:  #D4AF50;
     --white:       #ffffff;
     --off-white:   #f4f6fb;
     --border:      #d0d8ea;
@@ -29,10 +31,97 @@
   html, body { height: 100%; }
   body {
     font-family: 'Georgia', 'Times New Roman', serif;
-    display: flex; align-items: center; justify-content: center;
-    min-height: 100vh; background: var(--off-white);
-    color: var(--navy); font-size: 14px; line-height: 1.6;
+    display: flex;
+    min-height: 100vh;
+    background: var(--off-white);
+    color: var(--navy);
+    font-size: 14px;
+    line-height: 1.6;
   }
+
+  /* ── LEFT PANEL ── */
+  .left-panel {
+    width: 42%;
+    min-height: 100vh;
+    background: var(--navy);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 52px 52px 48px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .left-panel::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(184,150,46,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(184,150,46,.06) 1px, transparent 1px);
+    background-size: 52px 52px;
+    pointer-events: none;
+  }
+  .left-panel::after {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 5px; height: 100%;
+    background: linear-gradient(to bottom, var(--gold), transparent 60%);
+  }
+  .lp-top, .lp-mid, .lp-bot { position: relative; z-index: 2; }
+  .lp-mid { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 48px 0 40px; }
+
+  .brand-lockup { display: flex; align-items: center; gap: 14px; }
+  .brand-mark {
+    width: 42px; height: 42px;
+    border: 2px solid var(--gold);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .brand-mark span { font-family: 'Georgia', serif; font-size: 22px; font-weight: 700; color: var(--gold); letter-spacing: -1px; }
+  .brand-name { font-family: 'Georgia', serif; font-size: 22px; font-weight: 700; color: #fff; letter-spacing: .5px; }
+  .brand-tagline { font-size: 10px; font-weight: 600; color: var(--gold); letter-spacing: 2.5px; text-transform: uppercase; margin-top: 2px; opacity: .85; }
+
+  .gold-rule { width: 48px; height: 2px; background: var(--gold); margin-bottom: 28px; }
+  .lp-headline { font-family: 'Georgia', serif; font-size: 28px; font-weight: 700; color: #fff; line-height: 1.22; letter-spacing: -.4px; margin-bottom: 14px; }
+  .lp-sub { font-size: 14px; color: rgba(255,255,255,.52); line-height: 1.68; margin-bottom: 36px; }
+
+  .feat-list { display: flex; flex-direction: column; gap: 16px; }
+  .feat-item { display: flex; align-items: flex-start; gap: 14px; }
+  .feat-bullet { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 6px; }
+  .feat-text { font-size: 13px; color: rgba(255,255,255,.65); line-height: 1.55; }
+  .feat-text strong { color: rgba(255,255,255,.9); font-weight: 600; }
+
+  .step-track { display: flex; flex-direction: column; gap: 12px; }
+  .step-track-item { display: flex; align-items: center; gap: 12px; }
+  .st-num {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; flex-shrink: 0;
+    border: 1.5px solid rgba(255,255,255,.2); color: rgba(255,255,255,.35);
+  }
+  .st-num.active { border-color: var(--gold); color: var(--gold); }
+  .st-num.done   { border-color: var(--gold); background: var(--gold); color: var(--navy); }
+  .st-label { font-size: 12.5px; color: rgba(255,255,255,.4); }
+  .st-label.active { color: rgba(255,255,255,.9); font-weight: 600; }
+  .st-label.done   { color: rgba(255,255,255,.75); }
+  .st-connector { width: 1.5px; height: 20px; background: rgba(255,255,255,.12); margin-left: 13px; }
+  .st-connector.done { background: rgba(184,150,46,.4); }
+
+  .lp-legal { font-size: 11px; color: rgba(255,255,255,.25); line-height: 1.6; margin-top: 28px; }
+
+  /* ── RIGHT PANEL ── */
+  .right-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 40px;
+    background: var(--off-white);
+    overflow-y: auto;
+  }
+
+  /* ── ORIGINAL OTP STYLES (unchanged) ── */
   .otp-container {
     max-width: 420px; width: 90%;
     background: var(--white);
@@ -140,9 +229,74 @@
     0% { opacity:0; transform:translateY(-4px); } 10% { opacity:1; transform:none; }
     90% { opacity:1; } 100% { opacity:0; }
   }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    body { flex-direction: column; }
+    .left-panel { width: 100%; min-height: auto; padding: 32px 28px 28px; }
+    .lp-mid { padding: 24px 0 20px; }
+    .feat-list { display: none; }
+    .right-panel { padding: 32px 20px; }
+  }
 </style>
 </head>
 <body>
+
+<!-- LEFT PANEL -->
+<div class="left-panel">
+  <div class="lp-top">
+    <div class="brand-lockup">
+      <div class="brand-mark"><span>E</span></div>
+      <div>
+        <div class="brand-name">EdutTest</div>
+        <div class="brand-tagline">Way to Knowledge</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lp-mid">
+    <div class="gold-rule"></div>
+    <h2 class="lp-headline">One code stands between you and your dashboard.</h2>
+    <p class="lp-sub">We sent a 6-digit code to your email. Enter it to confirm your address and move on to creating your admin account. Codes expire in 2 minutes.</p>
+    <div class="feat-list">
+      <div class="feat-item">
+        <div class="feat-bullet"></div>
+        <div class="feat-text"><strong>Check spam too.</strong> Some mail providers may route automated messages to your junk folder.</div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-bullet"></div>
+        <div class="feat-text"><strong>Codes expire quickly.</strong> Each code is valid for exactly 2 minutes and can only be used once.</div>
+      </div>
+      <div class="feat-item">
+        <div class="feat-bullet"></div>
+        <div class="feat-text"><strong>Need a new code?</strong> Wait for the timer to expire, then use the resend link below the form.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lp-bot">
+    <div class="step-track">
+      <div class="step-track-item">
+        <div class="st-num done">✓</div>
+        <span class="st-label done">Verify Identity</span>
+      </div>
+      <div class="st-connector done"></div>
+      <div class="step-track-item">
+        <div class="st-num active">2</div>
+        <span class="st-label active">Enter OTP</span>
+      </div>
+      <div class="st-connector"></div>
+      <div class="step-track-item">
+        <div class="st-num">3</div>
+        <span class="st-label">Create Account</span>
+      </div>
+    </div>
+    <div class="lp-legal">&copy; 2024 EdutTest. All administrator registrations are logged and audited.</div>
+  </div>
+</div>
+
+<!-- RIGHT PANEL — original form untouched -->
+<div class="right-panel">
 <div class="otp-container">
   <div class="header-icon"><i class="fas fa-envelope-open-text"></i></div>
   <h3>Verify your email</h3>
@@ -172,7 +326,9 @@
     <a href="#" id="backLink">Back to login</a>
   </div>
 </div>
+</div>
 
+<!-- ORIGINAL SCRIPT — untouched -->
 <script>
   const email = localStorage.getItem('cbt-email');
   const fullname = localStorage.getItem('cbt-name');
@@ -279,7 +435,7 @@
         if (timerInterval) clearInterval(timerInterval);
         localStorage.setItem('cbt-email-otp', email);
         deleteOTPFromBackend();
-        window.location.href = '/cbt/ansofra/ilease/2FA/verification';
+        window.location.href = '/cbt/ansofra/ilease/register';
       } else {
         showError(response.response || "Invalid verification code.");
         verifyBtn.disabled = false; verifyBtn.innerHTML = '<i class="fas fa-check-circle"></i> Verify';

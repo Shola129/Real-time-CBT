@@ -28,7 +28,9 @@ class Register{
             'username'=>$this->dto->username ?? '',
             'last_seen' =>$this->dto->last_seen ?? '',
             'date_created'=>$this->dto->date_created,
-            "ID"=>$ID
+            "ID"=>$ID,
+            "last_login"=>$this->dto->last_login ?? "null",
+            "portal_name"=>$this->dto->portal_name
         ];
         $fullname = $this->dto->fullname;
         
