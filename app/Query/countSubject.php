@@ -21,6 +21,7 @@ class countSubject{
         $newMig = new Migration(null, $this->table);
         $mig = $newMig->count($where, 0, 20);
         return $mig;
+        
     }
 }
 ?>
