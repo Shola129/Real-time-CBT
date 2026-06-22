@@ -15,7 +15,8 @@ class SaveSubject{
     public function process(){
         $where = [
             'department'=>$this->dto->department,
-            'DepartmentCode'=>$this->dto->DepartmentCode
+            'DepartmentCode'=>$this->dto->DepartmentCode,
+            'orgnization_code'=>$this->dto->orgnization_code
         ];
         $newMig1 = new Migration(null, $this->table2);
         $mig1 = $newMig1->get($where, 0, 1);
@@ -23,6 +24,7 @@ class SaveSubject{
         if($decodeMig["status"]==="success"){
              $sub = substr($this->dto->subject, 0,3);
             $data = [
+                'orgnization_code'=>$this->dto->orgnization,
                 'department'=>$this->dto->department,
                 'DepartmentCode'=>$this->dto->DepartmentCode,
                 'subject'=>$this->dto->subject,

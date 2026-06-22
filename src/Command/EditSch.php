@@ -16,6 +16,7 @@ class EditSch{
     public function process(){
         $get = [
             "department"=>$this->dto->department,
+            'orgnization_code'=>$this->dto->orgnization_code
         ];
 
         $newMig2 = new Migration(null, $this->table2);

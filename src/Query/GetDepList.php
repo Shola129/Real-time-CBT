@@ -14,11 +14,12 @@ class GetDepList{
 
     public function process(){
         $where = [
-            'role'=>'set'
+            'role'=>'set',
+            'orgnization_code'=>$this->dto->orgnization_code
         ];
 
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->get($where, 0, 20);
+        $mig = $newMig->get($where, 0, 50);
         return $mig;
     }
 }

@@ -15,11 +15,12 @@ class SeacrhQues{
     public function process(){
         $where  = [
             'department'=>$this->dto->department,
-            'subject'=>$this->dto->subject
+            'subject'=>$this->dto->subject,
+            'orgnization_code'=>$this->dto->orgnization_code
         ];
 
         $neMig = new Migration(null, $this->table);
-        $mig = $neMig->get($where, 0,20);
+        $mig = $neMig->get($where, 0, 20);
         return $mig;
     }
 }

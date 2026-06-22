@@ -18,7 +18,8 @@ class ScheduleExam{
     public function process(){
         $where = [
             'department'=>$this->dto->department,
-            'DepartmentCode'=>$this->dto->DepartmentCode
+            'DepartmentCode'=>$this->dto->DepartmentCode,
+            'orgnization_code'=>$this->dto->orgnization_code
         ];
 
         $newMig = new Migration(null, $this->table);
@@ -28,6 +29,7 @@ class ScheduleExam{
             $col = "timeID";
             $val = $this->dto->department . $this->dto->DepartmentCode;
             $data = [
+                'orgnization_code'=>$this->dto->orgnization_code,
                 "department"=> $this->dto->department,
                 'DepartmentCode'=> $this->dto->DepartmentCode,
                 'date'=> $this->dto->date,

@@ -14,7 +14,8 @@ class DisResult{
 
     public function process(){
         $where =[
-            "status"=>$this->dto->status
+            "status"=>$this->dto->status,
+            'orgnization_code'=>$this->dto->orgnization_code
         ];
 
         $newMig = new Migration(null, $this->table);

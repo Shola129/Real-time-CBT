@@ -14,7 +14,8 @@ class CountSch{
 
     public function process(){
         $where = [
-            'role'=>'set'
+            'role'=>'set',
+            'orgnization_code'=>$this->dto->orgnization_code
         ];
 
         $newMig = new Migration(null, $this->table);

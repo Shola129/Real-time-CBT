@@ -20,7 +20,8 @@ class EditSubject{
         ];
 
         $where = [
-            'subjectID'=>$this->dto->subjectID
+            'subjectID'=>$this->dto->subjectID,
+            'orgnization_code'=>$this->dto->orgnization_code
         ];
 
         $newMig = new Migration(null, $this->table);

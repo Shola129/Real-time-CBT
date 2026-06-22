@@ -21,7 +21,8 @@ class EditDepartment{
         ];
 
         $where = [
-            'departmentID'=>$this->dto->departmentID
+            'departmentID'=>$this->dto->departmentID,
+            'orgnization_code'=>$this->dto->orgnization_code
         ];
 
         $newMig = new Migration(null, $this->table);

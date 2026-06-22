@@ -14,6 +14,7 @@ class SearchRegNo{
      public function process(){
         $where = [
             'regNum'=>$this->dto->regNum,
+            'orgnization_code'=>$this->dto->orgnization_code
         ];
 
         $newMig = new Migration(null, $this->table);

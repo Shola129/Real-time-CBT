@@ -18,7 +18,8 @@ class SaveQuest{
     public function process($media){
         $where = [
             'department'=>$this->dto->department,
-            'subject'=>$this->dto->subject
+            'subject'=>$this->dto->subject,
+            'orgnization_code'=>$this->dto->orgnization_code
         ];
 
         $newMig = new Migration(null, $this->table2);
@@ -43,7 +44,8 @@ class SaveQuest{
                 'optionE'=>$this->dto->optionE ?? '',
                 'correctOtp'=>$this->dto->correctOtp,
                 'correctAss'=>$this->dto->correctAss,
-                'role'=>'set'
+                'role'=>'set',
+                'orgnization_code'=>$this->dto->orgnization_code
             ];
             $newMig2 = new Migration(null, $this->table);
             $mig2 = $newMig2->save($data);

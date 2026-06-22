@@ -13,11 +13,23 @@ class Register{
     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
     }
+    
+    private function ab($length = 10){
+        $characters = 'abcdefghijklmnopqrstuvwsyz';
+        $result = '';
+        for($i = 0; $i < $length; $i++){
+            $result .=$characters[random_int(0, strlen($characters) -1)];
+        }
+        return $result;
+    }
+
 
     public function process(){
         $col = "email";
         $val = $this->dto->email;
         $otp = $this->dto->otp;
+        $org_name = $this->dto->orgnization_name;
+        $org_code = substr($org_name, 0,6) . "-". ab(3) . substr($otp,  0, 2). ab(2) . substr($otp, 0, 1);
         $ID = "ADMIN/00CBT/".$otp;
         $data = [
             'email'=>$this->dto->email,
@@ -25,12 +37,13 @@ class Register{
             'phone'=>$this->dto->phone,
             'fullname'=>$this->dto->fullname,
             'role'=>'ADMIN',
-            'username'=>$this->dto->username ?? '',
+            'orgnization_name'=>$this->dto->orgnization_name,
+            'orgnization_code'=>$org_code,
+            'orgnization_type'=>$this->dto->orgnization_type,
             'last_seen' =>$this->dto->last_seen ?? '',
             'date_created'=>$this->dto->date_created,
             "ID"=>$ID,
             "last_login"=>$this->dto->last_login ?? "null",
-            "portal_name"=>$this->dto->portal_name
         ];
         $fullname = $this->dto->fullname;
         

@@ -21,7 +21,8 @@ class SetDept{
             'Date_Created'=>$this->dto->date_created,
             'HeadOfDepartment'=>$this->dto->HeadOfDepartment,
             'DepartmentCode'=>$this->dto->DepartmentCode,
-            'departmentID'=>$sub.'/'.'010/'
+            'departmentID'=>$sub.'/'.'010/',
+            'orgnization_code'=>$this->dto->orgnization_code
         ];
 
         $col = 'departmentID';

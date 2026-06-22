@@ -35,9 +35,10 @@ class Platform{
         "date_created VARCHAR(255)", 
         "last_login VARCHAR(255)",
         "last_seen VARCHAR(255)",
-        "username VARCHAR(255)",
+        "Organization_name VARCHAR(255)",
+        "Organization_type VARCHAR(255)",
+        "Organization_code VARCHAR(255)",
         "role VARCHAR(255) NOT NULL",
-        "portal_name VARCHAR(255) NOT NULL",
     ];
 
     public const OTPDB_TABLE = "otp";
@@ -102,6 +103,7 @@ class Platform{
         "email VARCHAR(255) NOT NULL",
         "fullname VARCHAR(255) NOT NULL",
         "password VARCHAR(255) NOT NULL",
+        "Organization_code VARCHAR(255)",
         "regNum VARCHAR(255)",
         "phone VARCHAR(255)",
         "date_created VARCHAR(255)", 
