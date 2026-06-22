@@ -14,7 +14,8 @@ class countSubject{
 
     public function process(){
         $where = [
-            "department"=>$this->dto->department
+            "department"=>$this->dto->department,
+            "orgnization_code"=>$this->dto->orgnization_code
         ];
 
         $newMig = new Migration(null, $this->table);

@@ -24,6 +24,7 @@ class Result{
             'status'=>'completed',
             'publish'=>'pending',
             'email'=>$this->dto->email,
+            'orgnization_code'=>$this->dto->orgnization_code
         ];
 
         $newMig = new Migration(null, $this->table);

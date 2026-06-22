@@ -21,6 +21,7 @@ class SaveQuestionATT{
             "saveAt"=>$this->dto->submittedAt,
             "totalQuestions"=>$this->dto->totalQuestions,
             "savequestID"=>"SAVE/QUES/ANS/".$this->dto->otp,
+            "orgnization_code"=>$this->dto->orgnization_code
         ];
 
         $newMig = new Migration(null, $this->table);

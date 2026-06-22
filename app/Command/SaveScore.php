@@ -24,6 +24,7 @@ class SaveScore{
             'expectedScore'=>$this->dto->expectedScore,
             'correctAnswers'=>$this->dto->correctAnswers,
             'totalQuestions'=>$this->dto->totalQuestions,
+            'orgnizationcode'=>$this->dto->orgnization_code
         ];
 
         $newMig = new Migration(null, $this->table);
