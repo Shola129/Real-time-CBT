@@ -96,7 +96,8 @@ class Platform{
         "optionE VARCHAR(255) ",
         "correctOtp VARCHAR(255) NOT NULL",
         "correctAss VARCHAR(255) NOT NULL",
-        "role VARCHAR(255) NOT NULL"
+        "role VARCHAR(255) NOT NULL",
+        "organization_name VARCHAR(255) NOT NULL",
     ];
 
     public const USERS_TABLE = "users";
