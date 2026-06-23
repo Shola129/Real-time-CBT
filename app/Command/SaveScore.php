@@ -24,7 +24,7 @@ class SaveScore{
             'expectedScore'=>$this->dto->expectedScore,
             'correctAnswers'=>$this->dto->correctAnswers,
             'totalQuestions'=>$this->dto->totalQuestions,
-            'orgnizationcode'=>$this->dto->orgnization_code
+            'orgnization_code'=>$this->dto->orgnization_code
         ];
 
         $newMig = new Migration(null, $this->table);
@@ -57,7 +57,8 @@ class SaveScore{
               $where3 = [
                 'regNum'=>$this->dto->regNum,
                 'subject'=>$this->dto->subject,
-                'department'=>$this->dto->department
+                'department'=>$this->dto->department,
+                'orgnization_code'=>$this->dto->orgnization_code
               ];
 
               $newMig3 = new Migration(null, $this->table3);
