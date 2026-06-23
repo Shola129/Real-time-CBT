@@ -171,7 +171,8 @@ class Platform{
         "fullname VARCHAR(225) NOT NULL",
         "savequestID VARCHAR(225) NOT NULL",
         "saveAt VARCHAR(225) NOT NULL",
-        "totalQuestions VARCHAR(225) NOT NULL"
+        "totalQuestions VARCHAR(225) NOT NULL",
+        "organization_name VARCHAR(255) NOT NULL",
     ];
 
     public const SAVESCORE_TABLE = "save_scores";
