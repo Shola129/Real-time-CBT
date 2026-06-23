@@ -130,7 +130,8 @@ class Platform{
         'start VARCHAR(255) NOT NULL',
         'end VARCHAR(255) NOT NULL',
         'duration VARCHAR(255) NOT NULL',
-        'role VARCHAR(255) NOT NULL'
+        'role VARCHAR(255) NOT NULL',
+        "organization_name VARCHAR(255) NOT NULL",
     ];
 
     public const QUESTIONATTEMPTS_TABLE = 'question_attempts';
