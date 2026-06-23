@@ -143,7 +143,8 @@ class Platform{
         "question TEXT",
         "status VARCHAR(255) NOT NULL",
         "score VARCHAR(255) NOT NULL",
-        "startedAt VARCHAR(255) NOT NULL"
+        "startedAt VARCHAR(255) NOT NULL",
+        "organization_name VARCHAR(255) NOT NULL",
     ];
 
     // public const SAVEQUESTIONS_TABLE = "save_question_attempted";
