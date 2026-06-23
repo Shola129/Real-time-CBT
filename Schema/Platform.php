@@ -30,14 +30,14 @@ class Platform{
         "email VARCHAR(255) NOT NULL",
         "fullname VARCHAR(255) NOT NULL",
         "password VARCHAR(255) NOT NULL",
-        "ID VARCHAR(255)",
-        "phone VARCHAR(255)",
-        "date_created VARCHAR(255)", 
+        "ID VARCHAR(255) NOT NULL",
+        "phone VARCHAR(255) NOT NULL",
+        "date_created VARCHAR(255) NOT NULL", 
         "last_login VARCHAR(255)",
         "last_seen VARCHAR(255)",
-        "Organization_name VARCHAR(255)",
-        "Organization_type VARCHAR(255)",
-        "Organization_code VARCHAR(255)",
+        "organization_name VARCHAR(255) NOT NULL",
+        "organization_type VARCHAR(255) NOT NULL",
+        "organization_code VARCHAR(255) NOT NULL",
         "role VARCHAR(255) NOT NULL",
     ];
 
@@ -65,7 +65,8 @@ class Platform{
         "HeadOfDepartment  VARCHAR(255) NOT NULL",
         "Description  VARCHAR(255)",
         "Date_Created VARCHAR(255) NOT NULL",
-        "departmentID VARCHAR(255) NOT NULL"
+        "departmentID VARCHAR(255) NOT NULL",
+        "organization_name VARCHAR(255) NOT NULL",
     ];
 
     public const SETSUBJECTS_TABLE = "subjects";
@@ -203,6 +204,7 @@ class Platform{
         "fullname VARCHAR(255) NOT NULL",
         "status VARCHAR(255) NOT NULL",
         "startAt VARCHAR(255) NOT NULL",
+        ""
     ];
   //you can have as many tables as you want
 }
