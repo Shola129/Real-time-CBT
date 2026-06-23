@@ -185,7 +185,8 @@ class Platform{
         "saveAt VARCHAR(255) NOT NULL",
         "expectedScore VARCHAR(255) NOT NULL",
         "correctAnswers VARCHAR(255) NOT NULL",
-        "totalQuestions VARCHAR(255) NOT NULL"
+        "totalQuestions VARCHAR(255) NOT NULL",
+        "organization_name VARCHAR(255) NOT NULL",
     ];
 
     public const RESULT_TABLE = "results";
