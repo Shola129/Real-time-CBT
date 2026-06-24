@@ -374,7 +374,6 @@ elseif($url === $usersArea. "/get/department/set/list"){
 //     exit;
 // }
 
-
 else{
     require_once __DIR__ . "/.."."$rootDir/public/error/404.html";
     exit();
