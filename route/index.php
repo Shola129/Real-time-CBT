@@ -41,38 +41,38 @@ elseif($url === $usersArea || $url === $usersArea . "/"){
     exit();
 }
 
-elseif($url === $docRoot . $rootDir . "/ilease" || $rootDir === $docRoot . $rootDir . "/ilease" . "/"){
+elseif($url === $docRoot . $rootDir . "/admin" || $rootDir === $docRoot . $rootDir . "/admin" . "/"){
     require_once __DIR__ .  "/../ansofra/public/admin/index.html";
     exit();
 }
 
 
-elseif($url===$docRoot.$rootDir."/ilease/login" || $url===$docRoot.$rootDir."/ilease/login" ."/"){
+elseif($url===$docRoot.$rootDir."/admin/login" || $url===$docRoot.$rootDir."/admin/login" ."/"){
     require_once __DIR__ . "/../ansofra/public/admin/login.html";
     exit();
 }
 
-elseif($url===$docRoot.$rootDir."/ilease/register" || $url===$docRoot.$rootDir."/ilease/register" ."/"){
+elseif($url===$docRoot.$rootDir."/admin/register" || $url===$docRoot.$rootDir."/admin/register" ."/"){
     require_once __DIR__ . "/../ansofra/public/admin/register.html";
     exit();
 }
 
-elseif($url===$docRoot.$rootDir."/ilease/otp/verification" || $url===$docRoot.$rootDir."/ilease/otp/verification" ."/"){
+elseif($url===$docRoot.$rootDir."/admin/otp/verification" || $url===$docRoot.$rootDir."/admin/otp/verification" ."/"){
     require_once __DIR__ . "/../ansofra/public/admin/otp.html";
     exit();
 }
 
-elseif($url === $docRoot.$rootDir."/ilease/2FA/verification" || $url === $docRoot.$rootDir."/ilease/2FA/verification" . "/"){
+elseif($url === $docRoot.$rootDir."/admin/2FA/verification" || $url === $docRoot.$rootDir."/admin/2FA/verification" . "/"){
     require_once __DIR__ . "/../ansofra/public/admin/2FA.html";
     exit();
 }
 
-elseif($url === $docRoot.$rootDir."/ilease/dashboard" || $url === $docRoot.$rootDir."/ilease/dashboard" ."/"){
+elseif($url === $docRoot.$rootDir."/admin/dashboard" || $url === $docRoot.$rootDir."/admin/dashboard" ."/"){
     require_once __DIR__ . "/../ansofra/public/admin/dashboard.html";
     exit();
 }
 
-elseif($url===$docRoot.$rootDir."/ilease/validateEmail" || $url===$docRoot.$rootDir."/ilease/validateEmail" . "/"){
+elseif($url===$docRoot.$rootDir."/admin/validateEmail" || $url===$docRoot.$rootDir."/admin/validateEmail" . "/"){
     require_once __DIR__ . "/../ansofra/public/admin/validateemail.html";
     exit();
 }
