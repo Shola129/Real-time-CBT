@@ -46,6 +46,11 @@ elseif($url === $docRoot . $rootDir . "/ilease" || $rootDir === $docRoot . $root
     exit();
 }
 
+elseif($url === $docRoot . $rootDir ."/r"){
+    require_once __DIR__ . "/../ansofra/public/r/index.html";
+    exit();
+}
+
 elseif($url===$docRoot.$rootDir."/ilease/login" || $url===$docRoot.$rootDir."/ilease/login" ."/"){
     require_once __DIR__ . "/../ansofra/public/admin/login.html";
     exit();
@@ -119,7 +124,7 @@ elseif($url=== $docRoot.$rootDir ."/dashboard" || $url ===$docRoot.$rootDir."/da
 
 
 //backend
-elseif($url === $adminArea."/run_migration"){
+elseif($url === $adminArea ."/run_migration"){
     require_once __DIR__ . $srcController."/RunMigration.php";
     exit();
 }
