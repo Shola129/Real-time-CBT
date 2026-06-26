@@ -46,7 +46,7 @@ elseif($url === $docRoot . $rootDir . "/ilease" || $rootDir === $docRoot . $root
     exit();
 }
 
-elseif($url === $docRoot . $rootDir ."/r"){}
+elseif
 
 elseif($url===$docRoot.$rootDir."/ilease/login" || $url===$docRoot.$rootDir."/ilease/login" ."/"){
     require_once __DIR__ . "/../ansofra/public/admin/login.html";
