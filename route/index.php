@@ -80,7 +80,7 @@ elseif($url===$docRoot.$rootDir."/admin/validateEmail" || $url===$docRoot.$rootD
 // for user's area
 
 elseif($url === $docRoot.$rootDir."/login" || $url===$docRoot.$rootDir."/login" . "/"){
-    require_once __DIR__ ."/../ansofra/public/login.html";
+    require_once __DIR__ ."/./ansofra/public/login.html";
     exit();
 }
 

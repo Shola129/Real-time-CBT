@@ -8,8 +8,6 @@
 <body>
     <script>
         window.location="ansofra";
-
-        
     </script>
 </body>
 </html>
