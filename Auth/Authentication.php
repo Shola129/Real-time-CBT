@@ -6,7 +6,6 @@ use Firebase\JWT\Key;
 use PDO;
 use PDOException;
 
-
  class Authentication{
     private $jwtSecret = Settings::AUTH_KEY;
     private $jwtKey = Settings::JWT_KEY;
