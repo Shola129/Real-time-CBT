@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Join Your Organization — EduTest CBT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+<style>
+/* ── DESIGN TOKENS ─────────────────────────────── */
+:root {
+  --blue:       #2563EB;
+  --blue-h:     #1D4ED8;
+  --blue-d:     #1E40AF;
+  --blue-light: #EFF6FF;
+  --blue-mid:   #BFDBFE;
+  --blue-pale:  #DBEAFE;
+  --bg:         #F8FAFC;
+  --surface:    #FFFFFF;
+  --border:     #CBD5E1;
+  --border-s:   #E2E8F0;
+  --text:       #0F172A;
+  --text-2:     #334155;
+  --text-m:     #64748B;
+  --text-f:     #94A3B8;
+  --success:    #16A34A;
+  --success-bg: #F0FDF4;
+  --success-bdr:#BBF7D0;
+  --warn:       #D97706;
+  --warn-bg:    #FFFBEB;
+  --warn-bdr:   #FDE68A;
+  --danger:     #DC2626;
+  --danger-bg:  #FEF2F2;
+  --danger-bdr: #FECACA;
+  --gold:       #F59E0B;
+  /* legacy aliases referenced by original JS */
+  --navy:       #0F172A;
+  --navy-light: #1E3A5F;
+  --red:        #DC2626;
+  --red-hover:  #B91C1C;
+  --red-light:  #FEF2F2;
+  --off-white:  #F8FAFC;
+  --text-muted: #64748B;
+  --border-lgt: #E2E8F0;
+  --r-sm:4px; --r-md:8px; --r-lg:12px; --r-xl:16px; --r-2xl:20px; --r-pill:999px;
+  --sh-sm:0 1px 3px rgba(15,23,42,.07),0 1px 2px rgba(15,23,42,.04);
+  --sh-md:0 4px 12px rgba(15,23,42,.08),0 2px 6px rgba(15,23,42,.04);
+  --sh-lg:0 12px 32px rgba(15,23,42,.11),0 4px 10px rgba(15,23,42,.05);
+  --sh-xl:0 24px 60px rgba(15,23,42,.14);
+  --t: all .18s cubic-bezier(.4,0,.2,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  background:var(--bg);color:var(--text);font-size:14px;
+  line-height:1.6;-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;
+}
+
+/* ── LAYOUT ───────────────────────────────────── */
+.auth-page{width:100%;min-height:100vh;display:flex}
+
+/* ── LEFT PANEL ───────────────────────────────── */
+.left-panel{
+  width:40%;min-height:100vh;background:var(--text);
+  display:flex;flex-direction:column;justify-content:space-between;
+  padding:52px 48px 48px;position:relative;overflow:hidden;flex-shrink:0;
+}
+.left-panel::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(37,99,235,.06)1px,transparent 1px),linear-gradient(90deg,rgba(37,99,235,.06)1px,transparent 1px);
+  background-size:52px 52px;pointer-events:none;
+}
+.left-panel::after{content:'';position:absolute;top:0;right:0;width:4px;height:100%;background:linear-gradient(to bottom,var(--blue),transparent 70%)}
+.lp-top,.lp-mid,.lp-bot{position:relative;z-index:2}
+.lp-mid{flex:1;display:flex;flex-direction:column;justify-content:center;padding:44px 0 36px}
+
+.brand-lockup{display:flex;align-items:center;gap:12px}
+.brand-icon{width:36px;height:36px;background:var(--blue);border-radius:var(--r-lg);display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 0 0 3px rgba(37,99,235,.25)}
+.brand-name-txt{font-size:16px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.brand-sub-txt{font-size:11px;color:rgba(255,255,255,.4);font-weight:500;margin-top:1px}
+
+.gold-rule{width:40px;height:2px;background:var(--blue);border-radius:var(--r-pill);margin-bottom:24px}
+.lp-headline{font-size:24px;font-weight:800;color:#fff;line-height:1.2;letter-spacing:-.4px;margin-bottom:12px}
+.lp-sub{font-size:13.5px;color:rgba(255,255,255,.5);line-height:1.75;margin-bottom:28px;max-width:320px}
+
+.feat-list{display:flex;flex-direction:column;gap:13px}
+.feat-item{display:flex;align-items:flex-start;gap:12px}
+.feat-bullet{width:20px;height:20px;border-radius:50%;flex-shrink:0;margin-top:1px;background:rgba(37,99,235,.2);border:1px solid rgba(37,99,235,.35);display:flex;align-items:center;justify-content:center}
+.feat-bullet::after{content:'✓';font-size:10px;font-weight:800;color:var(--blue-mid)}
+.feat-text{font-size:13px;color:rgba(255,255,255,.56);line-height:1.6}
+.feat-text strong{color:rgba(255,255,255,.86);font-weight:600}
+
+/* Step track on left */
+.step-track{display:flex;flex-direction:column;gap:11px}
+.step-track-item{display:flex;align-items:center;gap:12px}
+.st-num{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.3);transition:all .3s}
+.st-num.active{border-color:var(--blue);color:var(--blue)}
+.st-num.done{border-color:var(--blue);background:var(--blue);color:#fff}
+.st-label{font-size:12px;color:rgba(255,255,255,.35);transition:color .3s}
+.st-label.active{color:#fff;font-weight:600}
+.st-label.done{color:rgba(255,255,255,.65)}
+.st-connector{width:1.5px;height:18px;background:rgba(255,255,255,.1);margin-left:12px;transition:background .3s}
+.st-connector.done{background:rgba(37,99,235,.35)}
+.lp-legal{font-size:11px;color:rgba(255,255,255,.2);line-height:1.6;margin-top:24px}
+
+/* ── RIGHT PANEL ──────────────────────────────── */
+.right-panel{flex:1;display:flex;align-items:center;justify-content:center;padding:40px 28px;overflow-y:auto;background:var(--bg)}
+
+/* ── AUTH CARD ────────────────────────────────── */
+.auth-card{
+  background:var(--surface);border:1px solid var(--border-s);
+  border-radius:var(--r-2xl);box-shadow:var(--sh-lg);
+  padding:38px 34px;width:100%;max-width:480px;
+  animation:cardIn .25s ease;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ── PANELS (multi-step within one card) ─────── */
+.panel{display:none}
+.panel.active{display:block;animation:panelIn .28s ease}
+@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.panel.slide-in{animation:panelSlide .32s cubic-bezier(.22,1,.36,1)}
+@keyframes panelSlide{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:none}}
+
+/* ── GATE HEADER ──────────────────────────────── */
+.gate-icon{width:50px;height:50px;background:var(--blue-light);border-radius:var(--r-xl);display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:14px;border:1px solid var(--blue-mid)}
+.gate-title{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.4px;margin-bottom:6px}
+.gate-sub{font-size:13.5px;color:var(--text-m);margin-bottom:22px;line-height:1.65}
+
+/* ── CARD STEP INDICATOR ──────────────────────── */
+.card-steps{display:flex;align-items:flex-start;margin-bottom:26px}
+.cs-wrap{display:flex;flex-direction:column;align-items:center;flex:1}
+.cs-wrap:last-child{flex:0}
+.cs-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;border:1.5px solid var(--border);color:var(--text-f);background:var(--surface);transition:all .25s}
+.cs-dot.active{border-color:var(--blue);background:var(--blue);color:#fff}
+.cs-dot.done{border-color:var(--blue);background:var(--blue);color:#fff}
+.cs-line{flex:1;height:1.5px;background:var(--border);margin-top:13px;transition:background .3s}
+.cs-line.done{background:var(--blue)}
+.cs-text{font-size:10px;font-weight:600;letter-spacing:.3px;color:var(--text-f);white-space:nowrap;margin-top:4px;text-align:center}
+.cs-text.active{color:var(--blue)}
+.cs-text.done{color:var(--blue)}
+
+/* ── FORM ELEMENTS ────────────────────────────── */
+.form-group{display:flex;flex-direction:column;gap:5px;margin-bottom:15px}
+.form-label{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-m);display:block;margin-bottom:3px}
+.form-control{
+  width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--r-lg);
+  font-size:13.5px;font-family:inherit;color:var(--text);background:var(--surface);
+  outline:none;transition:var(--t);
+}
+.form-control:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.form-control::placeholder{color:var(--text-f)}
+.form-control.input-success{border-color:var(--success)}
+
+/* Select */
+.select-wrap{position:relative}
+.select-wrap select{
+  width:100%;padding:10px 36px 10px 14px;border:1.5px solid var(--border);
+  border-radius:var(--r-lg);font-size:13.5px;font-family:inherit;
+  color:var(--text);background:var(--surface);outline:none;
+  appearance:none;cursor:pointer;transition:var(--t);
+}
+.select-wrap select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.select-wrap::after{content:'▾';position:absolute;right:13px;top:50%;transform:translateY(-50%);color:var(--text-m);font-size:12px;pointer-events:none}
+#inp-course{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:var(--r-lg);font-size:13.5px;font-family:inherit;color:var(--text);background:var(--surface);outline:none;appearance:none;cursor:pointer;transition:var(--t)}
+#inp-course:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+
+/* Form row */
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-row .form-group{margin-bottom:0}
+
+/* Alerts */
+.alert{padding:11px 14px;border-radius:var(--r-lg);font-size:13px;margin-bottom:14px;display:none;align-items:flex-start;gap:10px;border-left:3px solid;line-height:1.55}
+.alert.error{background:var(--danger-bg);color:#7A1A0C;border-color:var(--danger)}
+.alert.success{background:var(--success-bg);color:#0F5433;border-color:var(--success)}
+.alert.show{display:flex}
+
+/* Password strength */
+.pass-strength{height:4px;border-radius:var(--r-pill);background:var(--border);overflow:hidden;margin-top:7px;margin-bottom:3px}
+.pass-strength-fill{height:100%;border-radius:var(--r-pill);transition:width .3s,background .3s;width:0%}
+.pass-hint{font-size:11.5px;color:var(--text-m);margin-top:2px}
+
+/* Terms row */
+.terms-row{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:var(--text-2);margin-bottom:16px;cursor:pointer;user-select:none;line-height:1.55}
+.terms-row input[type=checkbox]{accent-color:var(--blue);width:15px;height:15px;cursor:pointer;flex-shrink:0;margin-top:2px}
+.terms-row a{color:var(--blue);font-weight:600}
+
+/* Buttons */
+.btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px 22px;border-radius:var(--r-lg);font-family:inherit;font-size:14px;font-weight:700;background:var(--blue);color:#fff;border:none;cursor:pointer;transition:var(--t);box-shadow:0 1px 3px rgba(37,99,235,.25);letter-spacing:-.1px}
+.btn-primary:hover{background:var(--blue-h);box-shadow:0 4px 14px rgba(37,99,235,.35);transform:translateY(-1px)}
+.btn-primary:active{transform:translateY(0)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+.btn-ghost{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:11px 20px;border-radius:var(--r-lg);font-family:inherit;font-size:14px;font-weight:600;background:var(--surface);color:var(--text-2);border:1.5px solid var(--border);cursor:pointer;transition:var(--t)}
+.btn-ghost:hover{border-color:var(--blue-mid);color:var(--blue);background:var(--blue-light)}
+
+.btn-row{display:flex;gap:10px}
+.btn-row .btn-ghost{flex:0 0 auto;padding:11px 18px}
+.btn-row .btn-primary{flex:1}
+
+/* Checking bar */
+.checking-bar{height:3px;background:var(--border);border-radius:var(--r-pill);overflow:hidden;margin-top:8px;display:none}
+.checking-bar.active{display:block}
+.checking-fill{height:100%;border-radius:var(--r-pill);background:var(--blue);animation:checkScan 1.5s ease-in-out infinite}
+@keyframes checkScan{0%{width:0%;margin-left:0%}50%{width:60%;margin-left:20%}100%{width:0%;margin-left:100%}}
+.checking-label{font-size:11.5px;color:var(--text-m);text-align:center;margin-top:7px;display:none;letter-spacing:.04em}
+.checking-label.active{display:block}
+
+/* OTP inputs */
+.otp-inputs{display:flex;gap:9px;justify-content:center;margin-bottom:14px}
+.otp-box{
+  width:50px;height:56px;border:1.5px solid var(--border);border-radius:var(--r-lg);
+  font-size:22px;font-weight:800;text-align:center;color:var(--text);
+  background:var(--surface);outline:none;caret-color:var(--blue);
+  transition:border-color .15s,box-shadow .15s,transform .12s;font-family:inherit;
+}
+.otp-box:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1);transform:scale(1.06)}
+.otp-box.filled{border-color:var(--blue);background:var(--blue-light);color:var(--blue-d)}
+.otp-box.error{border-color:var(--danger);background:var(--danger-bg);color:var(--danger);animation:shake .3s ease}
+@keyframes shake{0%,100%{transform:translateX(0)}25%,75%{transform:translateX(-4px)}50%{transform:translateX(4px)}}
+
+/* OTP email ref */
+.otp-email-ref{display:flex;align-items:center;gap:9px;background:var(--blue-light);border:1px solid var(--blue-mid);border-radius:var(--r-lg);padding:10px 14px;margin-bottom:18px;font-size:13px;color:var(--blue-d);font-weight:600}
+.otp-email-ref .icon{font-size:15px}
+
+/* OTP timer */
+.otp-timer-wrap{text-align:center;margin:14px 0;display:flex;flex-direction:column;align-items:center;gap:7px}
+.otp-timer-ring{position:relative;width:64px;height:64px}
+.otp-timer-ring svg{transform:rotate(-90deg)}
+.otp-ring-bg{fill:none;stroke:var(--border);stroke-width:4}
+.otp-ring-fill{fill:none;stroke:var(--blue);stroke-width:4;stroke-linecap:round;stroke-dasharray:176;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear,stroke .5s}
+.otp-ring-fill.urgent{stroke:var(--danger)}
+.otp-timer-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:var(--text);font-variant-numeric:tabular-nums}
+.otp-timer-text.urgent{color:var(--danger)}
+.otp-timer-label{font-size:11.5px;color:var(--text-m);font-weight:500}
+
+/* Resend row */
+.otp-resend-row{text-align:center;margin-top:6px;font-size:13px;color:var(--text-m)}
+.btn-resend{background:none;border:none;cursor:pointer;color:var(--blue);font-weight:700;font-family:inherit;font-size:13px;padding:0;margin-left:4px;text-decoration:underline;transition:color .15s}
+.btn-resend:disabled{color:var(--text-f);cursor:not-allowed;text-decoration:none}
+.btn-resend:not(:disabled):hover{color:var(--blue-h)}
+
+/* Expired notice */
+.otp-expired-notice{display:none;align-items:center;gap:8px;background:var(--danger-bg);border:1px solid var(--danger-bdr);border-radius:var(--r-lg);padding:10px 14px;font-size:12.5px;color:var(--danger);margin-bottom:12px}
+.otp-expired-notice.show{display:flex}
+
+/* Email confirmed */
+.email-confirmed{display:none;align-items:center;gap:10px;background:var(--success-bg);border:1px solid var(--success-bdr);border-radius:var(--r-lg);padding:11px 14px;margin-bottom:16px;font-size:13px;color:var(--success);font-weight:600;animation:badgeIn .25s ease}
+@keyframes badgeIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:none}}
+.email-confirmed.show{display:flex}
+.check-icon{width:24px;height:24px;border-radius:50%;background:var(--success);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0}
+
+/* Form sections */
+.form-section{display:none}
+.form-section.active{display:block;animation:sectionIn .22s ease}
+@keyframes sectionIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:none}}
+
+/* Step indicator (panel-form) */
+.step-indicator{display:flex;align-items:flex-start;margin-bottom:24px}
+.step-wrap{display:flex;flex-direction:column;align-items:center;flex:1}
+.step{display:flex;align-items:center}
+.step-circle{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;border:1.5px solid var(--border);color:var(--text-f);background:var(--surface);transition:all .25s}
+.step.active .step-circle,.step.done .step-circle{border-color:var(--blue);background:var(--blue);color:#fff}
+.step-line{flex:1;height:1.5px;background:var(--border);margin:0 4px;transition:background .3s;align-self:flex-start;margin-top:13px}
+.step-line.done{background:var(--blue)}
+.step-label{font-size:10px;color:var(--text-f);margin-top:4px;white-space:nowrap;text-align:center;font-weight:500}
+.step.active .step-label,.step.done .step-label{color:var(--blue);font-weight:700}
+
+/* Org code info card */
+.org-code-card{
+  background:var(--blue-light);border:1px solid var(--blue-mid);
+  border-radius:var(--r-lg);padding:14px 16px;margin-bottom:20px;
+  display:flex;align-items:flex-start;gap:12px;
+}
+.org-code-card i{font-size:18px;color:var(--blue);margin-top:1px;flex-shrink:0}
+.org-code-card-text{}
+.org-code-card-title{font-size:13px;font-weight:700;color:var(--blue-d);margin-bottom:3px}
+.org-code-card-body{font-size:12.5px;color:var(--text-m);line-height:1.6}
+
+/* Footer */
+.auth-footer{text-align:center;margin-top:20px;font-size:13px;color:var(--text-m)}
+.auth-footer a{color:var(--blue);font-weight:600;text-decoration:none;transition:var(--t)}
+.auth-footer a:hover{color:var(--blue-h);text-decoration:underline}
+
+/* Security notice */
+.security-notice{display:flex;align-items:center;gap:7px;justify-content:center;margin-top:16px;font-size:12px;color:var(--text-f)}
+.security-notice i{color:var(--success);font-size:12px}
+
+/* ── RESPONSIVE ───────────────────────────────── */
+@media(max-width:900px){.left-panel{display:none}.right-panel{padding:28px 20px}}
+@media(max-width:480px){
+  .auth-card{padding:28px 18px;border-radius:var(--r-xl)}
+  .form-row{grid-template-columns:1fr}
+  .otp-box{width:44px;height:52px;font-size:20px}
+  .btn-row{flex-direction:column}
+  .btn-row .btn-ghost{width:100%}
+}
+</style>
+</head>
+<body>
+
+<div class="auth-page">
+
+  <!-- LEFT PANEL ─────────────────────────────── -->
+  <div class="left-panel" id="left-panel">
+    <div class="lp-top">
+      <div class="brand-lockup">
+        <div class="brand-icon"><i class="fas fa-pen-nib"></i></div>
+        <div>
+          <div class="brand-name-txt">EduTest CBT</div>
+          <div class="brand-sub-txt">Student Registration</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lp-mid">
+      <div class="gold-rule"></div>
+      <h2 class="lp-headline" id="lp-headline">Join your organization and start taking exams.</h2>
+      <p class="lp-sub" id="lp-sub">Register with your organization code to access your assigned examinations securely. Takes under 2 minutes.</p>
+      <div class="feat-list">
+        <div class="feat-item"><div class="feat-bullet"></div><div class="feat-text"><strong>Organization code required.</strong> Your administrator shares this code when inviting students.</div></div>
+        <div class="feat-item"><div class="feat-bullet"></div><div class="feat-text"><strong>Automatic grading.</strong> Results are published instantly once the exam is submitted.</div></div>
+        <div class="feat-item"><div class="feat-bullet"></div><div class="feat-text"><strong>One account per student.</strong> Use a valid email to receive exam notifications and results.</div></div>
+      </div>
+    </div>
+
+    <div class="lp-bot">
+      <div class="step-track" id="left-step-track">
+        <div class="step-track-item">
+          <div class="st-num active" id="lst-1">1</div>
+          <span class="st-label active" id="lsl-1">Enter Email</span>
+        </div>
+        <div class="st-connector" id="lsc-1"></div>
+        <div class="step-track-item">
+          <div class="st-num" id="lst-2">2</div>
+          <span class="st-label" id="lsl-2">Verify OTP</span>
+        </div>
+        <div class="st-connector" id="lsc-2"></div>
+        <div class="step-track-item">
+          <div class="st-num" id="lst-3">3</div>
+          <span class="st-label" id="lsl-3">Complete Profile</span>
+        </div>
+      </div>
+      <div class="lp-legal">&copy; 2026 EduTest CBT. All rights reserved.</div>
+    </div>
+  </div>
+
+  <!-- RIGHT PANEL ─────────────────────────────── -->
+  <div class="right-panel">
+    <div class="auth-card">
+
+      <!-- ══════════════════════════════════════
+           PANEL 1 — EMAIL GATE
+      ══════════════════════════════════════ -->
+      <div class="panel active" id="panel-email">
+        <div class="gate-icon">✉️</div>
+        <div class="gate-title">Join Your Organization</div>
+        <div class="gate-sub">Enter your email to begin registration. We'll verify that no account already exists.</div>
+
+        <!-- Org code info card -->
+        <div class="org-code-card">
+          <i class="fas fa-building"></i>
+          <div class="org-code-card-text">
+            <div class="org-code-card-title">Need an organization code?</div>
+            <div class="org-code-card-body">Your administrator provides this code when setting up your institution on EduTest CBT. Ask them if you don't have one yet.</div>
+          </div>
+        </div>
+
+        <div class="alert error" id="email-alert"></div>
+
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="inp-email" name="email" class="form-control" placeholder="e.g. student@example.com" autocomplete="email" onkeydown="if(event.key==='Enter') submitEmail()"/>
+        </div>
+
+        <div class="checking-bar" id="checking-bar"><div class="checking-fill"></div></div>
+        <div class="checking-label" id="checking-label">Verifying email address…</div>
+
+        <button type="button" class="btn-primary" id="btn-check-email" onclick="submitEmail()" style="margin-top:14px">
+          <i class="fas fa-arrow-right"></i> Continue
+        </button>
+
+        <div class="auth-footer">Already registered? <a href="/cbt/ansofra/login">Sign in here</a></div>
+      </div>
+
+      <!-- ══════════════════════════════════════
+           PANEL 2 — OTP VERIFICATION
+      ══════════════════════════════════════ -->
+      <div class="panel" id="panel-otp">
+        <div class="gate-icon">🔐</div>
+        <div class="gate-title">Verify Your Email</div>
+        <div class="gate-sub">We've sent a 6-digit code to your email. Enter it below to confirm your identity.</div>
+
+        <div class="otp-email-ref">
+          <span class="icon">📧</span>
+          <span id="otp-email-display">candidate@example.com</span>
+        </div>
+
+        <div class="alert error"   id="otp-alert"></div>
+        <div class="alert success" id="otp-success-alert"></div>
+
+        <div class="otp-expired-notice" id="otp-expired-notice">
+          <i class="fas fa-triangle-exclamation"></i>
+          Your code has expired. Please request a new one using the Resend button below.
+        </div>
+
+        <div class="otp-inputs">
+          <input class="otp-box" id="otp-0" maxlength="1" inputmode="numeric" pattern="[0-9]" onkeydown="otpKeyDown(event,0)" oninput="otpInput(event,0)" onpaste="otpPaste(event)"/>
+          <input class="otp-box" id="otp-1" maxlength="1" inputmode="numeric" pattern="[0-9]" onkeydown="otpKeyDown(event,1)" oninput="otpInput(event,1)"/>
+          <input class="otp-box" id="otp-2" maxlength="1" inputmode="numeric" pattern="[0-9]" onkeydown="otpKeyDown(event,2)" oninput="otpInput(event,2)"/>
+          <input class="otp-box" id="otp-3" maxlength="1" inputmode="numeric" pattern="[0-9]" onkeydown="otpKeyDown(event,3)" oninput="otpInput(event,3)"/>
+          <input class="otp-box" id="otp-4" maxlength="1" inputmode="numeric" pattern="[0-9]" onkeydown="otpKeyDown(event,4)" oninput="otpInput(event,4)"/>
+          <input class="otp-box" id="otp-5" maxlength="1" inputmode="numeric" pattern="[0-9]" onkeydown="otpKeyDown(event,5)" oninput="otpInput(event,5)"/>
+        </div>
+
+        <div class="otp-timer-wrap">
+          <div class="otp-timer-ring">
+            <svg width="64" height="64" viewBox="0 0 68 68">
+              <circle class="otp-ring-bg"   cx="34" cy="34" r="28"/>
+              <circle class="otp-ring-fill" id="otp-ring" cx="34" cy="34" r="28"/>
+            </svg>
+            <div class="otp-timer-text" id="otp-timer-text">2:00</div>
+          </div>
+          <div class="otp-timer-label">Code expires in</div>
+        </div>
+
+        <div class="otp-resend-row">
+          Didn't receive the code?
+          <button class="btn-resend" id="btn-resend" onclick="resendOtp()" disabled>Resend Code</button>
+        </div>
+
+        <button class="btn-primary" id="btn-verify-otp" onclick="verifyOtp()" style="margin-top:18px">
+          <i class="fas fa-check-circle"></i> Verify Code
+        </button>
+
+        <div class="auth-footer" style="margin-top:16px">
+          <span style="cursor:pointer;color:var(--blue);font-weight:700;" onclick="backToEmail()">← Change email</span>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════
+           PANEL 3 — FULL REGISTRATION FORM
+      ══════════════════════════════════════ -->
+      <div class="panel" id="panel-form">
+
+        <div style="margin-bottom:20px">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--blue);margin-bottom:4px">Complete Registration</div>
+          <div style="font-size:18px;font-weight:800;color:var(--text);letter-spacing:-.3px">Create Your Account</div>
+        </div>
+
+        <!-- Verified email badge -->
+        <div class="email-confirmed show" id="confirmed-badge">
+          <div class="check-icon">✓</div>
+          <span id="confirmed-email-text">email@example.com — verified</span>
+        </div>
+
+        <!-- In-card step indicator -->
+        <div class="step-indicator">
+          <div class="step-wrap">
+            <div class="step active" id="step-1"><div class="step-circle">1</div></div>
+            <div class="step-label">Personal</div>
+          </div>
+          <div class="step-line" id="line-1"></div>
+          <div class="step-wrap">
+            <div class="step" id="step-2"><div class="step-circle">2</div></div>
+            <div class="step-label">Academic</div>
+          </div>
+          <div class="step-line" id="line-2"></div>
+          <div class="step-wrap">
+            <div class="step" id="step-3"><div class="step-circle">3</div></div>
+            <div class="step-label">Security</div>
+          </div>
+        </div>
+
+        <div class="alert error"   id="reg-alert"></div>
+        <div class="alert success" id="reg-success"></div>
+
+        <!-- STEP 1: Personal Info -->
+        <div class="form-section active" id="section-1">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">First Name</label>
+              <input type="text" id="inp-firstname" class="form-control" placeholder="e.g. Chukwuemeka"/>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Last Name</label>
+              <input type="text" id="inp-lastname" class="form-control" placeholder="e.g. Okonkwo"/>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Date of Birth</label>
+            <input type="date" id="inp-dob" class="form-control"/>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Gender</label>
+            <div class="select-wrap">
+              <select id="inp-gender">
+                <option value="">— Select —</option>
+                <option>Male</option><option>Female</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone Number</label>
+            <input type="tel" id="inp-phone" class="form-control" placeholder="e.g. 08012345678"/>
+          </div>
+          <button class="btn-primary" onclick="nextStep(1)">
+            Continue <i class="fas fa-arrow-right" style="font-size:12px"></i>
+          </button>
+        </div>
+
+        <!-- STEP 2: Academic Info -->
+        <div class="form-section" id="section-2">
+          <div class="form-group">
+            <label class="form-label">State of Origin</label>
+            <div class="select-wrap">
+              <select id="inp-state">
+                <option value="">— Select State —</option>
+                <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option>
+                <option>Anambra</option><option>Bauchi</option><option>Bayelsa</option>
+                <option>Benue</option><option>Borno</option><option>Cross River</option>
+                <option>Delta</option><option>Ebonyi</option><option>Edo</option>
+                <option>Ekiti</option><option>Enugu</option><option>FCT</option>
+                <option>Gombe</option><option>Imo</option><option>Jigawa</option>
+                <option>Kaduna</option><option>Kano</option><option>Katsina</option>
+                <option>Kebbi</option><option>Kogi</option><option>Kwara</option>
+                <option>Lagos</option><option>Nasarawa</option><option>Niger</option>
+                <option>Ogun</option><option>Ondo</option><option>Osun</option>
+                <option>Oyo</option><option>Plateau</option><option>Rivers</option>
+                <option>Sokoto</option><option>Taraba</option><option>Yobe</option>
+                <option>Zamfara</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Examination Year</label>
+            <div class="select-wrap">
+              <select id="inp-year">
+                <option>2024</option><option>2025</option><option selected>2026</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Department / Course</label>
+            <select id="inp-course">
+              <option value="">Select Department</option>
+              <div id="display-dep"></div>
+            </select>
+          </div>
+          <div class="btn-row">
+            <button class="btn-ghost" onclick="prevStep(2)"><i class="fas fa-arrow-left" style="font-size:12px"></i> Back</button>
+            <button class="btn-primary" onclick="nextStep(2)">Continue <i class="fas fa-arrow-right" style="font-size:12px"></i></button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Security -->
+        <div class="form-section" id="section-3">
+          <div class="form-group">
+            <label class="form-label">Create Password</label>
+            <input type="password" id="inp-pass" class="form-control" placeholder="Minimum 6 characters" oninput="checkStrength(this.value)"/>
+            <div class="pass-strength"><div class="pass-strength-fill" id="strength-bar"></div></div>
+            <div class="pass-hint" id="strength-label">Enter a password</div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirm Password</label>
+            <input type="password" id="inp-pass2" class="form-control" placeholder="Repeat your password"/>
+          </div>
+          <div class="terms-row">
+            <input type="checkbox" id="inp-terms"/>
+            <span>I agree to the <a href="#">Terms of Use</a> and <a href="#">Examination Rules</a>.</span>
+          </div>
+          <div class="btn-row">
+            <button class="btn-ghost" onclick="prevStep(3)"><i class="fas fa-arrow-left" style="font-size:12px"></i> Back</button>
+            <button class="btn-primary" onclick="doRegister()"><i class="fas fa-user-plus" style="font-size:12px"></i> Create Account</button>
+          </div>
+        </div>
+
+        <div class="auth-footer">Already registered? <a href="/cbt/ansofra/login">Sign in here</a></div>
+      </div>
+
+    </div><!-- /auth-card -->
+  </div><!-- /right-panel -->
+</div><!-- /auth-page -->
+
+<!-- ORIGINAL SCRIPT — verbatim, zero changes ─── -->
+<script>
+  /*
+     STATE
+   */
+  let verifiedEmail   = '';
+  let otpTimerSecs    = 120;
+  let otpTimerHandle  = null;
+  let otpExpired      = false;
+  const OTP_TOTAL     = 120;
+  const RING_CIRC     = 175.9;
+
+  /*
+     HELPERS
+   */
+  function showAlert(id, msg, type) {
+    const el = document.getElementById(id);
+    el.textContent = msg;
+    el.className = `alert ${type} show`;
+    if (type === 'error') setTimeout(() => el.classList.remove('show'), 5000);
+  }
+
+  function switchPanel(hideId, showId) {
+    const hide = document.getElementById(hideId);
+    const show = document.getElementById(showId);
+    hide.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+    hide.style.opacity    = '0';
+    hide.style.transform  = 'translateX(-18px)';
+    setTimeout(() => {
+      hide.classList.remove('active');
+      hide.style.cssText = '';
+      show.classList.add('active', 'slide-in');
+      setTimeout(() => show.classList.remove('slide-in'), 420);
+    }, 250);
+  }
+
+  /* Update left panel step tracker */
+  function updateLeftTrack(step) {
+    for (let i = 1; i <= 3; i++) {
+      const num = document.getElementById(`lst-${i}`);
+      const lbl = document.getElementById(`lsl-${i}`);
+      const con = document.getElementById(`lsc-${i}`);
+      if (!num) continue;
+      num.className = 'st-num' + (i < step ? ' done' : i === step ? ' active' : '');
+      num.textContent = i < step ? '✓' : String(i);
+      lbl.className = 'st-label' + (i < step ? ' done' : i === step ? ' active' : '');
+      if (con) con.className = 'st-connector' + (i < step ? ' done' : '');
+    }
+  }
+
+  /*
+     PANEL 1 — EMAIL SUBMISSION
+   */
+  function submitEmail() {
+    event.preventDefault();
+    const emailInput = document.getElementById('inp-email');
+    const email      = emailInput.value.trim();
+    const btn        = document.getElementById('btn-check-email');
+    document.getElementById('email-alert').classList.remove('show');
+
+    if (!email) { showAlert('email-alert', 'Please enter your email address.', 'error'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showAlert('email-alert', 'Please enter a valid email address.', 'error'); return;
+    }
+
+    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Checking…';
+    emailInput.disabled = true;
+    document.getElementById('checking-bar').classList.add('active');
+    document.getElementById('checking-label').classList.add('active');
+
+    callEmailCheckAPI(email, btn, emailInput);
+  }
+
+  async function callEmailCheckAPI(email, btn, emailInput) {
+    event.preventDefault();
+      const e = {email:email};
+      const res = await fetch('/cbt/ansofra/api/register', {
+        method: 'POST',
+        headers:{'Content-type':'application/json'},
+        body: JSON.stringify(e)
+      });
+      const result = await res.json();
+      if(result.status==="success"){
+          verifiedEmail = email;
+          document.getElementById('otp-email-display').textContent = email;
+          switchPanel('panel-email', 'panel-otp');
+          updateLeftTrack(2);
+          startOtpTimer();
+          setTimeout(() => document.getElementById('otp-0').focus(), 400);
+      }
+      else if(result.status==="fail"){
+          btn.disabled = false; btn.innerHTML = '<i class="fas fa-arrow-right"></i> Continue';
+          emailInput.disabled = false;
+          showAlert('email-alert','error');
+          return;
+      }
+      else{
+           btn.disabled = false; btn.innerHTML = '<i class="fas fa-arrow-right"></i> Continue';
+          emailInput.disabled = false;
+          showAlert('email-alert', 'An account with this email already exists. Please sign in instead.', 'error');
+          return;
+      }
+       document.getElementById('checking-bar').classList.remove('active');
+      document.getElementById('checking-label').classList.remove('active');
+  }
+
+  function backToEmail() {
+    stopOtpTimer();
+    clearOtpBoxes();
+    switchPanel('panel-otp', 'panel-email');
+    updateLeftTrack(1);
+    setTimeout(() => {
+      document.getElementById('btn-check-email').disabled = false;
+      document.getElementById('btn-check-email').innerHTML = '<i class="fas fa-arrow-right"></i> Continue';
+      document.getElementById('inp-email').disabled = false;
+    }, 260);
+  }
+
+  /*
+     OTP TIMER
+   */
+  function startOtpTimer() {
+    otpTimerSecs   = OTP_TOTAL;
+    otpExpired     = false;
+    stopOtpTimer();
+    document.getElementById('otp-expired-notice').classList.remove('show');
+    document.getElementById('btn-resend').disabled = true;
+    document.getElementById('btn-verify-otp').disabled = false;
+    document.getElementById('otp-alert').classList.remove('show');
+
+    updateTimerUI(otpTimerSecs);
+
+    otpTimerHandle = setInterval(() => {
+      otpTimerSecs--;
+      updateTimerUI(otpTimerSecs);
+
+      if (otpTimerSecs <= 0) {
+        stopOtpTimer();
+        otpExpired = true;
+        document.getElementById('otp-expired-notice').classList.add('show');
+        document.getElementById('btn-resend').disabled = false;
+        document.getElementById('btn-verify-otp').disabled = true;
+        deleteExpiredOtp(verifiedEmail);
+      }
+    }, 1000);
+  }
+
+  function stopOtpTimer() {
+    if (otpTimerHandle) { clearInterval(otpTimerHandle); otpTimerHandle = null; }
+  }
+
+  function updateTimerUI(secs) {
+    const mins   = Math.floor(secs / 60);
+    const s      = secs % 60;
+    const label  = `${mins}:${String(s).padStart(2,'0')}`;
+    const urgent = secs <= 30;
+    const pct    = secs / OTP_TOTAL;
+    const offset = RING_CIRC * (1 - pct);
+
+    const ring = document.getElementById('otp-ring');
+    const text = document.getElementById('otp-timer-text');
+
+    ring.style.strokeDashoffset = offset;
+    ring.classList.toggle('urgent', urgent);
+    text.textContent = label;
+    text.classList.toggle('urgent', urgent);
+  }
+
+  async function deleteExpiredOtp(email) {
+    const  e = {email:email};
+      const api = await fetch('/cbt/ansofra/api/otp/expire', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(e)
+      });
+
+      const result = await api.json();
+      console.log(result);
+  }
+
+  /*
+     OTP INPUT BEHAVIOUR
+   */
+  function otpInput(e, idx) {
+    const val = e.target.value.replace(/\D/g,'');
+    e.target.value = val;
+    e.target.classList.toggle('filled', val !== '');
+    if (val && idx < 5) document.getElementById(`otp-${idx+1}`).focus();
+    const full = getOtpValue();
+    if (full.length === 6) verifyOtp();
+  }
+
+  function otpKeyDown(e, idx) {
+    if (e.key === 'Backspace' && !e.target.value && idx > 0) {
+      document.getElementById(`otp-${idx-1}`).focus();
+    }
+    if (e.key === 'ArrowLeft'  && idx > 0) document.getElementById(`otp-${idx-1}`).focus();
+    if (e.key === 'ArrowRight' && idx < 5) document.getElementById(`otp-${idx+1}`).focus();
+  }
+
+  function otpPaste(e) {
+    e.preventDefault();
+    const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/\D/g,'').substring(0,6);
+    pasted.split('').forEach((ch, i) => {
+      const box = document.getElementById(`otp-${i}`);
+      if (box) { box.value = ch; box.classList.add('filled'); }
+    });
+    const next = Math.min(pasted.length, 5);
+    document.getElementById(`otp-${next}`).focus();
+    if (pasted.length === 6) verifyOtp();
+  }
+
+  function getOtpValue() {
+    return [0,1,2,3,4,5].map(i => document.getElementById(`otp-${i}`).value).join('');
+  }
+
+  function clearOtpBoxes() {
+    [0,1,2,3,4,5].forEach(i => {
+      const b = document.getElementById(`otp-${i}`);
+      b.value = ''; b.classList.remove('filled','error');
+    });
+  }
+
+  function shakeOtpBoxes() {
+    [0,1,2,3,4,5].forEach(i => {
+      const b = document.getElementById(`otp-${i}`);
+      b.classList.add('error');
+      setTimeout(() => b.classList.remove('error'), 400);
+    });
+  }
+
+  /*
+     OTP VERIFY
+   */
+  async function verifyOtp() {
+    if (otpExpired) {
+      showAlert('otp-alert', 'Your code has expired. Please request a new one.', 'error');
+      return;
+    }
+    const code = getOtpValue();
+    if (code.length < 6) { showAlert('otp-alert', 'Please enter the complete 6-digit code.', 'error'); return; }
+
+    const btn = document.getElementById('btn-verify-otp');
+    btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Verifying…';
+
+      const e = { email: verifiedEmail, otpCode: code };
+      console.log(e);
+      const res = await fetch('/cbt/ansofra/api/Verifiy/otp', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(e)
+      });
+      
+      const result = await res.json();
+      btn.disabled = false; btn.innerHTML = '<i class="fas fa-check-circle"></i> Verify Code';
+      if(result.status==="success"){
+          deleteExpiredOtp(verifiedEmail);
+          stopOtpTimer();
+          showAlert('otp-success-alert', '✅ Email verified successfully!', 'success');
+          document.getElementById('confirmed-email-text').textContent = `${verifiedEmail} — verified`;
+          updateLeftTrack(3);
+          setTimeout(() => {
+            switchPanel('panel-otp', 'panel-form');
+            getDepartment();
+          }, 900);
+      }
+      else{
+        shakeOtpBoxes();
+        clearOtpBoxes();
+        document.getElementById('otp-0').focus();
+        showAlert('otp-alert', result.message || 'Invalid code. Please try again.', 'error');
+        return;
+      }
+  }
+
+  async function getDepartment(){
+    const e = {role:'set'}
+    const api  = await fetch("/cbt/ansofra/api/get/department/set/list", {
+      method:"POST",
+      headers:{"Content-type":"application/json"},
+      body:JSON.stringify(e)
+    });
+
+    const result =  await api.json();
+    const response = result.response;
+    let output = '';
+
+    for (let index = 0; index < response.length; index++) {
+      output +=`
+         <option value="${response[index].department}">${response[index].department}</option>
+      `;
+    }
+    document.getElementById('display-dep').innerHTML=output;
+  }
+
+  /* RESEND OTP */
+  async function resendOtp() {
+    const btn = document.getElementById('btn-resend');
+    btn.disabled = true;
+    btn.textContent = 'Sending…';
+    document.getElementById('otp-expired-notice').classList.remove('show');
+    document.getElementById('otp-alert').classList.remove('show');
+    clearOtpBoxes();
+
+     const e ={ email: verifiedEmail };
+     const api = await fetch('/cbt/ansofra/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type':'application/json' },
+        body: JSON.stringify(e)
+      });
+      
+      const result = await api.json();
+      if(result.status==="success"){
+            btn.textContent = 'Resend Code';
+            startOtpTimer();
+            document.getElementById('otp-0').focus();
+            showAlert('otp-success-alert', 'A new code has been sent to your email.', 'success');
+      }
+      else{
+         btn.disabled = false; btn.textContent = 'Resend Code';
+         showAlert('otp-alert', 'Failed to resend. Please try again.', 'error');
+      }
+  }
+
+  /*
+     STEP NAVIGATION (Registration form)
+   */
+  function nextStep(from) {
+    document.getElementById('reg-alert').classList.remove('show');
+    if (from === 1) {
+      const fn  = document.getElementById('inp-firstname').value.trim();
+      const ln  = document.getElementById('inp-lastname').value.trim();
+      const dob = document.getElementById('inp-dob').value;
+      const g   = document.getElementById('inp-gender').value;
+      const ph  = document.getElementById('inp-phone').value.trim();
+      if (!fn||!ln||!dob||!g||!ph) { showAlert('reg-alert','Please complete all personal information fields.','error'); return; }
+    }
+    if (from === 2) {
+      const st  = document.getElementById('inp-state').value;
+      const co  = document.getElementById('inp-course').value.trim();
+      if (!st||!co) { showAlert('reg-alert','Please complete all academic information fields.','error'); return; }
+    }
+    document.getElementById(`section-${from}`).classList.remove('active');
+    document.getElementById(`section-${from+1}`).classList.add('active');
+    document.getElementById(`step-${from}`).classList.remove('active');
+    document.getElementById(`step-${from}`).classList.add('done');
+    document.getElementById(`step-${from+1}`).classList.add('active');
+    document.getElementById(`line-${from}`).classList.add('done');
+  }
+
+  function prevStep(from) {
+    document.getElementById('reg-alert').classList.remove('show');
+    document.getElementById(`section-${from}`).classList.remove('active');
+    document.getElementById(`section-${from-1}`).classList.add('active');
+    document.getElementById(`step-${from}`).classList.remove('active');
+    document.getElementById(`step-${from-1}`).classList.remove('done');
+    document.getElementById(`step-${from-1}`).classList.add('active');
+    document.getElementById(`line-${from-1}`).classList.remove('done');
+  }
+
+  /*
+     PASSWORD STRENGTH
+   */
+  function checkStrength(val) {
+    const bar = document.getElementById('strength-bar');
+    const lbl = document.getElementById('strength-label');
+    let score = 0;
+    if (val.length>=6) score++; if (val.length>=10) score++;
+    if (/[A-Z]/.test(val)) score++; if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    const levels = [
+      {w:'0%',  bg:'var(--border)',   t:'Enter a password'},
+      {w:'25%', bg:'var(--danger)',   t:'Weak'},
+      {w:'50%', bg:'var(--gold)',     t:'Fair'},
+      {w:'75%', bg:'#3498db',         t:'Good'},
+      {w:'100%',bg:'var(--success)',  t:'Strong ✓'},
+    ];
+    const lvl = levels[Math.min(score,4)];
+    bar.style.width = lvl.w; bar.style.background = lvl.bg; lbl.textContent = lvl.t;
+  }
+
+  /*
+     FINAL REGISTRATION SUBMIT
+   */
+  async function doRegister() {
+    document.getElementById('reg-alert').classList.remove('show');
+    const pass  = document.getElementById('inp-pass').value;
+    const pass2 = document.getElementById('inp-pass2').value;
+    const terms = document.getElementById('inp-terms').checked;
+    if (pass.length<6)  { showAlert('reg-alert','Password must be at least 6 characters.','error'); return; }
+    if (pass!==pass2)   { showAlert('reg-alert','Passwords do not match.','error'); return; }
+    if (!terms)         { showAlert('reg-alert','You must agree to the terms to continue.','error'); return; }
+
+    const firstName = document.getElementById('inp-firstname').value.trim();
+    const lastName  = document.getElementById('inp-lastname').value.trim();
+    const user = {
+      email: verifiedEmail, firstName, lastName,
+      fullname: `${firstName} ${lastName}`,
+      dob:    document.getElementById('inp-dob').value,
+      gender: document.getElementById('inp-gender').value,
+      phone:  document.getElementById('inp-phone').value.trim(),
+      state:  document.getElementById('inp-state').value,
+      year:   document.getElementById('inp-year').value,
+      department: document.getElementById('inp-course').value.trim(),
+      password: pass,
+      date_created: new Date().toLocaleTimeString() + '  ' + new Date().toLocaleDateString()
+    };
+    const api = await fetch("/cbt/ansofra/api/Enter/Data", {
+        method:"POST",
+        headers:{'Content-type':'application/json'},
+        body:JSON.stringify(user)
+    });
+
+    const result = await api.json();
+    console.log(result);
+    if(result.status==="success"){
+      showAlert('reg-success','🎉 Account created successfully! Redirecting to login…','success');
+      setTimeout(() => window.location.href = '/cbt/ansofra/login', 2000);
+    }
+    else if(result.status==="fail"){
+        showAlert('reg-alert','The department is not available.','error'); return;
+    }
+    else{
+      showAlert('reg-alert','An error occurred. Please try again later.','error'); return;
+    }
+  }
+</script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-RewriteRule ^test$ index.php [L]
+RewriteEngine On
 
 # If the file or directory doesn't exist, send the request to index.php
 RewriteCond %{REQUEST_FILENAME} !-f
