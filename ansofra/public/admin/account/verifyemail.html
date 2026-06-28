@@ -753,7 +753,7 @@ hr.divider-line{margin:20px 0}
       if (result.status === 'failed') {
         localStorage.setItem('cbt-email', email);
         localStorage.setItem('cbt-name', fullname);
-        window.location.href = "/cbt/ansofra/ilease/otp/verification";
+        window.location.href = "/cbt/ansofra/admin/otp/verification";
       } else { alert('Error: ' + result.response); }
     } else {
       const firstError = document.querySelector('.input-error');

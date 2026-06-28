@@ -714,9 +714,9 @@ hr.divider-line{margin:20px 0}
 
 <!-- ORIGINAL SCRIPT — verbatim, zero changes ─── -->
 <script>
-  const email = localStorage.getItem('cbt-email');
-  const fullname = localStorage.getItem('cbt-name');
-  let userEmail = localStorage.getItem('cbt-email');
+  const email = localStorage.getItem('cbt-email').trim();
+  const fullname = localStorage.getItem('cbt-name').trim();
+  let userEmail = localStorage.getItem('cbt-email').trim();
 
   const otpInput = document.getElementById('otpCode');
   const verifyBtn = document.getElementById('verifyBtn');
@@ -812,14 +812,14 @@ hr.divider-line{margin:20px 0}
     try {
       const api = await fetch('/cbt/ansofra/apiadmin/process/otp', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ otpCode: otpInput.value.trim(), email: userEmail, fullname })
+        body: JSON.stringify({ otpCode: otpInput.value.trim(), email: userEmail, })
       });
       const response = await api.json();
       if (response.status === 'success') {
         if (timerInterval) clearInterval(timerInterval);
         localStorage.setItem('cbt-email-otp', email);
         deleteOTPFromBackend();
-        window.location.href = '/cbt/ansofra/ilease/register';
+        window.location.href = '/cbt/ansofra/admin/register';
       } else {
         showError(response.response || "Invalid verification code.");
         verifyBtn.disabled = false; verifyBtn.innerHTML = '<i class="fas fa-check-circle"></i> Verify Code';

@@ -9,20 +9,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
 <link rel="stylesheet" href="auth-shared.css"/>
 <style>
-/* Eye toggle button in this page uses inline SVG, keeping it styled */
 .fi-r svg{pointer-events:none}
 </style>
 </head>
 <body>
 <style>
-    /* ═══════════════════════════════════════════════════
-   EDUTEST CBT — SHARED AUTH DESIGN SYSTEM
-   Drop-in CSS for all authentication pages.
-   ═══════════════════════════════════════════════════ */
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-/* ── TOKENS ──────────────────────────────────────── */
 :root {
   --blue:       #2563EB;
   --blue-h:     #1D4ED8;
@@ -52,7 +45,6 @@
   --danger-bdr: #FECACA;
   --gold:       #F59E0B;
 
-  /* legacy vars referenced in original JS/CSS */
   --navy:       #0F172A;
   --navy-light: #1E3A5F;
   --navy-mid:   #1E3A5F;
@@ -690,7 +682,21 @@ hr.divider-line{margin:20px 0}
               <label class="form-label">Organization Name <span class="req">*</span></label>
               <div class="input-wrap">
                 <svg class="fi-l" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
-                <input class="form-input with-l" id="f-portal" type="text" placeholder="e.g. Finexam Institute" name="portal_name"/>
+                <input class="form-input with-l" id="f-portal" type="text" placeholder="e.g. Finexam Institute" name="organization_name"/>
+              </div>
+              <span class="field-err" id="e-biz">Required.</span>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Organization Type <span class="req">*</span></label>
+              <div class="input-wrap">
+                <!-- <svg class="fi-l" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg> -->
+                <!-- <input class="form-input with-l" id="t-portal" type="text" placeholder="e.g. Finexam Institute" name="portal_name"/> -->
+                <select name="organization_type" id="t-portal">
+                    <option value="" selected disabled >select type of Org.</option>
+                    <option value="Personal use">Personal Use</option>
+                    <option value="High school">High School</option>
+                    <option value="College">College</option>
+                </select>
               </div>
               <span class="field-err" id="e-biz">Required.</span>
             </div>
@@ -698,7 +704,7 @@ hr.divider-line{margin:20px 0}
               <label class="form-label">Phone <span class="req">*</span></label>
               <div class="input-wrap">
                 <svg class="fi-l" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12 19.79 19.79 0 0 1 1.08 3.4 2 2 0 0 1 3.06 1.22h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 9a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/></svg>
-                <input class="form-input with-l" id="f-phone" type="tel" placeholder="+234 900 000 0000" name="phone"/>
+                <input class="form-input with-l" id="phone-num" type="tel" placeholder="+234 900 000 0000" name="phone"/>
               </div>
               <span class="field-err" id="e-phone">Invalid number.</span>
             </div>
@@ -713,14 +719,14 @@ hr.divider-line{margin:20px 0}
             <span class="field-err" id="e-name">Required.</span>
           </div>
 
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label class="form-label">Username <span class="req">*</span></label>
             <div class="input-wrap">
               <svg class="fi-l" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-3.92 7.94"/></svg>
               <input class="form-input with-l" id="f-user" type="text" placeholder="Unique login username (min. 4 chars)" name="username"/>
             </div>
             <span class="field-err" id="e-user">Min. 4 characters — letters, numbers, underscores only.</span>
-          </div>
+          </div> -->
 
           <div class="card-divider"></div>
 
@@ -810,20 +816,30 @@ hr.divider-line{margin:20px 0}
       document.getElementById("verified-email-display").textContent=getEmail;
       console.log(getEmail);
       if(!getEmail){
-        // window.location.href="/cbt/ansofra/ilease";
+        window.location.href="/cbt/ansofra/";
         return;
       }
   })
   function checkAll(){
-    event.preventDefault();
+    // event.preventDefault();
     const pwd = document.getElementById("f-pass").value;
     const com_pwd = document.getElementById("f-confirm").value;
-    const email = document.getElementById("verified-email-display").value;
+    const email = document.getElementById("verified-email-display").textContent;
     const portal_name = document.getElementById("f-portal").value;
-    const username = document.getElementById("f-user").value;
-    const phone = document.getElementById("f-phone").valuel;
-    const name = document.getElementById("f-name").value;
-    if(!pwd && !com_pwd){
+    const organization_type= document.getElementById("t-portal").value;
+    // const username = document.getElementById("f-user").value;
+    const phone_num = document.getElementById("phone-num").value;
+    const fullname =  document.getElementById("f-name").value;
+    console.log({
+      fullname:fullname,
+      pwd:pwd,
+      email:email,
+      org: portal_name,
+      org_type :organization_type,
+      phone:phone_num,
+      com_pwd:com_pwd,
+  })
+    if(!pwd || !com_pwd || !email || !portal_name || !organization_type || !phone_num || !fullname){
         alert("All fields required");
     }else if(pwd!=com_pwd){
         document.getElementById("e-confirm").style.display="block";
@@ -838,6 +854,7 @@ hr.divider-line{margin:20px 0}
     const data = document.getElementById("reg-form");
     const form = new FormData(data);
     form.append("email", email);
+    form.append("date_created", new Date().toLocaleTimeString() + " " + new Date().toLocaleDateString())
     const api = await fetch("/cbt/ansofra/apiadmin/register", {
       method:"POST",
       body:form
@@ -848,12 +865,13 @@ hr.divider-line{margin:20px 0}
       console.log(response);
       alert("Error occur try again later");
     }else{
-      alert("account created successfully");
+      // alert("account created successfully");
       document.getElementById("s-success").style.display="flex";
       document.getElementById("s-reg").style.display="none";
-      setTimeout(()=>{
-        window.location.href="/cbt/ansofra/ilease/login";
-      }, 3000)
+      localStorage.clear();
+      // setTimeout(()=>{
+      //   window.location.href="/cbt/ansofra/admin/login";
+      // }, 3000)
     }
   }
 </script>

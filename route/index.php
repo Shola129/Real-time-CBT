@@ -41,56 +41,56 @@ elseif($url === $usersArea || $url === $usersArea . "/"){
     exit();
 }
 
-elseif($url === $docRoot . $rootDir . "/admin" || $rootDir === $docRoot . $rootDir . "/admin" . "/"){
-    require_once __DIR__ .  "/../ansofra/public/admin/index.html";
-    exit();
-}
+// elseif($url === $docRoot . $rootDir . "/admin" || $rootDir === $docRoot . $rootDir . "/admin" . "/"){
+//     require_once __DIR__ .  "/../ansofra/public/admin/index.html";
+//     exit();
+// }
 
 
 elseif($url===$docRoot.$rootDir."/admin/login" || $url===$docRoot.$rootDir."/admin/login" ."/"){
-    require_once __DIR__ . "/../ansofra/public/admin/login.html";
+    require_once __DIR__ . "/../ansofra/public/admin/account/login.html";
     exit();
 }
 
 elseif($url===$docRoot.$rootDir."/admin/register" || $url===$docRoot.$rootDir."/admin/register" ."/"){
-    require_once __DIR__ . "/../ansofra/public/admin/register.html";
+    require_once __DIR__ . "/../ansofra/public/admin/account/register.html";
     exit();
 }
 
 elseif($url===$docRoot.$rootDir."/admin/otp/verification" || $url===$docRoot.$rootDir."/admin/otp/verification" ."/"){
-    require_once __DIR__ . "/../ansofra/public/admin/otp.html";
+    require_once __DIR__ . "/../ansofra/public/admin/account/otp.html";
     exit();
 }
 
-elseif($url === $docRoot.$rootDir."/admin/2FA/verification" || $url === $docRoot.$rootDir."/admin/2FA/verification" . "/"){
-    require_once __DIR__ . "/../ansofra/public/admin/2FA.html";
-    exit();
-}
+// elseif($url === $docRoot.$rootDir."/admin/2FA/verification" || $url === $docRoot.$rootDir."/admin/2FA/verification" . "/"){
+//     require_once __DIR__ . "/../ansofra/public/admin/account/2FA.html";
+//     exit();
+// }
 
 elseif($url === $docRoot.$rootDir."/admin/dashboard" || $url === $docRoot.$rootDir."/admin/dashboard" ."/"){
-    require_once __DIR__ . "/../ansofra/public/admin/dashboard.html";
+    require_once __DIR__ . "/../ansofra/public/admin/account/dashboard.html";
     exit();
 }
 
 elseif($url===$docRoot.$rootDir."/admin/validateEmail" || $url===$docRoot.$rootDir."/admin/validateEmail" . "/"){
-    require_once __DIR__ . "/../ansofra/public/admin/validateemail.html";
+    require_once __DIR__ . "/../ansofra/public/admin/account/verifyemail.html";
     exit();
 }
 
 // for user's area
 
-elseif($url === $docRoot.$rootDir."/login" || $url===$docRoot.$rootDir."/login" . "/"){
-    require_once __DIR__ ."/./ansofra/public/login.html";
+elseif($url === $docRoot.$rootDir."/user/login" || $url===$docRoot.$rootDir."/user/login" . "/"){
+    require_once __DIR__ ."/../ansofra/public/account/login.html";
     exit();
 }
 
-elseif($url=== $docRoot.$rootDir ."/register" || $url ===$docRoot.$rootDir."/register" ."/"){
-    require_once __DIR__ . "/../ansofra/public/register.html";
+elseif($url=== $docRoot.$rootDir ."/user/register" || $url ===$docRoot.$rootDir."/user/register" ."/"){
+    require_once __DIR__ . "/../ansofra/public/account/register.html";
     exit();
 }
 
-elseif($url=== $docRoot.$rootDir ."/dashboard" || $url ===$docRoot.$rootDir."/dashboard" ."/"){
-    require_once __DIR__ ."/../ansofra/public/dashboard.html";
+elseif($url=== $docRoot.$rootDir ."/user/dashboard" || $url ===$docRoot.$rootDir."/user/dashboard" ."/"){
+    require_once __DIR__ ."/../ansofra/public/account/dashboard.html";
     exit();
 }
 

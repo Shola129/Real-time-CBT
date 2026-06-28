@@ -28,8 +28,8 @@ class Register{
         $col = "email";
         $val = $this->dto->email;
         $otp = $this->dto->otp;
-        $org_name = $this->dto->orgnization_name;
-        $org_code = substr($org_name, 0,6) . "-". ab(3) . substr($otp,  0, 2). ab(2) . substr($otp, 0, 1);
+        $org_name = $this->dto->organization_name;
+        $org_code = substr($org_name, 0,6) . "-". $this->ab(3) . substr($otp,  0, 2). $this->ab(2) . substr($otp, 0, 1);
         $ID = "ADMIN/00CBT/".$otp;
         $data = [
             'email'=>$this->dto->email,
@@ -37,13 +37,13 @@ class Register{
             'phone'=>$this->dto->phone,
             'fullname'=>$this->dto->fullname,
             'role'=>'ADMIN',
-            'orgnization_name'=>$this->dto->orgnization_name,
-            'orgnization_code'=>$org_code,
-            'orgnization_type'=>$this->dto->orgnization_type,
-            'last_seen' =>$this->dto->last_seen ?? '',
+            'organization_name'=>$this->dto->organization_name,
+            'organization_code'=>$org_code,
+            'organization_type'=>$this->dto->organization_type,
+            'last_seen' =>$this->dto->last_seen ?? "00:00",
             'date_created'=>$this->dto->date_created,
             "ID"=>$ID,
-            "last_login"=>$this->dto->last_login ?? "null",
+            "last_login"=>$this->dto->last_login ?? "00:00",
         ];
         $fullname = $this->dto->fullname;
         
