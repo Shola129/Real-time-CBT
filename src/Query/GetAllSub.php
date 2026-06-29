@@ -15,7 +15,8 @@ class GetAllSub{
     public function process(){
         $where = [
             'department'=>$this->dto->department,
-            'orgnization_code'=>$this->dto->orgnization_code
+            'departmentID'=>$this->dto->departmentID,
+            'organization_code'=>$this->dto->organization_code
             // 'DepartmentCode'=>$this->dto->DepartmentCode
         ];
 

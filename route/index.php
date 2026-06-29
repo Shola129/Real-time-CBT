@@ -68,7 +68,7 @@ elseif($url===$docRoot.$rootDir."/admin/otp/verification" || $url===$docRoot.$ro
 // }
 
 elseif($url === $docRoot.$rootDir."/admin/dashboard" || $url === $docRoot.$rootDir."/admin/dashboard" ."/"){
-    require_once __DIR__ . "/../ansofra/public/admin/account/dashboard.html";
+    require_once __DIR__ . "/../ansofra/public/admin/dashboard.html";
     exit();
 }
 
@@ -153,7 +153,7 @@ elseif($url===$adminArea."/login"){
     require_once __DIR__ . $srcController ."/LoginController.php";
     exit();
 }
-elseif($url===$adminArea."/Details"){
+elseif($url=== $adminArea."/Details"){
     require_once __DIR__ . $srcController . "/DetailsController.php";
     exit();
 }

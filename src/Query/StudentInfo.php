@@ -15,7 +15,7 @@ class StudentInfo{
     public function process(){
         $where = [
             'role'=>$this->dto->role,
-            'orgnization_code'=>$this->dto->orgnization_code
+            'organization_code'=>$this->dto->organization_code
         ];
 
         $newMig = new Migration(null, $this->table);

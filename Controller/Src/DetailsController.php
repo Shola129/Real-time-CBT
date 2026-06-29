@@ -16,14 +16,16 @@ foreach($data as $key=>$value){
 $dto = new AnsofraDto($cleanData);
 $logic = new Details($dto);
 $log = $logic->process();
-$decode = json_decode($log, true);
-if($decode["status"]==="success"){
-    $newAuth = new Authorization();
-    $auth = $newAuth->authorize();
-    echo $auth;
-    exit();
-}else{
-    echo $log;
-    exit();
-}
+echo $log;
+exit();
+// $decode = json_decode($log, true);
+// if($decode["status"]==="success"){
+//     $newAuth = new Authorization();
+//     $auth = $newAuth->authorize();
+//     echo $auth;
+//     exit();
+// }else{
+//     echo $log;
+//     exit();
+// }
 ?>

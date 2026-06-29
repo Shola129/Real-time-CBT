@@ -21,14 +21,26 @@ class SetDept{
             'Date_Created'=>$this->dto->date_created,
             'HeadOfDepartment'=>$this->dto->HeadOfDepartment,
             'DepartmentCode'=>$this->dto->DepartmentCode,
-            'departmentID'=>$sub.'/'.'010/',
-            'orgnization_code'=>$this->dto->orgnization_code
+            'departmentID'=>$sub."/". substr($this->dto->otp,4),
+            'organization_code'=>$this->dto->organization_code
         ];
 
-        $col = 'departmentID';
-        $val = $sub.'/'.'010/';
+        // $col = 'departmentID';
+        // $val = $sub;
+        // $newMig = new Migration(null, $this->table);
+        // $mig = $newMig->saveUnique($col, $val, $data);
+        // return $mig;
+        $col = [
+            "department", "DepartmentCode", "organization_code"
+        ];
+        $val = [
+            $this->dto->department,
+            $this->dto->DepartmentCode,
+            $this->dto->organization_code
+        ];
+
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->saveUnique($col, $val, $data);
+        $mig = $newMig->saveUniqueMulti($col, $val, $data);
         return $mig;
     }
 }

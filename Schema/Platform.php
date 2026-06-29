@@ -66,7 +66,7 @@ class Platform{
         "Description  VARCHAR(255)",
         "Date_Created VARCHAR(255) NOT NULL",
         "departmentID VARCHAR(255) NOT NULL",
-        "organization_name VARCHAR(255) NOT NULL",
+        "organization_code VARCHAR(255) NOT NULL",
     ];
 
     public const SETSUBJECTS_TABLE = "subjects";
@@ -78,7 +78,7 @@ class Platform{
         "subjectID VARCHAR(255) NOT NULL",
         "role VARCHAR(255) NOT NULL",
         "Date_Created VARCHAR(255) NOT NULL",
-        "organization_name VARCHAR(255) NOT NULL",
+        "organization_code VARCHAR(255) NOT NULL",
     ];
 
     public const QUESTIONS_TABLE = "questions";

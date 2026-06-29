@@ -19,16 +19,23 @@ foreach($data as $key=>$val){
 $dto = new AnsofraDto($cleanData);
 $logic = new Login($dto);
 $log = $logic->process();
-$decode = json_decode($log, true);
-if($decode["status"]==="success"){
+$decodelog = json_decode($log, true);
+if($decodelog["status"]==="success"){
     $newAuth = new Authentication();
     $auth = $newAuth->auth($cleanData["email"], "admin");
     $decode = json_decode($auth, true);
-    if($decode["status"]==="successs"){
-        echo $auth;
+    if($decode["status"]==="success"){
+        echo json_encode([
+            "status"=>"success", 
+            "response"=>$decodelog["response"], 
+            "res"=>$decode["response"],
+            ], JSON_PRETTY_PRINT);
         exit();
     }else{
-        echo $auth;
+        echo json_encode([
+            "status"=>"failed",
+            "response"=>"error occur at our hand"
+        ], JSON_PRETTY_PRINT);
         exit();
     }
     // $response = $decode["response"][0];

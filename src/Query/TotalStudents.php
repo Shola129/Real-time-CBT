@@ -16,7 +16,7 @@ class TotalStudents{
     public function process(){
         $where = [
             'role'=>'user',
-            'orgnization_code'=>$this->dto->orgnization_code
+            'organization_code'=>$this->dto->organization_code
         ];
 
         $newMig = new Migration(null, $this->table);

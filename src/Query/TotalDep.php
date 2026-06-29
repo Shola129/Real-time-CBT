@@ -15,7 +15,7 @@ class TotalDep{
     public function process(){
         $where = [
             'role'=>'set',
-            'orgnization_code'=>$this->dto->orgnization_code
+            'organization_code'=>$this->dto->organization_code
         ];
 
         $neMig = new Migration(null, $this->table);

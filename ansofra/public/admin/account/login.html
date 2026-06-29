@@ -696,7 +696,7 @@ hr.divider-line{margin:20px 0}
       <form id="data">
         <div class="form-group">
           <label class="form-label">Email <span class="req">*</span></label>
-          <input type="email" id="loginEmail" class="form-control" placeholder="admin@example.com" value="admin@exam.com" name="email"/>
+          <input type="email" id="loginEmail" class="form-control" placeholder="admin@example.com" name="email"/>
           <div class="error-message" id="emailError">Please enter a valid email address</div>
         </div>
 
@@ -807,7 +807,9 @@ hr.divider-line{margin:20px 0}
       if (result.status === 'success') {
         localStorage.setItem('cbt-admin-email', response.email);
         localStorage.setItem('cbt-admin-ID', response.ID);
-        window.location.href = "/cbt/ansofra/ilease/dashboard";
+        localStorage.setItem('cbt-org-code', response.organization_code);
+        localStorage.setItem('cbt-admin-auth-code', result.res)
+        window.location.href = "/cbt/ansofra/admin/dashboard";
       } else {
         showGeneralError(result.response || 'Invalid credentials. Please try again.');
         console.log(result);
@@ -816,10 +818,10 @@ hr.divider-line{margin:20px 0}
   });
 
   document.getElementById('registerLink').addEventListener('click', (e) => {
-    e.preventDefault(); window.location.href ='/cbt/ansofra/ilease/validateEmail';
+    e.preventDefault(); window.location.href ='/cbt/ansofra/admin/validateEmail';
   });
   document.getElementById('backLink').addEventListener('click', (e) => {
-    e.preventDefault(); window.location.href ='/cbt/ansofra/ilease';
+    e.preventDefault(); window.location.href ='/cbt/ansofra/';
   });
 </script>
 </body>
