@@ -23,6 +23,7 @@ class SeacrhQues{
         $mig = $neMig->get($where, 0, 20);
         return $mig;
     }
+    
 }
 
 ?>
