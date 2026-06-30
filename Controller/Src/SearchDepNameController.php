@@ -1,22 +1,20 @@
 <?php
 namespace NewdichControllerSrc;
-use NewdichSrc\Command\SaveSubject;
-use NewdichMiddleware\Index;
 use NewdichDto\AnsofraDto;
+use NewdichMiddleware\Index;
+use NewdichSrc\Query\SearchDepName;
 
 $data = json_decode(file_get_contents("php://input"), true);
-$cleanData = [];
 $mid = new Index();
+$cleandata = [];
 
 foreach($data as $key=>$val){
-    $cleanData[$key]=$mid->cleanData($val);
+    $cleandata[$key]=$mid->cleanData($val);
 }
 
-$cleanData["otp"]=$mid->otp();
-$dto = new AnsofraDto($cleanData);
-$logic = new SaveSubject($dto);
+$dto = new AnsofraDto($cleandata);
+$logic = new SearchDepName($dto);
 $log = $logic->process();
 echo $log;
 exit();
-
 ?>

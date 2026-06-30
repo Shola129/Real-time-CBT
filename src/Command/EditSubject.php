@@ -17,11 +17,12 @@ class EditSubject{
             'department'=>$this->dto->department,
             'DepartmentCode'=>$this->dto->DepartmentCode,
             'subject'=>$this->dto->subject,
+            'subjectCode'=>$this->dto->subjectCode
         ];
 
         $where = [
             'subjectID'=>$this->dto->subjectID,
-            'orgnization_code'=>$this->dto->orgnization_code
+            'organization_code'=>$this->dto->organization_code
         ];
 
         $newMig = new Migration(null, $this->table);

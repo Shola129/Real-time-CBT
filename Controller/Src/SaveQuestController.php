@@ -14,7 +14,8 @@ foreach($data as $key=>$val){
 }
 
 $cleanData["otp"] = $mid->otp();
-$dto = new AnsofraDto($data);
+
+$dto = new AnsofraDto($cleanData);
 $logic = new SaveQuest($dto);
 $log = $logic->process($media);
 echo $log;

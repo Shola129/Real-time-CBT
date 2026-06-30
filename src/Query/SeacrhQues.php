@@ -16,7 +16,7 @@ class SeacrhQues{
         $where  = [
             'department'=>$this->dto->department,
             'subject'=>$this->dto->subject,
-            'orgnization_code'=>$this->dto->orgnization_code
+            'organization_code'=>$this->dto->organization_code
         ];
 
         $neMig = new Migration(null, $this->table);

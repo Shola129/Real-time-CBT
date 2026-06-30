@@ -738,15 +738,23 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
         </div>
         <div class="form-group">
           <label class="form-label" for="edit-name">Department Code</label>
-          <input class="form-control" type="text" id="edit-name" placeholder="CS" name="DepartmentCode"/>
+          <input class="form-control" type="text" id="edit-deptCode" placeholder="CSC" name="DepartmentCode"/>
         </div>
         <div class="form-group">
           <label class="form-label">Subject Name</label>
-          <input class="form-control" type="text" placeholder="e.g. Algorithms" name="subject"/>
+          <input class="form-control" type="text" id="edit-subject" placeholder="e.g. Algorithms" name="subject"/>
         </div>
-        <div class="form-group" hidden>
+        <div class="form-group">
+          <label class="form-label">Subject Code</label>
+          <input class="form-control" type="text" id="edit-subject-code" placeholder="e.g. Algo405" name="subject"/>
+        </div>
+        <div class="form-group">
           <label class="form-label">Subject ID</label>
-          <input class="form-control" type="text" id="subjectID" placeholder="e.g. Algorithms" name="subjectID" disabled/>
+          <input class="form-control" type="text" id="subjectID" placeholder="e.g. Algorithms"  disabled/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Organization Code</label>
+          <input class="form-control" type="text" id="org-code"disabled/>
         </div>
       </div>
       <div class="modal-footer">
@@ -864,9 +872,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════ -->
-<!-- APP SHELL                                                     -->
-<!-- ══════════════════════════════════════════════════════════════ -->
+
 <div class="app">
 
   <!-- SIDEBAR -->
@@ -1065,10 +1071,10 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
         <div id="subjectNameSearchResults" class="subjects-grid" style="margin-bottom:20px;"></div>
 
         <!-- Filter by department -->
-        <div class="search-bar">
+        <!-- <div class="search-bar">
           <div class="search-field" style="flex:1;">
             <i class="fas fa-sitemap"></i>
-            <input type="text" id="deptSearchInput" placeholder="Filter by department…" />
+            <input type="text" id="deptSearchInput" placeholder="Enter department…" />
           </div>
           <button id="searchSubjectBtn" class="btn btn-primary btn-sm">
             <i class="fas fa-magnifying-glass"></i> Search
@@ -1077,7 +1083,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
         <div id="subjectCardsContainer" class="subjects-grid"></div>
         <div id="noSubjectsMsg" class="notice" style="display:none;">
           <i class="fas fa-book-open"></i> No subjects found for this department.
-        </div>
+        </div> -->
 
         <!-- Add New Subject -->
         <div class="panel">
@@ -1089,15 +1095,19 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
               <div class="form-row">
                 <div class="form-group">
                   <label class="form-label">Department</label>
-                  <input type="text" class="form-control" id="newDeptSelect" name="department">
+                  <input type="text" class="form-control" id="newDeptSelect">
                 </div>
                 <div class="form-group">
                   <label class="form-label">Department Code</label>
-                  <input class="form-control" type="text" id="newSubject" placeholder="e.g. CS" name="DepartmentCode"/>
+                  <input class="form-control" type="text" id="depCode" placeholder="e.g. CSC" />
                 </div>
                 <div class="form-group">
                   <label class="form-label">Subject Name</label>
-                  <input class="form-control" type="text" placeholder="e.g. Algorithms" name="subject" />
+                  <input class="form-control" type="text" placeholder="e.g. Algorithms"  id="subjectName" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Subject Code</label>
+                  <input class="form-control" type="text" placeholder="e.g. Algo204 optional"  id="subjectCode" />
                 </div>
                 <div class="form-group" style="justify-content:flex-end;">
                   <label class="form-label">&nbsp;</label>
@@ -1210,7 +1220,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
                   <input type="text" id="correctAss" name="correctAss" class="form-control" placeholder="Enter correct option (e.g. A)">
                 </div>
                 <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
-                  <button id="saveQuestionBtn" class="btn btn-primary">
+                  <button id="saveQuestionBtn" class="btn btn-primary" type="button">
                     <i class="fas fa-cloud-upload-alt"></i> Save Question
                   </button>
                 </div>
@@ -1487,10 +1497,11 @@ async function totalDepartment(){
   });
   const result = await api.json();
   const response = result.response;
+  // console.log(result);
   if(result.status==="success"){
     document.getElementById('deptHODCount').textContent=response || '00';
     document.getElementById('deptTotalCount').textContent=response || '00'; 
-    if(response=="0"){  
+    if(response=="0" || response=="1"){  
         document.getElementById('stat-depts').textContent= response;
         document.getElementById('total-dep').textContent="Department";
     }else{
@@ -1514,7 +1525,7 @@ async function getTotalStudent(){
   const result = await api.json();
   const response = result.response;
   if(result.status === "success"){
-    if(response=="0"){
+    if(response=="0" || response=="1"){
       document.getElementById("stat-students").textContent=response;
       document.getElementById("total-stu").textContent="Student";
     }
@@ -1540,7 +1551,7 @@ async function getTotalSubject(){
   const response = result.response;
   if(result.status==="success"){
     // document.getElementById("stat-subjects").textContent=response;
-    if(response=="0"){
+    if(response=="0" || response=="1"){
       document.getElementById("stat-subjects").textContent=response;
       document.getElementById("total-sub").textContent="Subject";
     }
@@ -1630,13 +1641,13 @@ function renderSubjects(filter) {
   const container = document.getElementById('subjectCardsContainer');
   const noMsg = document.getElementById('noSubjectsMsg');
   if (!container) return;
-  const filtered = filter.trim() ? subjectsList.filter(s=>s.dept.toLowerCase().includes(filter.toLowerCase())) : subjectsList;
-  if (!filtered.length) { container.innerHTML=''; if(noMsg) noMsg.style.display='block'; return; }
-  if (noMsg) noMsg.style.display='none';
-  container.innerHTML = filtered.map(sub => {
-    const idx = subjectsList.indexOf(sub);
-    return `<div class="subject-card"><div class="subject-card-top"><span class="badge badge-dept">${sub.dept}</span><span class="badge badge-duration"><i class="far fa-clock"></i> ${sub.duration} min</span></div><div class="subject-card-name">${sub.name}</div><div class="subject-card-meta"><span><i class="fas fa-circle-question"></i> ${sub.totalQs||0} Questions</span><span><i class="fas fa-calendar"></i> ${sub.created?sub.created.toLocaleDateString():'—'}</span></div><div class="subject-card-actions"><button class="btn btn-sm" onclick="openEditModal(${idx})"><i class="fas fa-pen"></i> Edit</button><button class="btn btn-sm btn-danger" onclick="deleteSubject(${idx})"><i class="fas fa-trash"></i></button></div></div>`;
-  }).join('');
+  // const filtered = filter.trim() ? subjectsList.filter(s=>s.dept.toLowerCase().includes(filter.toLowerCase())) : subjectsList;
+  // if (!filtered.length) { container.innerHTML=''; if(noMsg) noMsg.style.display='block'; return; }
+  // if (noMsg) noMsg.style.display='none';
+  // container.innerHTML = filtered.map(sub => {
+  //   const idx = subjectsList.indexOf(sub);
+  //   return `<div class="subject-card"><div class="subject-card-top"><span class="badge badge-dept">${sub.dept}</span><span class="badge badge-duration"><i class="far fa-clock"></i> ${sub.duration} min</span></div><div class="subject-card-name">${sub.name}</div><div class="subject-card-meta"><span><i class="fas fa-circle-question"></i> ${sub.totalQs||0} Questions</span><span><i class="fas fa-calendar"></i> ${sub.created?sub.created.toLocaleDateString():'—'}</span></div><div class="subject-card-actions"><button class="btn btn-sm" onclick="openEditModal(${idx})"><i class="fas fa-pen"></i> Edit</button><button class="btn btn-sm btn-danger" onclick="deleteSubject(${idx})"><i class="fas fa-trash"></i></button></div></div>`;
+  // }).join('');
 }
 
 window.deleteSubject = function(i) {
@@ -1995,9 +2006,9 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
  async function openDsbDrawer(department, DepartmentCode, departmentID, HeadOfDepartment, Description, org_code){
       const e = {
         department:department,
-        departmentID:departmentID,
         DepartmentCode:DepartmentCode,
-        organization_code:org_code
+        organization_code:org_code,
+        role:'set',
       };
       const api = await fetch("/cbt/ansofra/apiadmin/get/allSubject/Dep", {
           method:"POST",
@@ -2005,6 +2016,7 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
           body:JSON.stringify(e)
       });
       const result = await api.json();
+      // console.log(result);
       if(result.status==="success"){
         const  response = result.response;
         let output = '';
@@ -2012,11 +2024,11 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
           output +=`
             <div class="dsb-drawer-meta">
               <span><i class="fas fa-book"></i> ${index + 1 }</span>
-              <div class="dsb-subject-info"><div class="dsb-subject-name">${response[index].subject}</div><div class="dsb-subject-date">Added ${response[index].Date_Created || '—'}</div></div>
+              <div class="dsb-subject-info"><div class="dsb-subject-name">${response[index].subject}&nbsp &nbsp <nav>Code:  <strong>${response[index].subjectCode}</strong></nav></div> <div class="dsb-subject-date">Added ${response[index].date_created || '—'}</div></div>
                 <span><i class="fas fa-user-tie"></i> ${ HeadOfDepartment||'—'}</span>
                 <span>Depart Code ${response[index].DepartmentCode}</span>
                  <div class="dsb-subject-badges">
-                  <button class="btn btn-sm" style="padding:4px 10px;" onclick="openEditModal('${response[index].subjectID}', '${response[index].subject}')"><i class="fas fa-pen"></i></button>
+                  <button class="btn btn-sm" style="padding:4px 10px;" onclick="openEditModal('${response[index].subjectID}', '${response[index].subject}', '${response[index].subjectCode}', '${response[index].organization_code}', '${response[index].DepartmentCode}', '${response[index].department}')"><i class="fas fa-pen"></i></button>
                   <button class="btn btn-sm btn-danger" style="padding:4px 10px;" onclick="deleteSubjectFromDrawer('${response[index].subjectID}', '${response[index].subject}')"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
@@ -2038,22 +2050,44 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
       document.body.style.overflow = 'hidden';
  }
 
- async function openEditModal(subjectID, subject){
+ async function openEditModal(subjectID, subject, subCode, org_code, depCode, depart){
     document.getElementById('subjectID').value=subjectID;
     document.getElementById('editModal').classList.add('open');
-     document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    document.getElementById("edit-dept").value=depart;
+    document.getElementById("edit-deptCode").value=depCode;
+    document.getElementById("edit-subject").value=subject;
+    document.getElementById("subjectID").value=subjectID;
+    document.getElementById("org-code").value=org_code;
+    document.getElementById("edit-subject-code").value=subCode;
  }
 
  async function saveEditSubject(){
-    const data = document.getElementById('');
-    const form = new FormData(data);
-    const api = await fetch('/', {
+    // const data = document.getElementById('');
+    // const form = new FormData(data);
+    const dept =  document.getElementById("edit-dept").value.trim();
+    const deptCode =  document.getElementById("edit-deptCode").value.trim();
+    const subject  =  document.getElementById("edit-subject").value.trim();
+    const subjectID =  document.getElementById("subjectID").value.trim();
+    const org_code =  document.getElementById("org-code").value.trim();
+    const  subCode=  document.getElementById("edit-subject-code").value.trim();
+    const e = {
+      department:dept,
+      DepartmentCode:deptCode,
+      subject:subject,
+      subjectID:subjectID,
+      organization_code:org_code,
+      subjectCode:subCode
+    };
+    const api = await fetch('/cbt/ansofra/apiadmin/edit/subject', {
         method:'POST',
-        body:form
+        headers:{"Content-type":"application/json"},
+        body:JSON.stringify(e)
     })
     const result = await api.json();
     if(result.status==="success"){
        alert(result.response);
+       closeEditModal();
     }
     else{
       alert("unable to edit the subject");
@@ -2079,33 +2113,79 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
     }
  }
 
- document.getElementById("saveSubjectBtn").addEventListener("click", async ()=>{
+ document.getElementById("saveSubjectBtn").addEventListener("click", ()=>{
+    const dep = document.getElementById("newDeptSelect").value.trim();
+    const depCode = document.getElementById("depCode").value.trim();
+    const subjectName = document.getElementById("subjectName").value.trim();
+    const subjectCode = document.getElementById("subjectCode").value.trim();
+    if(!dep || !depCode || !subjectName){
+      alert("All field require");
+    }else{
+      processSubjectData();
+    }
+    // event.preventDefault();
+    // const data = document.getElementById("saveSubject");
+    // const form = new FormData(data);
+    // const api = await fetch("/cbt/ansofra/apiadmin/save/subject", {
+    //     method:"POST",
+    //     body:form
+    // });
+    // const result = await api.json();
+    // if(result.status==="success"){
+    //   alert(result.response);
+    // }
+    // else{
+    //   alert(result.response);
+    // }
+ });
+
+ async function processSubjectData(){
     event.preventDefault();
-    const data = document.getElementById("saveSubject");
-    const form = new FormData(data);
+   const dep = document.getElementById("newDeptSelect").value.trim();
+    const depCode = document.getElementById("depCode").value.trim();
+    const subjectName = document.getElementById("subjectName").value.trim();
+    const subjectCode = document.getElementById("subjectCode").value.trim();
+    const org_code = document.getElementById("organization-code").textContent.trim();
+    const e = {
+      department:dep,
+      DepartmentCode:depCode,
+      subject:subjectName,
+      subjectCode:subjectCode,
+      date_created: new Date().toLocaleTimeString() +" " + new Date().toLocaleDateString(),
+      organization_code:org_code
+    }
     const api = await fetch("/cbt/ansofra/apiadmin/save/subject", {
         method:"POST",
-        body:form
+        headers:{"Content-type":"application/json"},
+        body:JSON.stringify(e)
     });
     const result = await api.json();
+    console.log(result);
     if(result.status==="success"){
-      alert(result.response);
+      alert("subject created successfully");
+        document.getElementById("newDeptSelect").value="";
+        document.getElementById("depCode").value="";
+        document.getElementById("subjectName").value="";
+        document.getElementById("subjectCode").value="";
     }
     else{
       alert(result.response);
     }
- })
+ }
+
 
  document.getElementById("searchQuestionSetsBtn").addEventListener("click", async ()=>{
   const dep = document.getElementById("qsSearchDept").value.trim();
   const subject = document.getElementById("qsSearchSubject").value.trim();
+  const org_code = document.getElementById("organization-code").textContent.trim();
   if(dep==="" || subject===""){
     alert("all field required");
   }
   else{
     const e = {
       department:dep,
-      subject:subject
+      subject:subject,
+      organization_code:org_code,
     };
     const api = await fetch("/cbt/ansofra/apiadmin/seacrh/question",{
       method:"POST",
@@ -2113,6 +2193,7 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
        body:JSON.stringify(e)
     });
     const result = await api.json();
+    console.log(result);
     if(result.status==="success"){
       const response = result.response;
       let output = '';
@@ -2148,37 +2229,65 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
   }
 }) 
 
-document.getElementById("saveQuestionBtn").addEventListener("click", async ()=>{
-  event.preventDefault();
-  const dep = document.getElementById("displayDept").textContent;
-  const sub = document.getElementById("displaySubject").textContent;
-  const data = document.getElementById("saveQuestion");
-  const form = new FormData(data);
-  form.append('department', dep);
-  form.append('subject', sub);
-  const api = await fetch("/cbt/ansofra/apiadmin/save/questions", {
-      method:"POST",
-      body:form
-  });
-  const result = await api.json();
-  if(result.status==="success"){
-    alert(result.response);
-    document.getElementById("media").value="";
-    document.getElementById("optionA").value="";
-    document.getElementById("optionB").value="";
-    document.getElementById("optionC").value="";
-    document.getElementById("optionD").value="";
-    document.getElementById("optionE").value="";
-    document.getElementById("correctAnswer").value="";
-    document.getElementById("correctAss").value="";
-    document.getElementById("questionstext").value="";
-  }
-  else{
-    alert(result.response);
+document.getElementById("saveQuestionBtn").addEventListener("click",()=>{
+  const dept = document.getElementById("displayDept").textContent;
+  const subject = document.getElementById("displaySubject").textContent;
+  const question = document.getElementById("questionstext").value.trim();
+  const media = document.getElementById("media").value.trim();
+  const optionA = document.getElementById("optionA").value.trim();
+  const optionB = document.getElementById("optionB").value.trim();
+  const optionC = document.getElementById("optionC").value.trim();
+  const optionD = document.getElementById("optionD").value.trim();
+  const optionE = document.getElementById("optionE").value.trim();
+  const corr_option = document.getElementById("correctAss").value.trim();
+  if(!dept || !subject || !question || !optionA || !optionB || !optionC || !optionD || !corr_option ){
+      alert("All field required");
+  }else{
+    processQuestionData();
   }
 })
 
+
+async function processQuestionData(){
+      event.preventDefault();
+      const dep = document.getElementById("displayDept").textContent;
+      const sub = document.getElementById("displaySubject").textContent;
+      const org_code = document.getElementById("organization-code").textContent;
+      const data = document.getElementById("saveQuestion");
+      const form = new FormData(data);
+      form.append('department', dep);
+      form.append('subject', sub);
+      form.append('organization_code', org_code);
+      const obj = {};
+      form.forEach((key, val)=>{
+        obj[key]=val
+      })
+      console.log(obj);
+      const api = await fetch("/cbt/ansofra/apiadmin/save/questions", {
+          method:"POST",
+          body:form
+      });
+      const result = await api.json();
+      console.log(result);
+      if(result.status==="success"){
+        alert(result.response);
+        document.getElementById("media").value="";
+        document.getElementById("optionA").value="";
+        document.getElementById("optionB").value="";
+        document.getElementById("optionC").value="";
+        document.getElementById("optionD").value="";
+        document.getElementById("optionE").value="";
+        // document.getElementById("correctAnswer").value="";
+        document.getElementById("correctAss").value="";
+        document.getElementById("questionstext").value="";
+      }
+      else{
+        alert(result.response);
+      }
+  }
+
    document.getElementById("saveDeptBtn").addEventListener("click", async()=>{
+    event.preventDefault();
     const depName = document.getElementById("newDeptName").value.trim();
     const DepCode = document.getElementById("newDeptCode").value.trim();
     const DeptHOD = document.getElementById("newDeptHOD").value.trim();
@@ -2187,7 +2296,7 @@ document.getElementById("saveQuestionBtn").addEventListener("click", async ()=>{
       alert("All field required");
     }
     else{
-      processDepDataAll();
+      // processDepDataAll();
     }
   })
 
@@ -2200,14 +2309,16 @@ document.getElementById("saveQuestionBtn").addEventListener("click", async ()=>{
     form.append("date_created", time);
     form.append("role", role);
     form.append("organization_code", org_code);
+    
     const api = await fetch('/cbt/ansofra/apiadmin/set/department', {
         method:"POST",
         body:form
     });
     const result = await api.json();
+    console.log(result);
     if(result.status==='success'){
         alert("save successful");
-        renderDeptTable(document.getElementById('deptListSearch')?.value || '');
+        // renderDeptTable(document.getElementById('deptListSearch')?.value || '');
         updateDeptStats();
         document.getElementById('newDeptName').value  = '';
         document.getElementById('newDeptCode').value  = '';
@@ -2220,12 +2331,15 @@ document.getElementById("saveQuestionBtn").addEventListener("click", async ()=>{
 }
 
 async function updateDeptStats(){
-  const e = {role:'set'}
+  const org_code = document.getElementById("organization-code").textContent.trim();
+  const e = {role:'set', organization_code:org_code};
   const api = await fetch("/cbt/ansofra/apiadmin/get/department/set/list", {
       method:'POST',
+      headers:{"Content-type":"application/json"},
       body:JSON.stringify(e)
   });
   const results = await api.json();
+  // console.log(results);
   if(results.status==="success"){
       const response = results.response;
       let output = "";
@@ -2252,7 +2366,8 @@ async function updateDeptStats(){
 
 document.getElementById("deptSearchBtn").addEventListener("click", async ()=>{
     const type = document.getElementById("deptListSearch").value.trim();
-    const e = {DepartmentCode:type};
+    const org_code = document.getElementById("organization-code").textContent.trim();
+    const e = {DepartmentCode:type, organization_code: org_code};
     const api = await fetch('/cbt/ansofra/apiadmin/search/dep/code', {
         method:'POST',
         headers:{'Content-type':'application/json'},
@@ -2271,18 +2386,33 @@ document.getElementById("deptSearchBtn").addEventListener("click", async ()=>{
                   <th>${response[i].HeadOfDepartment}</th>
                   <th>${response[i].Description}</th>
                   <th>${response[i].Date_Created}</th>
-                  <th>Action</th>
+                  <th><button><button/></th>
                 </tr>
             `
           }
-          console.log(output);
+          // console.log(output);
           document.getElementById("deptTableBody").innerHTML=output;
       }
     else{
       document.getElementById('displayAnyErr').style.display="none"
       document.getElementById('noDeptMsg').style.display="block";
     } 
-  })
+  });
+
+  // document.getElementById("searchSubjectBtn").addEventListener("click", async ()=>{
+  //   const depVal = document.getElementById("deptSearchInput").value.trim();
+  //   const org_code = document.getElementById("organization-code").textContent.trim();
+  //   const e = {role:"set", organization_code:org_code, department:depVal};
+
+  //   const api = await fetch("/cbt/ansofra/apiadmin/search/dep/name", {
+  //     method:"POST",
+  //     headers:{"Content-type":"application/json"},
+  //     body:JSON.stringify(e)
+  //   });
+
+  //   const result = await api.json();
+  //   console.log(result);
+  // })
 
 window.showSection = function(id, navEl){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));

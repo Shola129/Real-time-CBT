@@ -15,7 +15,7 @@ class Dep{
     public function process(){
         $where = [
             'DepartmentCode'=>$this->dto->DepartmentCode,
-            'orgnization_code'=>$this->dto->orgnization_code
+            'organization_code'=>$this->dto->organization_code
         ];
 
         $newMig = new Migration(null, $this->table);

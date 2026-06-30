@@ -15,18 +15,17 @@ class SaveQuest{
         $this->dto=$dto;
     }
 
-    public function process($media){
+    public function process($media='null'){
         $where = [
             'department'=>$this->dto->department,
             'subject'=>$this->dto->subject,
-            'orgnization_code'=>$this->dto->orgnization_code
+            'organization_code'=>$this->dto->organization_code
         ];
 
         $newMig = new Migration(null, $this->table2);
         $mig = $newMig->get($where,0,1);
         $decodeMig = json_decode($mig, true);
         if($decodeMig["status"]==='success'){
-            $otp = $this->dto->otp;
             $newFile = new Upload($media);
             $file = $newFile->process();
             $decodeFile = json_decode($file, true);
@@ -35,18 +34,23 @@ class SaveQuest{
                 'department'=>$this->dto->department,
                 'subject'=>$this->dto->subject,
                 'dragram'=>$dragram ?? '',
-                'questionID'=>'QUES/00/'.$otp,
+                'questionID'=>'QUES/'. substr($this->dto->otp, 0, 2),
                 'questiontext'=>$this->dto->questiontext,
                 'optionA'=>$this->dto->optionA,
                 'optionB'=>$this->dto->optionB,
                 'optionC'=>$this->dto->optionC,
                 'optionD'=>$this->dto->optionD,
                 'optionE'=>$this->dto->optionE ?? '',
-                'correctOtp'=>$this->dto->correctOtp,
+                'correctOtp'=>$this->dto->correctOtp ?? 'null',
                 'correctAss'=>$this->dto->correctAss,
                 'role'=>'set',
-                'orgnization_code'=>$this->dto->orgnization_code
+                'organization_code'=>$this->dto->organization_code
             ];
+
+            // return json_encode([
+            //     "status"=>"failed",
+            //     "response"=>$data
+            // ], JSON_PRETTY_PRINT);
             $newMig2 = new Migration(null, $this->table);
             $mig2 = $newMig2->save($data);
             return $mig2;

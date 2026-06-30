@@ -4,7 +4,7 @@ use NewdichSrc\Command\EditSubject;
 use NewdichMiddleware\Index;
 use NewdichDto\AnsofraDto;
 
-$data = $_POST;
+$data = json_decode(file_get_contents("php://input"), true);
 $cleanData = [];
 $mid = new Index();
 
@@ -13,7 +13,7 @@ foreach($data as $key=>$val){
 }
 
 $dto = new AnsofraDto($cleanData);
-$logic = new EditSubject();
+$logic = new EditSubject($dto);
 $log = $logic->process();
 echo $log;
 exit();

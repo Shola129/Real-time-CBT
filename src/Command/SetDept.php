@@ -21,9 +21,11 @@ class SetDept{
             'Date_Created'=>$this->dto->date_created,
             'HeadOfDepartment'=>$this->dto->HeadOfDepartment,
             'DepartmentCode'=>$this->dto->DepartmentCode,
-            'departmentID'=>$sub."/". substr($this->dto->otp,4),
-            'organization_code'=>$this->dto->organization_code
+            'departmentID'=>$sub."/". substr($this->dto->otp,0, 3),
+            'organization_code'=>$this->dto->organization_code,
         ];
+
+
 
         // $col = 'departmentID';
         // $val = $sub;

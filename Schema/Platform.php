@@ -78,6 +78,7 @@ class Platform{
         "subjectID VARCHAR(255) NOT NULL",
         "role VARCHAR(255) NOT NULL",
         "Date_Created VARCHAR(255) NOT NULL",
+        "subjectCode VARCHAR(255) NOT NULL",
         "organization_code VARCHAR(255) NOT NULL",
     ];
 
@@ -97,7 +98,7 @@ class Platform{
         "correctOtp VARCHAR(255) NOT NULL",
         "correctAss VARCHAR(255) NOT NULL",
         "role VARCHAR(255) NOT NULL",
-        "organization_name VARCHAR(255) NOT NULL",
+        "organization_code VARCHAR(255) NOT NULL",
     ];
 
     public const USERS_TABLE = "users";

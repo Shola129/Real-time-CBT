@@ -292,6 +292,11 @@ elseif($url === $adminArea . "/edit/profile"){
     exit();
 }
 
+elseif($url === $adminArea . "/search/dep/name"){
+    require_once __DIR__ . $srcController . "/SearchDepNameController.php";
+    exit();
+}
+
 // EndPoint for user's area
 
 elseif($url === $usersArea . "/register"){
