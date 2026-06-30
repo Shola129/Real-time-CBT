@@ -24,7 +24,6 @@ class SeacrhQues{
         return $mig;
     }
 
-    
 }
 
 ?>
