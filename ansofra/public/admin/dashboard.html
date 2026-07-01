@@ -826,30 +826,40 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
       <div class="modal-body">
         <div class="form-group">
           <label class="form-label">Department</label>
-          <input class="form-control" type="text" id="schSubject" placeholder="e.g. Computer Science" name="department"/>
+          <input class="form-control" type="text" id="schedule-department" placeholder="e.g. Computer Science" name="department"/>
         </div>
         <div class="form-group">
           <label class="form-label">Department Code</label>
-          <input class="form-control" type="text" id="schSub" placeholder="e.g. CS" name="DepartmentCode"/>
+          <input class="form-control" type="text" id="schedule-department-code" placeholder="e.g. CS" name="DepartmentCode"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Session</label>
+          <select name="session" id="session"  class="form-control">
+            <option value="">Select Session for Exam</option>
+            <option value="2024/2025">2024/2025</option>
+            <option value="2025/2026">2025/2026</option>
+            <option value="2026/2027">2026/2027</option>
+          </select>
+          <!-- <input class="form-control" type="text" id="schSub" placeholder="e.g. CS" name="DepartmentCode"/> -->
         </div>
         <div class="modal-divider"></div>
         <div class="modal-section-label">Exam Schedule</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
           <div class="form-group">
             <label class="form-label">Date</label>
-            <input class="form-control" type="date" id="schDate" name="date" />
+            <input class="form-control" type="date" id="schedule-date" name="date" />
           </div>
           <div class="form-group">
             <label class="form-label">Start Time</label>
-            <input class="form-control" type="time" id="timestart" name="start" />
+            <input class="form-control" type="time" id="schedule-time-start" name="start" />
           </div>
           <div class="form-group">
             <label class="form-label">End Time</label>
-            <input class="form-control" type="time" id="edntime" name="end"/>
+            <input class="form-control" type="time" id="schedule-time-end" name="end"/>
           </div>
           <div class="form-group">
             <label class="form-label">Duration (min)</label>
-            <input class="form-control" type="number" id="schDuration" placeholder="90" min="1" name="duration"/>
+            <input class="form-control" type="number" id="schedule-duration" placeholder="90" min="1" name="duration"/>
           </div>
         </div>
       </div>
@@ -1671,32 +1681,53 @@ function openScheduleModal() {
   openGenericModal('scheduleModal');
 }
 
-async function saveScheduledExam() {
-  const data =  document.getElementById("formdata");
-  const form = new FormData(data);
-  const obj = {};
-  form.forEach((val, key)=>{
-    obj[key]=val;
-  })
-  console.log(obj);
-  const api = await fetch("/cbt/ansofra/apiadmin/schedule/exam/time", {
-      method:"POST",
-      body:form
-  });
-  const result = await api.json();
-  console.log(result);
-  if(result.status==="success"){
-    alert(result.response);
-      document.getElementById('schSubject').value = '';
-      document.getElementById('schSub').value = '';
-      document.getElementById('schDate').value = '';
-      document.getElementById('timestart').value = '';
-      document.getElementById('edntime').value = '';
-      document.getElementById('schDuration').value = '';
-  }
-  else{
-    alert(result.response);
-  }
+ function saveScheduledExam() {
+  event.preventDefault();
+    const depart = document.getElementById('schedule-department').value;
+    const departCode =  document.getElementById('schedule-department-code').value.trim();
+    const date =  document.getElementById('schedule-date').value.trim();
+    const startTime =  document.getElementById('schedule-time-start').value.trim();
+    const endtime =  document.getElementById('schedule-time-end').value.trim();
+    const dura =  document.getElementById('schedule-duration').value.trim();
+    const session = document.getElementById('session').value.trim();
+   
+    if(!depart || !departCode || !date || !startTime || !endtime || !dura){
+        alert("All field require");
+    }else{
+      processScheduledData();
+    }
+}
+
+
+async function processScheduledData(){
+    const data =  document.getElementById("formdata");
+    const org_code = document.getElementById("organization-code").textContent.trim();
+    const form = new FormData(data);
+    form.append("organization_code", org_code);
+    const obj = {};
+    form.forEach((val, key)=>{
+      obj[key]=val;
+    })
+    // console.log(obj);
+    const api = await fetch("/cbt/ansofra/apiadmin/schedule/exam/time", {
+        method:"POST",
+        body:form
+    });
+    const result = await api.json();
+    console.log(result);
+    if(result.status==="success"){
+      alert(result.response);
+        document.getElementById('schSubject').value = '';
+        document.getElementById('schSub').value = '';
+        document.getElementById('schDate').value = '';
+        document.getElementById('timestart').value = '';
+        document.getElementById('edntime').value = '';
+        document.getElementById('schDuration').value = '';
+        closeGenericModal();
+    }
+    else{
+      alert(result.response);
+    }
 }
 
 async function displayScheduledTime(){
@@ -1744,14 +1775,16 @@ async function displayScheduledTime(){
 }
 
 async function totalexamSche(){
-   const e = {role:'user'};
+  const org_code = document.getElementById("organization-code").textContent.trim();
+   const e = {role:'user', organization_code:org_code};
    const api = await fetch('/cbt/ansofra/apiadmin/count/shedule', {
     method:'POST',
     headers:{'Content-type':'application/json'},
     body:JSON.stringify(e)
    });
    const result = await api.json();
-   document.getElementById("schStatTotal").textContent=result.response || '00';
+  //  console.log(result);
+   document.getElementById("schStatTotal").textContent=result.response;
 }
 
 async function seacrhDepSch(){
@@ -2193,7 +2226,7 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
        body:JSON.stringify(e)
     });
     const result = await api.json();
-    console.log(result);
+    // console.log(result);
     if(result.status==="success"){
       const response = result.response;
       let output = '';
@@ -2213,7 +2246,7 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
               <div>D. ${response[index].optionD}</div>
             </div>
             <span class="badge badge-score" style="margin-top:6px;display:inline-flex;">
-              ✓ Correct: ${response[index].correctOtp || response[index].correctAss }}
+              ✓ Correct: ${response[index].correctOtp || response[index].correctAss }
             </span>
           </div>
           <div>QuestionID: ${response[index].questionID}</div>

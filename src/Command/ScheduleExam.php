@@ -10,7 +10,7 @@ class ScheduleExam{
     private $dto;
     private $table = Platform::SETSUBJECTS_TABLE;
     private $table2 = Platform::SETEXAMTIME_TABLE;
-    private $table3 = Platform::USERS_TABLE;
+    // private $table3 = Platform::USERS_TABLE;
     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
     }
@@ -19,29 +19,41 @@ class ScheduleExam{
         $where = [
             'department'=>$this->dto->department,
             'DepartmentCode'=>$this->dto->DepartmentCode,
-            'orgnization_code'=>$this->dto->orgnization_code
+            'organization_code'=>$this->dto->organization_code
         ];
 
         $newMig = new Migration(null, $this->table);
         $mig = $newMig->get($where, 0, 1);
         $decodeMig = json_decode($mig, true);
         if($decodeMig['status']==="success"){
-            $col = "timeID";
-            $val = $this->dto->department . $this->dto->DepartmentCode;
+            $col = [
+                "organization_code", 
+                "department", 
+                "DepartmentCode", 
+                "session"
+                ];
+            $val = [
+                $this->dto->organization,
+                $this->dto->department,
+                $this->dto->DepartmentCode,
+                $this->dto->session
+            ];
             $data = [
-                'orgnization_code'=>$this->dto->orgnization_code,
+                'organization_code'=>$this->dto->organization_code,
                 "department"=> $this->dto->department,
                 'DepartmentCode'=> $this->dto->DepartmentCode,
                 'date'=> $this->dto->date,
                 'start'=> $this->dto->start,
                 'end'=> $this->dto->end,
                 'duration'=> $this->dto->duration.'hrs',
-                'timeID'=> $this->dto->department . $this->dto->DepartmentCode,
-                'role'=> 'set'
+                'timeID'=> "ref-". substr($this->dto->otp, 0, 3),
+                'role'=> 'set',
+                'status'=>'inactive',
+                'session'=>$this->dto->session
             ];
 
             $newMig2 = new Migration(null, $this->table2);
-            $mig2 = $newMig2->saveUnique($col, $val, $data);
+            $mig2 = $newMig2->saveUniqueMulti($col, $val, $data);
             return $mig2;
             // $decodeMig2 = json_decode($mig2, true);
             // // if($decodeMig2['status']==="success"){

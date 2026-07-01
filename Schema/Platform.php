@@ -132,7 +132,9 @@ class Platform{
         'end VARCHAR(255) NOT NULL',
         'duration VARCHAR(255) NOT NULL',
         'role VARCHAR(255) NOT NULL',
-        "organization_name VARCHAR(255) NOT NULL",
+        "organization_code VARCHAR(255) NOT NULL",
+        "session VARCHAR(255) NOT NULL",
+        "status VARCHAR(255) NOT NULL",
     ];
 
     public const QUESTIONATTEMPTS_TABLE = 'question_attempts';
@@ -145,7 +147,7 @@ class Platform{
         "status VARCHAR(255) NOT NULL",
         "score VARCHAR(255) NOT NULL",
         "startedAt VARCHAR(255) NOT NULL",
-        "organization_name VARCHAR(255) NOT NULL",
+        "organization_code VARCHAR(255) NOT NULL",
     ];
 
     // public const SAVEQUESTIONS_TABLE = "save_question_attempted";
@@ -173,7 +175,7 @@ class Platform{
         "savequestID VARCHAR(225) NOT NULL",
         "saveAt VARCHAR(225) NOT NULL",
         "totalQuestions VARCHAR(225) NOT NULL",
-        "organization_name VARCHAR(255) NOT NULL",
+        "organization_code VARCHAR(255) NOT NULL",
     ];
 
     public const SAVESCORE_TABLE = "save_scores";
@@ -187,7 +189,7 @@ class Platform{
         "expectedScore VARCHAR(255) NOT NULL",
         "correctAnswers VARCHAR(255) NOT NULL",
         "totalQuestions VARCHAR(255) NOT NULL",
-        "organization_name VARCHAR(255) NOT NULL",
+        "organization_code VARCHAR(255) NOT NULL",
     ];
 
     public const RESULT_TABLE = "results";
@@ -202,7 +204,7 @@ class Platform{
         "email VARCHAR(255) NOT NULL",
         "status VARCHAR(255) NOT NULL",
         "publish VARCHAR(255) NOT NULL",
-        "organization_name VARCHAR(255) NOT NULL",
+        "organization_code VARCHAR(255) NOT NULL",
     ];
 
     public const STATUS_TABLE = "status";
@@ -212,7 +214,7 @@ class Platform{
         "fullname VARCHAR(255) NOT NULL",
         "status VARCHAR(255) NOT NULL",
         "startAt VARCHAR(255) NOT NULL",
-        "organization_name VARCHAR(255) NOT NULL",
+        "organization_code VARCHAR(255) NOT NULL",
     ];
   //you can have as many tables as you want
 }
