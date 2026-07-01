@@ -14,8 +14,8 @@ class ListTime{
 
     public function process(){
         $where = [
-            'role'=>'set',
-            'orgnization_code'=>$this->dto->orgnization_code
+            'role'=>$this->dto->role,
+            'organization_code'=>$this->dto->organization_code
         ];
 
         $newMig = new Migration(null, $this->table);

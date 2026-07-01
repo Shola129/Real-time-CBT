@@ -17,7 +17,7 @@ class NotifyUserExam{
     public function process(){
         $where = [
             "department"=>$this->dto->department,
-            "orgnization_code"=>$this->dto->orgnization_code
+            "organization_code"=>$this->dto->organization_code
         ];
 
         $newMig = new Migration(null, $this->table2);
@@ -51,6 +51,7 @@ class NotifyUserExam{
             $start = $this->dto->start;
             $end = $this->dto->end;
             $date = $this->dto->date;
+            $duration = $this->dto->duration;
             foreach($response as $row){
                 $email = $row["email"];
                 $name = $row["fullname"];

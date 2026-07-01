@@ -33,7 +33,7 @@ class ScheduleExam{
                 "session"
                 ];
             $val = [
-                $this->dto->organization,
+                $this->dto->organization_code,
                 $this->dto->department,
                 $this->dto->DepartmentCode,
                 $this->dto->session
@@ -45,8 +45,8 @@ class ScheduleExam{
                 'date'=> $this->dto->date,
                 'start'=> $this->dto->start,
                 'end'=> $this->dto->end,
-                'duration'=> $this->dto->duration.'hrs',
-                'timeID'=> "ref-". substr($this->dto->otp, 0, 3),
+                'duration'=> $this->dto->duration.'mins',
+                'timeID'=> "time-ref-". substr($this->dto->otp, 0, 3),
                 'role'=> 'set',
                 'status'=>'inactive',
                 'session'=>$this->dto->session

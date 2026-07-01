@@ -776,35 +776,52 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
       <div class="modal-body">
         <div class="form-group">
           <label class="form-label">Department</label>
-          <input class="form-control" type="text" id="schSubject" placeholder="e.g. Computer Science" name="department"/>
+          <input class="form-control" type="text" id="edit-schedule-department"  name="department"/>
         </div>
         <div class="form-group">
           <label class="form-label">Department Code</label>
-          <input class="form-control" type="text" id="schSub" placeholder="e.g. CS" name="DepartmentCode"/>
+          <input class="form-control" type="text" id="edit-schedule-department-code"  name="DepartmentCode"/>
         </div>
+        <div class="form-group">
+            <label class="form-label">Session</label>
+            <!-- <input class="form-control" type="number" id="edit-session" name="session"/> -->
+            <select class="form-control" id="edit-session" name="session">
+                <option value="" disabled>Select Session</option>
+                <option value="2026/2027">2026/2027</option>
+                <option value="2027/2028">2027/2028</option>
+                <option value="2028/2029">2028/2029</option>
+            </select>
+          </div>
         <div class="form-group" hidden>
           <label class="form-label">Time ID</label>
-          <input class="form-control" type="text" id="timeID" placeholder="e.g. CS" name="timeID" hidden/>
+          <span class="form-control" id="timeID"></span>
+          <!-- <input class="form-control" type="text" id="timeID"  name="timeID" hidden/> -->
         </div>
         <div class="modal-divider"></div>
         <div class="modal-section-label">Exam Schedule</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
           <div class="form-group">
             <label class="form-label">Date</label>
-            <input class="form-control" type="date" id="schDate" name="date" />
+            <input class="form-control" type="date" id="edit-schedule-date" name="date" />
           </div>
           <div class="form-group">
             <label class="form-label">Start Time</label>
-            <input class="form-control" type="time" id="timestart" name="start" />
+            <input class="form-control" type="time" id="edit-schedule-time-start" name="start" />
           </div>
           <div class="form-group">
             <label class="form-label">End Time</label>
-            <input class="form-control" type="time" id="edntime" name="end"/>
+            <input class="form-control" type="time" id="edit-schedule-time-end" name="end"/>
           </div>
           <div class="form-group">
             <label class="form-label">Duration (min)</label>
-            <input class="form-control" type="number" id="schDuration" placeholder="90" min="1" name="duration"/>
+            <input class="form-control" type="text" id="edit-schedule-duration" name="duration"/>
           </div>
+          <div class="form-group">
+            <label class="form-label">Status </label>
+            <span class="form-control" id="edit-schedule-status" ></span>
+            <!-- <input class="form-control" type="text" id="edit-schedule-status" name="status" hidden/> -->
+          </div>
+
         </div>
       </div>
     </form>
@@ -1446,7 +1463,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
                 <tr>
                   <th>#</th><th>Department</th><th>Dept. Code</th>
                   <th>Time ID</th><th>Date</th><th>Start</th>
-                  <th>End</th><th>Duration</th><th>Edit</th><th>Notify</th>
+                  <th>End</th><th>Duration</th><th>Edit</th><th>Notify</th><th>Status</th>
                 </tr>
               </thead>
               <tbody id="scheduleTableBody"></tbody>
@@ -1714,16 +1731,19 @@ async function processScheduledData(){
         body:form
     });
     const result = await api.json();
-    console.log(result);
+    // console.log(result);
     if(result.status==="success"){
       alert(result.response);
-        document.getElementById('schSubject').value = '';
-        document.getElementById('schSub').value = '';
-        document.getElementById('schDate').value = '';
-        document.getElementById('timestart').value = '';
-        document.getElementById('edntime').value = '';
-        document.getElementById('schDuration').value = '';
-        closeGenericModal();
+        document.getElementById('schedule-department').value="";
+        document.getElementById('schedule-department-code').value="";
+        document.getElementById('schedule-date').value="";
+        document.getElementById('schedule-time-start').value="";
+        document.getElementById('schedule-time-end').value="";
+        document.getElementById('schedule-duration').value="";
+        document.getElementById('session').value="";
+        closeGenericModal('scheduleModal');
+        displayScheduledTime();
+        totalexamSche();
     }
     else{
       alert(result.response);
@@ -1731,7 +1751,8 @@ async function processScheduledData(){
 }
 
 async function displayScheduledTime(){
-   const e = {role:'set'};
+  const org_code = document.getElementById("organization-code").textContent;
+   const e = {role:'set', organization_code:org_code};
    const api = await fetch("/cbt/ansofra/apiadmin/list/time/sets", {
       method:"POST",
       headers:{'Content-type':'application/json'},
@@ -1753,15 +1774,16 @@ async function displayScheduledTime(){
                 <td>${response[index].end}</td>
                 <td>${response[index].duration}</td>
                 <td style="display:flex;gap:6px;">
-                  <button class="btn btn-sm btn-info" onclick="openEditScheduleModal('${response[index].timeID}')">
+                  <button class="btn btn-sm btn-info" onclick="openEditScheduleModal('${response[index].timeID}', '${response[index].department}', '${response[index].DepartmentCode}', '${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].session}', '${response[index].organization_code}', '${response[index].date}', '${response[index].status}')">
                     <i class="fas fa-pen"></i>
                     </button>
                 </td>
                 <td>
-                  <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}', '${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].data}')">
+                  <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}', '${response[index].DepartmentCode}','${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].date}', '${response[index].session}')">
                    Send Out
                   </button>  
                 </td>
+                <td>${response[index].status}</td>
               </tr>
           `;  
       }
@@ -1815,15 +1837,16 @@ async function seacrhDepSch(){
                 <td>${response[index].end}</td>
                 <td>${response[index].duration}</td>
                 <td style="display:flex;gap:6px;">
-                  <button class="btn btn-sm btn-info" onclick="openEditScheduleModal('${response[index].timeID}')">
+                  <button class="btn btn-sm btn-info" onclick="openEditScheduleModal('${response[index].timeID}', '${response[index].department}', '${response[index].DepartmentCode}', '${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].session}', '${response[index].organization_code}', '${response[index].date}', '${response[index].status}')">
                     <i class="fas fa-pen"></i>
                     </button>
                 </td>
                 <td>
-                  <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}', '${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].date}')">
+                  <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}', '${response[index].DepartmentCode}','${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].date}', '${response[index].session}')">
                     <i class="fas fa-trash"></i>
                   </button>  
                 </td>
+                <td>${response[index].status}</td>
               </tr>
           `;  
       }
@@ -1840,6 +1863,12 @@ async function seacrhDepSch(){
   async function EditScheduleExam() {
     const data =  document.getElementById("formdata2");
      const form = new FormData(data);
+     const org_code = document.getElementById("organization-code").textContent;
+     const status = document.getElementById("edit-schedule-status").textContent;
+     const timeID = document.getElementById("timeID").textContent;
+     form.append("organization_code", org_code,);
+     form.append("timeID",timeID);
+     form.append("status", status);
      const obj = {};
      form.forEach((key, val)=>{
       obj[key]=val;
@@ -1849,6 +1878,7 @@ async function seacrhDepSch(){
         body:form
     });
     const result = await api.json();
+    console.log(result);
     if(result.status==="success"){
       displayScheduledTime();
       document.getElementById('editScheduleModal').style.display="none";
@@ -1858,9 +1888,19 @@ async function seacrhDepSch(){
     }
   }
 
-  async function sendTimeOut(dep, start, end, duration ,date){
-    const e = {department:dep, start:start, end:end, date:date};
-    const api = await fetch("/cbt/ansofra/apiadmin/notify/user/ofExam", {
+  async function sendTimeOut(dep, departCode, start, end, duration, date, session){
+    const org_code = document.getElementById("organization-code").textContent;
+    const e = {
+          department:dep, 
+          start:start, 
+          end:end, 
+          date:date, 
+          DepartmentCode:departCode, 
+          session:session, 
+          duration:duration,
+          organization_code:org_code
+        };
+    const api = await fetch("/cbt/ansofra/apiadmin/notify/user/of/Exam", {
         method:"POST",
         headers:{"Content-type":'application/json'},
         body:JSON.stringify(e)
@@ -1874,10 +1914,19 @@ async function seacrhDepSch(){
     }
   }
 
-function openEditScheduleModal(timeid) {
-  document.getElementById("timeID").value=timeid;
-  document.getElementById('editScheduleModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+function openEditScheduleModal(timeid, department, DepartmentCode, start, end, duration, session, organization_code, date, status){
+      document.getElementById("timeID").value=timeid;
+      document.getElementById('editScheduleModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('edit-schedule-department').value=department;
+      document.getElementById('edit-schedule-department-code').value=DepartmentCode;
+      document.getElementById('edit-schedule-date').value=date;
+      document.getElementById('edit-schedule-time-start').value=start;
+      document.getElementById('edit-schedule-time-end').value=end;
+      document.getElementById('edit-schedule-duration').value=duration;
+      document.getElementById('edit-session').value=session;
+      document.getElementById('timeID').textContent=timeid;
+      document.getElementById('edit-schedule-status').textContent=status;
 };
 
 window.closeEditScheduleModal = function() {

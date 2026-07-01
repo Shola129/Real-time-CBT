@@ -252,7 +252,7 @@ elseif($url === $adminArea . "/list/time/sets"){
     exit();
 }
 
-elseif($url===$adminArea . "/notify/user/ofExam"){
+elseif($url===$adminArea . "/notify/user/of/Exam"){
     require_once __DIR__ . $srcController . "/NotifyUserExamController.php";
     exit();
 }
