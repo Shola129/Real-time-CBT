@@ -9,6 +9,7 @@ class NotifyUserExam{
     private $dto;
     // private $table = Platform::SETEXAMTIME_TABLE;
     private $table2 = Platform::USERS_TABLE;
+    private $table4 = Platform::SETEXAMTIME_TABLE;
 
     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
@@ -17,7 +18,8 @@ class NotifyUserExam{
     public function process(){
         $where = [
             "department"=>$this->dto->department,
-            "organization_code"=>$this->dto->organization_code
+            "organization_code"=>$this->dto->organization_code,
+            "role"=>"user",
         ];
 
         $newMig = new Migration(null, $this->table2);
@@ -52,6 +54,11 @@ class NotifyUserExam{
             $end = $this->dto->end;
             $date = $this->dto->date;
             $duration = $this->dto->duration;
+            $department = $this->dto->department;
+            $session = $this->dto->session;
+            $departmentCode = $this->dto->DepartmentCode;
+            $organization_code = $this->dto->organization_code;
+            $organization_name = $this->dto->organization_name;
             foreach($response as $row){
                 $email = $row["email"];
                 $name = $row["fullname"];
@@ -306,16 +313,28 @@ class NotifyUserExam{
                                     <table class='exam-table' cellpadding='0' cellspacing='0'>
                                         <thead>
                                             <tr>
-                                                <th>📅 Date</th>
-                                                <th>⏰ Time (Start)</th>
-                                                <th>⏰ Time (End)</th>
+                                                <th>Org. Name</th>
+                                                <th>Org. Code</th>
+                                                <th>Department</th>
+                                                <th>Dept. Code</th>
+                                                <th>Date</th>
+                                                <th>Time (Start)</th>
+                                                <th>Time (End)</th>
+                                                <th>Duration</th>
+                                                <th>Session</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
+                                                <td>$organization_name</td>
+                                                <td>$organization_code</td>
+                                                <td>$department</td>
+                                                <td>$departmentCode</td>
                                                 <td>$date</td>
                                                 <td>$start</td>
                                                 <td>$end</td>
+                                                <td>$duration</td>
+                                                <td>$session</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -348,10 +367,28 @@ class NotifyUserExam{
                 $mail = $newMail->sendOtp('TimeTable', $body, $email);
                 $decodeMail = json_decode($mail, true);
                 if($decodeMail['status']==="success"){
-                    return json_encode([
-                        'status'=>'success',
-                        'response'=>'time scheduled have being saved and sent to the registered user department to ready'
-                    ], JSON_PRETTY_PRINT);
+                    $date = [
+                        "status"=>$this->dto->status
+                    ];
+
+                    $where = [
+                        "timeID"=>$this->dto->timeID
+                    ];
+
+                    $newMig4 = new Migration(null, $this->table4);
+                    $mig4 = $newMig4->edit($date, $where);
+                    $decodeMig4 = json_decode($mig4, true);
+                    if($decodeMig4["status"]=="success"){
+                        return json_encode([
+                            'status'=>'success',
+                            'response'=>'time scheduled have being saved and sent to the registered user department to ready'
+                        ], JSON_PRETTY_PRINT);
+                    }else{
+                        return json_encode([
+                            'status'=>'failed',
+                            'response'=>'error occur at our end here try again later'
+                        ], JSON_PRETTY_PRINT);
+                    }
                 }
                 else{
                     return $mail;

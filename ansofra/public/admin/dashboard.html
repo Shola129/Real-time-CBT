@@ -1842,7 +1842,7 @@ async function seacrhDepSch(){
                     </button>
                 </td>
                 <td>
-                  <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}', '${response[index].DepartmentCode}','${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].date}', '${response[index].session}')">
+                  <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}', '${response[index].DepartmentCode}','${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].date}', '${response[index].session}', '${response[index].status}', '${response[index].timeID}')">
                     <i class="fas fa-trash"></i>
                   </button>  
                 </td>
@@ -1888,8 +1888,9 @@ async function seacrhDepSch(){
     }
   }
 
-  async function sendTimeOut(dep, departCode, start, end, duration, date, session){
+  async function sendTimeOut(dep, departCode, start, end, duration, date, session, status, timeID){
     const org_code = document.getElementById("organization-code").textContent;
+    const org_name = document.getElementById("organization-name").textContent;
     const e = {
           department:dep, 
           start:start, 
@@ -1898,7 +1899,10 @@ async function seacrhDepSch(){
           DepartmentCode:departCode, 
           session:session, 
           duration:duration,
-          organization_code:org_code
+          organization_code:org_code,
+          organization_name:org_name,
+          status:status,
+          timeID:timeID
         };
     const api = await fetch("/cbt/ansofra/apiadmin/notify/user/of/Exam", {
         method:"POST",
