@@ -396,9 +396,9 @@ class NotifyUserExam{
             }
         }
         else{
-            return json_decode([
+            return json_encode([
                 'status'=>'fail',
-                'response'=>'no user found registered for the department'
+                'response'=>'No user found or registered for that department'
             ], JSON_PRETTY_PRINT);
         }
     }

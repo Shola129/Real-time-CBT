@@ -15,7 +15,7 @@ class SchScheduleDep{
      public function process(){
         $where = [
             'department'=>$this->dto->department,
-            'orgnization_code'=>$this->dto->orgnization_code
+            'organization_code'=>$this->dto->organization_code
         ];
 
         $newMig = new Migration(null, $this->table);

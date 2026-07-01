@@ -1810,18 +1810,20 @@ async function totalexamSche(){
 }
 
 async function seacrhDepSch(){
+    const org_code = document.getElementById("organization-code").textContent;
     const department = document.getElementById("schSearchInput").value.trim();
     if(!department){
         alert("department feld must not left empty");
     }
     else{
-      const e = {department:department};
+      const e = {department:department, organization_code:org_code};
       const api = await fetch('/cbt/ansofra/apiadmin/Search/Dep/Sch', {
           method:"POST",
           headers:{"Content-type":'application/json'},
           body:JSON.stringify(e)
       });
-      const result = await api.json();
+    const result = await api.json();
+    console.log(result);
     if(result.status==="success"){
     const response = result.response;
       let output = '';
@@ -1912,6 +1914,7 @@ async function seacrhDepSch(){
     const result = await api.json();
     if(result.status ==="success"){
       alert(result.response);
+      displayScheduledTime();
     }
     else{
       alert(result.response);
