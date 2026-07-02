@@ -1257,7 +1257,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
         </div>
       </div>
 
-      <!-- ── RESULTS ────────────────────────────────────────────── -->
+      <!-- ── RESULTS ── -->
       <div id="results" class="page">
         <div class="panel">
           <div class="panel-header">
@@ -1307,7 +1307,8 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
       <!-- results() script — preserved verbatim -->
       <script>
         async function results(){
-          const e ={status:"completed"};
+          const org_code = document.getElementById("organization-code").textContent;
+          const e ={status:"completed", organization_code:org_code};
           const api = await fetch("/cbt/ansofra/apiadmin/display/result", {
               method:"POST",
               headers:{"Content-type":"apllication/json"},
