@@ -297,6 +297,11 @@ elseif($url === $adminArea . "/search/dep/name"){
     exit();
 }
 
+elseif($url === $adminArea . "/checkOrgCode"){
+    require_once __DIR__ . $srcController . "/ChkOrgCodeController.php";
+    exit();
+}
+
 // EndPoint for user's area
 
 elseif($url === $usersArea . "/register"){
@@ -369,13 +374,15 @@ elseif($url === $usersArea . "/save/result"){
     exit();
 }
 
+elseif($url === $usersArea . "/verify"){
+    require_once __DIR__ . $appController . "/VerifyEmailController.php";
+    exit();
+}
+
 
 elseif($url === $usersArea. "/get/department/set/list"){
     require_once __DIR__ . $appController . "/GetDepListController.php";
     exit();
-
-
-    
 }
 // /api endpoints
 // elseif($url === $docRoot . $rootDir . $usersArea."/register" || $url === $usersArea."/register"."/"){

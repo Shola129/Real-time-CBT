@@ -4,7 +4,8 @@ use NewdichApp\Command\InsertData;
 use NewdichMiddleware\Index;
 use NewdichDto\AnsofraDto;
 
-$data = json_decode(file_get_contents("php://input"), true);
+// $data = json_decode(file_get_contents("php://input"), true);
+$data = $_POST;
 $mid = new Index();
 $cleanData = [];
 

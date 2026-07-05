@@ -9,10 +9,12 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
 <style>
 :root {
-  --blue:       #2563EB;
-  --blue-h:     #1D4ED8;
-  --blue-d:     #1E40AF;
-  --blue-light: #EFF6FF;
+  /* ── palette aligned to register.html ── */
+  --blue:       #2563EB;   /* primary */
+  --blue-h:     #1D4ED8;   /* primary hover */
+  --blue-d:     #1E3A8A;   /* deep blue (left-panel gradient start) */
+  --blue-b:     #3B82F6;   /* bright blue (left-panel gradient end) */
+  --blue-light: #EFF4FF;   /* primary tint */
   --blue-mid:   #BFDBFE;
   --blue-pale:  #DBEAFE;
   --bg:         #F8FAFC;
@@ -24,23 +26,25 @@
   --text-m:     #64748B;
   --text-f:     #94A3B8;
   --success:    #16A34A;
-  --success-bg: #F0FDF4;
+  --success-bg: #ECFDF3;
   --success-bdr:#BBF7D0;
   --danger:     #DC2626;
   --danger-bg:  #FEF2F2;
   --danger-bdr: #FECACA;
-  --navy:       #0F172A;
-  --navy-light: #1E3A5F;
+  --navy:       #1E3A8A;
+  --navy-light: #3B82F6;
   --red:        #DC2626;
   --red-light:  #FEF2F2;
   --off-white:  #F8FAFC;
   --text-muted: #64748B;
   --ink-soft:   #64748B;
   --r-md: 8px; --r-lg: 12px; --r-xl: 16px; --r-2xl: 20px; --r-pill: 999px;
-  --sh-sm: 0 1px 3px rgba(15,23,42,.07),0 1px 2px rgba(15,23,42,.04);
-  --sh-lg: 0 12px 32px rgba(15,23,42,.11),0 4px 10px rgba(15,23,42,.05);
+  --sh-sm: 0 1px 2px rgba(15,23,42,.06);
+  --sh-lg: 0 20px 60px rgba(15,23,42,.12),0 2px 8px rgba(15,23,42,.04);
   --t: all .18s cubic-bezier(.4,0,.2,1);
 }
+
+
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{
@@ -53,21 +57,20 @@ body{
 .auth-page{width:100%;min-height:100vh;display:flex}
 
 .left-panel{
-  width:42%;min-height:100vh;background:var(--text);
+  width:42%;min-height:100vh;
+  background:linear-gradient(160deg, var(--navy) 0%, var(--blue) 55%, var(--navy-light) 100%);
   display:flex;flex-direction:column;justify-content:space-between;
   padding:52px 52px 48px;position:relative;overflow:hidden;flex-shrink:0;
 }
 .left-panel::before{
   content:'';position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(37,99,235,.06)1px,transparent 1px),
-    linear-gradient(90deg,rgba(37,99,235,.06)1px,transparent 1px);
-  background-size:52px 52px;pointer-events:none;
+  background-image:radial-gradient(rgba(255,255,255,0.14) 1px, transparent 1px);
+  background-size:22px 22px;opacity:.6;pointer-events:none;
 }
 .left-panel::after{
-  content:'';position:absolute;top:0;right:0;
-  width:4px;height:100%;
-  background:linear-gradient(to bottom,var(--blue),transparent 70%);
+  content:'';position:absolute;width:420px;height:420px;border-radius:50%;
+  background:radial-gradient(circle, rgba(255,255,255,.16), transparent 70%);
+  top:-120px;right:-140px;pointer-events:none;
 }
 .lp-top,.lp-mid,.lp-bot{position:relative;z-index:2}
 .lp-mid{flex:1;display:flex;flex-direction:column;justify-content:center;padding:48px 0 40px}
@@ -75,40 +78,40 @@ body{
 /* Brand lockup */
 .brand-lockup{display:flex;align-items:center;gap:12px}
 .brand-icon{
-  width:36px;height:36px;background:var(--blue);border-radius:var(--r-lg);
+  width:36px;height:36px;background:rgba(255,255,255,.16);border-radius:var(--r-lg);
+  border:1px solid rgba(255,255,255,.28);
   display:flex;align-items:center;justify-content:center;
   font-size:15px;font-weight:800;color:#fff;flex-shrink:0;
-  box-shadow:0 0 0 3px rgba(37,99,235,.25);
 }
 .brand-name-txt{font-size:17px;font-weight:800;color:#fff;letter-spacing:-.3px}
-.brand-sub-txt{font-size:11px;color:rgba(255,255,255,.4);font-weight:500;margin-top:1px}
+.brand-sub-txt{font-size:11px;color:rgba(255,255,255,.72);font-weight:500;margin-top:1px}
 
-.gold-rule{width:40px;height:2px;background:var(--blue);border-radius:var(--r-pill);margin-bottom:26px}
+.gold-rule{width:40px;height:2px;background:rgba(255,255,255,.5);border-radius:var(--r-pill);margin-bottom:26px}
 .lp-headline{font-size:26px;font-weight:800;color:#fff;line-height:1.2;letter-spacing:-.4px;margin-bottom:12px}
-.lp-sub{font-size:14px;color:rgba(255,255,255,.52);line-height:1.75;margin-bottom:32px;max-width:340px}
+.lp-sub{font-size:14px;color:rgba(255,255,255,.82);line-height:1.75;margin-bottom:32px;max-width:340px}
 
 .feat-list{display:flex;flex-direction:column;gap:15px}
 .feat-item{display:flex;align-items:flex-start;gap:13px}
 .feat-bullet{
   width:20px;height:20px;border-radius:50%;flex-shrink:0;margin-top:1px;
-  background:rgba(37,99,235,.2);border:1px solid rgba(37,99,235,.35);
+  background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.3);
   display:flex;align-items:center;justify-content:center;
 }
-.feat-bullet::after{content:'✓';font-size:10px;font-weight:800;color:var(--blue-mid)}
-.feat-text{font-size:13px;color:rgba(255,255,255,.58);line-height:1.6}
-.feat-text strong{color:rgba(255,255,255,.88);font-weight:600}
+.feat-bullet::after{content:'✓';font-size:10px;font-weight:800;color:#fff}
+.feat-text{font-size:13px;color:rgba(255,255,255,.72);line-height:1.6}
+.feat-text strong{color:#fff;font-weight:600}
 
 /* Trust strip */
 .trust-strip{
   display:flex;align-items:center;gap:18px;margin-top:36px;
-  padding:14px 18px;background:rgba(37,99,235,.1);
-  border:1px solid rgba(37,99,235,.2);border-radius:var(--r-lg);
+  padding:14px 18px;background:rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.22);border-radius:var(--r-lg);
   flex-wrap:wrap;
 }
-.trust-item{display:flex;align-items:center;gap:7px;font-size:12px;color:rgba(255,255,255,.6);font-weight:500}
-.trust-item i{font-size:13px;color:var(--blue-mid)}
+.trust-item{display:flex;align-items:center;gap:7px;font-size:12px;color:rgba(255,255,255,.85);font-weight:500}
+.trust-item i{font-size:13px;color:#fff}
 
-.lp-bot-legal{font-size:11px;color:rgba(255,255,255,.22);line-height:1.6;margin-top:28px}
+.lp-bot-legal{font-size:11px;color:rgba(255,255,255,.5);line-height:1.6;margin-top:28px}
 
 /* ── RIGHT PANEL ──────────────────────────────── */
 .right-panel{
@@ -375,8 +378,7 @@ body{
     }
   }
 
-  // Allow Enter key
-  document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
 </script>
 </body>
 </html>
