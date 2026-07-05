@@ -422,6 +422,8 @@ class InsertData{
                             "response"=>"successfully regsitered",
                         ], JSON_PRETTY_PRINT);
                 }
+
+                
                 else{
                         return json_encode([
                             "status"=>"success",
