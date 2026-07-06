@@ -90,7 +90,7 @@ elseif($url=== $docRoot.$rootDir ."/user/register" || $url ===$docRoot.$rootDir.
 }
 
 elseif($url=== $docRoot.$rootDir ."/user/dashboard" || $url ===$docRoot.$rootDir."/user/dashboard" ."/"){
-    require_once __DIR__ ."/../ansofra/public/account/dashboard.html";
+    require_once __DIR__ ."/../ansofra/public/dashboard.html";
     exit();
 }
 
@@ -382,6 +382,21 @@ elseif($url === $usersArea . "/verify"){
 
 elseif($url === $usersArea. "/get/department/set/list"){
     require_once __DIR__ . $appController . "/GetDepListController.php";
+    exit();
+}
+
+elseif($url === $adminArea . "/set/question/no/mark/per/answer"){
+    require_once __DIR__ . $srcController . "/SetQuestNoMarAnsController.php";
+    exit();
+}
+
+elseif($url === $adminArea . "/edit/question/no/mark/per/answer"){
+    require_once __DIR__ . $srcController . "/EditQuestNoMarAnsController.php";
+    exit();
+}
+
+elseif($url === $usersArea . "/get/max/q/score/q"){
+    require_once __DIR__ . $appController . "/GetQuestNoMarAnsController.php";
     exit();
 }
 // /api endpoints

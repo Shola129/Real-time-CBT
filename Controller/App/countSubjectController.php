@@ -1,6 +1,6 @@
 <?php
 namespace NewdichControllerApp;
-use NewdichApp\query\countSubject;
+use NewdichApp\Query\CountSubject;
 use NewdichDto\AnsofraDto;
 use NewdichMiddleware\Index;
 
@@ -13,7 +13,7 @@ foreach($data as $key=>$val){
 }
 
 $dto = new AnsofraDto($cleanData);
-$logic = new countSubject($dto);
+$logic = new CountSubject($dto);
 $log = $logic->process();
 echo $log;
 exit();

@@ -1,8 +1,8 @@
 <?php
 namespace NewdichControllerApp;
-use NewdichApp\Query\GetExamdetails;
-use NewdichDto\AnsofraDto;
+use NewdichApp\Query\GetQuestNoMarAns;
 use NewdichMiddleware\Index;
+use NewdichDto\AnsofraDto;
 
 $data = json_decode(file_get_contents("php://input"), true);
 $mid = new Index();
@@ -13,7 +13,7 @@ foreach($data as $key=>$val){
 }
 
 $dto = new AnsofraDto($cleanData);
-$logic = new GetExamdetails($dto);
+$logic = new GetQuestNoMarAns($dto);
 $log = $logic->process();
 echo $log;
 exit();

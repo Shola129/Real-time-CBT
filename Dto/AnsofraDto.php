@@ -70,6 +70,10 @@ class AnsofraDto{
     public $organization_code;
     public $subjectCode;
     public $session;
+    public $save_id;
+    public $total_question;
+    public $mark_per_score;
+    public $limit;
     
     public function __construct(array $inData){
         $allProp = get_object_vars($this);

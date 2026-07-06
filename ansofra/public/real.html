@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard — EduTest CBT</title>
+  <link rel="stylesheet" href="public/css/style.css"/>
+  <style>
+    :root {
+      --navy:#0a1f44;--navy-light:#122b5e;--navy-dark:#060f22;--navy-mid:#1a3a6e;
+      --white:#ffffff;--off-white:#f4f6fb;--red:#c0392b;--red-hover:#a93226;
+      --red-light:#fdecea;--border:#dde3f0;--text-muted:#8896b3;
+      --success:#1a7f4b;--gold:#f0b429;
+      --shadow-sm:0 2px 12px rgba(10,31,68,0.10);--shadow-lg:0 24px 80px rgba(0,0,0,0.30);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{font-family:'Source Sans 3',sans-serif;min-height:100vh;background:var(--off-white);-webkit-font-smoothing:antialiased;}
+    #dashboard-page{display:flex;flex-direction:column;min-height:100vh;}
+    .dash-body{display:flex;flex:1;min-height:calc(100vh - 60px);}
+    .top-bar{background:var(--navy);color:var(--white);padding:0 28px;display:flex;align-items:center;justify-content:space-between;height:60px;box-shadow:0 2px 12px rgba(0,0,0,0.2);position:sticky;top:0;z-index:200;}
+    .top-bar-left{display:flex;align-items:center;gap:14px;}
+    .top-bar-emblem{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;font-family:'Merriweather',serif;font-size:13px;font-weight:700;}
+    .top-bar-title{font-family:'Merriweather',serif;font-size:15px;font-weight:700;}
+    .top-bar-title small{display:block;font-family:'Source Sans 3',sans-serif;font-size:11px;font-weight:400;color:rgba(255,255,255,0.55);letter-spacing:0.4px;}
+    .top-bar-right{display:flex;align-items:center;gap:16px;}
+    .nav-user{display:flex;align-items:center;gap:10px;font-size:13px;color:rgba(255,255,255,0.75);}
+    .nav-avatar{width:34px;height:34px;border-radius:50%;background:rgba(255,255,255,0.15);border:2px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;font-family:'Merriweather',serif;font-size:12px;font-weight:700;color:var(--white);}
+    .btn-logout{background:rgba(192,57,43,0.75);color:var(--white);padding:6px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;border:none;transition:background 0.18s;}
+    .btn-logout:hover{background:var(--red);}
+    .sidebar{width:248px;flex-shrink:0;background:var(--navy);color:var(--white);padding:28px 16px;display:flex;flex-direction:column;gap:18px;}
+    .profile-card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:14px;padding:22px 16px;text-align:center;}
+    .profile-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--navy-mid),var(--navy-light));border:3px solid rgba(255,255,255,0.2);margin:0 auto 14px;display:flex;align-items:center;justify-content:center;font-family:'Merriweather',serif;font-size:26px;font-weight:700;color:var(--white);}
+    .profile-name{font-size:15px;font-weight:700;line-height:1.3;}
+    .profile-reg{font-size:11px;color:rgba(255,255,255,0.5);letter-spacing:0.8px;margin-top:3px;}
+    .profile-badge{display:inline-block;margin-top:10px;background:var(--red);color:var(--white);font-size:10px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;padding:3px 10px;border-radius:20px;}
+    .profile-details{margin-top:14px;display:flex;flex-direction:column;gap:7px;}
+    .profile-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:6px 10px;background:rgba(255,255,255,0.05);border-radius:7px;}
+    .profile-row .lbl{color:rgba(255,255,255,0.5);}
+    .profile-row .val{font-weight:600;font-size:11px;color:var(--white);}
+    .side-panel{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:16px;}
+    .side-panel h4{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:rgba(255,255,255,0.45);margin-bottom:12px;}
+    .subject-list{display:flex;flex-direction:column;gap:7px;}
+    .subject-list-item{display:flex;align-items:center;gap:9px;font-size:12px;color:rgba(255,255,255,0.75);padding:5px 8px;border-radius:6px;transition:background 0.15s;}
+    .subject-list-item:hover{background:rgba(255,255,255,0.08);}
+    .subject-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+    .instruction-list{display:flex;flex-direction:column;gap:8px;}
+    .instruction-item{display:flex;gap:9px;font-size:11px;color:rgba(255,255,255,0.65);line-height:1.5;}
+    .instruction-item .num{width:18px;height:18px;border-radius:50%;background:rgba(255,255,255,0.1);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px;}
+    .main-content{flex:1;overflow-y:auto;}
+    #welcome-screen{padding:40px;animation:fadeUp 0.4s ease;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+    .welcome-hero{background:var(--navy);border-radius:20px;padding:50px 48px;color:var(--white);text-align:center;position:relative;overflow:hidden;margin-bottom:32px;}
+    .welcome-hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 30px,rgba(255,255,255,0.015) 30px,rgba(255,255,255,0.015) 60px);}
+    .welcome-hero::after{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(192,57,43,0.2),transparent 70%);right:-120px;bottom:-120px;}
+    .welcome-hero>*{position:relative;z-index:1;}
+    .welcome-greeting{font-size:13px;color:rgba(255,255,255,0.55);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+    .welcome-name{font-family:'Merriweather',serif;font-size:34px;font-weight:900;line-height:1.1;margin-bottom:10px;}
+    .welcome-name span{color:var(--gold);}
+    .welcome-sub{font-size:14px;color:rgba(255,255,255,0.6);max-width:480px;margin:0 auto 32px;line-height:1.7;}
+    .start-btn{display:inline-flex;align-items:center;gap:10px;background:var(--red);color:var(--white);padding:16px 44px;border-radius:12px;font-family:'Source Sans 3',sans-serif;font-size:16px;font-weight:700;cursor:pointer;border:none;transition:all 0.2s;box-shadow:0 6px 24px rgba(192,57,43,0.4);letter-spacing:0.3px;}
+    .start-btn:hover{background:var(--red-hover);transform:translateY(-2px);box-shadow:0 10px 32px rgba(192,57,43,0.5);}
+    .start-btn:active{transform:translateY(0);}
+    .start-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none;}
+    .start-btn .arrow{font-size:20px;transition:transform 0.2s;}
+    .start-btn:not(:disabled):hover .arrow{transform:translateX(4px);}
+    .exam-status-badge{display:inline-flex;align-items:center;gap:8px;margin-top:14px;padding:8px 18px;border-radius:20px;font-size:13px;font-weight:600;letter-spacing:0.3px;}
+    .exam-status-badge.pending{background:rgba(240,180,41,0.18);color:var(--gold);border:1px solid rgba(240,180,41,0.3);}
+    .exam-status-badge.live{background:rgba(26,127,75,0.18);color:#2ecc71;border:1px solid rgba(46,204,113,0.3);}
+    .exam-status-badge.ended{background:rgba(192,57,43,0.15);color:var(--red);border:1px solid rgba(192,57,43,0.3);}
+    .exam-status-badge.loading{background:rgba(255,255,255,0.1);color:rgba(255,255,255,0.5);}
+    .status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+    .status-dot.pulse{animation:dotPulse 1.2s ease-in-out infinite;}
+    @keyframes dotPulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.4;transform:scale(0.7);}}
+    .info-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:28px;}
+    .info-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px 20px;box-shadow:var(--shadow-sm);}
+    .info-card .ic-icon{font-size:28px;margin-bottom:10px;}
+    .info-card .ic-label{font-size:11px;text-transform:uppercase;letter-spacing:0.9px;color:var(--text-muted);margin-bottom:4px;}
+    .info-card .ic-value{font-family:'Merriweather',serif;font-size:20px;font-weight:700;color:var(--navy);}
+    .info-card .ic-sub{font-size:12px;color:var(--text-muted);margin-top:2px;}
+    .subjects-section{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--shadow-sm);}
+    .subjects-section-head{padding:18px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;}
+    .subjects-section-head h3{font-family:'Merriweather',serif;font-size:16px;color:var(--navy);}
+    .subjects-section-head span{font-size:12px;color:var(--text-muted);}
+    .subject-table{width:100%;border-collapse:collapse;}
+    .subject-table th{padding:10px 24px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.9px;color:var(--text-muted);text-align:left;background:var(--off-white);border-bottom:1px solid var(--border);}
+    .subject-table td{padding:14px 24px;font-size:13px;border-bottom:1px solid var(--border);color:#1a2340;}
+    .subject-table tr:last-child td{border-bottom:none;}
+    .subject-table tr:hover td{background:#f8faff;}
+    .subj-color{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;vertical-align:middle;}
+    #exam-screen{display:none;flex-direction:column;flex:1;}
+    .subject-nav{background:var(--navy-dark);padding:0 28px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;}
+    .subject-nav::-webkit-scrollbar{display:none;}
+    .subject-tab{padding:11px 20px;font-size:13px;font-weight:600;color:rgba(255,255,255,0.5);cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s;white-space:nowrap;}
+    .subject-tab:hover{color:rgba(255,255,255,0.9);}
+    .subject-tab.active{color:var(--white);border-bottom-color:var(--red);}
+    .subject-tab .q-count{font-size:10px;color:rgba(255,255,255,0.4);margin-left:6px;}
+    .exam-body{display:flex;flex:1;}
+    .progress-panel .prog-row{display:flex;justify-content:space-between;font-size:12px;margin-bottom:7px;}
+    .progress-panel .prog-row .pname{color:rgba(255,255,255,0.7);}
+    .progress-panel .prog-row .pscore{font-weight:700;color:var(--white);}
+    .prog-bar{height:3px;background:rgba(255,255,255,0.1);border-radius:2px;margin-bottom:10px;}
+    .prog-bar-fill{height:100%;border-radius:2px;background:var(--red);transition:width 0.4s ease;}
+    .q-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
+    .q-dot{aspect-ratio:1;border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;cursor:pointer;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);transition:all 0.15s;}
+    .q-dot:hover{background:rgba(255,255,255,0.2);color:var(--white);}
+    .q-dot.answered{background:var(--success);color:var(--white);}
+    .q-dot.current{background:var(--red);color:var(--white);}
+    .q-dot.flagged{background:var(--gold);color:#1a2340;}
+    .question-area{flex:1;padding:28px 36px;overflow-y:auto;background:var(--off-white);}
+    .subj-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;padding-bottom:16px;border-bottom:2px solid var(--border);}
+    .subj-header h2{font-family:'Merriweather',serif;font-size:20px;color:var(--navy);font-weight:700;}
+    .subj-header .prog-info{font-size:13px;color:var(--text-muted);}
+    .subj-header .prog-info strong{color:var(--navy);}
+    .question-card{background:var(--white);border-radius:14px;padding:30px 32px;box-shadow:0 2px 16px rgba(10,31,68,0.07);border:1px solid var(--border);margin-bottom:20px;animation:fadeSlide 0.25s ease;}
+    @keyframes fadeSlide{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+    .q-number{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--red);margin-bottom:12px;display:flex;align-items:center;gap:10px;}
+    .q-number::after{content:'';flex:1;height:1px;background:var(--border);}
+    .question-text{font-size:16px;line-height:1.75;color:#1a2340;margin-bottom:22px;}
+    .options{display:flex;flex-direction:column;gap:10px;}
+    .option-item{display:flex;align-items:center;gap:14px;padding:13px 18px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all 0.18s;background:var(--white);}
+    .option-item:hover{border-color:var(--navy);background:#f0f4ff;}
+    .option-item.selected{border-color:var(--navy);background:#e8eef8;}
+    .option-letter{width:32px;height:32px;border-radius:50%;background:var(--off-white);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--navy);flex-shrink:0;transition:all 0.18s;border:1.5px solid var(--border);}
+    .option-item.selected .option-letter{background:var(--navy);color:var(--white);border-color:var(--navy);}
+    .option-text{font-size:14px;line-height:1.5;}
+    .nav-actions{display:flex;justify-content:space-between;align-items:center;margin-top:22px;}
+    .btn-nav-prev{background:var(--white);color:var(--navy);border:1.5px solid var(--border);padding:11px 22px;border-radius:8px;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all 0.18s;}
+    .btn-nav-prev:hover{border-color:var(--navy);background:#f0f4ff;}
+    .btn-nav-prev:disabled{opacity:0.4;cursor:not-allowed;}
+    .btn-nav-next{background:var(--navy);color:var(--white);padding:11px 22px;border-radius:8px;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all 0.18s;}
+    .btn-nav-next:hover{background:var(--navy-light);}
+    .btn-flag-q{background:var(--white);color:var(--gold);border:1.5px solid var(--gold);padding:10px 18px;border-radius:8px;font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.18s;}
+    .btn-flag-q:hover{background:#fffbf0;}
+    .btn-flag-q.flagged{background:var(--gold);color:#1a2340;}
+    .btn-submit-exam{background:var(--red);color:var(--white);padding:11px 22px;border-radius:8px;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all 0.18s;}
+    .btn-submit-exam:hover{background:var(--red-hover);}
+    .timer-badge{background:rgba(192,57,43,0.85);color:var(--white);padding:6px 16px;border-radius:20px;font-size:17px;font-weight:700;letter-spacing:1px;min-width:92px;text-align:center;font-variant-numeric:tabular-nums;}
+    .timer-badge.warning{background:var(--gold);color:#1a2340;}
+    .timer-badge.danger{background:var(--red);animation:pulse 1s infinite;}
+    @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.65;}}
+    .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 24px;border-radius:9px;font-family:'Source Sans 3',sans-serif;font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all 0.18s;}
+    .btn-ghost{background:var(--white);color:var(--navy);border:1.5px solid var(--border);}
+    .btn-ghost:hover{border-color:var(--navy);background:#f0f4ff;}
+    .btn-red{background:var(--red);color:var(--white);}
+    .btn-red:hover{background:var(--red-hover);}
+    .btn-primary{background:var(--navy);color:var(--white);}
+    .btn-primary:hover{background:var(--navy-light);}
+    .modal-overlay{position:fixed;inset:0;background:rgba(6,15,34,0.72);display:none;align-items:center;justify-content:center;z-index:999;backdrop-filter:blur(4px);}
+    .modal-overlay.open{display:flex;}
+    .modal{background:var(--white);border-radius:18px;padding:42px 44px;max-width:440px;width:90%;text-align:center;box-shadow:var(--shadow-lg);animation:modalIn 0.25s ease;}
+    @keyframes modalIn{from{opacity:0;transform:scale(.95);}to{opacity:1;transform:scale(1);}}
+    .modal-icon{width:70px;height:70px;border-radius:50%;background:var(--red-light);margin:0 auto 18px;display:flex;align-items:center;justify-content:center;font-size:30px;}
+    .modal h3{font-family:'Merriweather',serif;font-size:20px;color:var(--navy);margin-bottom:10px;}
+    .modal p{font-size:14px;color:#556;line-height:1.6;}
+    .modal-actions{display:flex;gap:12px;margin-top:26px;}
+    .modal-actions .btn{flex:1;}
+    #result-screen{display:none;min-height:100vh;background:linear-gradient(135deg,var(--navy-dark),var(--navy));align-items:center;justify-content:center;flex-direction:column;padding:40px 20px;}
+    .result-card{background:var(--white);border-radius:20px;padding:48px 44px;max-width:560px;width:100%;text-align:center;box-shadow:var(--shadow-lg);}
+    .result-title{font-family:'Merriweather',serif;font-size:24px;color:var(--navy);margin-bottom:4px;}
+    .result-sub{font-size:13px;color:var(--text-muted);margin-bottom:30px;}
+    .result-circle{width:140px;height:140px;border-radius:50%;background:var(--navy);margin:0 auto 28px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--white);box-shadow:0 8px 32px rgba(10,31,68,0.3);}
+    .result-circle .big{font-size:42px;font-weight:700;line-height:1;}
+    .result-circle .out{font-size:13px;color:rgba(255,255,255,0.55);}
+    .result-breakdown{margin-bottom:28px;}
+    .result-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);font-size:14px;}
+    .result-row:last-child{border-bottom:none;}
+    .result-row .sname{color:#333;}
+    .result-row .spts{font-weight:700;color:var(--navy);}
+    @media(max-width:768px){
+      .sidebar{display:none;}
+      .question-area{padding:18px 16px;}
+      #welcome-screen{padding:20px 16px;}
+      .welcome-hero{padding:32px 20px;}
+      .welcome-name{font-size:24px;}
+    }
+  </style>
+</head>
+<body>
+
+<div id="dashboard-page">
+  <div class="top-bar">
+    <div class="top-bar-left">
+      <div class="top-bar-emblem">ET</div>
+      <div class="top-bar-title">EduTest CBT<small id="top-session-label">Candidate Dashboard</small></div>
+    </div>
+    <div class="top-bar-right">
+      <div id="timer-wrap" style="display:none"><div class="timer-badge" id="timer">00:00:00</div></div>
+      <div class="nav-user">
+        <div class="nav-avatar" id="nav-avatar">--</div>
+        <span id="nav-name">Candidate</span>
+      </div>
+      <button class="btn-logout" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="dash-body">
+    <div class="sidebar">
+      <div class="profile-card">
+        <div class="profile-avatar" id="sidebar-avatar">--</div>
+        <div class="profile-name" id="sidebar-name">—</div>
+        <div class="profile-reg"  id="sidebar-reg">—</div>
+        <div id="sidebar-email" hidden>-</div>
+        <div class="profile-badge">UTME Candidate</div>
+        <div class="profile-details">
+          <div class="profile-row"><span class="lbl">State</span>  <span class="val" id="sb-state">—</span></div>
+          <div class="profile-row"><span class="lbl">Year</span>   <span class="val" id="sb-year">—</span></div>
+          <div class="profile-row"><span class="lbl">Course</span> <span class="val" id="sb-course">—</span></div>
+          <div class="profile-row"><span class="lbl">Gender</span> <span class="val" id="sb-gender">—</span></div>
+          <div class="profile-row"><span class="lbl">Phone</span>  <span class="val" id="sb-phone">—</span></div>
+        </div>
+      </div>
+      <div class="side-panel" id="subjects-side">
+        <h4>Subjects</h4>
+        <div class="subject-list" id="subject-list-side"></div>
+      </div>
+      <div class="side-panel progress-panel" id="progress-side" style="display:none">
+        <h4>Progress</h4>
+        <div id="progress-list"></div>
+      </div>
+      <div class="side-panel" id="q-panel" style="display:none">
+        <h4>Questions</h4>
+        <div class="q-grid" id="q-grid"></div>
+      </div>
+      <div class="side-panel" id="instructions-side">
+        <h4>Instructions</h4>
+        <div class="instruction-list">
+          <div class="instruction-item"><div class="num">1</div><span>Answer all questions in each subject.</span></div>
+          <div class="instruction-item"><div class="num">2</div><span>Navigate between subjects freely.</span></div>
+          <div class="instruction-item"><div class="num">3</div><span>Flag uncertain questions to review later.</span></div>
+          <div class="instruction-item"><div class="num">4</div><span>Exam auto-submits when time expires.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div id="welcome-screen">
+        <div class="welcome-hero">
+          <div class="welcome-greeting">Welcome back, Candidate</div>
+          <div class="welcome-name" id="hero-name">Loading…</div>
+          <div class="welcome-sub">Review your details below, then start when you are prepared. The timer begins the moment you click <em>Start Examination</em>.</div>
+          <button class="start-btn" id="start-btn" onclick="launchExam()" disabled>
+            <span id="start-btn-text">Checking exam status…</span>
+            <span class="arrow">→</span>
+          </button>
+          <div><div class="exam-status-badge loading" id="exam-status-badge">
+            <span class="status-dot" style="background:rgba(255,255,255,0.4)"></span>
+            <span>Loading exam information…</span>
+          </div></div>
+        </div>
+        <div class="info-cards">
+          <div class="info-card"><div class="ic-icon">📋</div><div class="ic-label">Registration No.</div><div class="ic-value" id="ic-reg" style="font-size:14px">—</div></div>
+          <div class="info-card"><div class="ic-icon">⏱</div><div class="ic-label">Duration</div><div class="ic-value" id="ic-dura">—</div><div class="ic-sub" id="ic-dura-sub"></div></div>
+          <div class="info-card"><div class="ic-icon">📚</div><div class="ic-label">Subjects</div><div class="ic-value" id="count-ub">—</div><div class="ic-sub">for your department</div></div>
+          <div class="info-card"><div class="ic-icon">📅</div><div class="ic-label">Exam Date &amp; Time</div><div class="ic-value" id="next-date" style="font-size:14px">—</div><div class="ic-sub" id="next-time">—</div></div>
+        </div>
+        <div class="subjects-section">
+          <div class="subjects-section-head"><h3>Examination Subjects</h3><span id="subj-table-meta">—</span></div>
+          <table class="subject-table">
+            <thead><tr><th>#</th><th>Subject</th><th>Questions</th><th>Max Score</th></tr></thead>
+            <tbody id="subject-table-body"><tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:20px">Loading subjects…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="exam-screen">
+        <div class="subject-nav" id="subject-nav"></div>
+        <div class="exam-body">
+          <div class="question-area" id="question-area"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="result-screen">
+  <div class="result-card">
+    <div class="result-title">Examination Complete</div>
+    <div class="result-sub">Your answers have been submitted and recorded.</div>
+    <!-- <div class="result-circle">
+      <div class="big" id="result-total">—</div>
+      <div class="out" id="result-out">out of 400</div>
+    </div> -->
+    <div class="result-breakdown" id=""> You be notify your result on registered email soon </div>
+    <button class="btn btn-primary" onclick="backToDash()">Back to Dashboard</button>
+  </div>
+</div>
+<div class="modal-overlay" id="submit-modal">
+  <div class="modal">
+    <div class="modal-icon">⚠️</div>
+    <h3>Submit Examination?</h3>
+    <p>You are about to submit your answers. This action cannot be undone. Ensure you have attempted all questions.</p>
+    <div class="modal-actions">
+      <button class="btn btn-ghost" onclick="closeModal()">Go Back</button>
+      <button class="btn btn-red"   onclick="finalSubmit()">Submit Now</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/*    STATE*/
+let SUBJECTS  = [];
+let user      = null;
+let userData  = null;
+ const idEmail = localStorage.getItem('cbt_session_email');
+ const org_code = localStorage.getItem('cbt_session_org_code');
+ if(!org_code || !idEmail){
+    window.location.href="/cbt/ansofra/user/login";
+    return;
+ }
+let examState = {
+  currentSubject:  0,
+  currentQuestion: 0,
+  answers:   [],     // answers[subjectIdx][questionIdx] = optionIndex | -1
+  flagged:   [],     // flagged[subjectIdx][questionIdx] = bool
+  questions: [],     // questions[subjectIdx] = fetched question array for that subject
+  subjects:  [],     // subjects[subjectIdx] = { department, subject } reference
+  totalSubjects: 0,
+  timerSeconds:   0,
+  timerInterval:  null,
+  started: false,
+  answerDetails: [],
+};
+
+/*    INIT*/
+window.addEventListener('load', () => {
+  const raw = localStorage.getItem('cbt_session_email') || "sholadanielek@gmail.com";
+  if (!raw) { window.location.href = 'login.html'; return; }
+  user = raw;
+  populateUI();
+});
+
+/*    FETCH — candidate profile*/
+async function populateUI() {
+  // try {
+    const res    = await fetch('/cbt/ansofra/api/details', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: user, organization_code:org_code}),
+    });
+    const result = await res.json();
+    if (result.status !== 'success' || !result.response?.[0]) {
+          window.location.href="/cbt/ansofra/user/login";
+          return;
+        //  console.error('Profile error:', result); return; 
+    }
+
+    const p  = result.response[0];
+    userData = p;
+    const initials = p.fullname.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+
+    document.getElementById('nav-avatar').textContent      = initials;
+    document.getElementById('nav-name').textContent        = p.firstName || p.fullname.split(' ')[0];
+    document.getElementById('sidebar-avatar').textContent  = initials;
+    document.getElementById('sidebar-name').textContent    = p.fullname;
+    document.getElementById('sidebar-reg').textContent     = p.regNum;
+    document.getElementById('sb-state').textContent        = p.state      || '—';
+    document.getElementById('sb-year').textContent         = p.year       || '—';
+    document.getElementById('sb-course').textContent       = p.department || '—';
+    document.getElementById('sb-gender').textContent       = p.gender     || '—';
+    document.getElementById('sb-phone').textContent        = p.phone      || '—';
+    document.getElementById('ic-reg').textContent          = p.regNum;
+    document.getElementById('sidebar-email').textContent = p.email;
+    document.getElementById('hero-name').innerHTML =
+      `Welcome, <span>${p.firstName || p.fullname.split(' ')[0]}</span>`;
+
+    await Promise.all([
+      fetchSubjectList(p.department, org_code),
+      fetchExamDetails(p.department, org_code),
+      fetchSubjectCount(p.department, org_code),
+    ]);
+    
+  // } catch (err) { console.error('populateUI:', err); }
+}
+
+/*    FETCH — subject list (sidebar + table)*/
+async function fetchSubjectList(department) {
+  try {
+    const res    = await fetch('/cbt/ansofra/api/getAllSebject', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ department,  }),
+    });
+    const result = await res.json();
+    const list   = result.response || [];
+    const palette = ['#3498db','#e74c3c','#2ecc71','#f39c12','#9b59b6','#1abc9c'];
+
+    document.getElementById('subject-list-side').innerHTML = list.map((s, i) => `
+      <div class="subject-list-item">
+        <span class="subject-dot" style="background:${palette[i % palette.length]}"></span>${s.subject}
+      </div>`).join('');
+
+    const tbody = document.getElementById('subject-table-body');
+    if (!list.length) {
+      tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;color:var(--text-muted);padding:20px">No subjects configured yet.</td></tr>`;
+    } else {
+      tbody.innerHTML = list.map((s, i) => `
+        <tr>
+          <td>${i+1}</td>
+          <td><span class="subj-color" style="background:${palette[i%palette.length]}"></span>${s.subject}</td>
+          <td>${s.numQuestion ?? s.num_question ?? '—'}</td>
+          <td>${s.maxScore   ?? s.max_score    ?? '—'}</td>
+        </tr>`).join('');
+      const totalQ = list.reduce((t, s) => t + (parseInt(s.numQuestion ?? s.num_question) || 0), 0);
+      document.getElementById('subj-table-meta').textContent =
+        `${list.length} subject${list.length !== 1 ? 's' : ''} · ${totalQ} total questions`;
+    }
+  } catch (err) { console.error('fetchSubjectList:', err); }
+}
+
+/*    FETCH — exam details*/
+async function fetchExamDetails(department) {
+  const btn    = document.getElementById('start-btn');
+  const btnTxt = document.getElementById('start-btn-text');
+  const badge  = document.getElementById('exam-status-badge');
+  const fullname = document.getElementById("sidebar-name").textContent.trim();
+  const regNum = document.getElementById("sidebar-reg").textContent.trim();
+  const e = {
+    fullname:fullname,
+    department:department,
+    regNum:regNum
+  };
+  const setStatus = (cls, dot, dotStyle, text) => {
+    badge.className = `exam-status-badge ${cls}`;
+    badge.innerHTML = `<span class="status-dot ${dot}" style="${dotStyle}"></span>${text}`;
+  };
+  // console.log(e);
+  // try {
+    const res    = await fetch('/cbt/ansofra/api/getExamdetails', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(e),
+    });
+    const result = await res.json();
+
+    if (result.status === 'failed' || !result.response?.[0]) {
+      setStatus('ended','','background:var(--text-muted)','No exam scheduled yet. You will be notified by email.');
+      btnTxt.textContent = 'Exam Not Scheduled'; btn.disabled = true; return;
+    }
+    
+    else if(result.status === 'fail'){
+      setStatus('ended','','background:var(--text-muted)','You have attempted or sitting for exam.');
+      btnTxt.textContent = 'Exam Attempted already'; btn.disabled = true; return;
+    }
+
+    const exam         = result.response[0];
+    const durationMins = parseInt(exam.duration) || 120;
+    const startDT      = buildDatetime(exam.date, exam.start);
+    const endDT        = buildDatetime(exam.date, exam.end);
+    const now          = new Date();
+
+    document.getElementById('ic-dura').textContent     = `${durationMins} mins`;
+    document.getElementById('ic-dura-sub').textContent = formatDuration(durationMins);
+    document.getElementById('next-date').textContent   = niceDate(exam.date);
+    document.getElementById('next-time').textContent   = `${niceTime(exam.start)} — ${niceTime(exam.end)}`;
+
+    examState.timerSeconds = durationMins * 60;
+
+    if (now < startDT) {
+      const diff  = startDT - now;
+      const hh    = Math.floor(diff / 3_600_000);
+      const mm    = Math.floor((diff % 3_600_000) / 60_000);
+      const label = hh > 0 ? `${hh}h ${mm}m` : `${mm} min${mm !== 1 ? 's' : ''}`;
+      setStatus('pending','','background:var(--gold)',
+        `Exam starts in <strong style="margin-left:4px">${label}</strong>`);
+      btnTxt.textContent = 'Exam Not Started Yet'; btn.disabled = true;
+      const msLeft = startDT - now;
+      if (msLeft < 86_400_000) {
+        setTimeout(() => {
+          if (new Date() < endDT) {
+            btn.disabled = false; btnTxt.textContent = 'Start Examination';
+            setStatus('live','pulse','background:#2ecc71','Exam is live — you may begin now');
+          }
+        }, msLeft);
+      }
+    } else if (now >= startDT && now < endDT) {
+      setStatus('live','pulse','background:#2ecc71','Exam is live — you may begin now');
+      btnTxt.textContent = 'Start Examination'; btn.disabled = false;
+    } else {
+      setStatus('ended','','background:var(--red)','This examination window has closed.');
+      btnTxt.textContent = 'Exam Has Ended'; btn.disabled = true;
+    }
+  // } catch (err) {
+  //   console.error('fetchExamDetails:', err);
+  //   setStatus('ended','','background:var(--text-muted)','Could not load exam details. Please refresh.');
+  //   btnTxt.textContent = 'Unable to Load'; btn.disabled = true;
+  // }
+}
+
+/*    FETCH — subject count*/
+async function fetchSubjectCount(department) {
+  try {
+    const res    = await fetch('/cbt/ansofra/api/countSubject', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ department }),
+    });
+    const result = await res.json();
+    document.getElementById('count-ub').textContent = result.response ?? '—';
+  } catch (err) { console.error('fetchSubjectCount:', err); }
+}
+
+/*    LAUNCH EXAM*/
+async function launchExam() {
+  const btn    = document.getElementById('start-btn');
+  const btnTxt = document.getElementById('start-btn-text');
+  btn.disabled = true; btnTxt.textContent = 'Verifying…';
+
+  const department = userData?.department
+    || document.getElementById('sb-course').textContent.trim();
+
+  const res    = await fetch('/cbt/ansofra/api/getExamdetails', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ department }),
+  });
+  const result = await res.json();
+
+  if (result.status !== 'success' || !result.response?.[0]) {
+    setLaunchError('No exam has been scheduled for your department yet.');
+    btn.disabled = false; btnTxt.textContent = 'Exam Not Scheduled'; return;
+  }
+  else if(result.status === 'fail'){
+    setStatus('ended','','background:var(--text-muted)','You have attempted or sitting for exam.');
+    btnTxt.textContent = 'Exam Attempted already'; btn.disabled = true; return;
+  }
+
+  const exam         = result.response[0];
+  const durationMins = parseInt(exam.duration) || 120;
+  const startDT      = buildDatetime(exam.date, exam.start);
+  const endDT        = buildDatetime(exam.date, exam.end);
+  const now          = new Date();
+
+  if (now < startDT) {
+    const diff  = startDT - now;
+    const hh    = Math.floor(diff / 3_600_000);
+    const mm    = Math.floor((diff % 3_600_000) / 60_000);
+    setLaunchError(`The exam has not started yet. It begins in ${hh > 0 ? hh+'h '+mm+'m' : mm+' min'}.`);
+    btn.disabled = false; btnTxt.textContent = 'Exam Not Started Yet'; return;
+  }
+  if (now >= endDT) {
+    setLaunchError('The examination window has closed.');
+    btnTxt.textContent = 'Exam Has Ended'; return;
+  }
+
+  // Set effective timer
+  const windowMs   = endDT - now;
+  const durationMs = durationMins * 60_000;
+  examState.timerSeconds  = Math.floor(Math.min(durationMs, windowMs) / 1_000);
+  examState.currentSubject  = 0;
+  examState.currentQuestion = 0;
+  examState.started         = true;
+  examState.questions       = [];
+  examState.answers         = [];
+  examState.flagged         = [];
+  examState.answerDetails   = [];   // reset full-detail store
+
+  // Switch UI to exam mode
+  document.getElementById('welcome-screen').style.display    = 'none';
+  document.getElementById('exam-screen').style.display       = 'flex';
+  document.getElementById('timer-wrap').style.display        = 'block';
+  document.getElementById('top-session-label').textContent   = 'Exam In Progress';
+  document.getElementById('subjects-side').style.display     = 'none';
+  document.getElementById('instructions-side').style.display = 'none';
+  document.getElementById('progress-side').style.display     = 'block';
+  document.getElementById('q-panel').style.display           = 'block';
+
+  // Build tabs then load first subject
+  await buildSubjectTabs(department);
+  startTimer();
+}
+
+/*    BUILD SUBJECT TABS  — exact user pattern, kept intact
+   Fetches subject list, builds the header tabs,
+   then auto-loads the first subject's questions.*/
+async function buildSubjectTabs(department) {
+  const dept = department || document.getElementById('sb-course').textContent.trim();
+
+  const res    = await fetch('/cbt/ansofra/api/getAllSebject', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ department: dept }),
+  });
+  const result = await res.json();
+  const list   = result.response || [];
+
+  examState.totalSubjects = list.length;
+
+  let output = '';
+  for (let i = 0; i < list.length; i++) {
+    const safeSubject = list[i].subject.replace(/'/g, "\\'");
+    output += `<div class="subject-tab ${i === 0 ? 'active' : ''}" id="tab-${i}"
+                    onclick="switchSubject('${dept}', '${safeSubject}', ${i})">
+                 ${list[i].subject}<span class="q-count" id="qcount-${i}"></span>
+               </div>`;
+  }
+  document.getElementById('subject-nav').innerHTML = output;
+
+  if (list.length > 0) {
+    await switchSubject(dept, list[0].subject, 0);
+  }
+}
+
+/*    SWITCH SUBJECT  — exact user API pattern, kept intact.*/
+async function switchSubject(department, subject, idx) {
+  document.querySelectorAll('.subject-tab')
+    .forEach((t, i) => t.classList.toggle('active', i === idx));
+
+  examState.currentSubject  = idx;
+  examState.currentQuestion = 0;
+
+  document.getElementById('question-area').innerHTML = `
+    <div style="padding:40px;text-align:center;color:var(--text-muted);font-size:14px;">
+      Loading ${subject} questions…
+    </div>`;
+
+  const regNum = document.getElementById('sidebar-reg').textContent.trim();
+
+  const api = await fetch('/cbt/ansofra/api/display/qesution', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ department, subject, regNum }),
+  });
+  const result = await api.json();
+
+  const rawData      = result.response[0];
+  const questionList = typeof rawData.question === 'string'
+    ? JSON.parse(rawData.question)
+    : rawData.question;
+
+  examState.questions[idx] = questionList;
+
+  if (!examState.answers[idx] || examState.answers[idx].length !== questionList.length) {
+    examState.answers[idx]       = Array(questionList).fill(-1);
+    examState.flagged[idx]       = Array(questionList).fill(false);
+    examState.answerDetails[idx] = Array(questionList).fill(null);
+    // renderCurrentQuestion();
+  }
+
+  const qCountEl = document.getElementById(`qcount-${idx}`);
+  // if (qCountEl) qCountEl.textContent = ` (${questionList}Q)` || "NO questions";
+
+  renderCurrentQuestion();
+}
+
+/*    RENDER CURRENT QUESTION*/
+function renderCurrentQuestion() {
+  const regNum = document.getElementById('sidebar-reg').textContent.trim();
+  const si = examState.currentSubject;
+  const qi = examState.currentQuestion;
+
+  const questionList = examState.questions[si];
+  if (!questionList || !questionList.length) return;
+
+  const q     = questionList[qi];
+  const total = questionList.length;
+  const flag  = examState.flagged[si][qi] || false;
+
+  // Which option index is currently selected for this question
+  const sel = examState.answers[si][qi];   // -1 = unanswered, 0–4 = option index
+
+  const isLastSubject  = si === examState.totalSubjects - 1;
+  const isLastQuestion = qi === total - 1;
+  const isLast         = isLastSubject && isLastQuestion;
+
+  const prevDisabled = (si === 0 && qi === 0) ? 'disabled' : '';
+
+  const actionBtn = isLast
+    ? `<button class="btn-submit-exam" onclick="openModal()">Submit Exam</button>`
+    : `<button class="btn-nav-next" onclick="nextQ()">Next →</button>`;
+
+  const optKeys   = ['optionA','optionB','optionC','optionD','optionE'];
+  const optLabels = ['A','B','C','D','E'];
+
+  const optionsHtml = optKeys.map((k, oi) => {
+    const optText = String(q[k] || '').trim();
+    if (!optText) return '';    // skip empty options
+
+    const isSelected = sel === oi;
+
+    // Safely escape values for the inline onclick attribute
+    const safe = v => String(v || '').replace(/\\/g, '\\\\').replace(/"/g, '&quot;');
+
+    return `
+      <div class="option-item ${isSelected ? 'selected' : ''}"
+           data-index="${oi}"
+           onclick="selectAnswer(
+             '${optLabels[oi]}',
+             '${safe(optText)}',
+             '${safe(q.subject)}',
+             '${safe(q.department)}',
+             '${safe(q.questionID)}',
+             '${safe(q.correctAss)}',
+             '${safe(q.correctOpt)}',
+             '${safe(regNum)}',
+             ${oi}
+           )">
+        <div class="option-letter">${optLabels[oi]}</div>
+        <div class="option-text">${optText}</div>
+      </div>`;
+  }).join('');
+
+  document.getElementById('question-area').innerHTML = `
+    <div class="subj-header">
+      <h2>${q.subject || ''}</h2>
+      <div class="prog-info">
+        Question <strong>${qi + 1}</strong> of <strong>${total}</strong>
+      </div>
+    </div>
+    <div class="question-card">
+      <div class="q-number">Question ${qi + 1}</div>
+      <div class="question-text">${q.questiontext}</div>
+      <div class="options">${optionsHtml}</div>
+    </div>
+    <div class="nav-actions">
+      <button class="btn-nav-prev" onclick="prevQ()" ${prevDisabled}>← Previous</button>
+      <button class="btn-flag-q ${flag ? 'flagged' : ''}" onclick="toggleFlag()">
+        ${flag ? '⚑ Flagged' : '⚐ Flag'}
+      </button>
+      ${actionBtn}
+    </div>`;
+
+  updateGrid();
+  updateProgress();
+}
+
+/*    ANSWER & FLAG ACTIONS*/
+function selectAnswer(optionLabel, answerText, subject, department, questionID, correctAss, correctOpt, regNum, optionIndex) {
+  const si = examState.currentSubject;
+  const qi = examState.currentQuestion;
+
+  // 1. Store the selected option index (used by grid / progress / scoring)
+  examState.answers[si][qi] = optionIndex;
+
+  // 2. Store the full detail object for this question
+  examState.answerDetails[si][qi] = {
+    regNum:       regNum,
+    questionID:   questionID,
+    correctOtp:   correctOpt,   // correct option text
+    correctAns:   correctAss,   // correct option label (e.g. "B")
+    optionPicked: optionLabel,  // label of the option the candidate chose (e.g. "A")
+    answerPicked: answerText,   // text of the option the candidate chose
+    subject:      subject,
+    department:   department,
+  };
+
+  renderCurrentQuestion();
+}
+
+function toggleFlag() {
+  const si = examState.currentSubject, qi = examState.currentQuestion;
+  examState.flagged[si][qi] = !examState.flagged[si][qi];
+  renderCurrentQuestion();
+}
+
+function goToQuestion(qi) {
+  examState.currentQuestion = qi;
+  renderCurrentQuestion();
+}
+
+/*    NAVIGATION — next / prev (one question at a time)*/
+function nextQ() {
+  const si        = examState.currentSubject;
+  const questions = examState.questions[si] || [];
+
+  if (examState.currentQuestion < questions.length - 1) {
+    examState.currentQuestion++;
+    renderCurrentQuestion();
+  } else {
+    const nextIdx = si + 1;
+    if (nextIdx < examState.totalSubjects) {
+      const nextTab = document.getElementById(`tab-${nextIdx}`);
+      const nextSubject = nextTab
+        ? nextTab.textContent.replace(/\(.*\)/, '').trim()
+        : '';
+      const dept = userData?.department
+        || document.getElementById('sb-course').textContent.trim();
+      switchSubject(dept, nextSubject, nextIdx);
+    }
+  }
+}
+
+function prevQ() {
+  const si = examState.currentSubject;
+
+  if (examState.currentQuestion > 0) {
+    examState.currentQuestion--;
+    renderCurrentQuestion();
+  } else if (si > 0) {
+    const prevIdx = si - 1;
+    const prevTab = document.getElementById(`tab-${prevIdx}`);
+    const prevSubject = prevTab
+      ? prevTab.textContent.replace(/\(.*\)/, '').trim()
+      : '';
+    const dept = userData?.department
+      || document.getElementById('sb-course').textContent.trim();
+    switchSubject(dept, prevSubject, prevIdx).then(() => {
+      const prevQuestions = examState.questions[prevIdx] || [];
+      if (prevQuestions.length > 1) {
+        examState.currentQuestion = prevQuestions.length - 1;
+        renderCurrentQuestion();
+      }
+    });
+  }
+}
+
+/*    QUESTION GRID (sidebar dots)*/
+function updateGrid() {
+  const si        = examState.currentSubject;
+  const questions = examState.questions[si] || [];
+  document.getElementById('q-grid').innerHTML = questions.map((_, qi) => {
+    let cls = 'q-dot';
+    if (qi === examState.currentQuestion)               cls += ' current';
+    else if (examState.flagged[si]?.[qi])               cls += ' flagged';
+    else if (examState.answers[si]?.[qi] !== -1
+          && examState.answers[si]?.[qi] !== undefined) cls += ' answered';
+    return `<div class="${cls}" onclick="goToQuestion(${qi})">${qi + 1}</div>`;
+  }).join('');
+}
+
+/*    PROGRESS PANEL (sidebar bars)*/
+function updateProgress() {
+  const rows = [];
+  for (let si = 0; si < examState.totalSubjects; si++) {
+    const questions = examState.questions[si];
+    if (!questions) continue;
+    const total   = questions.length;
+    const answers = examState.answers[si] || [];
+    const done    = answers.filter(a => a !== -1 && a !== undefined).length;
+    const pct     = total ? Math.round((done / total) * 100) : 0;
+    const tab     = document.getElementById(`tab-${si}`);
+    const name    = tab ? tab.textContent.replace(/\(.*\)/, '').trim() : `Subject ${si + 1}`;
+    rows.push(`
+      <div class="prog-row">
+        <span class="pname">${name.split(' ')[0]}</span>
+        <span class="pscore">${done}/${total}</span>
+      </div>
+      <div class="prog-bar">
+        <div class="prog-bar-fill" style="width:${pct}%"></div>
+      </div>`);
+  }
+  document.getElementById('progress-list').innerHTML = rows.join('');
+}
+
+/*    TIMER*/
+function startTimer() {
+  renderTimerDisplay();
+  examState.timerInterval = setInterval(() => {
+    examState.timerSeconds--;
+    renderTimerDisplay();
+    if (examState.timerSeconds <= 0) {
+      clearInterval(examState.timerInterval);
+      finalSubmit();
+    }
+  }, 1000);
+}
+
+function renderTimerDisplay() {
+  const s  = examState.timerSeconds;
+  const hh = Math.floor(s / 3600);
+  const mm = Math.floor((s % 3600) / 60);
+  const ss = s % 60;
+  const el = document.getElementById('timer');
+  el.textContent = `${String(hh).padStart(2,'0')}:${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;
+  el.className = 'timer-badge';
+  if (s <= 600) el.classList.add('warning');
+  if (s <= 120) el.classList.add('danger');
+}
+
+/*    MODAL & SUBMIT*/
+function openModal()  { document.getElementById('submit-modal').classList.add('open'); }
+function closeModal() { document.getElementById('submit-modal').classList.remove('open'); }
+
+async function finalSubmit() {
+  clearInterval(examState.timerInterval);
+  closeModal();
+
+  const regNum = document.getElementById('sidebar-reg').textContent.trim();
+  const dept   = userData?.department || document.getElementById('sb-course').textContent.trim();
+  const fullname = document.getElementById("sidebar-name").textContent.trim();
+
+  // Object to store all question attempts (both attempted and unattempted)
+  const questionsAttemptedObject = {};
+
+  // Counter for sequential keys
+  let questionCounter = 0;
+
+  // Iterate through all subjects to collect questions
+  for (let si = 0; si < examState.totalSubjects; si++) {
+    const questions = examState.questions[si] || [];
+    const tab = document.getElementById(`tab-${si}`);
+    const subjectName = tab ? tab.textContent.replace(/\(.*\)/, '').trim() : `Subject ${si + 1}`;
+
+    let subjectScore = 0;
+    let subjectTotalQuestions = questions.length;
+
+    questions.forEach((q, qi) => {
+      // Get the stored detail if question was attempted
+      const storedDetail = (examState.answerDetails[si] && examState.answerDetails[si][qi])
+        ? examState.answerDetails[si][qi]
+        : null;
+
+      // Build the question object with all required fields
+      let questionObj = {
+        regNum: regNum,
+        questionID: q.questionID || '',
+        questiontext: q.questiontext || '',
+        correctOtp: q.correctOpt || '',
+        correctAns: q.correctAss || '',
+        optionPicked: '',
+        answerPicked: '',
+        subject: q.subject || subjectName,
+        department: q.department || dept,
+        fullname: fullname,
+        attempted: false
+      };
+
+      // If question was attempted, update with the selected answer
+      if (storedDetail && examState.answers[si] && examState.answers[si][qi] !== -1) {
+        questionObj.optionPicked = storedDetail.optionPicked || '';
+        questionObj.answerPicked = storedDetail.answerPicked || '';
+        questionObj.attempted = true;
+        
+        // Calculate score for this question (1.5 marks per correct answer)
+        if (questionObj.answerPicked && 
+            questionObj.answerPicked.toUpperCase() === String(questionObj.correctAns).toUpperCase()) {
+          subjectScore++;
+        }
+      }
+
+      // Add to the main object with a unique key
+      const key = `question_${questionCounter}`;
+      questionsAttemptedObject[key] = questionObj;
+      questionCounter++;
+    });
+
+    
+    const subjectPoints =  parseFloat(subjectScore) * 1.5;
+
+    // Create a separate object for each subject's score (not an array)
+    const subjectScoreObject = {
+      regNum: regNum,
+      department: dept,
+      subject: subjectName,
+      fullname: fullname,
+      score: subjectPoints,
+      totalQuestions: subjectTotalQuestions,
+      correctAnswers: subjectScore,
+      expectedScore:  parseFloat(subjectTotalQuestions) * 1.5 
+    };
+
+    // Save each subject score individually
+    const scoresApi = await fetch('/cbt/ansofra/api/save/scores', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(subjectScoreObject),
+    });
+    const scoresResult = await scoresApi.json();
+  }
+
+  // Create the final questions attempted object with metadata
+  const finalQuestionsObject = {
+    regNum: regNum,
+    fullname: fullname,
+    department: dept,
+    totalQuestions: questionCounter,
+    submittedAt: new Date().toISOString(),
+    questionToSave: JSON.stringify(questionsAttemptedObject),
+  };
+
+ 
+
+  // Save all questions in one request
+  const attemptApi = await fetch('/cbt/ansofra/api/save/questions/attempt', {
+    method:'POST',
+    headers:{'Content-type':'application/json'},
+    body:JSON.stringify(finalQuestionsObject)
+  });
+  const attemptResult = await attemptApi.json();
+  // console.log('Save attempt result:', attemptResult);
+
+  // if (attemptResult.status !== 'success') {
+  //   console.log('Failed to save question attempts:', attemptResult);
+  //   return;
+  // }
+
+  // Save final result
+  await saveResult();
+}
+
+
+
+async function saveResult() {
+  const regNum     = document.getElementById('sidebar-reg').textContent.trim();
+  const fullname   = document.getElementById('sidebar-name').textContent.trim();
+  const department = document.getElementById('sb-course').textContent.trim();
+  const email = document.getElementById('sidebar-email').textContent.trim();
+  const e = {regNum:regNum};
+  // Fetch all saved subject scores for this candidate from the server
+  const api    = await fetch('/cbt/ansofra/api/get/scores/subject', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(e),
+  });
+  const result = await api.json();
+
+
+  const response = result.response;  
+
+  let overAll = 0;
+  for (let index = 0; index < response.length; index++) {
+    overAll += parseFloat(response[index].score);
+  }
+
+
+  const d = {
+    regNum: regNum,
+    fullname: fullname,
+    department:department,
+    overAll: overAll,
+    email: email,
+    subjectAndScore: JSON.stringify(response),  
+  };
+
+ 
+
+  const seApi = await fetch('/cbt/ansofra/api/save/result', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body:    JSON.stringify(d),
+  });
+  const resultApi = await seApi.json();
+  console.log(resultApi);
+  if (resultApi.status === 'success') {
+     backToDash();
+  }
+}
+
+function backToDash() {
+  document.getElementById('result-screen').style.display         = 'none';
+  document.getElementById('dashboard-page').style.display        = 'flex';
+  document.getElementById('exam-screen').style.display           = 'none';
+  document.getElementById('welcome-screen').style.display        = 'block';
+  document.getElementById('timer-wrap').style.display            = 'none';
+  document.getElementById('top-session-label').textContent       = 'Candidate Dashboard';
+  document.getElementById('subjects-side').style.display         = 'block';
+  document.getElementById('instructions-side').style.display     = 'block';
+  document.getElementById('progress-side').style.display         = 'none';
+  document.getElementById('q-panel').style.display               = 'none';
+  examState.timerSeconds = 0;
+  examState.started      = false;
+}
+
+function logout() { localStorage.removeItem('cbt_session'); window.location.href = 'login.html'; }
+
+/*    DATE / TIME HELPERS*/
+function buildDatetime(dateStr, timeStr) {
+  let d = String(dateStr).trim();
+  if (/^\d{2}[\/\-]\d{2}[\/\-]\d{4}$/.test(d)) {
+    const sep = d.includes('/') ? '/' : '-';
+    const [dd, mm, yyyy] = d.split(sep);
+    d = `${yyyy}-${mm}-${dd}`;
+  }
+  let t = String(timeStr).trim();
+  const ampm = t.match(/^(\d{1,2}):(\d{2})(?::(\d{2}))?\s*(AM|PM)$/i);
+  if (ampm) {
+    let hh = parseInt(ampm[1]);
+    const mm = ampm[2], ss = ampm[3]||'00', p = ampm[4].toUpperCase();
+    if (p==='AM' && hh===12) hh=0;
+    if (p==='PM' && hh!==12) hh+=12;
+    t = `${String(hh).padStart(2,'0')}:${mm}:${ss}`;
+  } else if (/^\d{1,2}:\d{2}$/.test(t)) { t += ':00'; }
+  return new Date(`${d}T${t}`);
+}
+
+function niceDate(dateStr) {
+  try {
+    let iso = String(dateStr).trim();
+    if (/^\d{2}[\/\-]\d{2}[\/\-]\d{4}$/.test(iso)) {
+      const [dd,mm,yyyy] = iso.split(/[\/\-]/); iso = `${yyyy}-${mm}-${dd}`;
+    }
+    return new Date(iso).toLocaleDateString('en-NG',
+      { weekday:'short', day:'numeric', month:'short', year:'numeric' });
+  } catch { return dateStr; }
+}
+
+function niceTime(timeStr) {
+  try {
+    let t = String(timeStr).trim();
+    if (/^\d{1,2}:\d{2}$/.test(t)) t += ':00';
+    return new Date(`1970-01-01T${t}`).toLocaleTimeString('en-NG',
+      { hour:'2-digit', minute:'2-digit' });
+  } catch { return timeStr; }
+}
+
+function formatDuration(mins) {
+  const h = Math.floor(mins/60), m = mins%60;
+  return h ? `${h} hr${h!==1?'s':''} ${m ? m+'m' : ''}`.trim() : `${m} min${m!==1?'s':''}`;
+}
+
+function setLaunchError(msg) {
+  const badge = document.getElementById('exam-status-badge');
+  badge.className = 'exam-status-badge ended';
+  badge.innerHTML = `<span class="status-dot" style="background:var(--red)"></span>${msg}`;
+}
+</script>
+</body>
+</html>
+

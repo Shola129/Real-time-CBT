@@ -1,6 +1,6 @@
 <?php
 namespace NewdichControllerApp;
-use NewdichApp\query\GetScoresSub;
+use NewdichApp\Query\GetScoresSub;
 use NewdichDto\AnsofraDto;
 use NewdichMiddleware\Index;
 

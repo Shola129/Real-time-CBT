@@ -4,9 +4,9 @@ use NewdichDto\AnsofraDto;
 use NewdichSchema\Platform;
 use NewdichSchema\Migration;
 
-class countSubject{
+class GetQuestNoMarAns{
     private $dto;
-    private $table = Platform::SETSUBJECTS_TABLE;
+    private $table = Platform::QUESTIONDETAILS_TABLE;
 
     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
@@ -14,14 +14,14 @@ class countSubject{
 
     public function process(){
         $where = [
-            "department"=>$this->dto->department,
-            "orgnization_code"=>$this->dto->orgnization_code
+            'organization_code'=>$this->dto->organizsation_code,
+            'department'=>$this->dto->department
         ];
 
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->count($where, 0, 20);
+        $mig = $newMig->get($where, 0, 1);
         return $mig;
-        
     }
 }
+
 ?>

@@ -4,7 +4,7 @@ use NewdichMiddleware\Index;
 use NewdichDto\AnsofraDto;
 use NewdichSrc\Query\ChkOrgCode;
 
-$data = json_decode(file_get_contents("php://input", true));
+$data = json_decode(file_get_contents("php://input"), true);
 $mid = new Index();
 $cleanData = [];
 

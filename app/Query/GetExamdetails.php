@@ -4,7 +4,7 @@ use NewdichDto\AnsofraDto;
 use NewdichSchema\Platform;
 use NewdichSchema\Migration;
 
-class getExamdetails{
+class GetExamdetails{
     private $dto;
     private $table = Platform::SETEXAMTIME_TABLE;
     private $table1 = Platform::STATUS_TABLE;
@@ -16,7 +16,8 @@ class getExamdetails{
     public function process(){
         $where2 = [
             'regNum'=>$this->dto->regNum,
-            'fullname'=>$this->dto->fullname
+            'fullname'=>$this->dto->fullname,
+            'organization_code'=>$this->dto->organization_code,
         ];
 
         $newMig1 = new Migration(null, $this->table1);
@@ -27,12 +28,13 @@ class getExamdetails{
             if($response["status"]==="completed"){
                 return json_encode([
                     'status'=>'fail',
-                    'response'=>'user has already completed his or her exam'
+                    'response'=>'user has already completed the exam'
                 ], JSON_PRETTY_PRINT);
             }
             elseif($response==="writing"){
                 $where = [
-                    "department"=>$this->dto->department
+                    "department"=>$this->dto->department,
+                    "organization_code"=>$this->dto->organization_code,
                 ];
 
                 $newMig = new Migration(null, $this->table);
@@ -41,7 +43,8 @@ class getExamdetails{
             }
             else{
                 $where = [
-                    "department"=>$this->dto->department
+                    "department"=>$this->dto->department,
+                    "organization_code"=>$this->dto->organization_code,
                 ];
 
                 $newMig = new Migration(null, $this->table);
@@ -55,6 +58,7 @@ class getExamdetails{
                 'status'=>'writting',
                 'fullname'=>$this->dto->fullname,
                 'startAt'=>date('Y-m-d H:s:i'),
+                'organization_code'=>$this->dto->organization_code,
             ];
 
             $newMig3 = new Migration(null, $this->table1);
@@ -62,7 +66,8 @@ class getExamdetails{
             $decodeMig3 = json_decode($mig3, true);
             if($decodeMig3["status"]==="success"){
                 $where = [
-                    "department"=>$this->dto->department
+                    "department"=>$this->dto->department,
+                    "organization_code"=>$this->dto->organization_code,
                 ];
 
                 $newMig = new Migration(null, $this->table);

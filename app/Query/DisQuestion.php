@@ -17,7 +17,8 @@ class DisQuestion{
         $where = [
             'department'=>$this->dto->department,
             'subject'=>$this->dto->subject,
-            'regNum'=>$this->dto->regNum
+            'regNum'=>$this->dto->regNum,
+            'organization_code'=>$this->dto->organization_code,
         ];
 
         $newMig = new Migration(null, $this->table);
@@ -29,11 +30,12 @@ class DisQuestion{
         else{
             $where2 = [
                 'department'=>$this->dto->department,
-                'subject'=>$this->dto->subject
+                'subject'=>$this->dto->subject,
+                'organization_code'=>$this->dto->organization_code,
             ];
 
             $newMig2 = new Migration(null, $this->table2);
-            $mig2 = $newMig2->get($where2);
+            $mig2 = $newMig2->get($where2, 0, $this->dto->limit);
             $decodeMig2 = json_decode($mig2, true);
             if($decodeMig2["status"]==="success"){
                 $response = $decodeMig2["response"];
@@ -46,7 +48,8 @@ class DisQuestion{
                     'question'=>json_encode($response),
                     'status'=>'active',
                     'score'=>$this->dto->score ?? '',
-                    'startedAt'=>date("Y-m-d H:i:s")
+                    'startedAt'=>date("Y-m-d H:i:s"),
+                    'organization_code'=>$this->dto->organization_code,
                 ];
                 $mig3 = $newMig3->save($data);
                 $decodemig3 = json_decode($mig3, true);

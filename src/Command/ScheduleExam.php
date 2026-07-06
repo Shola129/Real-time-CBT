@@ -8,8 +8,9 @@ use NewdichMail\Index;
 
 class ScheduleExam{
     private $dto;
-    private $table = Platform::SETSUBJECTS_TABLE;
+    private $table = Platform::QUESTIONS_TABLE;
     private $table2 = Platform::SETEXAMTIME_TABLE;
+    private $table3 = Platform::QUESTIONDETAILS_TABLE;
     // private $table3 = Platform::USERS_TABLE;
     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
@@ -26,35 +27,81 @@ class ScheduleExam{
         $mig = $newMig->get($where, 0, 1);
         $decodeMig = json_decode($mig, true);
         if($decodeMig['status']==="success"){
-            $col = [
-                "organization_code", 
-                "department", 
-                "DepartmentCode", 
-                "session"
-                ];
-            $val = [
-                $this->dto->organization_code,
-                $this->dto->department,
-                $this->dto->DepartmentCode,
-                $this->dto->session
-            ];
-            $data = [
-                'organization_code'=>$this->dto->organization_code,
-                "department"=> $this->dto->department,
-                'DepartmentCode'=> $this->dto->DepartmentCode,
-                'date'=> $this->dto->date,
-                'start'=> $this->dto->start,
-                'end'=> $this->dto->end,
-                'duration'=> $this->dto->duration.'mins',
-                'timeID'=> "time-ref-". substr($this->dto->otp, 0, 3),
-                'role'=> 'set',
-                'status'=>'inactive',
-                'session'=>$this->dto->session
+            $where2 = [
+                "organization_code"=>$this->dto->organization_code,
+                "department"=>$this->dto->department,
+                "status"=>"set"
             ];
 
-            $newMig2 = new Migration(null, $this->table2);
-            $mig2 = $newMig2->saveUniqueMulti($col, $val, $data);
-            return $mig2;
+            $newMig2 = new Migration(null, $this->table3);
+            $mig2 = $newMail2->get($where2, 0, 1);
+            $decodeMig2 = json_decode($mig2, true);
+            if($decodeMig2["status"]==="success"){
+                    $col = [
+                        "organization_code", 
+                        "department", 
+                        "DepartmentCode", 
+                        "session"
+                        ];
+                    $val = [
+                        $this->dto->organization_code,
+                        $this->dto->department,
+                        $this->dto->DepartmentCode,
+                        $this->dto->session
+                    ];
+                    $data = [
+                        'organization_code'=>$this->dto->organization_code,
+                        "department"=> $this->dto->department,
+                        'DepartmentCode'=> $this->dto->DepartmentCode,
+                        'date'=> $this->dto->date,
+                        'start'=> $this->dto->start,
+                        'end'=> $this->dto->end,
+                        'duration'=> $this->dto->duration.'mins',
+                        'timeID'=> "time-ref-". substr($this->dto->otp, 0, 3),
+                        'role'=> 'set',
+                        'status'=>'inactive',
+                        'session'=>$this->dto->session
+                    ];
+
+                    $newMig3 = new Migration(null, $this->table2);
+                    $mig3 = $newMig3->saveUniqueMulti($col, $val, $data);
+                 return $mig3;
+            }else{
+                return json_encode([
+                    "status"=>"failed",
+                    "response"=>"The total questions per subject and mark per score is yet to be set or determined, do that under the settings before seting the timetable"
+                ], JSON_PRETTY_PRINT);
+                exit();
+            }
+            // $col = [
+            //     "organization_code", 
+            //     "department", 
+            //     "DepartmentCode", 
+            //     "session"
+            //     ];
+            // $val = [
+            //     $this->dto->organization_code,
+            //     $this->dto->department,
+            //     $this->dto->DepartmentCode,
+            //     $this->dto->session
+            // ];
+            // $data = [
+            //     'organization_code'=>$this->dto->organization_code,
+            //     "department"=> $this->dto->department,
+            //     'DepartmentCode'=> $this->dto->DepartmentCode,
+            //     'date'=> $this->dto->date,
+            //     'start'=> $this->dto->start,
+            //     'end'=> $this->dto->end,
+            //     'duration'=> $this->dto->duration.'mins',
+            //     'timeID'=> "time-ref-". substr($this->dto->otp, 0, 3),
+            //     'role'=> 'set',
+            //     'status'=>'inactive',
+            //     'session'=>$this->dto->session
+            // ];
+
+            // $newMig2 = new Migration(null, $this->table2);
+            // $mig2 = $newMig2->saveUniqueMulti($col, $val, $data);
+            // return $mig2;
             // $decodeMig2 = json_decode($mig2, true);
             // // if($decodeMig2['status']==="success"){
             // //     $getAllUserInThatDep = [

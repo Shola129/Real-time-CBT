@@ -14,7 +14,8 @@ class Details{
 
     public function process(){
         $where = [
-            "email"=>$this->dto->email
+            "email"=>$this->dto->email,
+            "organization_code"=>$this->dto->organization_code,
         ];
 
         $newMig = new Migration(null, $this->table);

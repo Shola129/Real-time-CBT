@@ -4,7 +4,7 @@ use NewdichDto\AnsofraDto;
 use NewdichSchema\Platform;
 use NewdichSchema\Migration;
 
-class GetAllSub{
+class CountSubject{
     private $dto;
     private $table = Platform::SETSUBJECTS_TABLE;
 
@@ -15,12 +15,13 @@ class GetAllSub{
     public function process(){
         $where = [
             "department"=>$this->dto->department,
-            "organization_code"=>$this->dto->organization_code,
+            "organization_code"=>$this->dto->organization_code
         ];
 
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->get($where, 0, 20);
+        $mig = $newMig->count($where, 0, 20);
         return $mig;
+        
     }
 }
 ?>

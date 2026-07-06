@@ -38,6 +38,7 @@ class Platform{
         "organization_name VARCHAR(255) NOT NULL",
         "organization_type VARCHAR(255) NOT NULL",
         "organization_code VARCHAR(255) NOT NULL",
+        "organization_description VARCHAR(255) NOT NULL",
         "role VARCHAR(255) NOT NULL",
     ];
 
@@ -209,12 +210,22 @@ class Platform{
 
     public const STATUS_TABLE = "status";
     public const STATUS_TABLE_COLUMNS = [
-        "status_id  BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
+        "status_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
         "regNum VARCHAR(255) NOT NULL",
         "fullname VARCHAR(255) NOT NULL",
         "status VARCHAR(255) NOT NULL",
         "startAt VARCHAR(255) NOT NULL",
         "organization_code VARCHAR(255) NOT NULL",
+    ];
+
+    public const QUESTIONDETAILS_TABLE = "question_details";
+    public const QUESTIONDETAILS_TABLE_COLUMNS = [
+        "question_details_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
+        "organization_code VARCHAR(255) NOT NULL",
+        "total_question VARCHAR(255) NOT NULL",
+        "mark_per_score VARCHAR(255) NOT NULL",
+        "department VARCHAR(255) NOT NULL",
+        "status VARCHAR(255) NOT NULL",
     ];
   //you can have as many tables as you want
 }
