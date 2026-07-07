@@ -716,8 +716,8 @@
     const result = await api.json();
     console.log(result);
     if(result.status==="success"){
-      showAlert('reg-success','🎉 Account created successfully! Redirecting to login…','success');
-      setTimeout(() => window.location.href = '/cbt/ansofra/login', 2000);
+      showAlert('reg-success','Account created successfully! Redirecting to login…','success');
+      setTimeout(() => window.location.href = '/cbt/ansofra/user/login', 5000);
     }
     else if(result.status==="fail"){
         showAlert('reg-alert','The department is not available.','error'); return;

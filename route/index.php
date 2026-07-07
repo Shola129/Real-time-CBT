@@ -57,7 +57,7 @@ elseif($url===$docRoot.$rootDir."/admin/register" || $url===$docRoot.$rootDir."/
     exit();
 }
 
-elseif($url===$docRoot.$rootDir."/admin/otp/verification" || $url===$docRoot.$rootDir."/admin/otp/verification" ."/"){
+elseif($url===$docRoot.$rootDir."/admin/auth" || $url===$docRoot.$rootDir."/admin/auth" ."/"){
     require_once __DIR__ . "/../ansofra/public/admin/account/otp.html";
     exit();
 }
@@ -72,7 +72,7 @@ elseif($url === $docRoot.$rootDir."/admin/dashboard" || $url === $docRoot.$rootD
     exit();
 }
 
-elseif($url===$docRoot.$rootDir."/admin/validateEmail" || $url===$docRoot.$rootDir."/admin/validateEmail" . "/"){
+elseif($url===$docRoot.$rootDir."/admin/auth/email" || $url===$docRoot.$rootDir."/admin/auth/email" . "/"){
     require_once __DIR__ . "/../ansofra/public/admin/account/verifyemail.html";
     exit();
 }

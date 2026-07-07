@@ -1013,8 +1013,8 @@ let examState = {
 
 /*    INIT*/
 window.addEventListener('load', () => {
-  const raw = localStorage.getItem('cbt_session') || "sholadanielek@gmail.com";
-  if (!raw) { window.location.href = 'login.html'; return; }
+  const raw = localStorage.getItem('cbt_session_email') || "sholadanielek@gmail.com";
+  if (!raw) { window.location.href = '/cbt/ansofra/user/login'; return; }
   user = raw;
   populateUI();
 });
