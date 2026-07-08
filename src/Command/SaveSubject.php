@@ -38,7 +38,7 @@ class SaveSubject{
         //     "response"=>$data
         // ], true);
         $col = [
-            "organization_code", "role", "DepartmentCode", "department", "subject"
+            "organization_code", "role", "DepartmentCode", "department", "subject", "subjectCode"
         ];
 
         $val = [
@@ -46,7 +46,8 @@ class SaveSubject{
             'set',
             $this->dto->DepartmentCode,
             $this->dto->department,
-            $this->dto->subject
+            $this->dto->subject,
+            $this->dto->subjectCode ?? "Null"
         ];
 
         $newMig = new Migration(null, $this->table);
