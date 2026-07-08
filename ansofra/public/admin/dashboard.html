@@ -1091,7 +1091,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
             <i class="fas fa-book" style="color:var(--nav-accent);"></i>
             <input type="text" id="subjectNameSearchInput" placeholder="Enter subject name to search…" style="color:#fff;" />
           </div>
-          <button id="searchSubjectByNameBtn" class="btn btn-primary">
+          <button class="btn btn-primary" onclick="seacrhSubj(`${document.getElementById('subjectNameSearchInput').value.trim()}`)">
             <i class="fas fa-magnifying-glass"></i> Search Subject
           </button>
         </div>
@@ -1650,19 +1650,64 @@ window.closeEditModal = function() {
   editingIndex = -1;
 };
 
-function renderSubjectsByName(searchName) {
+// function renderSubjectsByName(searchName) {
+//   const container = document.getElementById('subjectNameSearchResults');
+//   if (!container) return;
+//   if (!searchName.trim()) {
+//     container.innerHTML = '<div class="notice"><i class="fas fa-info-circle"></i> Enter a subject name above to search.</div>';
+//     return;
+//   }
+//   const filtered = subjectsList.filter(s => s.name.toLowerCase().includes(searchName.toLowerCase()));
+//   if (!filtered.length) { container.innerHTML = '<div class="notice"><i class="fas fa-search"></i> No subjects match that name.</div>'; return; }
+//   container.innerHTML = filtered.map(sub => {
+//     const meta = DEPT_META[sub.dept]||{};
+//     return `<div class="subject-card">
+//                 <div class="subject-card-top">
+//                   <span class="badge badge-dept">
+//                     <i class="${meta.icon||'fas fa-building'}"></i> 
+//                     ${sub.dept}
+//                   </span>
+//                   <span class="badge badge-duration">
+//                     <i class="far fa-clock"></i> ${sub.duration} min
+//                   </span></div><div class="subject-card-name">${sub.name}
+//                 </div>
+//               </div>`;
+//   }).join('');
+// }
+
+async function seacrhSubj(searchName){
   const container = document.getElementById('subjectNameSearchResults');
-  if (!container) return;
+  const org_code = document.getElementById("organization-code").textContent.trim();
   if (!searchName.trim()) {
     container.innerHTML = '<div class="notice"><i class="fas fa-info-circle"></i> Enter a subject name above to search.</div>';
     return;
   }
-  const filtered = subjectsList.filter(s => s.name.toLowerCase().includes(searchName.toLowerCase()));
-  if (!filtered.length) { container.innerHTML = '<div class="notice"><i class="fas fa-search"></i> No subjects match that name.</div>'; return; }
-  container.innerHTML = filtered.map(sub => {
-    const meta = DEPT_META[sub.dept]||{};
-    return `<div class="subject-card"><div class="subject-card-top"><span class="badge badge-dept"><i class="${meta.icon||'fas fa-building'}"></i> ${sub.dept}</span><span class="badge badge-duration"><i class="far fa-clock"></i> ${sub.duration} min</span></div><div class="subject-card-name">${sub.name}</div></div>`;
-  }).join('');
+  const api = await fetch("/cbt/ansofra/apiadmin/search/subject", {
+      method:"POST",
+      headers:{"Content-type":"application/json"},
+      body:JSON.stringify({subject:searchName.trim(), organization_code:org_code})
+  });
+
+  const result = await api.json();
+  const response = result.response;
+  if(result.status=="success"){
+    let output = '';
+    for(let index = 0; index < response.length; index++){
+        output += `<div class="subject-card">
+                <div class="subject-card-top">
+                  <span class="badge badge-dept">
+                    ${response[index].department}
+                  </span>
+                  <span class="badge badge-duration">
+                    <i class="far fa-clock"></i> ${response[index].subject} min
+                  </span></div><div class="subject-card-name">${response[index].subjectCode}
+                </div>
+              </div>`;
+    }
+    container.innerHTML=output;
+  }else{
+    container.innerHTML = '<div class="notice"><i class="fas fa-search"></i> No subjects match that name.</div>'; return; 
+  }
 }
 
 function renderSubjects(filter) {
@@ -2244,13 +2289,14 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
       date_created: new Date().toLocaleTimeString() +" " + new Date().toLocaleDateString(),
       organization_code:org_code
     }
+    // console.log(e);
     const api = await fetch("/cbt/ansofra/apiadmin/save/subject", {
         method:"POST",
         headers:{"Content-type":"application/json"},
         body:JSON.stringify(e)
     });
     const result = await api.json();
-    console.log(result);
+    // console.log(result);
     if(result.status==="success"){
       alert("subject created successfully");
         document.getElementById("newDeptSelect").value="";
@@ -2352,13 +2398,13 @@ async function processQuestionData(){
       form.forEach((key, val)=>{
         obj[key]=val
       })
-      console.log(obj);
+      // console.log(obj);
       const api = await fetch("/cbt/ansofra/apiadmin/save/questions", {
           method:"POST",
           body:form
       });
       const result = await api.json();
-      console.log(result);
+      // console.log(result);
       if(result.status==="success"){
         alert(result.response);
         document.getElementById("media").value="";
@@ -2386,7 +2432,7 @@ async function processQuestionData(){
       alert("All field required");
     }
     else{
-      // processDepDataAll();
+      processDepDataAll();
     }
   })
 
@@ -2405,7 +2451,7 @@ async function processQuestionData(){
         body:form
     });
     const result = await api.json();
-    console.log(result);
+    // console.log(result);
     if(result.status==='success'){
         alert("save successful");
         // renderDeptTable(document.getElementById('deptListSearch')?.value || '');

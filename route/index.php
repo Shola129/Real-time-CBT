@@ -302,6 +302,11 @@ elseif($url === $adminArea . "/checkOrgCode"){
     exit();
 }
 
+elseif($url === $adminArea . "/search/subject"){
+    require_once __DIR__ . $srcController . "/SearchSubController.php";
+    exit();
+}
+
 // EndPoint for user's area
 
 elseif($url === $usersArea . "/register"){

@@ -786,7 +786,7 @@ hr.divider-line{margin:20px 0}
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: userEmail })
       });
-      console.log("OTP cleanup:", await r.json());
+      // console.log("OTP cleanup:", await r.json());
     } catch(e) { console.error(e); }
   }
 
@@ -815,6 +815,7 @@ hr.divider-line{margin:20px 0}
         body: JSON.stringify({ otpCode: otpInput.value.trim(), email: userEmail, })
       });
       const response = await api.json();
+      console.log(response);
       if (response.status === 'success') {
         if (timerInterval) clearInterval(timerInterval);
         localStorage.setItem('cbt-email-otp', email);

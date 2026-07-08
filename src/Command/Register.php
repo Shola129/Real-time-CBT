@@ -45,6 +45,8 @@ class Register{
             "ID"=>$ID,
             "last_login"=>$this->dto->last_login ?? "00:00",
             "organization_description"=>$this->dto->organization_description,
+            "publish"=>$this->dto->publish,
+            "status"=>"active"
         ];
         $fullname = $this->dto->fullname;
         

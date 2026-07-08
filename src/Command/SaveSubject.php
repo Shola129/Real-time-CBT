@@ -29,7 +29,7 @@ class SaveSubject{
             'organization_code'=>$this->dto->organization_code,
             'subject'=>$this->dto->subject,
             'subjectCode'=>$this->dto->subjectCode ?? "Null",
-            'date_created'=>$this->dto->date_created,
+            'Date_Created'=>$this->dto->date_created,
             'role'=>'set',
             'subjectID'=>substr($this->dto->otp, 0,2)
         ];

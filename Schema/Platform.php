@@ -40,6 +40,8 @@ class Platform{
         "organization_code VARCHAR(255) NOT NULL",
         "organization_description VARCHAR(255) NOT NULL",
         "role VARCHAR(255) NOT NULL",
+        "status VARCHAR(255) NOT NULL",
+        "publish VARCHAR(255) NOT NULL"
     ];
 
     public const OTPDB_TABLE = "otp";

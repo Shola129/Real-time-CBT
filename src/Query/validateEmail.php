@@ -38,21 +38,21 @@ class validateEmail{
                 $decodeMail = json_decode($mail, true);
                 if($decodeMail['status']==='success'){
                     return json_encode([
-                        'status'=>'failed',
+                        'status'=>'success',
                         'response'=>'can now be redirect to otp verification page'
                     ], JSON_PRETTY_PRINT);
                 }
                 else{
                     return json_encode([
-                        'status'=>'success',
-                        'response'=>'unable to send otp'
+                        'status'=>'failed',
+                        'response'=>'Error(2) occur, try again later.'
                     ], JSON_PRETTY_PRINT);
                 }
             }
             else{
                 return json_encode([
-                        'status'=>'success',
-                        'response'=>'unable to genrate otp'
+                        'status'=>'failed',
+                        'response'=>'Error occur, try again later.'
                     ], JSON_PRETTY_PRINT);
             }
         }

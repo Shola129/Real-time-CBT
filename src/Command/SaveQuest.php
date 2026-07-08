@@ -56,7 +56,11 @@ class SaveQuest{
             return $mig2;
         } 
         else{
-            return $mig;
+            return json_encode([
+                "status"=>"failed",
+                "response"=>"Department or subject not found",
+            ], JSON_PRETTY_PRINT);
+            exit();
         //    return  json_encode([
         //         'status'=>'failed',
         //         'response'=>'subject is yet to be set'
