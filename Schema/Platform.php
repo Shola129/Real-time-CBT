@@ -70,6 +70,8 @@ class Platform{
         "Date_Created VARCHAR(255) NOT NULL",
         "departmentID VARCHAR(255) NOT NULL",
         "organization_code VARCHAR(255) NOT NULL",
+        "totalQuestions VARCHAR(255) NOT NULL",
+        "scorePerQuestion VARCHAR(255) NOT NULL"
     ];
 
     public const SETSUBJECTS_TABLE = "subjects";
@@ -220,15 +222,15 @@ class Platform{
         "organization_code VARCHAR(255) NOT NULL",
     ];
 
-    public const QUESTIONDETAILS_TABLE = "question_details";
-    public const QUESTIONDETAILS_TABLE_COLUMNS = [
-        "question_details_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
-        "organization_code VARCHAR(255) NOT NULL",
-        "total_question VARCHAR(255) NOT NULL",
-        "mark_per_score VARCHAR(255) NOT NULL",
-        "department VARCHAR(255) NOT NULL",
-        "status VARCHAR(255) NOT NULL",
-    ];
+    // public const QUESTIONDETAILS_TABLE = "question_details";
+    // public const QUESTIONDETAILS_TABLE_COLUMNS = [
+    //     "question_details_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
+    //     "organization_code VARCHAR(255) NOT NULL",
+    //     "total_question VARCHAR(255) NOT NULL",
+    //     "mark_per_score VARCHAR(255) NOT NULL",
+    //     "department VARCHAR(255) NOT NULL",
+    //     "status VARCHAR(255) NOT NULL",
+    // ];
   //you can have as many tables as you want
 }
 ?>

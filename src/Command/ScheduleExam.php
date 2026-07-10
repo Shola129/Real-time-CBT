@@ -27,16 +27,16 @@ class ScheduleExam{
         $mig = $newMig->get($where, 0, 1);
         $decodeMig = json_decode($mig, true);
         if($decodeMig['status']==="success"){
-            $where2 = [
-                "organization_code"=>$this->dto->organization_code,
-                "department"=>$this->dto->department,
-                "status"=>"set"
-            ];
+            // $where2 = [
+            //     "organization_code"=>$this->dto->organization_code,
+            //     "department"=>$this->dto->department,
+            //     "status"=>"set"
+            // ];
 
-            $newMig2 = new Migration(null, $this->table3);
-            $mig2 = $newMig2->get($where2, 0, 1);
-            $decodeMig2 = json_decode($mig2, true);
-            if($decodeMig2["status"]==="success"){
+            // $newMig2 = new Migration(null, $this->table3);
+            // $mig2 = $newMig2->get($where2, 0, 1);
+            // $decodeMig2 = json_decode($mig2, true);
+            // if($decodeMig2["status"]==="success"){
                     $col = [
                         "organization_code", 
                         "department", 
@@ -66,13 +66,13 @@ class ScheduleExam{
                     $newMig3 = new Migration(null, $this->table2);
                     $mig3 = $newMig3->saveUniqueMulti($col, $val, $data);
                  return $mig3;
-            }else{
-                return json_encode([
-                    "status"=>"failed",
-                    "response"=>"The total questions per subject and mark per score is yet to be set or determined, do that under the settings before seting the timetable"
-                ], JSON_PRETTY_PRINT);
-                exit();
-            }
+            // }else{
+            //     return json_encode([
+            //         "status"=>"failed",
+            //         "response"=>"The total questions per subject and mark per score is yet to be set or determined, do that under the settings before seting the timetable"
+            //     ], JSON_PRETTY_PRINT);
+            //     exit();
+            // }
         }
         else{
             return json_encode([

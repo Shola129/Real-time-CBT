@@ -489,6 +489,15 @@ textarea.form-control { border-radius: var(--radius-md); resize: vertical; min-h
   font-size: 15px; font-weight: 700; color: #fff;
 }
 .dsb-drawer-title i { color: var(--nav-accent); font-size: 13px; }
+.dsb-drawer-header-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.dsb-drawer-add-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; font-size: 12px; font-weight: 600;
+  border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,.18);
+  background: var(--blue); color: #fff; cursor: pointer;
+  transition: var(--transition); white-space: nowrap;
+}
+.dsb-drawer-add-btn:hover { background: var(--blue-hover); }
 .dsb-drawer-body { overflow-y: auto; flex: 1; }
 .dsb-drawer-meta {
   padding: 12px 20px; background: var(--bg); border-bottom: 1px solid var(--border);
@@ -585,6 +594,16 @@ textarea.form-control { border-radius: var(--radius-md); resize: vertical; min-h
   border-radius: 0 0 var(--radius-xl) var(--radius-xl);
 }
 
+/* ── FIXED FIELD (readonly context fields in modals) ───────── */
+.form-control[readonly],
+.form-control[disabled] {
+  background: var(--border-soft); color: var(--text-muted); cursor: not-allowed;
+}
+.fixed-field-badge {
+  font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--text-faint); margin-left: 6px;
+}
+
 /* ── SCHEDULE PAGE ──────────────────────────────────────────── */
 .schedule-stats-grid {
   display: grid; grid-template-columns: repeat(4, minmax(0,1fr));
@@ -613,6 +632,45 @@ textarea.form-control { border-radius: var(--radius-md); resize: vertical; min-h
 }
 .dept-stat-mini-val { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1; letter-spacing: -.8px; }
 .dept-stat-mini-lbl { font-size: 11px; color: var(--text-muted); }
+
+/* ── RESULTS DASHBOARD ──────────────────────────────────────── */
+.results-stats-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; margin-bottom: 20px; }
+.results-stat-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 16px;
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: var(--shadow-sm); transition: var(--transition);
+}
+.results-stat-card:hover { border-color: var(--blue-mid); box-shadow: var(--shadow-md); }
+.results-stat-icon {
+  width: 42px; height: 42px; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+}
+.results-stat-icon.total   { background: var(--blue-light); color: var(--blue); }
+.results-stat-icon.done    { background: var(--success-bg); color: var(--success); }
+.results-stat-icon.pending { background: var(--warn-bg); color: var(--warn); }
+.results-stat-val { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1; letter-spacing: -.6px; }
+.results-stat-lbl { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+
+.pagination-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap;
+  padding: 12px 20px; border-top: 1px solid var(--border-soft);
+  background: var(--bg);
+}
+.pagination-info { font-size: 12px; color: var(--text-muted); }
+.pagination-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.pagination-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; font-size: 12px; font-weight: 500;
+  border-radius: var(--radius-sm); border: 1px solid var(--border);
+  background: var(--surface); color: var(--text-2); cursor: pointer;
+  transition: var(--transition);
+}
+.pagination-btn:hover:not(:disabled) { background: var(--blue-light); border-color: var(--blue-mid); color: var(--blue); }
+.pagination-btn:disabled { opacity: .45; cursor: not-allowed; }
+.page-size-select { padding: 6px 10px; font-size: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); color: var(--text-2); font-family: inherit; }
 
 /* ── QUESTIONS ──────────────────────────────────────────────── */
 .question-set-card {
@@ -692,6 +750,9 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
   .content { padding: 18px 16px; }
   .stat-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .dept-stat-row { grid-template-columns: 1fr; }
+  .results-stats-grid { grid-template-columns: 1fr; }
+  .pagination-bar { flex-direction: column; align-items: stretch; }
+  .pagination-controls { justify-content: space-between; }
   .schedule-stats-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .dsb-dept-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
 }
@@ -716,6 +777,8 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
   .dsb-drawer { max-width: 100%; }
   .gallery-grid { grid-template-columns: 1fr 1fr; }
   .options-grid { grid-template-columns: 1fr; }
+  .dsb-drawer-header { flex-wrap: wrap; }
+  .dsb-drawer-header-actions { margin-left: 0; width: 100%; justify-content: flex-end; }
 }
 </style>
 </head>
@@ -888,12 +951,142 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
   </div>
 </div>
 
+<!-- MODAL 4 — Add Subject (from Department drawer) -->
+<div class="modal-backdrop" id="addSubjectModal" onclick="if(event.target===this)closeAddSubjectModal()">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title"><i class="fas fa-plus-circle"></i> Add Subject</div>
+      <button type="button" class="modal-close" onclick="closeAddSubjectModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="addSubjectForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Department <span class="fixed-field-badge">Fixed</span></label>
+          <input class="form-control" type="text" id="addSub-department" name="department" readonly />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Department Code <span class="fixed-field-badge">Fixed</span></label>
+          <input class="form-control" type="text" id="addSub-departmentCode" name="DepartmentCode" readonly />
+        </div>
+        <div class="modal-divider"></div>
+        <div class="form-group">
+          <label class="form-label">Subject Name</label>
+          <input class="form-control" type="text" id="addSub-subjectName" placeholder="e.g. Algorithms" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject Code</label>
+          <input class="form-control" type="text" id="addSub-subjectCode" placeholder="e.g. Algo204 optional" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm" onclick="closeAddSubjectModal()"><i class="fas fa-times"></i> Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" id="addSubjectSaveBtn"><i class="fas fa-save"></i> Save Subject</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL 5 — Edit Question (from Question Sets search) -->
+<div class="modal-backdrop" id="editQuestionModal" onclick="if(event.target===this)closeEditQuestionModal()">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title"><i class="fas fa-pen-to-square"></i> Edit Question</div>
+      <button type="button" class="modal-close" onclick="closeEditQuestionModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="editQuestionForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Department <span class="fixed-field-badge">Fixed</span></label>
+          <input class="form-control" type="text" id="editQ-department" readonly />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject <span class="fixed-field-badge">Fixed</span></label>
+          <input class="form-control" type="text" id="editQ-subject" readonly />
+        </div>
+        <input type="hidden" id="editQ-questionID" />
+        <div class="modal-divider"></div>
+        <div class="form-group">
+          <label class="form-label">Question Text</label>
+          <textarea class="form-control" id="editQ-questiontext" placeholder="Type the question here…"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Answer Options</label>
+        </div>
+        <div class="options-grid">
+          <input class="form-control" type="text" id="editQ-optionA" placeholder="Option A" />
+          <input class="form-control" type="text" id="editQ-optionB" placeholder="Option B" />
+          <input class="form-control" type="text" id="editQ-optionC" placeholder="Option C" />
+          <input class="form-control" type="text" id="editQ-optionD" placeholder="Option D" />
+          <input class="form-control" type="text" id="editQ-optionE" placeholder="Option E" />
+        </div>
+        <div class="form-group" style="max-width:260px;">
+          <label class="form-label">Correct Answer</label>
+          <input class="form-control" type="text" id="editQ-correctAss" placeholder="Enter correct option (e.g. A)" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm" onclick="closeEditQuestionModal()"><i class="fas fa-times"></i> Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" id="editQuestionSaveBtn"><i class="fas fa-save"></i> Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL 6 — Edit Department -->
+<div class="modal-backdrop" id="editDepartmentModal" onclick="if(event.target===this)closeEditDepartmentModal()">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title"><i class="fas fa-pen-to-square"></i> Edit Department</div>
+      <button type="button" class="modal-close" onclick="closeEditDepartmentModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="editDepartmentForm">
+      <div class="modal-body">
+        <input type="hidden" id="editDept-originalCode" />
+        <div class="form-group">
+          <label class="form-label">Department Name</label>
+          <input class="form-control" type="text" id="editDept-name" placeholder="e.g. Computer Science" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Department Code</label>
+          <input class="form-control" type="text" id="editDept-code" placeholder="e.g. CS" style="text-transform:uppercase;" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Head of Department</label>
+          <input class="form-control" type="text" id="editDept-hod" placeholder="e.g. Dr. Smith" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <input class="form-control" type="text" id="editDept-desc" placeholder="Short description (optional)" />
+        </div>
+        <div class="modal-divider"></div>
+        <div class="form-group">
+          <label class="form-label">Total Questions <span style="color:var(--text-faint);font-size:10px;">per exam</span></label>
+          <input class="form-control" type="number" min="1" id="editDept-totalQuestions" placeholder="e.g. 40" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Score Per Question</label>
+          <input class="form-control" type="number" min="0" step="0.5" id="editDept-scorePerQuestion" placeholder="e.g. 2.5" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm" onclick="closeEditDepartmentModal()"><i class="fas fa-times"></i> Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" id="editDepartmentSaveBtn"><i class="fas fa-save"></i> Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- Subjects Drawer -->
 <div class="dsb-drawer-backdrop" id="dsbDrawerBackdrop" onclick="closeDsbDrawer()">
   <div class="dsb-drawer" onclick="event.stopPropagation()">
     <div class="dsb-drawer-header">
       <div class="dsb-drawer-title" id="dsbDrawerTitle"></div>
-      <button type="button" class="modal-close" onclick="closeDsbDrawer()"><i class="fas fa-times"></i></button>
+      <div class="dsb-drawer-header-actions">
+        <button type="button" class="dsb-drawer-add-btn" id="dsbAddSubjectBtn">
+          <i class="fas fa-plus"></i> Add Subject
+        </button>
+        <button type="button" class="modal-close" onclick="closeDsbDrawer()"><i class="fas fa-times"></i></button>
+      </div>
     </div>
     <div class="dsb-drawer-body" id="dsbDrawerBody"></div>
   </div>
@@ -1259,6 +1452,46 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
 
       <!-- ── RESULTS ── -->
       <div id="results" class="page">
+
+        <!-- Results overview stats -->
+        <div class="results-stats-grid">
+          <div class="results-stat-card">
+            <div class="results-stat-icon total"><i class="fas fa-graduation-cap"></i></div>
+            <div>
+              <div class="results-stat-val" id="resultsStatTotalStudents">—</div>
+              <div class="results-stat-lbl">Total Students</div>
+            </div>
+          </div>
+          <div class="results-stat-card">
+            <div class="results-stat-icon done"><i class="fas fa-circle-check"></i></div>
+            <div>
+              <div class="results-stat-val" id="resultsStatCompleted">—</div>
+              <div class="results-stat-lbl">Completed Exam</div>
+            </div>
+          </div>
+          <div class="results-stat-card">
+            <div class="results-stat-icon pending"><i class="fas fa-hourglass-half"></i></div>
+            <div>
+              <div class="results-stat-val" id="resultsStatOutstanding">—</div>
+              <div class="results-stat-lbl">Outstanding (Yet to Sit)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search by department (students who have completed exam) -->
+        <div class="search-bar">
+          <div class="search-field" style="flex:2;">
+            <i class="fas fa-building"></i>
+            <input type="text" id="resultsDeptSearchInput" placeholder="Enter department to search completed students…" />
+          </div>
+          <button id="resultsDeptSearchBtn" class="btn btn-primary btn-sm">
+            <i class="fas fa-magnifying-glass"></i> Search
+          </button>
+          <button id="resultsDeptClearBtn" class="btn btn-sm">
+            <i class="fas fa-rotate-left"></i> Clear
+          </button>
+        </div>
+
         <div class="panel">
           <div class="panel-header">
             <span class="panel-title"><i class="fas fa-chart-simple"></i> Exam Results</span>
@@ -1301,6 +1534,20 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
               </tbody>
             </table>
           </div>
+          <!-- Pagination -->
+          <div class="pagination-bar">
+            <div class="pagination-info" id="resultsPageInfo">Showing 0–0 of 0</div>
+            <div class="pagination-controls">
+              <select class="page-size-select" id="resultsPageSize">
+                <option value="10">10 / page</option>
+                <option value="25">25 / page</option>
+                <option value="50">50 / page</option>
+                <option value="100">100 / page</option>
+              </select>
+              <button type="button" class="pagination-btn" id="resultsPrevBtn"><i class="fas fa-chevron-left"></i> Prev</button>
+              <button type="button" class="pagination-btn" id="resultsNextBtn">Next <i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -1337,6 +1584,117 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
             document.getElementById("display-error").textContent="No result completed yet";
           }
         }
+      </script>
+
+      <!-- Results dashboard — new, additive only. Reuses the same endpoints as results()
+           above but adds client-side pagination, department search and summary stats
+           without altering the original results() function. -->
+      <script>
+        let resultsFullList = [];
+        let resultsFilteredList = [];
+        let resultsCurrentPage = 1;
+        let resultsTotalStudents = 0;
+
+        async function loadResultsDashboard(){
+          const org_code = document.getElementById("organization-code").textContent;
+
+          try{
+            const totalStuApi = await fetch('/cbt/ansofra/apiadmin/TotalStudents', {
+                method:'POST',
+                headers:{"Content-type":"application/json"},
+                body:JSON.stringify({role:'user', organization_code:org_code})
+            });
+            const totalStuResult = await totalStuApi.json();
+            resultsTotalStudents = (totalStuResult.status==="success") ? (Number(totalStuResult.response)||0) : 0;
+          }catch(err){ resultsTotalStudents = 0; }
+
+          try{
+            const e = {status:"completed", organization_code:org_code};
+            const api = await fetch("/cbt/ansofra/apiadmin/display/result", {
+                method:"POST",
+                headers:{"Content-type":"application/json"},
+                body:JSON.stringify(e)
+            });
+            const result = await api.json();
+            resultsFullList = (result.status==="success") ? result.response : [];
+          }catch(err){ resultsFullList = []; }
+
+          resultsFilteredList = resultsFullList;
+          resultsCurrentPage = 1;
+          updateResultsStats();
+          renderResultsPage();
+        }
+
+        function updateResultsStats(){
+          const completed = resultsFullList.length;
+          const outstanding = Math.max(resultsTotalStudents - completed, 0);
+          document.getElementById('resultsStatTotalStudents').textContent = resultsTotalStudents || '0';
+          document.getElementById('resultsStatCompleted').textContent = completed;
+          document.getElementById('resultsStatOutstanding').textContent = outstanding;
+        }
+
+        function renderResultsPage(){
+          const pageSize = parseInt(document.getElementById('resultsPageSize').value, 10) || 10;
+          const totalItems = resultsFilteredList.length;
+          const totalPages = Math.max(Math.ceil(totalItems / pageSize), 1);
+          if(resultsCurrentPage > totalPages) resultsCurrentPage = totalPages;
+          const startIdx = (resultsCurrentPage - 1) * pageSize;
+          const endIdx = Math.min(startIdx + pageSize, totalItems);
+          const pageItems = resultsFilteredList.slice(startIdx, endIdx);
+
+          let output = '';
+          if(pageItems.length){
+            for(let i=0; i<pageItems.length; i++){
+              const row = pageItems[i];
+              output += `
+                <tr>
+                  <td>${startIdx + i + 1}</td>
+                  <td>${row.fullname || '—'}</td>
+                  <td>${row.regNum || '—'}</td>
+                  <td><span class="badge badge-dept">${row.department || '—'}</span></td>
+                  <td><span class="badge badge-score">${row.overAll || '—'}</span></td>
+                  <td>${row.createdAt || '—'}</td>
+                  <td>${row.publish || '—'}</td>
+                </tr>
+              `;
+            }
+          } else {
+            output = `<tr><td colspan="7" class="notice"><i class="fas fa-inbox"></i> No results to display.</td></tr>`;
+          }
+          document.getElementById('display-result').innerHTML = output;
+
+          document.getElementById('resultsPageInfo').textContent =
+            totalItems ? `Showing ${startIdx + 1}–${endIdx} of ${totalItems}` : 'Showing 0–0 of 0';
+          document.getElementById('resultsPrevBtn').disabled = resultsCurrentPage <= 1;
+          document.getElementById('resultsNextBtn').disabled = resultsCurrentPage >= totalPages;
+        }
+
+        document.getElementById('resultsPrevBtn')?.addEventListener('click', ()=>{
+          if(resultsCurrentPage > 1){ resultsCurrentPage--; renderResultsPage(); }
+        });
+        document.getElementById('resultsNextBtn')?.addEventListener('click', ()=>{
+          const pageSize = parseInt(document.getElementById('resultsPageSize').value, 10) || 10;
+          const totalPages = Math.max(Math.ceil(resultsFilteredList.length / pageSize), 1);
+          if(resultsCurrentPage < totalPages){ resultsCurrentPage++; renderResultsPage(); }
+        });
+        document.getElementById('resultsPageSize')?.addEventListener('change', ()=>{
+          resultsCurrentPage = 1;
+          renderResultsPage();
+        });
+
+        document.getElementById('resultsDeptSearchBtn')?.addEventListener('click', ()=>{
+          const dept = document.getElementById('resultsDeptSearchInput').value.trim().toLowerCase();
+          if(!dept){ alert('Enter a department to search'); return; }
+          resultsFilteredList = resultsFullList.filter(r => (r.department || '').toLowerCase().includes(dept));
+          resultsCurrentPage = 1;
+          renderResultsPage();
+        });
+        document.getElementById('resultsDeptClearBtn')?.addEventListener('click', ()=>{
+          document.getElementById('resultsDeptSearchInput').value = '';
+          resultsFilteredList = resultsFullList;
+          resultsCurrentPage = 1;
+          renderResultsPage();
+        });
       </script>
 
       <!-- ── DEPARTMENTS ─────────────────────────────────────────── -->
@@ -1382,6 +1740,14 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
                   <label class="form-label">Description</label>
                   <input class="form-control" type="text" id="newDeptDesc" placeholder="Short description (optional)" name="Description" />
                 </div>
+                <div class="form-group">
+                  <label class="form-label">Total Questions <span style="color:var(--text-faint);font-size:10px;">per exam</span></label>
+                  <input class="form-control" type="number" min="1" id="newDeptTotalQuestions" placeholder="e.g. 40" name="totalQuestions" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Score Per Question</label>
+                  <input class="form-control" type="number" min="0" step="0.5" id="newDeptScorePerQuestion" placeholder="e.g. 2.5" name="scorePerQuestion" />
+                </div>
               </div>
             </form>
             <div style="display:flex;justify-content:flex-end;margin-top:16px;gap:10px;flex-wrap:wrap;">
@@ -1412,6 +1778,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
                 <tr>
                   <th>#</th><th>Department Name</th><th>Code</th>
                   <th>Head of Department</th><th>Description</th>
+                  <th>Total Qs</th><th>Score/Q</th>
                   <th>Date Created</th><th>Actions</th>
                 </tr>
               </thead>
@@ -1487,7 +1854,7 @@ const getID = localStorage.getItem('cbt-admin-ID');
 const getEmail = localStorage.getItem('cbt-admin-email');
 const getAuthCode = localStorage.getItem('cbt-admin-auth-code');
 if(!getID && !getEmail && !getAuthCode){
-   window.location.href="/cbt/ansofra/";
+  //  window.location.href="/cbt/ansofra/";
 }
 async function getDetail(){
   const email =  getEmail.trim()|| 'sholadanielek@gmail.com';

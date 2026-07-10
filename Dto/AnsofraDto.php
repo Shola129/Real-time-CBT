@@ -75,7 +75,10 @@ class AnsofraDto{
     public $mark_per_score;
     public $limit;
     public $publish;
-    
+    public $scorePerQuestion;
+    // public $totalQuestions;
+
+
     public function __construct(array $inData){
         $allProp = get_object_vars($this);
         foreach($allProp as $k => $v){

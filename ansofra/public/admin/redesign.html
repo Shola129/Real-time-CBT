@@ -489,6 +489,15 @@ textarea.form-control { border-radius: var(--radius-md); resize: vertical; min-h
   font-size: 15px; font-weight: 700; color: #fff;
 }
 .dsb-drawer-title i { color: var(--nav-accent); font-size: 13px; }
+.dsb-drawer-header-actions { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.dsb-drawer-add-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; font-size: 12px; font-weight: 600;
+  border-radius: var(--radius-md); border: 1px solid rgba(255,255,255,.18);
+  background: var(--blue); color: #fff; cursor: pointer;
+  transition: var(--transition); white-space: nowrap;
+}
+.dsb-drawer-add-btn:hover { background: var(--blue-hover); }
 .dsb-drawer-body { overflow-y: auto; flex: 1; }
 .dsb-drawer-meta {
   padding: 12px 20px; background: var(--bg); border-bottom: 1px solid var(--border);
@@ -585,6 +594,16 @@ textarea.form-control { border-radius: var(--radius-md); resize: vertical; min-h
   border-radius: 0 0 var(--radius-xl) var(--radius-xl);
 }
 
+/* ── FIXED FIELD (readonly context fields in modals) ───────── */
+.form-control[readonly],
+.form-control[disabled] {
+  background: var(--border-soft); color: var(--text-muted); cursor: not-allowed;
+}
+.fixed-field-badge {
+  font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  color: var(--text-faint); margin-left: 6px;
+}
+
 /* ── SCHEDULE PAGE ──────────────────────────────────────────── */
 .schedule-stats-grid {
   display: grid; grid-template-columns: repeat(4, minmax(0,1fr));
@@ -613,6 +632,45 @@ textarea.form-control { border-radius: var(--radius-md); resize: vertical; min-h
 }
 .dept-stat-mini-val { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1; letter-spacing: -.8px; }
 .dept-stat-mini-lbl { font-size: 11px; color: var(--text-muted); }
+
+/* ── RESULTS DASHBOARD ──────────────────────────────────────── */
+.results-stats-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; margin-bottom: 20px; }
+.results-stat-card {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 16px;
+  display: flex; align-items: center; gap: 12px;
+  box-shadow: var(--shadow-sm); transition: var(--transition);
+}
+.results-stat-card:hover { border-color: var(--blue-mid); box-shadow: var(--shadow-md); }
+.results-stat-icon {
+  width: 42px; height: 42px; border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 17px; flex-shrink: 0;
+}
+.results-stat-icon.total   { background: var(--blue-light); color: var(--blue); }
+.results-stat-icon.done    { background: var(--success-bg); color: var(--success); }
+.results-stat-icon.pending { background: var(--warn-bg); color: var(--warn); }
+.results-stat-val { font-size: 22px; font-weight: 800; color: var(--text); line-height: 1; letter-spacing: -.6px; }
+.results-stat-lbl { font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+
+.pagination-bar {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; flex-wrap: wrap;
+  padding: 12px 20px; border-top: 1px solid var(--border-soft);
+  background: var(--bg);
+}
+.pagination-info { font-size: 12px; color: var(--text-muted); }
+.pagination-controls { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.pagination-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 6px 12px; font-size: 12px; font-weight: 500;
+  border-radius: var(--radius-sm); border: 1px solid var(--border);
+  background: var(--surface); color: var(--text-2); cursor: pointer;
+  transition: var(--transition);
+}
+.pagination-btn:hover:not(:disabled) { background: var(--blue-light); border-color: var(--blue-mid); color: var(--blue); }
+.pagination-btn:disabled { opacity: .45; cursor: not-allowed; }
+.page-size-select { padding: 6px 10px; font-size: 12px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: var(--surface); color: var(--text-2); font-family: inherit; }
 
 /* ── QUESTIONS ──────────────────────────────────────────────── */
 .question-set-card {
@@ -692,6 +750,9 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
   .content { padding: 18px 16px; }
   .stat-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .dept-stat-row { grid-template-columns: 1fr; }
+  .results-stats-grid { grid-template-columns: 1fr; }
+  .pagination-bar { flex-direction: column; align-items: stretch; }
+  .pagination-controls { justify-content: space-between; }
   .schedule-stats-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   .dsb-dept-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
 }
@@ -716,6 +777,8 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
   .dsb-drawer { max-width: 100%; }
   .gallery-grid { grid-template-columns: 1fr 1fr; }
   .options-grid { grid-template-columns: 1fr; }
+  .dsb-drawer-header { flex-wrap: wrap; }
+  .dsb-drawer-header-actions { margin-left: 0; width: 100%; justify-content: flex-end; }
 }
 </style>
 </head>
@@ -738,15 +801,23 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
         </div>
         <div class="form-group">
           <label class="form-label" for="edit-name">Department Code</label>
-          <input class="form-control" type="text" id="edit-name" placeholder="CS" name="DepartmentCode"/>
+          <input class="form-control" type="text" id="edit-deptCode" placeholder="CSC" name="DepartmentCode"/>
         </div>
         <div class="form-group">
           <label class="form-label">Subject Name</label>
-          <input class="form-control" type="text" placeholder="e.g. Algorithms" name="subject"/>
+          <input class="form-control" type="text" id="edit-subject" placeholder="e.g. Algorithms" name="subject"/>
         </div>
-        <div class="form-group" hidden>
+        <div class="form-group">
+          <label class="form-label">Subject Code</label>
+          <input class="form-control" type="text" id="edit-subject-code" placeholder="e.g. Algo405" name="subject"/>
+        </div>
+        <div class="form-group">
           <label class="form-label">Subject ID</label>
-          <input class="form-control" type="text" id="subjectID" placeholder="e.g. Algorithms" name="subjectID" disabled/>
+          <input class="form-control" type="text" id="subjectID" placeholder="e.g. Algorithms"  disabled/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Organization Code</label>
+          <input class="form-control" type="text" id="org-code"disabled/>
         </div>
       </div>
       <div class="modal-footer">
@@ -768,35 +839,52 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
       <div class="modal-body">
         <div class="form-group">
           <label class="form-label">Department</label>
-          <input class="form-control" type="text" id="schSubject" placeholder="e.g. Computer Science" name="department"/>
+          <input class="form-control" type="text" id="edit-schedule-department"  name="department"/>
         </div>
         <div class="form-group">
           <label class="form-label">Department Code</label>
-          <input class="form-control" type="text" id="schSub" placeholder="e.g. CS" name="DepartmentCode"/>
+          <input class="form-control" type="text" id="edit-schedule-department-code"  name="DepartmentCode"/>
         </div>
+        <div class="form-group">
+            <label class="form-label">Session</label>
+            <!-- <input class="form-control" type="number" id="edit-session" name="session"/> -->
+            <select class="form-control" id="edit-session" name="session">
+                <option value="" disabled>Select Session</option>
+                <option value="2026/2027">2026/2027</option>
+                <option value="2027/2028">2027/2028</option>
+                <option value="2028/2029">2028/2029</option>
+            </select>
+          </div>
         <div class="form-group" hidden>
           <label class="form-label">Time ID</label>
-          <input class="form-control" type="text" id="timeID" placeholder="e.g. CS" name="timeID" hidden/>
+          <span class="form-control" id="timeID"></span>
+          <!-- <input class="form-control" type="text" id="timeID"  name="timeID" hidden/> -->
         </div>
         <div class="modal-divider"></div>
         <div class="modal-section-label">Exam Schedule</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
           <div class="form-group">
             <label class="form-label">Date</label>
-            <input class="form-control" type="date" id="schDate" name="date" />
+            <input class="form-control" type="date" id="edit-schedule-date" name="date" />
           </div>
           <div class="form-group">
             <label class="form-label">Start Time</label>
-            <input class="form-control" type="time" id="timestart" name="start" />
+            <input class="form-control" type="time" id="edit-schedule-time-start" name="start" />
           </div>
           <div class="form-group">
             <label class="form-label">End Time</label>
-            <input class="form-control" type="time" id="edntime" name="end"/>
+            <input class="form-control" type="time" id="edit-schedule-time-end" name="end"/>
           </div>
           <div class="form-group">
             <label class="form-label">Duration (min)</label>
-            <input class="form-control" type="number" id="schDuration" placeholder="90" min="1" name="duration"/>
+            <input class="form-control" type="text" id="edit-schedule-duration" name="duration"/>
           </div>
+          <div class="form-group">
+            <label class="form-label">Status </label>
+            <span class="form-control" id="edit-schedule-status" ></span>
+            <!-- <input class="form-control" type="text" id="edit-schedule-status" name="status" hidden/> -->
+          </div>
+
         </div>
       </div>
     </form>
@@ -818,30 +906,40 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
       <div class="modal-body">
         <div class="form-group">
           <label class="form-label">Department</label>
-          <input class="form-control" type="text" id="schSubject" placeholder="e.g. Computer Science" name="department"/>
+          <input class="form-control" type="text" id="schedule-department" placeholder="e.g. Computer Science" name="department"/>
         </div>
         <div class="form-group">
           <label class="form-label">Department Code</label>
-          <input class="form-control" type="text" id="schSub" placeholder="e.g. CS" name="DepartmentCode"/>
+          <input class="form-control" type="text" id="schedule-department-code" placeholder="e.g. CS" name="DepartmentCode"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Session</label>
+          <select name="session" id="session"  class="form-control">
+            <option value="">Select Session for Exam</option>
+            <option value="2024/2025">2024/2025</option>
+            <option value="2025/2026">2025/2026</option>
+            <option value="2026/2027">2026/2027</option>
+          </select>
+          <!-- <input class="form-control" type="text" id="schSub" placeholder="e.g. CS" name="DepartmentCode"/> -->
         </div>
         <div class="modal-divider"></div>
         <div class="modal-section-label">Exam Schedule</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
           <div class="form-group">
             <label class="form-label">Date</label>
-            <input class="form-control" type="date" id="schDate" name="date" />
+            <input class="form-control" type="date" id="schedule-date" name="date" />
           </div>
           <div class="form-group">
             <label class="form-label">Start Time</label>
-            <input class="form-control" type="time" id="timestart" name="start" />
+            <input class="form-control" type="time" id="schedule-time-start" name="start" />
           </div>
           <div class="form-group">
             <label class="form-label">End Time</label>
-            <input class="form-control" type="time" id="edntime" name="end"/>
+            <input class="form-control" type="time" id="schedule-time-end" name="end"/>
           </div>
           <div class="form-group">
             <label class="form-label">Duration (min)</label>
-            <input class="form-control" type="number" id="schDuration" placeholder="90" min="1" name="duration"/>
+            <input class="form-control" type="number" id="schedule-duration" placeholder="90" min="1" name="duration"/>
           </div>
         </div>
       </div>
@@ -853,20 +951,148 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
   </div>
 </div>
 
+<!-- MODAL 4 — Add Subject (from Department drawer) -->
+<div class="modal-backdrop" id="addSubjectModal" onclick="if(event.target===this)closeAddSubjectModal()">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title"><i class="fas fa-plus-circle"></i> Add Subject</div>
+      <button type="button" class="modal-close" onclick="closeAddSubjectModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="addSubjectForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Department <span class="fixed-field-badge">Fixed</span></label>
+          <input class="form-control" type="text" id="addSub-department" name="department" readonly />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Department Code <span class="fixed-field-badge">Fixed</span></label>
+          <input class="form-control" type="text" id="addSub-departmentCode" name="DepartmentCode" readonly />
+        </div>
+        <div class="modal-divider"></div>
+        <div class="form-group">
+          <label class="form-label">Subject Name</label>
+          <input class="form-control" type="text" id="addSub-subjectName" placeholder="e.g. Algorithms" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject Code</label>
+          <input class="form-control" type="text" id="addSub-subjectCode" placeholder="e.g. Algo204 optional" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm" onclick="closeAddSubjectModal()"><i class="fas fa-times"></i> Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" id="addSubjectSaveBtn"><i class="fas fa-save"></i> Save Subject</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL 5 — Edit Question (from Question Sets search) -->
+<div class="modal-backdrop" id="editQuestionModal" onclick="if(event.target===this)closeEditQuestionModal()">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title"><i class="fas fa-pen-to-square"></i> Edit Question</div>
+      <button type="button" class="modal-close" onclick="closeEditQuestionModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="editQuestionForm">
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Department <span class="fixed-field-badge">Fixed</span></label>
+          <input class="form-control" type="text" id="editQ-department" readonly />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject <span class="fixed-field-badge">Fixed</span></label>
+          <input class="form-control" type="text" id="editQ-subject" readonly />
+        </div>
+        <input type="hidden" id="editQ-questionID" />
+        <div class="modal-divider"></div>
+        <div class="form-group">
+          <label class="form-label">Question Text</label>
+          <textarea class="form-control" id="editQ-questiontext" placeholder="Type the question here…"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Answer Options</label>
+        </div>
+        <div class="options-grid">
+          <input class="form-control" type="text" id="editQ-optionA" placeholder="Option A" />
+          <input class="form-control" type="text" id="editQ-optionB" placeholder="Option B" />
+          <input class="form-control" type="text" id="editQ-optionC" placeholder="Option C" />
+          <input class="form-control" type="text" id="editQ-optionD" placeholder="Option D" />
+          <input class="form-control" type="text" id="editQ-optionE" placeholder="Option E" />
+        </div>
+        <div class="form-group" style="max-width:260px;">
+          <label class="form-label">Correct Answer</label>
+          <input class="form-control" type="text" id="editQ-correctAss" placeholder="Enter correct option (e.g. A)" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm" onclick="closeEditQuestionModal()"><i class="fas fa-times"></i> Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" id="editQuestionSaveBtn"><i class="fas fa-save"></i> Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL 6 — Edit Department -->
+<div class="modal-backdrop" id="editDepartmentModal" onclick="if(event.target===this)closeEditDepartmentModal()">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div class="modal-title"><i class="fas fa-pen-to-square"></i> Edit Department</div>
+      <button type="button" class="modal-close" onclick="closeEditDepartmentModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <form id="editDepartmentForm">
+      <div class="modal-body">
+        <input type="hidden" id="editDept-originalCode" />
+        <div class="form-group">
+          <label class="form-label">Department Name</label>
+          <input class="form-control" type="text" id="editDept-name" placeholder="e.g. Computer Science" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Department Code</label>
+          <input class="form-control" type="text" id="editDept-code" placeholder="e.g. CS" style="text-transform:uppercase;" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Head of Department</label>
+          <input class="form-control" type="text" id="editDept-hod" placeholder="e.g. Dr. Smith" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <input class="form-control" type="text" id="editDept-desc" placeholder="Short description (optional)" />
+        </div>
+        <div class="modal-divider"></div>
+        <div class="form-group">
+          <label class="form-label">Total Questions <span style="color:var(--text-faint);font-size:10px;">per exam</span></label>
+          <input class="form-control" type="number" min="1" id="editDept-totalQuestions" placeholder="e.g. 40" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Score Per Question</label>
+          <input class="form-control" type="number" min="0" step="0.5" id="editDept-scorePerQuestion" placeholder="e.g. 2.5" />
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm" onclick="closeEditDepartmentModal()"><i class="fas fa-times"></i> Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" id="editDepartmentSaveBtn"><i class="fas fa-save"></i> Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- Subjects Drawer -->
 <div class="dsb-drawer-backdrop" id="dsbDrawerBackdrop" onclick="closeDsbDrawer()">
   <div class="dsb-drawer" onclick="event.stopPropagation()">
     <div class="dsb-drawer-header">
       <div class="dsb-drawer-title" id="dsbDrawerTitle"></div>
-      <button type="button" class="modal-close" onclick="closeDsbDrawer()"><i class="fas fa-times"></i></button>
+      <div class="dsb-drawer-header-actions">
+        <button type="button" class="dsb-drawer-add-btn" id="dsbAddSubjectBtn">
+          <i class="fas fa-plus"></i> Add Subject
+        </button>
+        <button type="button" class="modal-close" onclick="closeDsbDrawer()"><i class="fas fa-times"></i></button>
+      </div>
     </div>
     <div class="dsb-drawer-body" id="dsbDrawerBody"></div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════════════════ -->
-<!-- APP SHELL                                                     -->
-<!-- ══════════════════════════════════════════════════════════════ -->
+
 <div class="app">
 
   <!-- SIDEBAR -->
@@ -946,6 +1172,8 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
           <div class="stat-card">
             <div class="stat-icon"><i class="fas fa-user-shield"></i></div>
             <div class="stat-value">Personal Info</div>
+            <div><strong>Org. Name:</strong>  <span id="organization-name"></span></div>
+            <div><strong>Org. Code:</strong>  <span id="organization-code"></span></div>
             <div><strong>ID:</strong> <span id="profile-id">ADMIN/00CBT/123456</span></div>
             <div><strong>Name:</strong> <span id="profile-name">John Fin</span></div>
             <div><strong>Email:</strong> <span id="profile-email">johnfin@gmail.com</span></div>
@@ -953,17 +1181,17 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
           <div class="stat-card">
             <div class="stat-icon"><i class="fas fa-graduation-cap"></i></div>
             <div class="stat-value" id="stat-students">—</div>
-            <div class="stat-label">Total Students</div>
+            <div class="stat-label" id="total-stu">Total Students</div>
           </div>
           <div class="stat-card">
             <div class="stat-icon"><i class="fas fa-book"></i></div>
             <div class="stat-value" id="stat-subjects">—</div>
-            <div class="stat-label">Subjects</div>
+            <div class="stat-label" id="total-sub">Subjects</div>
           </div>
           <div class="stat-card">
             <div class="stat-icon"><i class="fas fa-building-columns"></i></div>
             <div class="stat-value" id="stat-depts">—</div>
-            <div class="stat-label">Departments</div>
+            <div class="stat-label" id="total-dep">Departments</div>
           </div>
         </div>
 
@@ -980,16 +1208,16 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
         </div>
         <div id="dashDeptGrid" class="gallery-grid">
           <div class="gallery-card">
-            <img src="../public/assets/check-mark-on-list-display-on-virtual-screen.jpg" alt="">
+            <!-- <img src="../public/assets/check-mark-on-list-display-on-virtual-screen.jpg" alt=""> -->
           </div>
           <div class="gallery-card">
-            <img src="../public/assets/codeless-google-docs-track-changes-featured-image-1024x667.jpg" alt="">
+            <!-- <img src="../public/assets/codeless-google-docs-track-changes-featured-image-1024x667.jpg" alt=""> -->
           </div>
           <div class="gallery-card">
-            <img src="../public/assets/download.webp" alt="">
+            <!-- <img src="../public/assets/download.webp" alt=""> -->
           </div>
           <div class="gallery-card">
-            <img src="../public/assets/electronic-signature-online-contract-concept-businessman-using-laptop-to-e-signing-digital.jpg" alt="">
+            <!-- <img src="../public/assets/electronic-signature-online-contract-concept-businessman-using-laptop-to-e-signing-digital.jpg" alt=""> -->
           </div>
         </div>
       </div>
@@ -1006,7 +1234,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
           </button>
           <div class="search-field">
             <i class="fas fa-building"></i>
-            <input type="text" placeholder="Filter by department" id="deptFilter">
+            <input type="text" placeholder="Enter department" id="deptFilter">
           </div>
           <button id="seacrhStudentDep" class="btn btn-primary btn-sm">
             <i class="fas fa-magnifying-glass"></i> Search
@@ -1056,17 +1284,17 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
             <i class="fas fa-book" style="color:var(--nav-accent);"></i>
             <input type="text" id="subjectNameSearchInput" placeholder="Enter subject name to search…" style="color:#fff;" />
           </div>
-          <button id="searchSubjectByNameBtn" class="btn btn-primary">
+          <button class="btn btn-primary" onclick="seacrhSubj(`${document.getElementById('subjectNameSearchInput').value.trim()}`)">
             <i class="fas fa-magnifying-glass"></i> Search Subject
           </button>
         </div>
         <div id="subjectNameSearchResults" class="subjects-grid" style="margin-bottom:20px;"></div>
 
         <!-- Filter by department -->
-        <div class="search-bar">
+        <!-- <div class="search-bar">
           <div class="search-field" style="flex:1;">
             <i class="fas fa-sitemap"></i>
-            <input type="text" id="deptSearchInput" placeholder="Filter by department…" />
+            <input type="text" id="deptSearchInput" placeholder="Enter department…" />
           </div>
           <button id="searchSubjectBtn" class="btn btn-primary btn-sm">
             <i class="fas fa-magnifying-glass"></i> Search
@@ -1075,7 +1303,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
         <div id="subjectCardsContainer" class="subjects-grid"></div>
         <div id="noSubjectsMsg" class="notice" style="display:none;">
           <i class="fas fa-book-open"></i> No subjects found for this department.
-        </div>
+        </div> -->
 
         <!-- Add New Subject -->
         <div class="panel">
@@ -1087,15 +1315,19 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
               <div class="form-row">
                 <div class="form-group">
                   <label class="form-label">Department</label>
-                  <input type="text" class="form-control" id="newDeptSelect" name="department">
+                  <input type="text" class="form-control" id="newDeptSelect">
                 </div>
                 <div class="form-group">
                   <label class="form-label">Department Code</label>
-                  <input class="form-control" type="text" id="newSubject" placeholder="e.g. CS" name="DepartmentCode"/>
+                  <input class="form-control" type="text" id="depCode" placeholder="e.g. CSC" />
                 </div>
                 <div class="form-group">
                   <label class="form-label">Subject Name</label>
-                  <input class="form-control" type="text" placeholder="e.g. Algorithms" name="subject" />
+                  <input class="form-control" type="text" placeholder="e.g. Algorithms"  id="subjectName" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Subject Code</label>
+                  <input class="form-control" type="text" placeholder="e.g. Algo204 optional"  id="subjectCode" />
                 </div>
                 <div class="form-group" style="justify-content:flex-end;">
                   <label class="form-label">&nbsp;</label>
@@ -1208,7 +1440,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
                   <input type="text" id="correctAss" name="correctAss" class="form-control" placeholder="Enter correct option (e.g. A)">
                 </div>
                 <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
-                  <button id="saveQuestionBtn" class="btn btn-primary">
+                  <button id="saveQuestionBtn" class="btn btn-primary" type="button">
                     <i class="fas fa-cloud-upload-alt"></i> Save Question
                   </button>
                 </div>
@@ -1218,8 +1450,48 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
         </div>
       </div>
 
-      <!-- ── RESULTS ────────────────────────────────────────────── -->
+      <!-- ── RESULTS ── -->
       <div id="results" class="page">
+
+        <!-- Results overview stats -->
+        <div class="results-stats-grid">
+          <div class="results-stat-card">
+            <div class="results-stat-icon total"><i class="fas fa-graduation-cap"></i></div>
+            <div>
+              <div class="results-stat-val" id="resultsStatTotalStudents">—</div>
+              <div class="results-stat-lbl">Total Students</div>
+            </div>
+          </div>
+          <div class="results-stat-card">
+            <div class="results-stat-icon done"><i class="fas fa-circle-check"></i></div>
+            <div>
+              <div class="results-stat-val" id="resultsStatCompleted">—</div>
+              <div class="results-stat-lbl">Completed Exam</div>
+            </div>
+          </div>
+          <div class="results-stat-card">
+            <div class="results-stat-icon pending"><i class="fas fa-hourglass-half"></i></div>
+            <div>
+              <div class="results-stat-val" id="resultsStatOutstanding">—</div>
+              <div class="results-stat-lbl">Outstanding (Yet to Sit)</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Search by department (students who have completed exam) -->
+        <div class="search-bar">
+          <div class="search-field" style="flex:2;">
+            <i class="fas fa-building"></i>
+            <input type="text" id="resultsDeptSearchInput" placeholder="Enter department to search completed students…" />
+          </div>
+          <button id="resultsDeptSearchBtn" class="btn btn-primary btn-sm">
+            <i class="fas fa-magnifying-glass"></i> Search
+          </button>
+          <button id="resultsDeptClearBtn" class="btn btn-sm">
+            <i class="fas fa-rotate-left"></i> Clear
+          </button>
+        </div>
+
         <div class="panel">
           <div class="panel-header">
             <span class="panel-title"><i class="fas fa-chart-simple"></i> Exam Results</span>
@@ -1262,13 +1534,28 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
               </tbody>
             </table>
           </div>
+          <!-- Pagination -->
+          <div class="pagination-bar">
+            <div class="pagination-info" id="resultsPageInfo">Showing 0–0 of 0</div>
+            <div class="pagination-controls">
+              <select class="page-size-select" id="resultsPageSize">
+                <option value="10">10 / page</option>
+                <option value="25">25 / page</option>
+                <option value="50">50 / page</option>
+                <option value="100">100 / page</option>
+              </select>
+              <button type="button" class="pagination-btn" id="resultsPrevBtn"><i class="fas fa-chevron-left"></i> Prev</button>
+              <button type="button" class="pagination-btn" id="resultsNextBtn">Next <i class="fas fa-chevron-right"></i></button>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- results() script — preserved verbatim -->
       <script>
         async function results(){
-          const e ={status:"completed"};
+          const org_code = document.getElementById("organization-code").textContent;
+          const e ={status:"completed", organization_code:org_code};
           const api = await fetch("/cbt/ansofra/apiadmin/display/result", {
               method:"POST",
               headers:{"Content-type":"apllication/json"},
@@ -1299,6 +1586,117 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
         }
       </script>
 
+      <!-- Results dashboard — new, additive only. Reuses the same endpoints as results()
+           above but adds client-side pagination, department search and summary stats
+           without altering the original results() function. -->
+      <script>
+        let resultsFullList = [];
+        let resultsFilteredList = [];
+        let resultsCurrentPage = 1;
+        let resultsTotalStudents = 0;
+
+        async function loadResultsDashboard(){
+          const org_code = document.getElementById("organization-code").textContent;
+
+          try{
+            const totalStuApi = await fetch('/cbt/ansofra/apiadmin/TotalStudents', {
+                method:'POST',
+                headers:{"Content-type":"application/json"},
+                body:JSON.stringify({role:'user', organization_code:org_code})
+            });
+            const totalStuResult = await totalStuApi.json();
+            resultsTotalStudents = (totalStuResult.status==="success") ? (Number(totalStuResult.response)||0) : 0;
+          }catch(err){ resultsTotalStudents = 0; }
+
+          try{
+            const e = {status:"completed", organization_code:org_code};
+            const api = await fetch("/cbt/ansofra/apiadmin/display/result", {
+                method:"POST",
+                headers:{"Content-type":"application/json"},
+                body:JSON.stringify(e)
+            });
+            const result = await api.json();
+            resultsFullList = (result.status==="success") ? result.response : [];
+          }catch(err){ resultsFullList = []; }
+
+          resultsFilteredList = resultsFullList;
+          resultsCurrentPage = 1;
+          updateResultsStats();
+          renderResultsPage();
+        }
+
+        function updateResultsStats(){
+          const completed = resultsFullList.length;
+          const outstanding = Math.max(resultsTotalStudents - completed, 0);
+          document.getElementById('resultsStatTotalStudents').textContent = resultsTotalStudents || '0';
+          document.getElementById('resultsStatCompleted').textContent = completed;
+          document.getElementById('resultsStatOutstanding').textContent = outstanding;
+        }
+
+        function renderResultsPage(){
+          const pageSize = parseInt(document.getElementById('resultsPageSize').value, 10) || 10;
+          const totalItems = resultsFilteredList.length;
+          const totalPages = Math.max(Math.ceil(totalItems / pageSize), 1);
+          if(resultsCurrentPage > totalPages) resultsCurrentPage = totalPages;
+          const startIdx = (resultsCurrentPage - 1) * pageSize;
+          const endIdx = Math.min(startIdx + pageSize, totalItems);
+          const pageItems = resultsFilteredList.slice(startIdx, endIdx);
+
+          let output = '';
+          if(pageItems.length){
+            for(let i=0; i<pageItems.length; i++){
+              const row = pageItems[i];
+              output += `
+                <tr>
+                  <td>${startIdx + i + 1}</td>
+                  <td>${row.fullname || '—'}</td>
+                  <td>${row.regNum || '—'}</td>
+                  <td><span class="badge badge-dept">${row.department || '—'}</span></td>
+                  <td><span class="badge badge-score">${row.overAll || '—'}</span></td>
+                  <td>${row.createdAt || '—'}</td>
+                  <td>${row.publish || '—'}</td>
+                </tr>
+              `;
+            }
+          } else {
+            output = `<tr><td colspan="7" class="notice"><i class="fas fa-inbox"></i> No results to display.</td></tr>`;
+          }
+          document.getElementById('display-result').innerHTML = output;
+
+          document.getElementById('resultsPageInfo').textContent =
+            totalItems ? `Showing ${startIdx + 1}–${endIdx} of ${totalItems}` : 'Showing 0–0 of 0';
+          document.getElementById('resultsPrevBtn').disabled = resultsCurrentPage <= 1;
+          document.getElementById('resultsNextBtn').disabled = resultsCurrentPage >= totalPages;
+        }
+
+        document.getElementById('resultsPrevBtn')?.addEventListener('click', ()=>{
+          if(resultsCurrentPage > 1){ resultsCurrentPage--; renderResultsPage(); }
+        });
+        document.getElementById('resultsNextBtn')?.addEventListener('click', ()=>{
+          const pageSize = parseInt(document.getElementById('resultsPageSize').value, 10) || 10;
+          const totalPages = Math.max(Math.ceil(resultsFilteredList.length / pageSize), 1);
+          if(resultsCurrentPage < totalPages){ resultsCurrentPage++; renderResultsPage(); }
+        });
+        document.getElementById('resultsPageSize')?.addEventListener('change', ()=>{
+          resultsCurrentPage = 1;
+          renderResultsPage();
+        });
+
+        document.getElementById('resultsDeptSearchBtn')?.addEventListener('click', ()=>{
+          const dept = document.getElementById('resultsDeptSearchInput').value.trim().toLowerCase();
+          if(!dept){ alert('Enter a department to search'); return; }
+          resultsFilteredList = resultsFullList.filter(r => (r.department || '').toLowerCase().includes(dept));
+          resultsCurrentPage = 1;
+          renderResultsPage();
+        });
+        document.getElementById('resultsDeptClearBtn')?.addEventListener('click', ()=>{
+          document.getElementById('resultsDeptSearchInput').value = '';
+          resultsFilteredList = resultsFullList;
+          resultsCurrentPage = 1;
+          renderResultsPage();
+        });
+      </script>
+
       <!-- ── DEPARTMENTS ─────────────────────────────────────────── -->
       <div id="departments" class="page">
         <div class="dept-stat-row">
@@ -1325,6 +1723,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
           <div class="panel-body">
             <form id="departmentform">
               <div class="form-row">
+                
                 <div class="form-group">
                   <label class="form-label">Department Name <span style="color:var(--danger);font-size:10px;">*</span></label>
                   <input class="form-control" type="text" id="newDeptName" placeholder="e.g. Computer Science" name="department" />
@@ -1340,6 +1739,14 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
                 <div class="form-group">
                   <label class="form-label">Description</label>
                   <input class="form-control" type="text" id="newDeptDesc" placeholder="Short description (optional)" name="Description" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Total Questions <span style="color:var(--text-faint);font-size:10px;">per exam</span></label>
+                  <input class="form-control" type="number" min="1" id="newDeptTotalQuestions" placeholder="e.g. 40" name="totalQuestions" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Score Per Question</label>
+                  <input class="form-control" type="number" min="0" step="0.5" id="newDeptScorePerQuestion" placeholder="e.g. 2.5" name="scorePerQuestion" />
                 </div>
               </div>
             </form>
@@ -1371,6 +1778,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
                 <tr>
                   <th>#</th><th>Department Name</th><th>Code</th>
                   <th>Head of Department</th><th>Description</th>
+                  <th>Total Qs</th><th>Score/Q</th>
                   <th>Date Created</th><th>Actions</th>
                 </tr>
               </thead>
@@ -1423,7 +1831,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
                 <tr>
                   <th>#</th><th>Department</th><th>Dept. Code</th>
                   <th>Time ID</th><th>Date</th><th>Start</th>
-                  <th>End</th><th>Duration</th><th>Edit</th><th>Notify</th>
+                  <th>End</th><th>Duration</th><th>Edit</th><th>Notify</th><th>Status</th>
                 </tr>
               </thead>
               <tbody id="scheduleTableBody"></tbody>
@@ -1441,38 +1849,42 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
   </div><!-- /main -->
 </div><!-- /app -->
 
-<!-- ══════════════════════════════════════════════════════════════ -->
-<!-- JAVASCRIPT — preserved verbatim from original                 -->
-<!-- ══════════════════════════════════════════════════════════════ -->
 <script>
-const getID = localStorage.getItem('cbt-admin-email');
-const getEmail = localStorage.getItem('cbt-admin-ID');
-if(!getID && !getEmail){
-  //  window.location.href="/cbt/ansofra/ilease";
+const getID = localStorage.getItem('cbt-admin-ID');
+const getEmail = localStorage.getItem('cbt-admin-email');
+const getAuthCode = localStorage.getItem('cbt-admin-auth-code');
+if(!getID && !getEmail && !getAuthCode){
+  //  window.location.href="/cbt/ansofra/";
 }
 async function getDetail(){
-  const email =  getEmail|| 'sholadanielek@gmail.com';
-  const ID = getID || 'ADMIN/00CBT/104131';
+  const email =  getEmail.trim()|| 'sholadanielek@gmail.com';
+  const ID = getID.trim() || 'ADMIN/00CBT/104131';
   const e = {email:email, ID:ID};
+  // console.log(e);
   const api = await fetch('/cbt/ansofra/apiadmin/Details', {
       method:'POST',
       headers:{"Content-type":"application/json"},
       body:JSON.stringify(e)
   });
   const result = await api.json();
+  // console.log(result);
   const response = result.response[0];
   if(result.status==="success"){
+    // console.log(result);
     document.getElementById("profile-id").textContent=response.ID;
     document.getElementById("profile-email").textContent=response.email;
     document.getElementById("profile-name").textContent=response.fullname;
+    document.getElementById("organization-name").textContent=response.organization_name;
+    document.getElementById("organization-code").textContent=response.organization_code;
   }
   else{
-    // document.location.href="/cbt/ansofra/ilease";
+    document.location.href="/cbt/ansofra/";
   }
 }
 
 async function totalDepartment(){
-  const e = {role:'set'};
+  const org_code = document.getElementById("organization-code").textContent;
+  const e = {role:'set', organization_code:org_code};
   const api = await fetch("/cbt/ansofra/apiadmin/total/department", {
       method:'POST',
       headers:{"Content-type":"application/json"},
@@ -1480,13 +1892,26 @@ async function totalDepartment(){
   });
   const result = await api.json();
   const response = result.response;
-  document.getElementById('stat-depts').textContent= response || '00';
-  document.getElementById('deptHODCount').textContent=response || '00';
-  document.getElementById('deptTotalCount').textContent=response || '00';
+  // console.log(result);
+  if(result.status==="success"){
+    document.getElementById('deptHODCount').textContent=response || '00';
+    document.getElementById('deptTotalCount').textContent=response || '00'; 
+    if(response=="0" || response=="1"){  
+        document.getElementById('stat-depts').textContent= response;
+        document.getElementById('total-dep').textContent="Department";
+    }else{
+        document.getElementById('stat-depts').textContent= response;
+        document.getElementById('total-dep').textContent="Departments";
+    }
+}else{
+    document.getElementById('stat-depts').textContent="0";
+    document.getElementById('total-dep').textContent="Department";
+  }
 }
 
 async function getTotalStudent(){
-  const e ={role:'user'};
+  const org_code = document.getElementById("organization-code").textContent;
+  const e ={role:'user', organization_code:org_code};
   const api = await fetch('/cbt/ansofra/apiadmin/TotalStudents', {
       method:'POST', 
       headers:{"Content-type":"application/json"},
@@ -1495,24 +1920,42 @@ async function getTotalStudent(){
   const result = await api.json();
   const response = result.response;
   if(result.status === "success"){
-    document.getElementById("stat-students").textContent=response;
+    if(response=="0" || response=="1"){
+      document.getElementById("stat-students").textContent=response;
+      document.getElementById("total-stu").textContent="Student";
+    }
+    else{
+      document.getElementById("stat-students").textContent=response;
+      document.getElementById("total-stu").textContent="Students";
+    }
   } else {
     document.getElementById("stat-students").textContent= "00";
+    document.getElementById("total-stu").textContent="Student";
   }
 }
 
 async function getTotalSubject(){
-  const e = {role:'set'};
+  const org_code = document.getElementById("organization-code").textContent;
+  const e = {role:'set', organization_code:org_code};
   const api = await fetch('/cbt/ansofra/apiadmin/TotalSubjects', {
       method:'POST', 
       body:JSON.stringify(e)
   });
   const result = await api.json();
+    // console.log(result);
   const response = result.response;
   if(result.status==="success"){
-    document.getElementById("stat-subjects").textContent=response;
+    // document.getElementById("stat-subjects").textContent=response;
+    if(response=="0" || response=="1"){
+      document.getElementById("stat-subjects").textContent=response;
+      document.getElementById("total-sub").textContent="Subject";
+    }
+    else{
+      document.getElementById("stat-subjects").textContent=response;
+      document.getElementById("total-sub").textContent="Subjects";
+    }
   } else {
-    document.getElementById("stat-subjects").textContent="00";
+    document.getElementById("stat-subjects").textContent="00:";
   }
 }
 
@@ -1545,6 +1988,7 @@ async function setLastLogin(){
        body:JSON.stringify(e)
   });
   const result = await api.json();
+  // console.log(result);
 }
 
 async function setLastSeen(){
@@ -1573,32 +2017,77 @@ window.closeEditModal = function() {
   editingIndex = -1;
 };
 
-function renderSubjectsByName(searchName) {
+// function renderSubjectsByName(searchName) {
+//   const container = document.getElementById('subjectNameSearchResults');
+//   if (!container) return;
+//   if (!searchName.trim()) {
+//     container.innerHTML = '<div class="notice"><i class="fas fa-info-circle"></i> Enter a subject name above to search.</div>';
+//     return;
+//   }
+//   const filtered = subjectsList.filter(s => s.name.toLowerCase().includes(searchName.toLowerCase()));
+//   if (!filtered.length) { container.innerHTML = '<div class="notice"><i class="fas fa-search"></i> No subjects match that name.</div>'; return; }
+//   container.innerHTML = filtered.map(sub => {
+//     const meta = DEPT_META[sub.dept]||{};
+//     return `<div class="subject-card">
+//                 <div class="subject-card-top">
+//                   <span class="badge badge-dept">
+//                     <i class="${meta.icon||'fas fa-building'}"></i> 
+//                     ${sub.dept}
+//                   </span>
+//                   <span class="badge badge-duration">
+//                     <i class="far fa-clock"></i> ${sub.duration} min
+//                   </span></div><div class="subject-card-name">${sub.name}
+//                 </div>
+//               </div>`;
+//   }).join('');
+// }
+
+async function seacrhSubj(searchName){
   const container = document.getElementById('subjectNameSearchResults');
-  if (!container) return;
+  const org_code = document.getElementById("organization-code").textContent.trim();
   if (!searchName.trim()) {
     container.innerHTML = '<div class="notice"><i class="fas fa-info-circle"></i> Enter a subject name above to search.</div>';
     return;
   }
-  const filtered = subjectsList.filter(s => s.name.toLowerCase().includes(searchName.toLowerCase()));
-  if (!filtered.length) { container.innerHTML = '<div class="notice"><i class="fas fa-search"></i> No subjects match that name.</div>'; return; }
-  container.innerHTML = filtered.map(sub => {
-    const meta = DEPT_META[sub.dept]||{};
-    return `<div class="subject-card"><div class="subject-card-top"><span class="badge badge-dept"><i class="${meta.icon||'fas fa-building'}"></i> ${sub.dept}</span><span class="badge badge-duration"><i class="far fa-clock"></i> ${sub.duration} min</span></div><div class="subject-card-name">${sub.name}</div></div>`;
-  }).join('');
+  const api = await fetch("/cbt/ansofra/apiadmin/search/subject", {
+      method:"POST",
+      headers:{"Content-type":"application/json"},
+      body:JSON.stringify({subject:searchName.trim(), organization_code:org_code})
+  });
+
+  const result = await api.json();
+  const response = result.response;
+  if(result.status=="success"){
+    let output = '';
+    for(let index = 0; index < response.length; index++){
+        output += `<div class="subject-card">
+                <div class="subject-card-top">
+                  <span class="badge badge-dept">
+                    ${response[index].department}
+                  </span>
+                  <span class="badge badge-duration">
+                    <i class="far fa-clock"></i> ${response[index].subject} min
+                  </span></div><div class="subject-card-name">${response[index].subjectCode}
+                </div>
+              </div>`;
+    }
+    container.innerHTML=output;
+  }else{
+    container.innerHTML = '<div class="notice"><i class="fas fa-search"></i> No subjects match that name.</div>'; return; 
+  }
 }
 
 function renderSubjects(filter) {
   const container = document.getElementById('subjectCardsContainer');
   const noMsg = document.getElementById('noSubjectsMsg');
   if (!container) return;
-  const filtered = filter.trim() ? subjectsList.filter(s=>s.dept.toLowerCase().includes(filter.toLowerCase())) : subjectsList;
-  if (!filtered.length) { container.innerHTML=''; if(noMsg) noMsg.style.display='block'; return; }
-  if (noMsg) noMsg.style.display='none';
-  container.innerHTML = filtered.map(sub => {
-    const idx = subjectsList.indexOf(sub);
-    return `<div class="subject-card"><div class="subject-card-top"><span class="badge badge-dept">${sub.dept}</span><span class="badge badge-duration"><i class="far fa-clock"></i> ${sub.duration} min</span></div><div class="subject-card-name">${sub.name}</div><div class="subject-card-meta"><span><i class="fas fa-circle-question"></i> ${sub.totalQs||0} Questions</span><span><i class="fas fa-calendar"></i> ${sub.created?sub.created.toLocaleDateString():'—'}</span></div><div class="subject-card-actions"><button class="btn btn-sm" onclick="openEditModal(${idx})"><i class="fas fa-pen"></i> Edit</button><button class="btn btn-sm btn-danger" onclick="deleteSubject(${idx})"><i class="fas fa-trash"></i></button></div></div>`;
-  }).join('');
+  // const filtered = filter.trim() ? subjectsList.filter(s=>s.dept.toLowerCase().includes(filter.toLowerCase())) : subjectsList;
+  // if (!filtered.length) { container.innerHTML=''; if(noMsg) noMsg.style.display='block'; return; }
+  // if (noMsg) noMsg.style.display='none';
+  // container.innerHTML = filtered.map(sub => {
+  //   const idx = subjectsList.indexOf(sub);
+  //   return `<div class="subject-card"><div class="subject-card-top"><span class="badge badge-dept">${sub.dept}</span><span class="badge badge-duration"><i class="far fa-clock"></i> ${sub.duration} min</span></div><div class="subject-card-name">${sub.name}</div><div class="subject-card-meta"><span><i class="fas fa-circle-question"></i> ${sub.totalQs||0} Questions</span><span><i class="fas fa-calendar"></i> ${sub.created?sub.created.toLocaleDateString():'—'}</span></div><div class="subject-card-actions"><button class="btn btn-sm" onclick="openEditModal(${idx})"><i class="fas fa-pen"></i> Edit</button><button class="btn btn-sm btn-danger" onclick="deleteSubject(${idx})"><i class="fas fa-trash"></i></button></div></div>`;
+  // }).join('');
 }
 
 window.deleteSubject = function(i) {
@@ -1622,36 +2111,61 @@ function openScheduleModal() {
   openGenericModal('scheduleModal');
 }
 
-async function saveScheduledExam() {
-  const data =  document.getElementById("formdata");
-  const form = new FormData(data);
-  const obj = {};
-  form.forEach((val, key)=>{
-    obj[key]=val;
-  })
-  console.log(obj);
-  const api = await fetch("/cbt/ansofra/apiadmin/schedule/exam/time", {
-      method:"POST",
-      body:form
-  });
-  const result = await api.json();
-  console.log(result);
-  if(result.status==="success"){
-    alert(result.response);
-      document.getElementById('schSubject').value = '';
-      document.getElementById('schSub').value = '';
-      document.getElementById('schDate').value = '';
-      document.getElementById('timestart').value = '';
-      document.getElementById('edntime').value = '';
-      document.getElementById('schDuration').value = '';
-  }
-  else{
-    alert(result.response);
-  }
+ function saveScheduledExam() {
+  event.preventDefault();
+    const depart = document.getElementById('schedule-department').value;
+    const departCode =  document.getElementById('schedule-department-code').value.trim();
+    const date =  document.getElementById('schedule-date').value.trim();
+    const startTime =  document.getElementById('schedule-time-start').value.trim();
+    const endtime =  document.getElementById('schedule-time-end').value.trim();
+    const dura =  document.getElementById('schedule-duration').value.trim();
+    const session = document.getElementById('session').value.trim();
+   
+    if(!depart || !departCode || !date || !startTime || !endtime || !dura){
+        alert("All field require");
+    }else{
+      processScheduledData();
+    }
+}
+
+
+async function processScheduledData(){
+    const data =  document.getElementById("formdata");
+    const org_code = document.getElementById("organization-code").textContent.trim();
+    const form = new FormData(data);
+    form.append("organization_code", org_code);
+    const obj = {};
+    form.forEach((val, key)=>{
+      obj[key]=val;
+    })
+    // console.log(obj);
+    const api = await fetch("/cbt/ansofra/apiadmin/schedule/exam/time", {
+        method:"POST",
+        body:form
+    });
+    const result = await api.json();
+    // console.log(result);
+    if(result.status==="success"){
+      alert(result.response);
+        document.getElementById('schedule-department').value="";
+        document.getElementById('schedule-department-code').value="";
+        document.getElementById('schedule-date').value="";
+        document.getElementById('schedule-time-start').value="";
+        document.getElementById('schedule-time-end').value="";
+        document.getElementById('schedule-duration').value="";
+        document.getElementById('session').value="";
+        closeGenericModal('scheduleModal');
+        displayScheduledTime();
+        totalexamSche();
+    }
+    else{
+      alert(result.response);
+    }
 }
 
 async function displayScheduledTime(){
-   const e = {role:'set'};
+  const org_code = document.getElementById("organization-code").textContent;
+   const e = {role:'set', organization_code:org_code};
    const api = await fetch("/cbt/ansofra/apiadmin/list/time/sets", {
       method:"POST",
       headers:{'Content-type':'application/json'},
@@ -1673,15 +2187,16 @@ async function displayScheduledTime(){
                 <td>${response[index].end}</td>
                 <td>${response[index].duration}</td>
                 <td style="display:flex;gap:6px;">
-                  <button class="btn btn-sm btn-info" onclick="openEditScheduleModal('${response[index].timeID}')">
+                  <button class="btn btn-sm btn-info" onclick="openEditScheduleModal('${response[index].timeID}', '${response[index].department}', '${response[index].DepartmentCode}', '${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].session}', '${response[index].organization_code}', '${response[index].date}', '${response[index].status}')">
                     <i class="fas fa-pen"></i>
                     </button>
                 </td>
                 <td>
-                  <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}', '${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].data}')">
+                  <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}', '${response[index].DepartmentCode}','${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].date}', '${response[index].session}')">
                    Send Out
                   </button>  
                 </td>
+                <td>${response[index].status}</td>
               </tr>
           `;  
       }
@@ -1695,29 +2210,33 @@ async function displayScheduledTime(){
 }
 
 async function totalexamSche(){
-   const e = {role:'user'};
+  const org_code = document.getElementById("organization-code").textContent.trim();
+   const e = {role:'user', organization_code:org_code};
    const api = await fetch('/cbt/ansofra/apiadmin/count/shedule', {
     method:'POST',
     headers:{'Content-type':'application/json'},
     body:JSON.stringify(e)
    });
    const result = await api.json();
-   document.getElementById("schStatTotal").textContent=result.response || '00';
+  //  console.log(result);
+   document.getElementById("schStatTotal").textContent=result.response;
 }
 
 async function seacrhDepSch(){
+    const org_code = document.getElementById("organization-code").textContent;
     const department = document.getElementById("schSearchInput").value.trim();
     if(!department){
         alert("department feld must not left empty");
     }
     else{
-      const e = {department:department};
+      const e = {department:department, organization_code:org_code};
       const api = await fetch('/cbt/ansofra/apiadmin/Search/Dep/Sch', {
           method:"POST",
           headers:{"Content-type":'application/json'},
           body:JSON.stringify(e)
       });
-      const result = await api.json();
+    const result = await api.json();
+    console.log(result);
     if(result.status==="success"){
     const response = result.response;
       let output = '';
@@ -1733,15 +2252,16 @@ async function seacrhDepSch(){
                 <td>${response[index].end}</td>
                 <td>${response[index].duration}</td>
                 <td style="display:flex;gap:6px;">
-                  <button class="btn btn-sm btn-info" onclick="openEditScheduleModal('${response[index].timeID}')">
+                  <button class="btn btn-sm btn-info" onclick="openEditScheduleModal('${response[index].timeID}', '${response[index].department}', '${response[index].DepartmentCode}', '${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].session}', '${response[index].organization_code}', '${response[index].date}', '${response[index].status}')">
                     <i class="fas fa-pen"></i>
                     </button>
                 </td>
                 <td>
-                  <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}', '${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].date}')">
+                  <button class="btn btn-sm btn-danger" onclick="sendTimeOut('${response[index].department}', '${response[index].DepartmentCode}','${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].date}', '${response[index].session}', '${response[index].status}', '${response[index].timeID}')">
                     <i class="fas fa-trash"></i>
                   </button>  
                 </td>
+                <td>${response[index].status}</td>
               </tr>
           `;  
       }
@@ -1758,6 +2278,12 @@ async function seacrhDepSch(){
   async function EditScheduleExam() {
     const data =  document.getElementById("formdata2");
      const form = new FormData(data);
+     const org_code = document.getElementById("organization-code").textContent;
+     const status = document.getElementById("edit-schedule-status").textContent;
+     const timeID = document.getElementById("timeID").textContent;
+     form.append("organization_code", org_code,);
+     form.append("timeID",timeID);
+     form.append("status", status);
      const obj = {};
      form.forEach((key, val)=>{
       obj[key]=val;
@@ -1767,6 +2293,7 @@ async function seacrhDepSch(){
         body:form
     });
     const result = await api.json();
+    console.log(result);
     if(result.status==="success"){
       displayScheduledTime();
       document.getElementById('editScheduleModal').style.display="none";
@@ -1776,9 +2303,23 @@ async function seacrhDepSch(){
     }
   }
 
-  async function sendTimeOut(dep, start, end, duration ,date){
-    const e = {department:dep, start:start, end:end, date:date};
-    const api = await fetch("/cbt/ansofra/apiadmin/notify/user/ofExam", {
+  async function sendTimeOut(dep, departCode, start, end, duration, date, session, status, timeID){
+    const org_code = document.getElementById("organization-code").textContent;
+    const org_name = document.getElementById("organization-name").textContent;
+    const e = {
+          department:dep, 
+          start:start, 
+          end:end, 
+          date:date, 
+          DepartmentCode:departCode, 
+          session:session, 
+          duration:duration,
+          organization_code:org_code,
+          organization_name:org_name,
+          status:status,
+          timeID:timeID
+        };
+    const api = await fetch("/cbt/ansofra/apiadmin/notify/user/of/Exam", {
         method:"POST",
         headers:{"Content-type":'application/json'},
         body:JSON.stringify(e)
@@ -1786,16 +2327,26 @@ async function seacrhDepSch(){
     const result = await api.json();
     if(result.status ==="success"){
       alert(result.response);
+      displayScheduledTime();
     }
     else{
       alert(result.response);
     }
   }
 
-function openEditScheduleModal(timeid) {
-  document.getElementById("timeID").value=timeid;
-  document.getElementById('editScheduleModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
+function openEditScheduleModal(timeid, department, DepartmentCode, start, end, duration, session, organization_code, date, status){
+      document.getElementById("timeID").value=timeid;
+      document.getElementById('editScheduleModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('edit-schedule-department').value=department;
+      document.getElementById('edit-schedule-department-code').value=DepartmentCode;
+      document.getElementById('edit-schedule-date').value=date;
+      document.getElementById('edit-schedule-time-start').value=start;
+      document.getElementById('edit-schedule-time-end').value=end;
+      document.getElementById('edit-schedule-duration').value=duration;
+      document.getElementById('edit-session').value=session;
+      document.getElementById('timeID').textContent=timeid;
+      document.getElementById('edit-schedule-status').textContent=status;
 };
 
 window.closeEditScheduleModal = function() {
@@ -1823,7 +2374,8 @@ document.getElementById('editScheduleModal')?.addEventListener('click', function
 
 async function getStudentList() {
   const tbody = document.getElementById('studentTableBody');
-  const e = {role:'user'};
+  const org_code = document.getElementById('organization-code').textContent;
+  const e = {role:'user', organization_code:org_code};
   const api = await fetch('/cbt/ansofra/apiadmin/GET/students', {
       method:"POST", 
       headers:{'Content-type':'application/json'},
@@ -1831,6 +2383,7 @@ async function getStudentList() {
   });
   const result = await api.json();
   const response = result.response;
+  // console.log(result);
   if(result.status==="success"){
       let display = '';
       for(let i=0; i<response.length; i++){
@@ -1853,10 +2406,11 @@ async function getStudentList() {
 document.getElementById("searchStudentRegNo").addEventListener("click", async function(){
   const tbody = document.getElementById('studentTableBody');
   const regNo = document.getElementById('regSearch').value.trim();
+  const org_code = document.getElementById('organization-code').textContent.trim();
   if(regNo===''){
     alert("you have not entered reg number of the student");
   } else {
-    const e = {regNum:regNo};
+    const e = {regNum:regNo, organization_code:org_code};
     const api = await fetch('/cbt/ansofra/apiadmin/search/regNum', {
         method:"POST",
         headers:{'Content-type':'application/json'},
@@ -1881,6 +2435,7 @@ document.getElementById("searchStudentRegNo").addEventListener("click", async fu
     } else {
       document.getElementById("studentCount").textContent="Registriation number not found";
       document.getElementById("table-wrap").style.display="none";
+      document.getElementById('regSearch').value="";
     }
   }
 });
@@ -1888,10 +2443,11 @@ document.getElementById("searchStudentRegNo").addEventListener("click", async fu
 document.getElementById("deptFilter").addEventListener("change", async ()=>{
   const tbody = document.getElementById('studentTableBody');
   const seletedValue = document.getElementById('deptFilter').value.trim();
+  const org_code = document.getElementById('organization-code').textContent.trim();
   if(seletedValue===''){
     alert("Select department");
   } else {
-    const e = {department:seletedValue};
+    const e = {department:seletedValue, organization_code:org_code};
     const api = await fetch('/cbt/ansofra/apiadmin/selected/department', {
         method:"POST",
         headers:{'Content-type':'application'}, 
@@ -1916,24 +2472,27 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
     } else {
       document.getElementById("studentCount").textContent="No record of user found in that department";
       document.getElementById("table-wrap").style.display="none";
+      document.getElementById('deptFilter').value="";
     }
   }
 });
 
  async function getDepartment(){
-  const e = {role:'set'};
+  const org_code = document.getElementById("organization-code").textContent.trim();
+  const e = {role:'set', organization_code:org_code};
   const api = await fetch('/cbt/ansofra/apiadmin/get/department/set/list',{
       method:"POST",
       headers:{'Content-type':'application/json'},
       body:JSON.stringify(e)
   });
   const result = await api.json();
+  // console.log(result);
   if(result.status==="success"){
     const response = result.response;
     let output = '';
     for (let index = 0; index < response.length; index++) {
         output +=`
-        <div class="dsb-dept-card" onclick="openDsbDrawer('${response[index].department}', '${response[index].DepartmentCode}', '${response[index].departmentID}', '${response[index].HeadOfDepartment}', '${response[index].Description}')">
+        <div class="dsb-dept-card" onclick="openDsbDrawer('${response[index].department}', '${response[index].DepartmentCode}', '${response[index].departmentID}', '${response[index].HeadOfDepartment}', '${response[index].Description}', '${org_code}')">
            <div class="dsb-dept-icon"><i class="fas fa-building"></i></div>
            <div><div class="dsb-dept-name">${response[index].department}</div><div class="dsb-dept-code">${response[index].DepartmentCode}</div></div>
            <div class="dsb-dept-footer"><div class="dsb-dept-count"><i class="fas fa-book" style="font-size:10px;"></i>&nbsp;</div><i class="fas fa-chevron-right dsb-dept-arrow"></i></div>
@@ -1946,11 +2505,12 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
     }
  }
 
- async function openDsbDrawer(department, DepartmentCode, departmentID, HeadOfDepartment, Description){
+ async function openDsbDrawer(department, DepartmentCode, departmentID, HeadOfDepartment, Description, org_code){
       const e = {
         department:department,
-        departmentID:departmentID,
-        DepartmentCode:DepartmentCode
+        DepartmentCode:DepartmentCode,
+        organization_code:org_code,
+        role:'set',
       };
       const api = await fetch("/cbt/ansofra/apiadmin/get/allSubject/Dep", {
           method:"POST",
@@ -1958,6 +2518,7 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
           body:JSON.stringify(e)
       });
       const result = await api.json();
+      // console.log(result);
       if(result.status==="success"){
         const  response = result.response;
         let output = '';
@@ -1965,11 +2526,11 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
           output +=`
             <div class="dsb-drawer-meta">
               <span><i class="fas fa-book"></i> ${index + 1 }</span>
-              <div class="dsb-subject-info"><div class="dsb-subject-name">${response[index].subject}</div><div class="dsb-subject-date">Added ${response[index].Date_Created || '—'}</div></div>
+              <div class="dsb-subject-info"><div class="dsb-subject-name">${response[index].subject}&nbsp &nbsp <nav>Code:  <strong>${response[index].subjectCode}</strong></nav></div> <div class="dsb-subject-date">Added ${response[index].date_created || '—'}</div></div>
                 <span><i class="fas fa-user-tie"></i> ${ HeadOfDepartment||'—'}</span>
                 <span>Depart Code ${response[index].DepartmentCode}</span>
                  <div class="dsb-subject-badges">
-                  <button class="btn btn-sm" style="padding:4px 10px;" onclick="openEditModal('${response[index].subjectID}', '${response[index].subject}')"><i class="fas fa-pen"></i></button>
+                  <button class="btn btn-sm" style="padding:4px 10px;" onclick="openEditModal('${response[index].subjectID}', '${response[index].subject}', '${response[index].subjectCode}', '${response[index].organization_code}', '${response[index].DepartmentCode}', '${response[index].department}')"><i class="fas fa-pen"></i></button>
                   <button class="btn btn-sm btn-danger" style="padding:4px 10px;" onclick="deleteSubjectFromDrawer('${response[index].subjectID}', '${response[index].subject}')"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
@@ -1991,22 +2552,44 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
       document.body.style.overflow = 'hidden';
  }
 
- async function openEditModal(subjectID, subject){
+ async function openEditModal(subjectID, subject, subCode, org_code, depCode, depart){
     document.getElementById('subjectID').value=subjectID;
     document.getElementById('editModal').classList.add('open');
-     document.body.style.overflow = 'hidden';
+    document.body.style.overflow = 'hidden';
+    document.getElementById("edit-dept").value=depart;
+    document.getElementById("edit-deptCode").value=depCode;
+    document.getElementById("edit-subject").value=subject;
+    document.getElementById("subjectID").value=subjectID;
+    document.getElementById("org-code").value=org_code;
+    document.getElementById("edit-subject-code").value=subCode;
  }
 
  async function saveEditSubject(){
-    const data = document.getElementById('');
-    const form = new FormData(data);
-    const api = await fetch('/', {
+    // const data = document.getElementById('');
+    // const form = new FormData(data);
+    const dept =  document.getElementById("edit-dept").value.trim();
+    const deptCode =  document.getElementById("edit-deptCode").value.trim();
+    const subject  =  document.getElementById("edit-subject").value.trim();
+    const subjectID =  document.getElementById("subjectID").value.trim();
+    const org_code =  document.getElementById("org-code").value.trim();
+    const  subCode=  document.getElementById("edit-subject-code").value.trim();
+    const e = {
+      department:dept,
+      DepartmentCode:deptCode,
+      subject:subject,
+      subjectID:subjectID,
+      organization_code:org_code,
+      subjectCode:subCode
+    };
+    const api = await fetch('/cbt/ansofra/apiadmin/edit/subject', {
         method:'POST',
-        body:form
+        headers:{"Content-type":"application/json"},
+        body:JSON.stringify(e)
     })
     const result = await api.json();
     if(result.status==="success"){
        alert(result.response);
+       closeEditModal();
     }
     else{
       alert("unable to edit the subject");
@@ -2032,33 +2615,80 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
     }
  }
 
- document.getElementById("saveSubjectBtn").addEventListener("click", async ()=>{
+ document.getElementById("saveSubjectBtn").addEventListener("click", ()=>{
+    const dep = document.getElementById("newDeptSelect").value.trim();
+    const depCode = document.getElementById("depCode").value.trim();
+    const subjectName = document.getElementById("subjectName").value.trim();
+    const subjectCode = document.getElementById("subjectCode").value.trim();
+    if(!dep || !depCode || !subjectName){
+      alert("All field require");
+    }else{
+      processSubjectData();
+    }
+    // event.preventDefault();
+    // const data = document.getElementById("saveSubject");
+    // const form = new FormData(data);
+    // const api = await fetch("/cbt/ansofra/apiadmin/save/subject", {
+    //     method:"POST",
+    //     body:form
+    // });
+    // const result = await api.json();
+    // if(result.status==="success"){
+    //   alert(result.response);
+    // }
+    // else{
+    //   alert(result.response);
+    // }
+ });
+
+ async function processSubjectData(){
     event.preventDefault();
-    const data = document.getElementById("saveSubject");
-    const form = new FormData(data);
+   const dep = document.getElementById("newDeptSelect").value.trim();
+    const depCode = document.getElementById("depCode").value.trim();
+    const subjectName = document.getElementById("subjectName").value.trim();
+    const subjectCode = document.getElementById("subjectCode").value.trim();
+    const org_code = document.getElementById("organization-code").textContent.trim();
+    const e = {
+      department:dep,
+      DepartmentCode:depCode,
+      subject:subjectName,
+      subjectCode:subjectCode,
+      date_created: new Date().toLocaleTimeString() +" " + new Date().toLocaleDateString(),
+      organization_code:org_code
+    }
+    // console.log(e);
     const api = await fetch("/cbt/ansofra/apiadmin/save/subject", {
         method:"POST",
-        body:form
+        headers:{"Content-type":"application/json"},
+        body:JSON.stringify(e)
     });
     const result = await api.json();
+    // console.log(result);
     if(result.status==="success"){
-      alert(result.response);
+      alert("subject created successfully");
+        document.getElementById("newDeptSelect").value="";
+        document.getElementById("depCode").value="";
+        document.getElementById("subjectName").value="";
+        document.getElementById("subjectCode").value="";
     }
     else{
       alert(result.response);
     }
- })
+ }
+
 
  document.getElementById("searchQuestionSetsBtn").addEventListener("click", async ()=>{
   const dep = document.getElementById("qsSearchDept").value.trim();
   const subject = document.getElementById("qsSearchSubject").value.trim();
+  const org_code = document.getElementById("organization-code").textContent.trim();
   if(dep==="" || subject===""){
     alert("all field required");
   }
   else{
     const e = {
       department:dep,
-      subject:subject
+      subject:subject,
+      organization_code:org_code,
     };
     const api = await fetch("/cbt/ansofra/apiadmin/seacrh/question",{
       method:"POST",
@@ -2066,6 +2696,7 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
        body:JSON.stringify(e)
     });
     const result = await api.json();
+    // console.log(result);
     if(result.status==="success"){
       const response = result.response;
       let output = '';
@@ -2085,7 +2716,7 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
               <div>D. ${response[index].optionD}</div>
             </div>
             <span class="badge badge-score" style="margin-top:6px;display:inline-flex;">
-              ✓ Correct: ${response[index].correctOtp || response[index].correctAss }}
+              ✓ Correct: ${response[index].correctOtp || response[index].correctAss }
             </span>
           </div>
           <div>QuestionID: ${response[index].questionID}</div>
@@ -2101,51 +2732,96 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
   }
 }) 
 
-document.getElementById("saveQuestionBtn").addEventListener("click", async ()=>{
-  event.preventDefault();
-  const dep = document.getElementById("displayDept").textContent;
-  const sub = document.getElementById("displaySubject").textContent;
-  const data = document.getElementById("saveQuestion");
-  const form = new FormData(data);
-  form.append('department', dep);
-  form.append('subject', sub);
-  const api = await fetch("/cbt/ansofra/apiadmin/save/questions", {
-      method:"POST",
-      body:form
-  });
-  const result = await api.json();
-  if(result.status==="success"){
-    alert(result.response);
-    document.getElementById("media").value="";
-    document.getElementById("optionA").value="";
-    document.getElementById("optionB").value="";
-    document.getElementById("optionC").value="";
-    document.getElementById("optionD").value="";
-    document.getElementById("optionE").value="";
-    document.getElementById("correctAnswer").value="";
-    document.getElementById("correctAss").value="";
-    document.getElementById("questionstext").value="";
-  }
-  else{
-    alert(result.response);
+document.getElementById("saveQuestionBtn").addEventListener("click",()=>{
+  const dept = document.getElementById("displayDept").textContent;
+  const subject = document.getElementById("displaySubject").textContent;
+  const question = document.getElementById("questionstext").value.trim();
+  const media = document.getElementById("media").value.trim();
+  const optionA = document.getElementById("optionA").value.trim();
+  const optionB = document.getElementById("optionB").value.trim();
+  const optionC = document.getElementById("optionC").value.trim();
+  const optionD = document.getElementById("optionD").value.trim();
+  const optionE = document.getElementById("optionE").value.trim();
+  const corr_option = document.getElementById("correctAss").value.trim();
+  if(!dept || !subject || !question || !optionA || !optionB || !optionC || !optionD || !corr_option ){
+      alert("All field required");
+  }else{
+    processQuestionData();
   }
 })
 
- document.getElementById("saveDeptBtn").addEventListener("click", async()=>{
+
+async function processQuestionData(){
+      event.preventDefault();
+      const dep = document.getElementById("displayDept").textContent;
+      const sub = document.getElementById("displaySubject").textContent;
+      const org_code = document.getElementById("organization-code").textContent;
+      const data = document.getElementById("saveQuestion");
+      const form = new FormData(data);
+      form.append('department', dep);
+      form.append('subject', sub);
+      form.append('organization_code', org_code);
+      const obj = {};
+      form.forEach((key, val)=>{
+        obj[key]=val
+      })
+      // console.log(obj);
+      const api = await fetch("/cbt/ansofra/apiadmin/save/questions", {
+          method:"POST",
+          body:form
+      });
+      const result = await api.json();
+      // console.log(result);
+      if(result.status==="success"){
+        alert(result.response);
+        document.getElementById("media").value="";
+        document.getElementById("optionA").value="";
+        document.getElementById("optionB").value="";
+        document.getElementById("optionC").value="";
+        document.getElementById("optionD").value="";
+        document.getElementById("optionE").value="";
+        // document.getElementById("correctAnswer").value="";
+        document.getElementById("correctAss").value="";
+        document.getElementById("questionstext").value="";
+      }
+      else{
+        alert(result.response);
+      }
+  }
+
+   document.getElementById("saveDeptBtn").addEventListener("click", async()=>{
+    event.preventDefault();
+    const depName = document.getElementById("newDeptName").value.trim();
+    const DepCode = document.getElementById("newDeptCode").value.trim();
+    const DeptHOD = document.getElementById("newDeptHOD").value.trim();
+    const des = document.getElementById("newDeptDesc").value.trim();
+    if(!depName && !DepCode && !DeptHOD){
+      alert("All field required");
+    }
+    else{
+      processDepDataAll();
+    }
+  })
+
+   async function processDepDataAll(){
     const data = document.getElementById("departmentform");
     const form = new FormData(data);
+    const org_code = document.getElementById("organization-code").textContent.trim();
     const role = "set";
     const time = new Date().toLocaleTimeString() +" "+ new Date().toLocaleDateString();
     form.append("date_created", time);
     form.append("role", role);
+    form.append("organization_code", org_code);
+    
     const api = await fetch('/cbt/ansofra/apiadmin/set/department', {
         method:"POST",
         body:form
     });
     const result = await api.json();
+    // console.log(result);
     if(result.status==='success'){
         alert("save successful");
-        renderDeptTable(document.getElementById('deptListSearch')?.value || '');
+        // renderDeptTable(document.getElementById('deptListSearch')?.value || '');
         updateDeptStats();
         document.getElementById('newDeptName').value  = '';
         document.getElementById('newDeptCode').value  = '';
@@ -2155,15 +2831,18 @@ document.getElementById("saveQuestionBtn").addEventListener("click", async ()=>{
     else{
       alert(`${result.response}`);
     }
-})
+}
 
 async function updateDeptStats(){
-  const e = {role:'set'}
+  const org_code = document.getElementById("organization-code").textContent.trim();
+  const e = {role:'set', organization_code:org_code};
   const api = await fetch("/cbt/ansofra/apiadmin/get/department/set/list", {
       method:'POST',
+      headers:{"Content-type":"application/json"},
       body:JSON.stringify(e)
   });
   const results = await api.json();
+  // console.log(results);
   if(results.status==="success"){
       const response = results.response;
       let output = "";
@@ -2190,7 +2869,8 @@ async function updateDeptStats(){
 
 document.getElementById("deptSearchBtn").addEventListener("click", async ()=>{
     const type = document.getElementById("deptListSearch").value.trim();
-    const e = {DepartmentCode:type};
+    const org_code = document.getElementById("organization-code").textContent.trim();
+    const e = {DepartmentCode:type, organization_code: org_code};
     const api = await fetch('/cbt/ansofra/apiadmin/search/dep/code', {
         method:'POST',
         headers:{'Content-type':'application/json'},
@@ -2209,18 +2889,33 @@ document.getElementById("deptSearchBtn").addEventListener("click", async ()=>{
                   <th>${response[i].HeadOfDepartment}</th>
                   <th>${response[i].Description}</th>
                   <th>${response[i].Date_Created}</th>
-                  <th>Action</th>
+                  <th><button><button/></th>
                 </tr>
             `
           }
-          console.log(output);
+          // console.log(output);
           document.getElementById("deptTableBody").innerHTML=output;
       }
     else{
       document.getElementById('displayAnyErr').style.display="none"
       document.getElementById('noDeptMsg').style.display="block";
     } 
-  })
+  });
+
+  // document.getElementById("searchSubjectBtn").addEventListener("click", async ()=>{
+  //   const depVal = document.getElementById("deptSearchInput").value.trim();
+  //   const org_code = document.getElementById("organization-code").textContent.trim();
+  //   const e = {role:"set", organization_code:org_code, department:depVal};
+
+  //   const api = await fetch("/cbt/ansofra/apiadmin/search/dep/name", {
+  //     method:"POST",
+  //     headers:{"Content-type":"application/json"},
+  //     body:JSON.stringify(e)
+  //   });
+
+  //   const result = await api.json();
+  //   console.log(result);
+  // })
 
 window.showSection = function(id, navEl){
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
