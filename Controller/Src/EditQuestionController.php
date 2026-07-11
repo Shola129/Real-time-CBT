@@ -5,6 +5,7 @@ use NewdichMiddleware\Index;
 use NewdichSrc\Command\EditQuestion;
 
 $data = $_POST;
+$file = $_FILES["medial"] ?? "null";
 $cleanData = [];
 $mid = new Index();
 
@@ -14,6 +15,7 @@ foreach($data as $key=>$val){
 
 $dto = new AnsofraDto($cleanData);
 $logic = new EditQuestion($dto);
+$media = $logic->upload($file);
 $log = $logic->process();
 echo $log;
 exit();

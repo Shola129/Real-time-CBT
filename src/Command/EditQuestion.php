@@ -3,6 +3,7 @@ namespace NewdichSrc\Command;
 use NewdichSchema\Platform;
 use NewdichSchema\Migration;
 use NewdichDto\AnsofraDto;
+use NewdichFiles\Upload;
 
 
 class EditQuestion{
@@ -11,6 +12,10 @@ class EditQuestion{
 
     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
+    }
+
+    public function upload($media){
+        $file = $media ?? "null";
     }
 
     public function process(){
@@ -23,19 +28,24 @@ class EditQuestion{
             "department"=>$this->dto->department,
             "subject"=>$this->dto->subject,
             "questionID"=>$this->dto->questionID,
-            "questionstext"=>$this->dto->questionstext,
+            "questiontext"=>$this->dto->questionstext,
             "optionA"=>$this->dto->optionA,
             "optionB"=>$this->dto->optionB,
             "optionC"=>$this->dto->optionC,
             "optionD"=>$this->dto->optionD,
             "optionE"=>$this->dto->optionE,
             "correctAss"=>$this->dto->correctAss,
-            "correctOtp"=>$this->dto->correctOtp
+            "correctOtp"=>$this->dto->correctOtp,
+            "organization_code"=>$this->dto->organization_code,
+            "role"=>"set",
+            "subject"=>$this->upload(),
             // ""=>$this->dto->,
         ];
 
         $newMig = new Migration(null, $this->table);
         $mig = $newMig->edit($data, $where);
+        return $mig;
+        exit();
     }
 }
 
