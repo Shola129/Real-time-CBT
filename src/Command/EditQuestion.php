@@ -16,6 +16,9 @@ class EditQuestion{
 
     public function upload($media){
         $file = $media ?? "null";
+        $newFile = new Upload($media);
+        $file = $newFile->process();
+        return $file;
     }
 
     public function process(){
