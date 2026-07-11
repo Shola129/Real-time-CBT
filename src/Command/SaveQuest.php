@@ -47,7 +47,6 @@ class SaveQuest{
                 'organization_code'=>$this->dto->organization_code
             ];
             
-
             // return json_encode([
             //     "status"=>"failed",
             //     "response"=>$data
