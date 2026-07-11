@@ -29,11 +29,11 @@ class SaveQuest{
             $newFile = new Upload($media);
             $file = $newFile->process();
             $decodeFile = json_decode($file, true);
-            $dragram  = $decodeFile['response'][0] ?? '';
+            $diagram  = $decodeFile['response'][0] ?? '';
             $data = [
                 'department'=>$this->dto->department,
                 'subject'=>$this->dto->subject,
-                'dragram'=>$dragram ?? '',
+                'diagram'=>$diagram ?? '',
                 'questionID'=>'QUES/'. substr($this->dto->otp, 0, 2),
                 'questiontext'=>$this->dto->questiontext,
                 'optionA'=>$this->dto->optionA,

@@ -22,33 +22,40 @@ class EditQuestion{
     }
 
     public function process(){
-        $where = [
-            "questionID"=>$this->dto->questionID,
-            "organization_code"=>$this->dto->organization_code
-        ];
+        $decodeFile = json_decode($this->upload(), true);
+        $diagram  = $decodeFile["response"][0] ?? 'null';
+        if($decodeFile["status"]=="success"){
+            $where = [
+                "questionID"=>$this->dto->questionID,
+                "organization_code"=>$this->dto->organization_code
+            ];
 
-        $data = [
-            "department"=>$this->dto->department,
-            "subject"=>$this->dto->subject,
-            "questionID"=>$this->dto->questionID,
-            "questiontext"=>$this->dto->questionstext,
-            "optionA"=>$this->dto->optionA,
-            "optionB"=>$this->dto->optionB,
-            "optionC"=>$this->dto->optionC,
-            "optionD"=>$this->dto->optionD,
-            "optionE"=>$this->dto->optionE,
-            "correctAss"=>$this->dto->correctAss,
-            "correctOtp"=>$this->dto->correctOtp,
-            "organization_code"=>$this->dto->organization_code,
-            "role"=>"set",
-            "subject"=>$this->upload(),
-            // ""=>$this->dto->,
-        ];
+            $data = [
+                "department"=>$this->dto->department,
+                "subject"=>$this->dto->subject,
+                "questionID"=>$this->dto->questionID,
+                "questiontext"=>$this->dto->questionstext,
+                "optionA"=>$this->dto->optionA,
+                "optionB"=>$this->dto->optionB,
+                "optionC"=>$this->dto->optionC,
+                "optionD"=>$this->dto->optionD,
+                "optionE"=>$this->dto->optionE,
+                "correctAss"=>$this->dto->correctAss,
+                "correctOtp"=>$this->dto->correctOtp,
+                "organization_code"=>$this->dto->organization_code,
+                "role"=>"set",
+                "diagram"=>$diagram,
+                // ""=>$this->dto->,
+            ];
 
-        $newMig = new Migration(null, $this->table);
-        $mig = $newMig->edit($data, $where);
-        return $mig;
-        exit();
+            $newMig = new Migration(null, $this->table);
+            $mig = $newMig->edit($data, $where);
+            return $mig;
+            exit();
+        }else{
+            return $this->upload();
+            exit();
+        }
     }
 }
 

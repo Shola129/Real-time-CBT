@@ -92,7 +92,7 @@ class Platform{
         "questions_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY",
         "department VARCHAR(2550) NOT NULL",
         "subject VARCHAR(2550) NOT NULL",
-        "dragram VARCHAR(255) ",
+        "diagram VARCHAR(255) ",
         "questionID VARCHAR(255) NOT NULL",
         "questiontext VARCHAR(1550) NOT NULL",
         "optionA VARCHAR(255) NOT NULL",
