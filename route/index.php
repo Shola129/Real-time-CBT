@@ -307,6 +307,11 @@ elseif($url === $adminArea . "/search/subject"){
     exit();
 }
 
+elseif($url === $adminArea . "/delete/subject"){
+    require_once __DIR__ . $srcController . "/DelSubjectController.php";
+    exit();
+}
+
 // EndPoint for user's area
 
 elseif($url === $usersArea . "/register"){
@@ -397,6 +402,16 @@ elseif($url === $adminArea . "/set/question/no/mark/per/answer"){
 
 elseif($url === $adminArea . "/edit/question/no/mark/per/answer"){
     require_once __DIR__ . $srcController . "/EditQuestNoMarAnsController.php";
+    exit();
+}
+
+elseif($url === $adminArea . "/edit/question"){
+    require_once __DIR__ . $srcController . "/EditQuestionController.php";
+    exit();
+}
+
+elseif($url === $adminArea . "/delete/question"){
+    require_once __DIR__ . $srcController . "/DelQuestionController.php";
     exit();
 }
 

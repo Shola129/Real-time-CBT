@@ -828,6 +828,48 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
   </form>
 </div>
 
+
+<div class="modal-backdrop" id="editModal2" onclick="if(event.target===this)closeEditModal()">
+  <form id="editSub">
+    <div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-header">Edit
+        <div class="modal-title"><i class="fas fa-pen-to-square"></i> Add Subject</div>
+        <button type="button" class="modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="edit-dept">Department</label>
+          <input class="form-control" type="text" id="add-dept" placeholder="e.g. Computer Science" name="department" disabled />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="edit-name">Department Code</label>
+          <input class="form-control" type="text" id="add-deptCode" placeholder="CSC" name="DepartmentCode"disabled/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject Name</label>
+          <input class="form-control" type="text" id="add-subject" placeholder="e.g. Algorithms" name="subject"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject Code</label>
+          <input class="form-control" type="text" id="add-subject-code" placeholder="e.g. Algo405" name="subject"/>
+        </div>
+        <!-- <div class="form-group">
+          <label class="form-label">Subject ID</label>
+          <input class="form-control" type="text" id="add-subjectID" placeholder="e.g. Algorithms"  disabled/>
+        </div> -->
+        <!-- <div class="form-group">
+          <label class="form-label">Organization Code</label>
+          <input class="form-control" type="text" id="org-code"disabled/>
+        </div> -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-sm" onclick="closeEditModal()"><i class="fas fa-times"></i> Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" onclick="saveSubject2()"><i class="fas fa-save"></i> Save Changes</button>
+      </div>
+    </div>
+  </form>
+</div>
+
 <!-- MODAL 2 — Edit Schedule Exam -->
 <div class="modal-backdrop" id="editScheduleModal" onclick="if(event.target===this)closeEditScheduleModal()">
   <div class="modal" role="dialog" aria-modal="true">
@@ -997,31 +1039,35 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
       <div class="modal-body">
         <div class="form-group">
           <label class="form-label">Department <span class="fixed-field-badge">Fixed</span></label>
-          <input class="form-control" type="text" id="editQ-department" readonly />
+          <input class="form-control" type="text" id="editQ-department" readonly name="department">
         </div>
         <div class="form-group">
           <label class="form-label">Subject <span class="fixed-field-badge">Fixed</span></label>
-          <input class="form-control" type="text" id="editQ-subject" readonly />
+          <input class="form-control" type="text" id="editQ-subject" readonly name="subject" />
         </div>
-        <input type="hidden" id="editQ-questionID" />
+         <div class="form-group">
+          <label class="form-label">Question ID <span class="fixed-field-badge">Fixed</span></label>
+          <input class="form-control" type="text" id="editQ-ID" name="questionID" readonly />
+        </div>
+        <!-- <input type="hidden" id="editQ-questionID" /> -->
         <div class="modal-divider"></div>
         <div class="form-group">
           <label class="form-label">Question Text</label>
-          <textarea class="form-control" id="editQ-questiontext" placeholder="Type the question here…"></textarea>
+          <textarea class="form-control" id="editQ-questiontext" name="questionstext" placeholder="Type the question here…"></textarea>
         </div>
         <div class="form-group">
           <label class="form-label">Answer Options</label>
         </div>
         <div class="options-grid">
-          <input class="form-control" type="text" id="editQ-optionA" placeholder="Option A" />
-          <input class="form-control" type="text" id="editQ-optionB" placeholder="Option B" />
-          <input class="form-control" type="text" id="editQ-optionC" placeholder="Option C" />
-          <input class="form-control" type="text" id="editQ-optionD" placeholder="Option D" />
-          <input class="form-control" type="text" id="editQ-optionE" placeholder="Option E" />
+          <input class="form-control" type="text" id="editQ-optionA" placeholder="Option A" name="optionA" />
+          <input class="form-control" type="text" id="editQ-optionB" placeholder="Option B" name="optionB" />
+          <input class="form-control" type="text" id="editQ-optionC" placeholder="Option C" name="optionC" />
+          <input class="form-control" type="text" id="editQ-optionD" placeholder="Option D" name="optionD" />
+          <input class="form-control" type="text" id="editQ-optionE" placeholder="Option E" name="optionE" />
         </div>
         <div class="form-group" style="max-width:260px;">
           <label class="form-label">Correct Answer</label>
-          <input class="form-control" type="text" id="editQ-correctAss" placeholder="Enter correct option (e.g. A)" />
+          <input class="form-control" type="text" id="editQ-correctAss" name="correctAss" placeholder="Enter correct option (e.g. A)" />
         </div>
       </div>
       <div class="modal-footer">
@@ -1082,7 +1128,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
     <div class="dsb-drawer-header">
       <div class="dsb-drawer-title" id="dsbDrawerTitle"></div>
       <div class="dsb-drawer-header-actions">
-        <button type="button" class="dsb-drawer-add-btn" id="dsbAddSubjectBtn">
+        <button type="button" class="dsb-drawer-add-btn" id="dsbAddSubjectBtn" onclick="openAddSubject2()">
           <i class="fas fa-plus"></i> Add Subject
         </button>
         <button type="button" class="modal-close" onclick="closeDsbDrawer()"><i class="fas fa-times"></i></button>
@@ -2017,6 +2063,18 @@ window.closeEditModal = function() {
   editingIndex = -1;
 };
 
+window.closeEditModal = function() {
+  document.getElementById('editModal2').classList.remove('open');
+  document.body.style.overflow = '';
+  editingIndex = -1;
+};
+
+window.closeEditQuestionModal = function(){
+  document.getElementById("editQuestionModal").classList.remove('open');
+  document.body.style.overflow ='';
+  editingIndex = -1;
+} 
+
 // function renderSubjectsByName(searchName) {
 //   const container = document.getElementById('subjectNameSearchResults');
 //   if (!container) return;
@@ -2272,6 +2330,49 @@ async function seacrhDepSch(){
        document.getElementById('scheduleTableBody').style.display="none";
        document.getElementById('noScheduleMsg').style.display="block";
    }
+    }
+  }
+
+  async function saveSubject2(){
+    const dept = document.getElementById("add-dept").value.trim();
+    const deptCode = document.getElementById("add-deptCode").value.trim();
+    const subject = document.getElementById("add-subject").value.trim();
+    const subCode = document.getElementById("add-subject-code").value.trim();
+    const org_code = document.getElementById("organization-code").textContent.trim();
+    const desc = "";
+    const HeadOfDepartment = "";
+    const ID = "";
+    if(!dept || !deptCode || !subject || !subCode){
+      alert("All field required");
+      return;
+    }else{
+       const e = {
+            department:dept,
+            DepartmentCode:deptCode,
+            subject:subject,
+            subjectCode:subCode,
+            date_created: new Date().toLocaleTimeString() +" " + new Date().toLocaleDateString(),
+            organization_code:org_code
+          }
+        const api = await fetch("/cbt/ansofra/apiadmin/save/subject",{
+              method:"POST",
+              headers:{"Content-type":"application/json"},
+              body:JSON.stringify(e)
+        });
+        const result = await api.json();
+        // console.log(result);
+        if(result.status==="success"){
+          alert("subject created successfully");
+            // document.getElementById("newDeptSelect").value="";
+            // document.getElementById("depCode").value="";
+            document.getElementById("add-subject").value="";
+            document.getElementById("add-subject-code").value="";
+            openDsbDrawer(dept, deptCode, ID, HeadOfDepartment, desc, org_code);
+            closeEditModal();
+        }
+        else{
+          alert(result.response);
+        }
     }
   }
 
@@ -2538,6 +2639,9 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
                <div class="dsb-subject-row">
             </div>
           </div>`;
+          document.getElementById("add-dept").value=response[index].department;
+          document.getElementById("add-deptCode").value=response[index].DepartmentCode;
+          // document.getElementById("add-departmentID").value=response[index].departmentID;
         }
         document.getElementById('dsbDrawerTitle').innerHTML = ` ${department} <span class="badge badge-dept" style="font-size:10px;">${DepartmentCode}</span>`;
         document.getElementById('dsbDrawerBody').innerHTML = output;
@@ -2562,6 +2666,10 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
     document.getElementById("subjectID").value=subjectID;
     document.getElementById("org-code").value=org_code;
     document.getElementById("edit-subject-code").value=subCode;
+ }
+
+ async function openAddSubject2(){
+    document.getElementById('editModal2').classList.add('open');
  }
 
  async function saveEditSubject(){
@@ -2596,19 +2704,28 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
     }
  }
 
-  async function deleteSubjectFromDrawer(subjectID, subject){
+async function deleteSubjectFromDrawer(subjectID, subject, subCode, org_code, depCode, depart){
+    const org_code2 = document.getElementById("organization-code").textContent.trim();
+    const desc = "";
+    const HeadOfDepartment = "";
+    const ID = "";
       const e = {
       subjectID: subjectID,
-      subject:subject
+    //   subject:subject,
+      organization_code:org_code2
     }
-    const api = await fetch('/', {
+    // console.log(e);
+    const api = await fetch('/cbt/ansofra/apiadmin/delete/subject', {
         method:'POST',
         headers:{'Content-type':'application/json'},
         body:JSON.stringify(e)
     })
     const result = await api.json();
     if(result.status==="success"){
-       alert(result.response);
+       alert("subject remove successfull");
+      //  openDsbDrawer(depart, depCode, ID, HeadOfDepartment, desc, org_code);
+       closeDsbDrawer();
+      //  console.log(result.response);
     }
     else{
       alert("unable to delete the subject");
@@ -2714,14 +2831,27 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
               <div>B. ${response[index].optionB}</div>
               <div>C. ${response[index].optionC}</div>
               <div>D. ${response[index].optionD}</div>
+              <div>E. ${response[index].optionE}</div>
             </div>
             <span class="badge badge-score" style="margin-top:6px;display:inline-flex;">
               ✓ Correct: ${response[index].correctOtp || response[index].correctAss }
             </span>
+            <button style="background-color:green;color: white; width:50px;heigh:50px; border:none; padding: 5px;" onclick="openEditQuestion()">Edit</button>&nbsp&nbsp&nbsp&nbsp&nbsp
+            <button style="background-color:red;color:white; width:50px;heigh:50px; border:none; padding: 5px;" onclick="deleteQuesiton("${response[index].questionID}")">Del</button>
           </div>
           <div>QuestionID: ${response[index].questionID}</div>
         </div>
         `;  
+        document.getElementById("editQ-department").value=response[index].department;
+        document.getElementById("editQ-subject").value=response[index].subject;
+        document.getElementById("editQ-questiontext").value=response[index].questiontext;
+        document.getElementById("editQ-optionA").value=response[index].optionA;
+        document.getElementById("editQ-optionB").value=response[index].optionB;
+        document.getElementById("editQ-optionC").value=response[index].optionC;
+        document.getElementById("editQ-optionD").value=response[index].optionD;
+        document.getElementById("editQ-optionE").value=response[index].optionE ?? "NULL";
+        document.getElementById("editQ-correctAss").value=response[index].correctAss;
+        document.getElementById("editQ-ID").value=response[index].questionID;
       }
       const container = document.getElementById('questionSetsResultsContainer').innerHTML=output;
        document.getElementById('noQsSetsMsg').style.display="none";
@@ -2730,7 +2860,51 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
          document.getElementById('noQsSetsMsg').style.display="block";
     }
   }
-}) 
+});
+
+function openEditQuestion(){
+  document.getElementById('editQuestionModal').classList.add('open');
+}
+
+document.getElementById("editQuestionSaveBtn").addEventListener("click", async function(){
+      const dept = document.getElementById("editQ-department").value=response[index].department;
+      const subj = document.getElementById("editQ-subject").value=response[index].subject;
+      const questionText = document.getElementById("editQ-questiontext").value=response[index].questiontext;
+      const optionA = document.getElementById("editQ-optionA").value=response[index].optionA;
+      const optionB =  document.getElementById("editQ-optionB").value=response[index].optionB;
+      const optionC = document.getElementById("editQ-optionC").value=response[index].optionC;
+      const optionD = document.getElementById("editQ-optionD").value=response[index].optionD;
+      const optionE = document.getElementById("editQ-optionE").value=response[index].optionE ?? "NULL";
+      const correctAss = document.getElementById("editQ-correctAss").value=response[index].correctAss;
+      const questionID = document.getElementById("editQ-ID").value=response[index].questionID;
+
+      if (!dept || !subj || !questionText || !optionA || !optionB || !optionC || !optionD || !optionE || !correctAss || !questionID) {
+        console.log("All field require");
+        return;
+      } else {
+       const data = document.getElementById("editQuestionForm");
+        const form = new FormData(data);
+        // const obj = {};
+        // form.forEach((key, val)=>{
+        //   obj[key]=val;
+        // });
+        
+        // console.log(obj);
+        const api = await fetch("/cbt/ansofra/apiadmin/edit/question", {
+            method:"POST",
+            body:form
+        });
+
+        const result = await api.json();
+        if(result.status=="success"){
+          alert("Action perform successful");
+          closeEditQuestionModal();
+        }else{
+          alert("error occur, try again later");
+          console.log(result.response);
+        } 
+      }
+})
 
 document.getElementById("saveQuestionBtn").addEventListener("click",()=>{
   const dept = document.getElementById("displayDept").textContent;
