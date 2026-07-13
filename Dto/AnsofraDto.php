@@ -76,6 +76,8 @@ class AnsofraDto{
     public $limit;
     public $publish;
     public $scorePerQuestion;
+    public $type;
+    public $value;
     // public $totalQuestions;
     
     public function __construct(array $inData){

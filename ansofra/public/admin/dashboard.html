@@ -411,7 +411,15 @@ textarea.form-control { border-radius: var(--radius-md); resize: vertical; min-h
   border-radius: var(--radius-md); padding: 7px 13px;
   transition: var(--transition);
 }
-.search-field:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.08); }
+
+.search-field2 {
+  display: flex; align-items: center; gap: 8px; flex: 1; min-width: 40px;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 7px 13px;
+  transition: var(--transition);
+}
+
+/* .search-field:focus-within { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(37,99,235,.08); } */
 .search-field i { color: var(--text-muted); font-size: 12px; flex-shrink: 0; }
 .search-field input,
 .search-field select { border: none; background: transparent; font-size: 13px; font-family: inherit; color: var(--text); width: 100%; padding: 2px 0; }
@@ -768,6 +776,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
   .stat-card { padding: 14px 12px; }
   .search-bar { flex-direction: column; border-radius: var(--radius-lg); padding: 12px; }
   .search-field { min-width: 0; width: 100%; }
+  .search-field2 { min-width: 0; width: 80%; }
   .subjects-grid, .dsb-dept-grid { grid-template-columns: 1fr; }
   .panel-body { padding: 14px; }
   .form-row { grid-template-columns: 1fr; }
@@ -1526,18 +1535,33 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
 
         <!-- Search by department (students who have completed exam) -->
         <div class="search-bar">
+          <!-- <div> -->
           <div class="search-field" style="flex:2;">
-            <i class="fas fa-building"></i>
-            <input type="text" id="resultsDeptSearchInput" placeholder="Enter department to search completed students…" />
+            
+          <i class="fas fa-building"></i>
+            <select id="regSearch-type">
+              <option value="" disabled selected>Select seacrh type</option>
+              <option value="regNum">Registration Number</option>
+              <option value="fullname">Name </option>
+              <option value="Department">Department</option>
+            </select>
+            <input type="text" id="input-search" placeholder="Enter department, registration number, fullname to search for" />
           </div>
-          <button id="resultsDeptSearchBtn" class="btn btn-primary btn-sm">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <!-- <input type="text" id="reregistration_numbergSearch-type" placeholder="Search by reg. number…" /> -->
+          <!-- </div> -->
+            <!-- <i class="fas fa-building"></i> -->
+             <button id="resultsDeptSearchBtn" class="btn btn-primary btn-sm">
             <i class="fas fa-magnifying-glass"></i> Search
           </button>
           <button id="resultsDeptClearBtn" class="btn btn-sm">
             <i class="fas fa-rotate-left"></i> Clear
           </button>
-        </div>
-
+          </div>
+        <!-- </div> -->
+        <script>
+         
+        </script>
         <div class="panel">
           <div class="panel-header">
             <span class="panel-title"><i class="fas fa-chart-simple"></i> Exam Results</span>
@@ -1559,7 +1583,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
                 </tr>
               </thead>
               <tbody id="display-result">
-                <tr>
+                <!-- <tr>
                   <td>1</td><td>John Doe</td><td>—</td>
                   <td><span class="badge badge-dept">Mathematics</span></td>
                   <td><span class="badge badge-score">85%</span></td>
@@ -1576,12 +1600,12 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
                   <td><span class="badge badge-dept">Chemistry</span></td>
                   <td><span class="badge badge-score">78%</span></td>
                   <td>Mar 2026</td><td>—</td>
-                </tr>
+                </tr> -->
               </tbody>
             </table>
           </div>
           <!-- Pagination -->
-          <div class="pagination-bar">
+          <!-- <div class="pagination-bar">
             <div class="pagination-info" id="resultsPageInfo">Showing 0–0 of 0</div>
             <div class="pagination-controls">
               <select class="page-size-select" id="resultsPageSize">
@@ -1593,7 +1617,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
               <button type="button" class="pagination-btn" id="resultsPrevBtn"><i class="fas fa-chevron-left"></i> Prev</button>
               <button type="button" class="pagination-btn" id="resultsNextBtn">Next <i class="fas fa-chevron-right"></i></button>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
 
@@ -1608,7 +1632,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
               body:JSON.stringify(e)
           });
           const result = await api.json();
-          if(result.status==="success"){
+          if(result.status=="success"){
             const response = result.response;
             let output = "";
             for (let index = 0; index < response.length; index++) {
@@ -1896,6 +1920,9 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
 </div><!-- /app -->
 
 <script>
+
+  let totalStudents = 0;
+  let ResultsCompleted = 0;
 const getID = localStorage.getItem('cbt-admin-ID');
 const getEmail = localStorage.getItem('cbt-admin-email');
 const getAuthCode = localStorage.getItem('cbt-admin-auth-code');
@@ -1969,14 +1996,18 @@ async function getTotalStudent(){
     if(response=="0" || response=="1"){
       document.getElementById("stat-students").textContent=response;
       document.getElementById("total-stu").textContent="Student";
+      document.getElementById("resultsStatTotalStudents").textContent=response;
+      totalStudents=parseFloat(response);
     }
     else{
       document.getElementById("stat-students").textContent=response;
       document.getElementById("total-stu").textContent="Students";
+      totalStudents=0;
     }
   } else {
     document.getElementById("stat-students").textContent= "00";
     document.getElementById("total-stu").textContent="Student";
+    document.getElementById("resultsStatTotalStudents").textContent="0";
   }
 }
 
@@ -3108,7 +3139,8 @@ window.showSection = function(id, navEl){
 };
 
  async function releaseResult(){
-  const e = {status:"completed"};
+  const org_code = document.getElementById("organization-code").textContent.trim();
+  const e = {status:"completed", organization_code:org_code};
   const api = await fetch("/cbt/ansofra/apiadmin/release/result", {
     method:"POST",
     headers:{"Content-type":"application/json"},
@@ -3121,6 +3153,74 @@ window.showSection = function(id, navEl){
   else{
     alert("Error while sending result out");
   }
+}
+
+ document.getElementById("resultsDeptSearchBtn").addEventListener("click", async function(){
+  const type = document.getElementById("regSearch-type").value.trim();
+  const value = document.getElementById("input-search").value.trim();
+  if(!type || !value){
+    alert("All fields required");
+  }else{
+    const org_code = document.getElementById("organization-code").textContent.trim();
+    const e  = {
+      organization_code:org_code,
+      type:type,
+      value:value
+    };
+    const api = await fetch("/cbt/ansofra/apiadmin/search/result", {
+      method:"POST",
+      headers:{"Content-type":"application/json"},
+      body:JSON.stringify(e)
+    });
+
+    const result = await api.json();
+    if(result.status == "success"){
+        const response = result.response;
+        let output = "";
+        for(let i=0; i<response.length; i++){
+          output+=`<tr>
+                    <td>${i+1}</td>
+                    <td>${response[i].fullname}</td>
+                    <td>${response[i].regNum}</td>
+                    <td><span class="badge badge-dept">${response[i].department}</span></td>
+                    <td><span class="badge badge-score">${response[i].overAll}</span></td>
+                    <td>Mar 2026</td><td>${response[i].publish}</td>
+                  </tr>`;
+        }
+        document.getElementById('display-result').innerHTML=output;
+    }else{
+      document.getElementById('display-result').textContent="No departmet, fullname or regstration number found";
+    }
+  }
+});
+
+async function resultsStatCompleted(){
+  const org_code = document.getElementById("organization-code").textContent.trim();
+  const e = {
+    status:"completed",
+    organization_code:org_code
+  };
+
+  const api = await fetch("/cbt/ansofra/apiadmin/get/completed/result", {
+      method:"POST",
+      headers:{"Content-type":"application/json"},
+      body:JSON.stringify(e)
+  });
+
+  const result = await api.json();
+  const response = result.response;
+  if(result.status=="success"){
+      document.getElementById("resultsStatCompleted").textContent=response;
+      ResultsCompleted=parseFloat(response);
+  }else{
+    document.getElementById("resultsStatCompleted").textContent="0";
+    ResultsCompleted=0;
+  }     
+}
+
+function getOutStanding(){
+  const out = totalStudents-ResultsCompleted;
+  document.getElementById("resultsStatOutstanding").textContent=out;
 }
 
 window.openSidebar  = function(){ document.getElementById('sidebar').classList.add('open'); document.getElementById('sidebarOverlay').classList.add('visible'); document.body.style.overflow='hidden'; };
@@ -3155,6 +3255,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   await getTotalSubject();
   await getLastLogin();
   await setTimeLogin();
+  await resultsStatCompleted();
+  await getOutStanding();
   totalDepartment();
 });
 </script>

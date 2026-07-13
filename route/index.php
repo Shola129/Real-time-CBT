@@ -282,6 +282,16 @@ elseif($url === $adminArea . "/display/result"){
     exit();
 }
 
+elseif($url === $adminArea . "/get/completed/result"){
+    require_once __DIR__ . $srcController . "/GetCompleteResultController.php";
+    exit();
+}
+
+elseif($url === $adminArea . "/search/result"){
+    require_once __DIR__ . $srcController . "/SearchResultController.php";
+    exit();
+}
+
 elseif($url === $adminArea . "/reset/password"){
     require_once __DIR__ . $srcController . "/ResetPwdController.php";
     exit();

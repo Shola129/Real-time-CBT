@@ -44,7 +44,7 @@ class EditQuestion{
                 "correctOtp"=>$this->dto->correctOtp,
                 "organization_code"=>$this->dto->organization_code,
                 "role"=>"set",
-                "diagram"=>$diagram,
+                "diagram"=>$diagram ?? 'null',
                 // ""=>$this->dto->,
             ];
 
