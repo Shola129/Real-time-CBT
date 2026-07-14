@@ -1832,7 +1832,7 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
             <i class="fas fa-magnifying-glass"></i>
             <input type="text" id="deptListSearch" placeholder="Search by department code…" />
           </div>
-          <button id="deptSearchBtn" class="btn btn-primary btn-sm">
+          <button id="deptSearchBtn" class="btn btn-primary btn-sm" onclick="deptSearchBtn()">
             <i class="fas fa-search"></i> Search
           </button>
         </div>
@@ -1846,10 +1846,16 @@ button[onclick="releaseResult()"]:hover { background: #15803D; }
             <table>
               <thead>
                 <tr>
-                  <th>#</th><th>Department Name</th><th>Code</th>
-                  <th>Head of Department</th><th>Description</th>
-                  <th>Total Qs</th><th>Score/Q</th>
-                  <th>Date Created</th><th>Actions</th>
+                  <th>#</th>
+                  <th>Department Name</th>
+                  <th>Code</th>
+                  <th>Head of Department</th>
+                  <th>Description</th>
+                  <th>Total Qs</th>
+                  <th>Score/Q</th>
+                  <th>Date Created</th>
+                  <th>Edit</th>
+                  <th>Del</th>
                 </tr>
               </thead>
               <tbody id="deptTableBody"></tbody>
@@ -2234,7 +2240,7 @@ async function processScheduledData(){
     });
     const result = await api.json();
     // console.log(result);
-    if(result.status==="success"){
+    if(result.status=="success"){
       alert(result.response);
         document.getElementById('schedule-department').value="";
         document.getElementById('schedule-department-code').value="";
@@ -2243,9 +2249,9 @@ async function processScheduledData(){
         document.getElementById('schedule-time-end').value="";
         document.getElementById('schedule-duration').value="";
         document.getElementById('session').value="";
-        closeGenericModal('scheduleModal');
-        displayScheduledTime();
-        totalexamSche();
+        await closeGenericModal('scheduleModal');
+        await displayScheduledTime();
+        await totalexamSche();
     }
     else{
       alert(result.response);
@@ -3027,7 +3033,7 @@ async function processQuestionData(){
     if(result.status==='success'){
         alert("save successful");
         // renderDeptTable(document.getElementById('deptListSearch')?.value || '');
-        updateDeptStats();
+        await updateDeptStats();
         document.getElementById('newDeptName').value  = '';
         document.getElementById('newDeptCode').value  = '';
         document.getElementById('newDeptHOD').value   = '';
@@ -3059,8 +3065,11 @@ async function updateDeptStats(){
               <th>${response[i].DepartmentCode}</th>
               <th>${response[i].HeadOfDepartment}</th>
               <th>${response[i].Description}</th>
+              <th>${response[i].totalQuestions}</th>
+              <th>${response[i].scorePerQuestion}</th>
               <th>${response[i].Date_Created}</th>
-              <th>Action</th>
+              <th onclick="openEditDepartment('${response[i].department_id}', '${response[i].organization_code}')" style="background-color:green; color:white">Edit</th>
+              <th onclick="delDepartment('${response[i].department_id}','${response[i].organization_code}')" style="background-color:red; color:white">Del</th>
             <tr>
         `
       }
@@ -3072,7 +3081,8 @@ async function updateDeptStats(){
   }
 }
 
-document.getElementById("deptSearchBtn").addEventListener("click", async ()=>{
+// document.getElementById("deptSearchBtn").addEventListener("click", async ()=>{
+async function deptSearchBtn(){
     const type = document.getElementById("deptListSearch").value.trim();
     const org_code = document.getElementById("organization-code").textContent.trim();
     const e = {DepartmentCode:type, organization_code: org_code};
@@ -3093,9 +3103,12 @@ document.getElementById("deptSearchBtn").addEventListener("click", async ()=>{
                   <th>${response[i].DepartmentCode}</th>
                   <th>${response[i].HeadOfDepartment}</th>
                   <th>${response[i].Description}</th>
+                  <th>${response[i].totalQuestions}</th>
+                  <th>${response[i].scorePerQuestion}</th>
                   <th>${response[i].Date_Created}</th>
-                  <th><button><button/></th>
-                </tr>
+                  <th onclick="openEditDepartment('${response[i].department_id}', '${response[i].organization_code}')" style="background-color:green; color:white">Edit</th>
+                  <th onclick="delDepartment('${response[i].department_id}','${response[i].organization_code}')" style="background-color:red; color:white">Del</th>
+                <tr>
             `
           }
           // console.log(output);
@@ -3105,7 +3118,36 @@ document.getElementById("deptSearchBtn").addEventListener("click", async ()=>{
       document.getElementById('displayAnyErr').style.display="none"
       document.getElementById('noDeptMsg').style.display="block";
     } 
-  });
+  };
+
+  function openEditDepartment(){
+      alert("features under developing");
+  }
+
+  async function delDepartment(id, org_code){
+      const e = {
+        id:id,
+        organization_code:org_code
+      };
+
+      const api = await fetch("/cbt/ansofra/apiadmin/del/department", {
+          method:"POST",
+          headers:{"Content-type":"Application/json"},
+          body:JSON.stringify(e)
+      });
+
+      const response = await api.json();
+      if(response.status == "success"){
+        alert("Department deleted successfully");
+        await updateDeptStats();
+        await totalDepartment();
+        await deptSearchBtn();
+      }else{
+        alert("Error occur, try again later" || response.response);
+      }
+  }
+
+
 
   // document.getElementById("searchSubjectBtn").addEventListener("click", async ()=>{
   //   const depVal = document.getElementById("deptSearchInput").value.trim();

@@ -425,6 +425,11 @@ elseif($url === $adminArea . "/delete/question"){
     exit();
 }
 
+elseif($url === $adminArea . "/del/department"){
+    require_once __DIR__ . $srcController . "/DelDeptController.php";
+    exit();
+}
+
 elseif($url === $usersArea . "/get/max/q/score/q"){
     require_once __DIR__ . $appController . "/GetQuestNoMarAnsController.php";
     exit();

@@ -10,7 +10,7 @@ class ScheduleExam{
     private $dto;
     private $table = Platform::QUESTIONS_TABLE;
     private $table2 = Platform::SETEXAMTIME_TABLE;
-    private $table3 = Platform::QUESTIONDETAILS_TABLE;
+    // private $table3 = Platform::QUESTIONDETAILS_TABLE;
     // private $table3 = Platform::USERS_TABLE;
     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
