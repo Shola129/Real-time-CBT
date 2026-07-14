@@ -434,6 +434,11 @@ elseif($url === $usersArea . "/get/max/q/score/q"){
     require_once __DIR__ . $appController . "/GetQuestNoMarAnsController.php";
     exit();
 }
+
+elseif($url === $usersArea . "/get/available/org"){
+    require_once __DIR__ . $appController . "/GetAvailableOrgController.php";
+    exit();
+}
 // /api endpoints
 // elseif($url === $docRoot . $rootDir . $usersArea."/register" || $url === $usersArea."/register"."/"){
 //     require_once __DIR__ . $appController."/RegisterController.php";

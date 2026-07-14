@@ -1,10 +1,10 @@
 <?php
-namespace NewdichSrc\Query;
-use NewdichDto\AnsofraDto;
+namespace NewdichApp\Query;
 use NewdichSchema\Platform;
 use NewdichSchema\Migration;
+use NewdichDto\AnsofraDto;
 
-class ChkOrgCode{
+class GetAvailableOrg{
     private $dto;
     private $table = Platform::ADMINS_TABLE;
 
@@ -14,14 +14,14 @@ class ChkOrgCode{
 
     public function process(){
         $where = [
-            "organization_code"=>$this->dto->organization_code,
-            "organization_name"=>$this->dto->organization_name,
+            "role"=>$this->dto->role,
+            "publish"=>$this->dto->publish
         ];
 
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->get($where, 0, 1);
+        $mig = $newMig->get($where, 0, 5);
         return $mig;
+        exit();
     }
 }
-
 ?>

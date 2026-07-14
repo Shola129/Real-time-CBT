@@ -1,6 +1,9 @@
   /* 
      HELPERS
    */
+  window.addEventListener("load", async function(){
+    await GetAvailableOrg();
+  })
   function showAlert(id, msg, type) {
     const el = document.getElementById(id);
     el.textContent = msg;
@@ -10,7 +13,12 @@
 
   async function ConfirmOrgCode(){
       const org_code = document.getElementById("inp-org-code").value.trim();
-      const e = {organization_code:org_code};
+      const org_name = document.getElementById("inp-org-name").value.trim();
+      if(!org_code || !org_name){
+        alert("Orgamization code or name must not be empty");
+        return;
+      }
+      const e = {organization_code:org_code, organization_name:org_name};
 
       const api = await fetch("/cbt/ansofra/apiadmin/checkOrgCode", {
         method:"POST",
@@ -75,7 +83,7 @@
 
   async function verifyEmail(){
     const org_code = document.getElementById("inp-org-code").value.trim();
-    const email = document.getElementById("email").value.trim();
+    const email = document.getElementById("inp-email").value.trim();
     const e = {
       "role":"USER", email:email, organization_code:org_code
     }
@@ -87,13 +95,48 @@
     });
 
     const result = await api.json();
-    if(result.status=="sucess"){
-      document.getElementById("continue-1").disabled=false;
-        
+    if(result.status=="success"){
+        document.getElementById("continue-1").disabled=true;
+        showAlert('reg-alert','Email already exist or already used to register on this platform.','error'); return;  
+    }else{
+        document.getElementById("continue-1").disabled=false;
     }
-    document.getElementById("continue-1").disabled=true;
-    showAlert('reg-alert','Email already exist or already used to register on this platform.','error'); return;
+    // document.getElementById("continue-1").disabled=true;
+    // showAlert('reg-alert','Email already exist or already used to register on this platform.','error'); return;
 
+  }
+
+  async function GetAvailableOrg(){
+    e = {
+        role:"ADMIN",
+        publish:"public"
+    }
+    const api = await fetch("/cbt/ansofra/api/get/available/org", {
+        method:"POST",
+        headers:{"Content-type":"application/json"},
+        body:JSON.stringify(e)
+    });
+
+    const result = await api.json();
+    // console.log(result);
+    const response = result.response;
+    if(result.status=="success"){
+        let output = '';
+        for(let i = 0; i < response.length; i++){
+            output+=`
+                <div class="org-card-top">
+                    <span>${1+ i} .</span>
+                    <span class="org-card-name">${response[i].organization_name}</span>
+                    <span class="org-card-code">${response[i].organization_code}</span>
+                    </div>
+                    <div class="org-card-desc">${response[i].organization_description ?? 'null'}</div>
+                </div>
+            `;
+        }
+        document.getElementById("org-directory").innerHTML=output;
+    }else{
+     document.getElementById("org-directory").textContent="No public organization found";   
+    }
   }
 
   /* 
@@ -179,6 +222,7 @@
     const email     = document.getElementById('inp-email').value.trim();
     const firstName = document.getElementById('inp-firstname').value.trim();
     const lastName  = document.getElementById('inp-lastname').value.trim();
+    const midName = document.getElementById('inp-midname').value.trim();
     // const user = {
     //   organizationName: orgName, organizationCode: orgCode,
     //   email, firstName, lastName,
@@ -194,10 +238,10 @@
     // };
 
     const data = document.getElementById("formData");
-    const fullname = `${firstName} ${lastName}`;
+    const fullname = lastName + " " + midName + " " + firstName;
     const form = new FormData(data);
     form.append("fullname", fullname);
-    form.append("data_created", new Date().toLocaleTimeString() + '  ' + new Date().toLocaleDateString());
+    form.append("date_created", new Date().toLocaleTimeString() + '  ' + new Date().toLocaleDateString());
     const api = await fetch("/cbt/ansofra/api/Enter/Data", {
         method:"POST",
         body:form

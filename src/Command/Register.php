@@ -15,7 +15,7 @@ class Register{
     }
     
     private function ab($length = 10){
-        $characters = 'abcdefghijklmnopqrstuvwsyz';
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $result = '';
         for($i = 0; $i < $length; $i++){
             $result .=$characters[random_int(0, strlen($characters) -1)];

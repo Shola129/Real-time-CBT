@@ -38,9 +38,11 @@
           <div class="org-directory-title">
             <span>📋</span> Available Organizations
           </div>
-          <div class="org-directory-sub">Don't have a partner organization yet? Pick one below and copy its code and name into the Organization fields.</div>
+          <div class="org-directory-sub">Don't have a partner organization yet? Pick one below and copy its code and name into the Organization fields. <strong>Note:</strong>Either the organization below owners set it as public or it for texting, <em>no exposing information</em></div>
+          <div id="org-directory">
 
-          <div class="org-card">
+          </div>
+          <!-- <div class="org-card">
             <div class="org-card-top">
               <span class="org-card-name">Tech Revolution Academy</span>
               <span class="org-card-code">TECHREV-8K4P92</span>
@@ -62,14 +64,14 @@
               <span class="org-card-code">ANSOFRA-3Q7T15</span>
             </div>
             <div class="org-card-desc">Nigerian institutional CBT platform for schools and examination boards.</div>
-          </div>
+          </div> -->
         </div>
       </div>
 
     <div class="auth-card">
 
-      <!-- REGISTRATION PANEL (single page, no email/OTP verification) -->
-      <div class="panel active" id="panel-form">
+      <form id="formData">
+         <div class="panel active" id="panel-form">
 
         <div class="card-top">
           <h2>Candidate Registration</h2>
@@ -97,8 +99,9 @@
         <div class="alert success" id="reg-success"></div>
 
         <!-- STEP 1: Personal Info -->
+         
         <div class="form-section active" id="section-1">
-          <div class="form-row">
+          <div class="form-ro">
             <div class="form-group">
               <label>Organization Name</label>
               <input type="text" id="inp-org-name" placeholder="e.g. Tech Revolution Academy" name="organization_name"/>
@@ -113,10 +116,14 @@
             <label>Email Address</label>
             <input type="email" id="inp-email" name="email" placeholder="e.g. candidate@example.com" autocomplete="email" onblur="verifyEmail()" name="email"/>
           </div>
-          <div class="form-row">
+          <div class="form-ro">
             <div class="form-group">
               <label>Surname / Family</label>
               <input type="text" id="inp-firstname" placeholder="e.g. Chukwuemeka" name="firstname"/>
+            </div>
+            <div class="form-group">
+              <label>Middle Name</label>
+              <input type="text" id="inp-midname" placeholder="e.g. Chike" name="midname"/>
             </div>
             <div class="form-group">
               <label>Last Name</label>
@@ -141,7 +148,7 @@
             <label>Phone Number</label>
             <input type="tel" id="inp-phone" placeholder="e.g. 08012345678" name="phone"/>
           </div>
-          <button class="btn btn-primary" id="continue-1" onclick="nextStep(1)">Continue →</button>
+          <button class="btn btn-primary" id="continue-1" onclick="nextStep(1)" type="button">Continue →</button>
         </div>
 
         <!-- STEP 2: Academic Info -->
@@ -211,8 +218,8 @@
             </div>
           </div>
           <div class="btn-row">
-            <button class="btn btn-ghost" onclick="prevStep(2)">← Back</button>
-            <button class="btn btn-primary" onclick="nextStep(2)">Continue →</button>
+            <button class="btn btn-ghost" onclick="prevStep(2)" type="button">← Back</button>
+            <button class="btn btn-primary" onclick="nextStep(2)" type="button">Continue →</button>
           </div>
         </div>
 
@@ -233,13 +240,14 @@
             <span>I agree to the <a href="#">Terms of Use</a> and <a href="#">Examination Rules</a> of the EduTest CBT Portal.</span>
           </div>
           <div class="btn-row">
-            <button class="btn btn-ghost" onclick="prevStep(3)">← Back</button>
-            <button class="btn btn-primary" onclick="doRegister()">Create Account</button>
+            <button class="btn btn-ghost" onclick="prevStep(3)" type="button">← Back</button>
+            <button class="btn btn-primary" onclick="doRegister()" type="button">Create Account</button>
           </div>
         </div>
 
         <div class="auth-footer">Already registered?<a href="/cbt/ansofra/login">Sign in here</a></div>
       </div>
+      </form>
 
     </div>
     </div>

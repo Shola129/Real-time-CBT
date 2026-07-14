@@ -9,7 +9,6 @@ const idEmail = localStorage.getItem('cbt_session_email');
  const org_code = localStorage.getItem('cbt_session_org_code');
  if(!org_code || !idEmail){
     window.location.href="/cbt/ansofra/user/login";
-    return;
  }
 document.getElementById("organization-code").textContent=org_code;
 let examState = {

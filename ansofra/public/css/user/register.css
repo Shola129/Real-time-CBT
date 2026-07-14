@@ -150,9 +150,9 @@
     .form-section { display: none; }
     .form-section.active { display: block; animation: sectionIn 0.28s ease; }
     @keyframes sectionIn { from{opacity:0;transform:translateX(12px);}to{opacity:1;transform:translateX(0);} }
-
+/* 
     .form-row { display: flex; gap: 14px; }
-    .form-row .form-group { flex: 1; }
+    .form-row .form-group { flex: 1; } */
     .form-group { margin-bottom: 16px; }
     .form-group label {
       display: block; font-size: 12.5px; font-weight: 600;

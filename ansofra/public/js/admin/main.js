@@ -27,6 +27,10 @@ async function getDetail(){
     document.getElementById("profile-name").textContent=response.fullname;
     document.getElementById("organization-name").textContent=response.organization_name;
     document.getElementById("organization-code").textContent=response.organization_code;
+    await getTotalStudent();
+    await getTotalSubject();
+    await getOutStanding();
+    await  totalDepartment();
   }
   else{
     document.location.href="/cbt/ansofra/";
@@ -63,6 +67,7 @@ async function totalDepartment(){
 async function getTotalStudent(){
   const org_code = document.getElementById("organization-code").textContent;
   const e ={role:'user', organization_code:org_code};
+  // console.log(e);
   const api = await fetch('/cbt/ansofra/apiadmin/TotalStudents', {
       method:'POST', 
       headers:{"Content-type":"application/json"},
@@ -70,6 +75,7 @@ async function getTotalStudent(){
   });
   const result = await api.json();
   const response = result.response;
+  //  console.log(response);
   if(result.status === "success"){
     if(response=="0" || response=="1"){
       document.getElementById("stat-students").textContent=response;
@@ -1362,13 +1368,16 @@ document.getElementById('addAnotherQuestionBtn')?.addEventListener('click', () =
   ['questionText','optionA','optionB','optionC','optionD'].forEach(id => document.getElementById(id).value='');
   document.getElementById('correctAnswer').value='';
 });
-document.addEventListener('DOMContentLoaded', async () => {
+
+
+
+window.addEventListener("load", async ()=>{
   getDetail();
-  await getTotalStudent();
-  await getTotalSubject();
+  
   await getLastLogin();
   await setTimeLogin();
   await resultsStatCompleted();
-  await getOutStanding();
-  totalDepartment();
-});
+})
+// document.addEventListener('DOMContentLoaded', async () => {
+  
+// });

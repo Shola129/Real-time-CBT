@@ -14,12 +14,27 @@ class InsertData{
         $this->dto=$dto;
     }
 
+    private function getLetter($length = 2){
+        $chara = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $result = '';
+        for ($i=0; $i < $length; $i++) { 
+            $result .=$chara[random_int(0, strlen($chara) -1)];
+        }
+        return $result;
+    }
+
+    private function generateRegNum(){
+        $year = date("Y");
+        $time = strtotime(date("Y-m-d H:i:s"));
+        $split = sprintf("%u", crc32($time));
+        $hash = $year . substr($split, 0, 9) . $this->getLetter();
+        return $hash;
+    }
 
 
     public function process(){
          $col = ["email", "organization_code"];
          $val = [$this->dto->email, $this->dto->organization_code];
-
          $data = [
                     "email"=>$this->dto->email,
                     "fullname"=>$this->dto->fullname,
@@ -27,14 +42,14 @@ class InsertData{
                     "role"=>"USER",
                     "department"=>$this->dto->department,
                     "date_created"=>$this->dto->date_created,
-                    "regNum"=>$regNum,
+                    "regNum"=>$this->generateRegNum(),
                     "result"=>$this->dto->result ?? '',
                     'state'=>$this->dto->state ?? '',
                     "gender"=>$this->dto->gender ?? '',
                     "year"=>$this->dto->year ?? '',
                     "dob"=>$this->dto->dob,
                     "phone"=>$this->dto->phone,
-                    "orgnization_code"=>$this->dto->orgnization_code,
+                    "organization_code"=>$this->dto->organization_code,
                     "status"=>"active",
          ];
         $newMig2 = new Migration(null, $this->table);
@@ -45,7 +60,7 @@ class InsertData{
             $fullname=$this->dto->fullname;
             $department=$this->dto->department;
             $date_created=$this->dto->date_created;
-            $regNum1=$regNum;
+            $regNum1=$this->generateRegNum();
             $state=$this->dto->state;
             $gender=$this->dto->gender;
             $year=$this->dto->year;
