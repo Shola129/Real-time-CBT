@@ -138,7 +138,6 @@ async function fetchSubjectList(department, org_code) {
 //     score_per_question=response.mark_per_score;
 
 // }
-
 /*    FETCH — exam details*/
 async function fetchExamDetails(department, org_code) {
   const btn    = document.getElementById('start-btn');
