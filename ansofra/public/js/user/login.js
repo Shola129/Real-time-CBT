@@ -20,8 +20,8 @@ async function doLogin() {
       });
 
       const result = await api.json();
-      const response = result.response;
-      // console.log(result);
+      const response = result.response[0];
+      // console.log(response);
       if(result.status==="success"){
         localStorage.setItem("cbt_session_email", email);
         localStorage.setItem("cbt_session_org_code", response.organization_code);

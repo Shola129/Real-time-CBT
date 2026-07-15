@@ -172,8 +172,8 @@ window.closeDsbDrawer = function() {
   document.body.style.overflow = '';
 };
 
-window.closeEditModal = function() {
-  document.getElementById('editModal').classList.remove('open');
+window.closeEditModal1 = function() {
+  document.getElementById('editModal3').classList.remove('open');
   document.body.style.overflow = '';
   editingIndex = -1;
 };
@@ -454,6 +454,8 @@ async function seacrhDepSch(){
     const subject = document.getElementById("add-subject").value.trim();
     const subCode = document.getElementById("add-subject-code").value.trim();
     const org_code = document.getElementById("organization-code").textContent.trim();
+    const question = document.getElementById("add-subject-TotalQuestions").value.trim();
+    const score_per_question = document.getElementById("add-subject-ScorePerQuestion").value.trim();
     const desc = "";
     const HeadOfDepartment = "";
     const ID = "";
@@ -467,7 +469,9 @@ async function seacrhDepSch(){
             subject:subject,
             subjectCode:subCode,
             date_created: new Date().toLocaleTimeString() +" " + new Date().toLocaleDateString(),
-            organization_code:org_code
+            organization_code:org_code,
+            totalQuestions:question,
+            scorePerQuestion:score_per_question
           }
         const api = await fetch("/cbt/ansofra/apiadmin/save/subject",{
               method:"POST",
@@ -541,8 +545,9 @@ async function seacrhDepSch(){
         body:JSON.stringify(e)
     });
     const result = await api.json();
-    if(result.status ==="success"){
-      alert(result.response);
+    console.log(result);
+    if(result.status=="success"){
+      alert("Information passed successfully");
       displayScheduledTime();
     }
     else{
@@ -742,11 +747,15 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
           output +=`
             <div class="dsb-drawer-meta">
               <span><i class="fas fa-book"></i> ${index + 1 }</span>
-              <div class="dsb-subject-info"><div class="dsb-subject-name">${response[index].subject}&nbsp &nbsp <nav>Code:  <strong>${response[index].subjectCode}</strong></nav></div> <div class="dsb-subject-date">Added ${response[index].date_created || '—'}</div></div>
+              <div class="dsb-subject-info">
+                  <div class="dsb-subject-name">${response[index].subject}&nbsp &nbsp <nav>Code:  <strong>${response[index].subjectCode}</strong></nav></div> <div class="dsb-subject-date">Added ${response[index].Date_Created || '—'}</div>
+                  <div>Total Questions: <b>${response[index].totalQuestions}</b></div>
+                  <div>Score Per Question: <b> ${response[index].scorePerQuestion}</b></div>
+              </div>
                 <span><i class="fas fa-user-tie"></i> ${ HeadOfDepartment||'—'}</span>
                 <span>Depart Code ${response[index].DepartmentCode}</span>
                  <div class="dsb-subject-badges">
-                  <button class="btn btn-sm" style="padding:4px 10px;" onclick="openEditModal('${response[index].subjectID}', '${response[index].subject}', '${response[index].subjectCode}', '${response[index].organization_code}', '${response[index].DepartmentCode}', '${response[index].department}')"><i class="fas fa-pen"></i></button>
+                  <button class="btn btn-sm" style="padding:4px 10px;" onclick="openEditModal('${response[index].subjectID}', '${response[index].subject}', '${response[index].subjectCode}', '${response[index].organization_code}', '${response[index].DepartmentCode}', '${response[index].department}', '${response[index].totalQuestions}', '${response[index].scorePerQuestion}', '${response[index].Date_Created}')"><i class="fas fa-pen"></i></button>
                   <button class="btn btn-sm btn-danger" style="padding:4px 10px;" onclick="deleteSubjectFromDrawer('${response[index].subjectID}', '${response[index].subject}')"><i class="fas fa-trash"></i></button>
                 </div>
             </div>
@@ -771,9 +780,9 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
       document.body.style.overflow = 'hidden';
  }
 
- async function openEditModal(subjectID, subject, subCode, org_code, depCode, depart){
+ async function openEditModal(subjectID, subject, subCode, org_code, depCode, depart, question, score_per_question, date_created){
     document.getElementById('subjectID').value=subjectID;
-    document.getElementById('editModal').classList.add('open');
+    document.getElementById('editModal3').classList.add('open');
     document.body.style.overflow = 'hidden';
     document.getElementById("edit-dept").value=depart;
     document.getElementById("edit-deptCode").value=depCode;
@@ -781,6 +790,9 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
     document.getElementById("subjectID").value=subjectID;
     document.getElementById("org-code").value=org_code;
     document.getElementById("edit-subject-code").value=subCode;
+    document.getElementById("edit-subject-TotalQuestions").value=question;
+    document.getElementById("edit-subject-ScorePerQuestion").value = score_per_question;
+    document.getElementById("edit-subject-date-created").value=date_created;
  }
 
  async function openAddSubject2(){
@@ -796,14 +808,25 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
     const subjectID =  document.getElementById("subjectID").value.trim();
     const org_code =  document.getElementById("org-code").value.trim();
     const  subCode=  document.getElementById("edit-subject-code").value.trim();
+    const question =  document.getElementById("edit-subject-TotalQuestions").value.trim();
+    const score_per_question =   document.getElementById("edit-subject-ScorePerQuestion").value.trim();
+    const date_created = document.getElementById("edit-subject-date-created").value.trim();
     const e = {
       department:dept,
       DepartmentCode:deptCode,
       subject:subject,
       subjectID:subjectID,
       organization_code:org_code,
-      subjectCode:subCode
+      subjectCode:subCode,
+      totalQuestions:question,
+      scorePerQuestion:score_per_question,
+      date_created:date_created
     };
+    console.log(e);
+    if(!dept||!deptCode||!subject||!subjectID||!org_code||!subCode||!question||!score_per_question){
+      alert("all field require");
+      return;
+    }
     const api = await fetch('/cbt/ansofra/apiadmin/edit/subject', {
         method:'POST',
         headers:{"Content-type":"application/json"},
@@ -811,8 +834,16 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
     })
     const result = await api.json();
     if(result.status==="success"){
-       alert(result.response);
-       closeEditModal();
+       alert("save successfully");
+       closeEditModal1();
+        document.getElementById("edit-dept").value="";
+        document.getElementById("edit-deptCode").value="";
+        document.getElementById("edit-subject").value="";
+        document.getElementById("subjectID").value="";
+        document.getElementById("org-code").value="";
+        document.getElementById("edit-subject-code").value="";
+        document.getElementById("edit-subject-TotalQuestions").value="";
+        document.getElementById("edit-subject-ScorePerQuestion").value = "";
     }
     else{
       alert("unable to edit the subject");
@@ -852,7 +883,9 @@ async function deleteSubjectFromDrawer(subjectID, subject, subCode, org_code, de
     const depCode = document.getElementById("depCode").value.trim();
     const subjectName = document.getElementById("subjectName").value.trim();
     const subjectCode = document.getElementById("subjectCode").value.trim();
-    if(!dep || !depCode || !subjectName){
+    const question = document.getElementById("TotalQuestions").value.trim();
+    const scorePerQuestion = document.getElementById("ScorePerQuestion").value.trim();
+    if(!dep || !depCode || !subjectName || !question || !scorePerQuestion || !question || !scorePerQuestion){
       alert("All field require");
     }else{
       processSubjectData();
@@ -880,13 +913,17 @@ async function deleteSubjectFromDrawer(subjectID, subject, subCode, org_code, de
     const subjectName = document.getElementById("subjectName").value.trim();
     const subjectCode = document.getElementById("subjectCode").value.trim();
     const org_code = document.getElementById("organization-code").textContent.trim();
+    const question = document.getElementById("TotalQuestions").value.trim();
+    const score_per_question = document.getElementById("ScorePerQuestion").value.trim();
     const e = {
       department:dep,
       DepartmentCode:depCode,
       subject:subjectName,
       subjectCode:subjectCode,
       date_created: new Date().toLocaleTimeString() +" " + new Date().toLocaleDateString(),
-      organization_code:org_code
+      organization_code:org_code,
+      totalQuestions:question,
+      scorePerQuestion:score_per_question,
     }
     // console.log(e);
     const api = await fetch("/cbt/ansofra/apiadmin/save/subject", {
@@ -902,6 +939,8 @@ async function deleteSubjectFromDrawer(subjectID, subject, subCode, org_code, de
         document.getElementById("depCode").value="";
         document.getElementById("subjectName").value="";
         document.getElementById("subjectCode").value="";
+        document.getElementById("TotalQuestions").value="";
+        document.getElementById("ScorePerQuestion").value="";
     }
     else{
       alert(result.response);
@@ -1143,8 +1182,6 @@ async function updateDeptStats(){
               <th>${response[i].DepartmentCode}</th>
               <th>${response[i].HeadOfDepartment}</th>
               <th>${response[i].Description}</th>
-              <th>${response[i].totalQuestions}</th>
-              <th>${response[i].scorePerQuestion}</th>
               <th>${response[i].Date_Created}</th>
               <th onclick="openEditDepartment('${response[i].department_id}', '${response[i].organization_code}')" style="background-color:green; color:white">Edit</th>
               <th onclick="delDepartment('${response[i].department_id}','${response[i].organization_code}')" style="background-color:red; color:white">Del</th>
@@ -1181,8 +1218,6 @@ async function deptSearchBtn(){
                   <th>${response[i].DepartmentCode}</th>
                   <th>${response[i].HeadOfDepartment}</th>
                   <th>${response[i].Description}</th>
-                  <th>${response[i].totalQuestions}</th>
-                  <th>${response[i].scorePerQuestion}</th>
                   <th>${response[i].Date_Created}</th>
                   <th onclick="openEditDepartment('${response[i].department_id}', '${response[i].organization_code}')" style="background-color:green; color:white">Edit</th>
                   <th onclick="delDepartment('${response[i].department_id}','${response[i].organization_code}')" style="background-color:red; color:white">Del</th>

@@ -23,31 +23,10 @@ class NotifyUserExam{
         ];
 
         $newMig = new Migration(null, $this->table2);
-        $mig = $newMig->get($where, 0, 20);
+        $mig = $newMig->get($where, 0, 200);
         $decodeMig = json_decode($mig, true);
         if($decodeMig['status']==="success"){
-            // $reponse = $decodeMig["response"][0];
-            // $time = $this->dto->timeSchedule;
-            // $allEamil = $reponse["email"];
-            // $a = count($allEamil);
-            // $holdEmail = "";
-            // for($i=0; $i<$a; $i++){
-            //     $holdEmail=$allEmail[$i];
-            // }
-            // $body = "Th time set for cbt exam is $time";
-            // $newMail = new Index();
-            // $mail = $newMail->sendOtp('TimeTable', $body, $holdEmail);
-            // $decodeMail = json_decode($mail, true);
-            // if($decodeMail['status']==="success"){
-            //     return json_encode([
-            //         'status'=>'success',
-            //         'response'=>'time scheduled have being saved and sent to the registered user department to ready'
-            //     ], JSON_PRETTY_PRINT);
-            // }
-            // else{
-            //     return $mail;
-            // }
-
+            
             $response = $decodeMig["response"];
             $name = $this->dto->fullname;
             $start = $this->dto->start;
@@ -62,6 +41,7 @@ class NotifyUserExam{
             foreach($response as $row){
                 $email = $row["email"];
                 $name = $row["fullname"];
+                $year = date("Y");
                 $body = "<!DOCTYPE html>
                     <html lang='en'>
                     <head>
@@ -292,7 +272,7 @@ class NotifyUserExam{
                             <!-- HEADER: deep blue background, white text, red accent border -->
                             <div class='email-header'>
                                 <h1>📢 Examination Timetable</h1>
-                                <div class='exam-badge'>Spring 2026 • Final Exams</div>
+                                <div class='exam-badge'>Spring $year • Examination</div>
                             </div>
 
                             <!-- MAIN CONTENT -->
@@ -357,7 +337,7 @@ class NotifyUserExam{
 
                             <!-- FOOTER: subtle blue-white pattern -->
                             <div class='email-footer'>
-                                <p style='margin-bottom:6px;'>© 2026 University Examination</p>
+                                <p style='margin-bottom:6px;'>© 2026 EduText</p>
                             
                             </div>
                         </div>
@@ -368,7 +348,17 @@ class NotifyUserExam{
                 $decodeMail = json_decode($mail, true);
                 if($decodeMail['status']==="success"){
                     $date = [
-                        "status"=>$this->dto->status
+                        "status"=>"active",
+                        "timeID"=>$this->dto->timeID,
+                        "date"=>$this->dto->date,
+                        "DepartmentCode"=>$this->dto->DepartmentCode,
+                        "duration"=>$this->dto->duration,
+                        // "organization_name"=>$this->dto->organization_name,
+                        "organization_code"=>$this->dto->organization_code,
+                        "department"=>$this->dto->department,
+                        "end"=>$this->dto->end,
+                        "start"=>$this->dto->start,
+                        "session"=>$this->dto->session ?? "Null",
                     ];
 
                     $where = [
@@ -381,17 +371,24 @@ class NotifyUserExam{
                     if($decodeMig4["status"]=="success"){
                         return json_encode([
                             'status'=>'success',
-                            'response'=>'time scheduled have being saved and sent to the registered user department to ready'
+                            'response'=>'Information passed successfully'
                         ], JSON_PRETTY_PRINT);
                     }else{
                         return json_encode([
                             'status'=>'failed',
+                            // 'response'=>$mig4
                             'response'=>'error occur at our end here try again later'
                         ], JSON_PRETTY_PRINT);
                     }
                 }
                 else{
-                    return $mail;
+                    // return $mail;
+                    return json_encode(
+                        [
+                            'status'=>'failed',
+                            'response'=>'unable to send email to users'
+                        ], JSON_PRETTY_PRINT
+                    );
                 }
             }
         }

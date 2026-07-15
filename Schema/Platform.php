@@ -70,8 +70,8 @@ class Platform{
         "Date_Created VARCHAR(255) NOT NULL",
         "departmentID VARCHAR(255) NOT NULL",
         "organization_code VARCHAR(255) NOT NULL",
-        "totalQuestions VARCHAR(255) NOT NULL",
-        "scorePerQuestion VARCHAR(255) NOT NULL"
+        // "totalQuestions VARCHAR(255) NOT NULL",
+        // "scorePerQuestion VARCHAR(255) NOT NULL"
     ];
 
     public const SETSUBJECTS_TABLE = "subjects";
@@ -85,6 +85,8 @@ class Platform{
         "Date_Created VARCHAR(255) NOT NULL",
         "subjectCode VARCHAR(255) NOT NULL",
         "organization_code VARCHAR(255) NOT NULL",
+        "totalQuestions VARCHAR(255) NOT NULL",
+        "scorePerQuestion VARCHAR(255) NOT NULL",
     ];
 
     public const QUESTIONS_TABLE = "questions";
@@ -153,6 +155,8 @@ class Platform{
         "score VARCHAR(255) NOT NULL",
         "startedAt VARCHAR(255) NOT NULL",
         "organization_code VARCHAR(255) NOT NULL",
+        "scorePerQuestion VARCHAR(255) NOT NULL",
+        "totalQuestions VARCHAR(255) NOT NULL",
     ];
 
     // public const SAVEQUESTIONS_TABLE = "save_question_attempted";

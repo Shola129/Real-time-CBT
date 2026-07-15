@@ -35,13 +35,15 @@ window.addEventListener('load', () => {
 
 /*    FETCH — candidate profile*/
 async function populateUI() {
+  const e = { email: user, organization_code:org_code}
+  // console.log(e);
     const res    = await fetch('/cbt/ansofra/api/details', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email: user, organization_code:org_code}),
+      body: JSON.stringify(e),
     });
     const result = await res.json();
     if (result.status !== 'success' || !result.response?.[0]) {
-              window.location.href="/cbt/ansofra/user/login";
+             window.location.href="/cbt/ansofra/user/login";
               return;
             //  console.error('Profile error:', result); return; 
     }
@@ -95,37 +97,47 @@ async function fetchSubjectList(department, org_code) {
         <tr>
           <td>${i+1}</td>
           <td><span class="subj-color" style="background:${palette[i%palette.length]}"></span>${s.subject}</td>
-          <td>${s.numQuestion ?? s.num_question ?? '—'}</td>
-          <td>${s.maxScore   ?? s.max_score    ?? '—'}</td>
+          <td>${s.numQuestion ?? s.totalQuestions ?? '—'}</td>
+          <td>${s.maxScore   ?? s.scorePerQuestion    ?? '—'}</td>
+          <td>${parseFloat(s.totalQuestions) * parseFloat(s.scorePerQuestion)}</td>
         </tr>`).join('');
+
+        let output = 0;
+        let q = 0;
+        let s = 0;
+        for(let i=0; i<list.length; i++){
+          output +=parseFloat(list[i].totalQuestions);
+          q += parseFloat(list[i].totalQuestions) * parseFloat(list[i].scorePerQuestion);
+        }
+        document.getElementById("total-score").textContent=q;
       const totalQ = list.reduce((t, s) => t + (parseInt(s.numQuestion ?? s.num_question) || 0), 0);
       document.getElementById('subj-table-meta').textContent =
-        `${list.length} subject${list.length !== 1 ? 's' : ''} · ${totalQ} total questions`;
+        `${list.length} subject${list.length !== 1 ? 's' : ''} · ${output} total questions`;
     }
   } catch (err) { console.error('fetchSubjectList:', err); }
 }
 
-async function getMaxQScoreQ(){
-   const org_code = document.getElementById("organization-code").textContent.trim();
-   const department = document.getElementById("sb-course").textContent.trim();
+// async function getMaxQScoreQ(){
+//    const org_code = document.getElementById("organization-code").textContent.trim();
+//    const department = document.getElementById("sb-course").textContent.trim();
 
-   const e = {
-    organization_code:org_code,
-    department:department
-   };
+//    const e = {
+//     organization_code:org_code,
+//     department:department
+//    };
 
-   const api = await fetct("/cbt/ansofra/api/get/max/q/score/q",{
-        method:"POST",
-        headers:{'Content-Tpye':'application/json'},
-        body:JSON.stringify(e),
-    });
+//    const api = await fetct("/cbt/ansofra/api/get/max/q/score/q",{
+//         method:"POST",
+//         headers:{'Content-Tpye':'application/json'},
+//         body:JSON.stringify(e),
+//     });
 
-    const result = await api.json();
-    const response = result.response;
-    max_question=response.total_question;
-    score_per_question=response.mark_per_score;
+//     const result = await api.json();
+//     const response = result.response;
+//     max_question=response.total_question;
+//     score_per_question=response.mark_per_score;
 
-}
+// }
 
 /*    FETCH — exam details*/
 async function fetchExamDetails(department, org_code) {
@@ -165,7 +177,7 @@ async function fetchExamDetails(department, org_code) {
     const startDT      = buildDatetime(exam.date, exam.start);
     const endDT        = buildDatetime(exam.date, exam.end);
     const now          = new Date();
-    getMaxQScoreQ();
+    // getMaxQScoreQ();
     document.getElementById('ic-dura').textContent     = `${durationMins} mins`;
     document.getElementById('ic-dura-sub').textContent = formatDuration(durationMins);
     document.getElementById('next-date').textContent   = niceDate(exam.date);
@@ -279,35 +291,38 @@ async function launchExam() {
 }
 
 /*    BUILD SUBJECT TABS*/
-async function buildSubjectTabs(department, org_code) {
+async function buildSubjectTabs(department, org_code1) {
   const dept = department || document.getElementById('sb-course').textContent.trim();
-
+  const e = { department: dept , organization_code:org_code};
+  // console.log(e);
   const res    = await fetch('/cbt/ansofra/api/getAllSebject', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ department: dept , organization_code:org_code}),
+    body: JSON.stringify(e),
   });
   const result = await res.json();
   const list   = result.response || [];
 
   examState.totalSubjects = list.length;
-
+  // console.log(list);
   let output = '';
+  // let totalQuestions = '';
   for (let i = 0; i < list.length; i++) {
     const safeSubject = list[i].subject.replace(/'/g, "\\'");
     output += `<div class="subject-tab ${i === 0 ? 'active' : ''}" id="tab-${i}"
-                    onclick="switchSubject('${dept}', '${safeSubject}', ${i})">
+                    onclick="switchSubject('${dept}', '${safeSubject}', ${i}, '${list[i].totalQuestions}', '${list[i].scorePerQuestion}')">
                  ${list[i].subject}<span class="q-count" id="qcount-${i}"></span>
                </div>`;
+    // totalQuestions +=list[i].totalQuestions;
   }
   document.getElementById('subject-nav').innerHTML = output;
-
+  // console.log("get Total question ", + list[0].totalQuestions);
   if (list.length > 0) {
-    await switchSubject(dept, list[0].subject, 0);
+    await switchSubject(dept, list[0].subject, 0, list[0].totalQuestions, list[0].scorePerQuestion);
   }
 }
 
 /*    SWITCH SUBJECT*/
-async function switchSubject(department, subject, idx) {
+async function switchSubject(department, subject, idx, totalQuestions, scorePerQuestion) {
   document.querySelectorAll('.subject-tab')
     .forEach((t, i) => t.classList.toggle('active', i === idx));
 
@@ -321,13 +336,21 @@ async function switchSubject(department, subject, idx) {
     </div>`;
 
   const regNum = document.getElementById('sidebar-reg').textContent.trim();
-
+  const e = { department:department, subject:subject, regNum:regNum, organization_code:org_code, limit:totalQuestions, scorePerQuestion, scorePerQuestion};
+  console.log(e);
   const api = await fetch('/cbt/ansofra/api/display/qesution', {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ department, subject, regNum, organization_code:org_code, limit:max_question}),
+    method: 'POST', headers: {'Content-Type': 'application/json' },
+    body: JSON.stringify(e),
   });
   const result = await api.json();
-
+  // console.log(result);
+  if(result.status != "success"){
+      document.getElementById('question-area').innerHTML = `
+        <div style="padding:48px;text-align:center;color:var(--text-m);font-size:14px;">
+          <i class="fas fa-circle-notch fa-spin" style="font-size:22px;color:var(--blue);display:block;margin-bottom:12px"></i>
+         No questions found 
+        </div>`; 
+  }
   const rawData      = result.response[0];
   const questionList = typeof rawData.question === 'string'
     ? JSON.parse(rawData.question)

@@ -15,12 +15,12 @@
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
 
 <!-- MODAL 1 — Edit Subject -->
-<div class="modal-backdrop" id="editModal" onclick="if(event.target===this)closeEditModal()">
+<div class="modal-backdrop" id="editModal3" onclick="if(event.target===this)closeEditModal1()">
   <form id="editSub">
     <div class="modal" role="dialog" aria-modal="true">
       <div class="modal-header">
         <div class="modal-title"><i class="fas fa-pen-to-square"></i> Edit Subject</div>
-        <button type="button" class="modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
+        <button type="button" class="modal-close" onclick="closeEditModal1()"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
         <div class="form-group">
@@ -40,6 +40,14 @@
           <input class="form-control" type="text" id="edit-subject-code" placeholder="e.g. Algo405" name="subject"/>
         </div>
         <div class="form-group">
+          <label class="form-label">Total Questions <span style="color:var(--text-faint);font-size:10px;">per exam</span></label>
+          <input class="form-control" type="number" min="1" id="edit-subject-TotalQuestions" placeholder="e.g. 40" name="totalQuestions" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Score Per Question</label>
+          <input class="form-control" type="number" min="0" step="0.5" id="edit-subject-ScorePerQuestion" placeholder="e.g. 2.5" name="scorePerQuestion" />
+        </div>
+        <div class="form-group">
           <label class="form-label">Subject ID</label>
           <input class="form-control" type="text" id="subjectID" placeholder="e.g. Algorithms"  disabled/>
         </div>
@@ -47,9 +55,13 @@
           <label class="form-label">Organization Code</label>
           <input class="form-control" type="text" id="org-code"disabled/>
         </div>
+        <div class="form-group">
+          <label class="form-label">Date Created</label>
+          <input class="form-control" type="text" id="edit-subject-date-created"disabled/>
+        </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-sm" onclick="closeEditModal()"><i class="fas fa-times"></i> Cancel</button>
+        <button type="button" class="btn btn-sm" onclick="closeEditModal1()"><i class="fas fa-times"></i> Cancel</button>
         <button type="button" class="btn btn-primary btn-sm" onclick="saveEditSubject()"><i class="fas fa-save"></i> Save Changes</button>
       </div>
     </div>
@@ -80,6 +92,14 @@
         <div class="form-group">
           <label class="form-label">Subject Code</label>
           <input class="form-control" type="text" id="add-subject-code" placeholder="e.g. Algo405" name="subject"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Total Questions <span style="color:var(--text-faint);font-size:10px;">per exam</span></label>
+          <input class="form-control" type="number" min="1" id="add-subject-TotalQuestions" placeholder="e.g. 40" name="totalQuestions" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Score Per Question</label>
+          <input class="form-control" type="number" min="0" step="0.5" id="add-subject-ScorePerQuestion" placeholder="e.g. 2.5" name="scorePerQuestion" />
         </div>
         <!-- <div class="form-group">
           <label class="form-label">Subject ID</label>
@@ -246,6 +266,14 @@
         <div class="form-group">
           <label class="form-label">Subject Code</label>
           <input class="form-control" type="text" id="addSub-subjectCode" placeholder="e.g. Algo204 optional" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Total Questions <span style="color:var(--text-faint);font-size:10px;">per exam</span></label>
+          <input class="form-control" type="number" min="1" id="addSub-TotalQuestions" placeholder="e.g. 40" name="totalQuestions" />
+        </div>
+        <div class="form-group">
+          <label class="form-label">Score Per Question</label>
+          <input class="form-control" type="number" min="0" step="0.5" id="addSub-ScorePerQuestion" placeholder="e.g. 2.5" name="scorePerQuestion" />
         </div>
       </div>
       <div class="modal-footer">
@@ -602,6 +630,14 @@
                 <div class="form-group">
                   <label class="form-label">Subject Code</label>
                   <input class="form-control" type="text" placeholder="e.g. Algo204 optional"  id="subjectCode" />
+                </div>
+                 <div class="form-group">
+                  <label class="form-label">Total Questions <span style="color:var(--text-faint);font-size:10px;">per exam</span></label>
+                  <input class="form-control" type="number" min="1" id="TotalQuestions" placeholder="e.g. 40" name="totalQuestions" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Score Per Question</label>
+                  <input class="form-control" type="number" min="0" step="0.5" id="ScorePerQuestion" placeholder="e.g. 2.5" name="scorePerQuestion" />
                 </div>
                 <div class="form-group" style="justify-content:flex-end;">
                   <label class="form-label">&nbsp;</label>
@@ -1029,14 +1065,14 @@
                   <label class="form-label">Description</label>
                   <input class="form-control" type="text" id="newDeptDesc" placeholder="Short description (optional)" name="Description" />
                 </div>
-                <div class="form-group">
+                <!-- <div class="form-group">
                   <label class="form-label">Total Questions <span style="color:var(--text-faint);font-size:10px;">per exam</span></label>
                   <input class="form-control" type="number" min="1" id="newDeptTotalQuestions" placeholder="e.g. 40" name="totalQuestions" />
                 </div>
                 <div class="form-group">
                   <label class="form-label">Score Per Question</label>
                   <input class="form-control" type="number" min="0" step="0.5" id="newDeptScorePerQuestion" placeholder="e.g. 2.5" name="scorePerQuestion" />
-                </div>
+                </div> -->
               </div>
             </form>
             <div style="display:flex;justify-content:flex-end;margin-top:16px;gap:10px;flex-wrap:wrap;">
@@ -1065,13 +1101,11 @@
             <table>
               <thead>
                 <tr>
-                  <th>#</th>
+                  <th>S/N</th>
                   <th>Department Name</th>
                   <th>Code</th>
                   <th>Head of Department</th>
                   <th>Description</th>
-                  <th>Total Qs</th>
-                  <th>Score/Q</th>
                   <th>Date Created</th>
                   <th>Edit</th>
                   <th>Del</th>

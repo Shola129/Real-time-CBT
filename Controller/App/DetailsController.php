@@ -1,6 +1,6 @@
 <?php
 namespace NewdichControllerApp;
-use NewdichApp\query\Details;
+use NewdichApp\Query\Details;
 use NewdichDto\AnsofraDto;
 use NewdichMiddleware\Index;
 

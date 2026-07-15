@@ -23,8 +23,8 @@ class SetDept{
             'DepartmentCode'=>$this->dto->DepartmentCode,
             'departmentID'=>$sub."/". substr($this->dto->otp,0, 3),
             'organization_code'=>$this->dto->organization_code,
-            'totalQuestions'=>$this->dto->totalQuestions,
-            'scorePerQuestion'=>$this->dto->scorePerQuestion,
+            // 'totalQuestions'=>$this->dto->totalQuestions,
+            // 'scorePerQuestion'=>$this->dto->scorePerQuestion,
         ];
 
 

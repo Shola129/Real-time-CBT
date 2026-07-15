@@ -31,7 +31,9 @@ class SaveSubject{
             'subjectCode'=>$this->dto->subjectCode ?? "Null",
             'Date_Created'=>$this->dto->date_created,
             'role'=>'set',
-            'subjectID'=>substr($this->dto->otp, 0,2)
+            'subjectID'=>substr($this->dto->otp, 0,2),
+            'totalQuestions'=>$this->dto->totalQuestions,
+            'scorePerQuestion'=>$this->dto->scorePerQuestion,
         ];
         // return json_encode([
         //     "status"=>"failed",

@@ -17,7 +17,13 @@ class EditSubject{
             'department'=>$this->dto->department,
             'DepartmentCode'=>$this->dto->DepartmentCode,
             'subject'=>$this->dto->subject,
-            'subjectCode'=>$this->dto->subjectCode
+            'subjectCode'=>$this->dto->subjectCode,
+            'organization_code'=>$this->dto->organization_code,
+            'role'=>'set',
+            'subjectID'=>$this->dto->subjectID,
+            'totalQuestions'=>$this->dto->totalQuestions,
+            'scorePerQuestion'=>$this->dto->scorePerQuestion,
+            'Date_Created'=>$this->dto->date_created,
         ];
 
         $where = [

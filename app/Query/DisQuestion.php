@@ -23,6 +23,7 @@ class DisQuestion{
 
         $newMig = new Migration(null, $this->table);
         $mig = $newMig->get($where, 0, 1);
+        // return $mig;
         $decodeMig = json_decode($mig, true);
         if($decodeMig["status"]==="success"){
             return $mig;
@@ -50,6 +51,8 @@ class DisQuestion{
                     'score'=>$this->dto->score ?? '',
                     'startedAt'=>date("Y-m-d H:i:s"),
                     'organization_code'=>$this->dto->organization_code,
+                    'scorePerQuestion'=>$this->dto->scorePerQuestion,
+                    'totalQuestions'=>$this->dto->limit
                 ];
                 $mig3 = $newMig3->save($data);
                 $decodemig3 = json_decode($mig3, true);
@@ -62,6 +65,8 @@ class DisQuestion{
                 else{
                     return $mig3;
                 }
+            }else{
+                return $mig2;
             }
         }
     }
