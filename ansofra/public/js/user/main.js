@@ -140,7 +140,6 @@ async function fetchSubjectList(department, org_code) {
 // }
 
 
-
 /*    FETCH — exam details*/
 async function fetchExamDetails(department, org_code) {
   const btn    = document.getElementById('start-btn');
