@@ -3,8 +3,9 @@
 let SUBJECTS  = [];
 let user      = null;
 let userData  = null;
-let totalQuestions;
-let scorePerQuestion;
+let totalQuestions = [];
+let scorePerQuestion = [];
+let currentScorePerQuestion;
 const idEmail = localStorage.getItem('cbt_session_email');
  const org_code = localStorage.getItem('cbt_session_org_code');
  if(!org_code || !idEmail){
@@ -335,7 +336,7 @@ async function switchSubject(department, subject, idx, totalQuestions1, scorePer
     </div>`;
 
   const regNum = document.getElementById('sidebar-reg').textContent.trim();
-  const e = { department:department, subject:subject, regNum:regNum, organization_code:org_code, limit:totalQuestions, scorePerQuestion, scorePerQuestion};
+  const e = { department:department, subject:subject, regNum:regNum, organization_code:org_code, limit:totalQuestions1, scorePerQuestion:scorePerQuestion1};
   // console.log(e);
   const api = await fetch('/cbt/ansofra/api/display/qesution', {
     method: 'POST', headers: {'Content-Type': 'application/json' },
@@ -354,8 +355,8 @@ async function switchSubject(department, subject, idx, totalQuestions1, scorePer
   const questionList = typeof rawData.question === 'string'
     ? JSON.parse(rawData.question)
     : rawData.question;
-  scorePerQuestion = parseFloat(rawData.scorePerQuestion1);
-  totalQuestions = parseFloat(rawData.totalQuestions1);
+    scorePerQuestion[idx] = parseFloat(rawData.scorePerQuestion);
+    totalQuestions[idx] = parseFloat(rawData.totalQuestions);
   // console.log("scorePerQuestion"+scorePerQuestion + "   " + "totalQuestions" + totalQuestions)
   examState.questions[idx] = questionList;
 
@@ -647,19 +648,27 @@ async function finalSubmit() {
       questionCounter++;
     });
 
-    const subjectPoints = parseFloat(subjectScore) * parseFloat(scorePerQuestion);
-    console.log("scorePerQuestion2: "+scorePerQuestion + "   " + "totalQuestions2: " + totalQuestions)
+    const subjectPoints = parseFloat(subjectScore) * parseFloat(currentScorePerQuestion);    
+     currentScorePerQuestion = scorePerQuestion[si];
+     currentTotalQuestions = totalQuestions[si];   
+    // console.log("scorePerQuestion2: "+scorePerQuestion + "   " + "totalQuestions2: " + totalQuestions)
+    console.log(
+    "scorePerQuestion2:",
+    currentScorePerQuestion,
+    "totalQuestions2:",
+    currentTotalQuestions
+);
     const subjectScoreObject = {
       regNum: regNum,
       department: dept,
       subject: subjectName,
       fullname: fullname,
-      score: parseFloat(subjectScore) * parseFloat(scorePerQuestion),
-      totalQuestions: totalQuestions,
+      score: parseFloat(subjectScore) * parseFloat(currentScorePerQuestion),
+      totalQuestions: currentTotalQuestions,
       correctAnswers: subjectScore,
-      expectedScore: parseFloat(totalQuestions) * parseFloat(scorePerQuestion),
+      expectedScore: parseFloat(currentTotalQuestions) * parseFloat(currentScorePerQuestion),
       organization_code: org_code,
-      scorePerQuestion: parseFloat(scorePerQuestion)
+      scorePerQuestion: parseFloat(currentScorePerQuestion)
     };
     console.log(subjectScoreObject);
 
