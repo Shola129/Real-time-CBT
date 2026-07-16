@@ -1,6 +1,6 @@
 <?php
 namespace NewdichControllerApp;
-use NewdichApp\command\SaveScore;
+use NewdichApp\Command\SaveScore;
 use NewdichDto\AnsofraDto;
 use NewdichMiddleware\Index;
 

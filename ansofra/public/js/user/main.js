@@ -3,8 +3,8 @@
 let SUBJECTS  = [];
 let user      = null;
 let userData  = null;
-let max_question;
-let score_per_question;
+let totalQuestions;
+let scorePerQuestion;
 const idEmail = localStorage.getItem('cbt_session_email');
  const org_code = localStorage.getItem('cbt_session_org_code');
  if(!org_code || !idEmail){
@@ -321,7 +321,7 @@ async function buildSubjectTabs(department, org_code1) {
 }
 
 /*    SWITCH SUBJECT*/
-async function switchSubject(department, subject, idx, totalQuestions, scorePerQuestion) {
+async function switchSubject(department, subject, idx, totalQuestions1, scorePerQuestion1) {
   document.querySelectorAll('.subject-tab')
     .forEach((t, i) => t.classList.toggle('active', i === idx));
 
@@ -336,7 +336,7 @@ async function switchSubject(department, subject, idx, totalQuestions, scorePerQ
 
   const regNum = document.getElementById('sidebar-reg').textContent.trim();
   const e = { department:department, subject:subject, regNum:regNum, organization_code:org_code, limit:totalQuestions, scorePerQuestion, scorePerQuestion};
-  console.log(e);
+  // console.log(e);
   const api = await fetch('/cbt/ansofra/api/display/qesution', {
     method: 'POST', headers: {'Content-Type': 'application/json' },
     body: JSON.stringify(e),
@@ -354,7 +354,9 @@ async function switchSubject(department, subject, idx, totalQuestions, scorePerQ
   const questionList = typeof rawData.question === 'string'
     ? JSON.parse(rawData.question)
     : rawData.question;
-
+  scorePerQuestion = parseFloat(rawData.scorePerQuestion1);
+  totalQuestions = parseFloat(rawData.totalQuestions1);
+  // console.log("scorePerQuestion"+scorePerQuestion + "   " + "totalQuestions" + totalQuestions)
   examState.questions[idx] = questionList;
 
   if (!examState.answers[idx] || examState.answers[idx].length !== questionList.length) {
@@ -444,6 +446,7 @@ function renderCurrentQuestion() {
 
   updateGrid();
   updateProgress();
+  texting();
 }
 
 /*    ANSWER & FLAG ACTIONS*/
@@ -644,19 +647,21 @@ async function finalSubmit() {
       questionCounter++;
     });
 
-    const subjectPoints = parseFloat(subjectScore) * parseFloat(score_per_question);
-
+    const subjectPoints = parseFloat(subjectScore) * parseFloat(scorePerQuestion);
+    console.log("scorePerQuestion2: "+scorePerQuestion + "   " + "totalQuestions2: " + totalQuestions)
     const subjectScoreObject = {
       regNum: regNum,
       department: dept,
       subject: subjectName,
       fullname: fullname,
-      score: subjectPoints,
-      totalQuestions: subjectTotalQuestions,
+      score: parseFloat(subjectScore) * parseFloat(scorePerQuestion),
+      totalQuestions: totalQuestions,
       correctAnswers: subjectScore,
-      expectedScore: parseFloat(subjectTotalQuestions) * parseFloat(score_per_question),
-      organization_code:org_code
+      expectedScore: parseFloat(totalQuestions) * parseFloat(scorePerQuestion),
+      organization_code: org_code,
+      scorePerQuestion: parseFloat(scorePerQuestion)
     };
+    console.log(subjectScoreObject);
 
     const scoresApi = await fetch('/cbt/ansofra/api/save/scores', {
       method: 'POST',
@@ -793,4 +798,9 @@ function setLaunchError(msg) {
   const badge = document.getElementById('exam-status-badge');
   badge.className = 'exam-status-badge ended';
   badge.innerHTML = `<span class="status-dot" style="background:var(--red)"></span>${msg}`;
+}
+
+function texting(){
+  console.log("text");
+  console.log(scorePerQuestion, totalQuestions);
 }

@@ -199,6 +199,7 @@ class Platform{
         "correctAnswers VARCHAR(255) NOT NULL",
         "totalQuestions VARCHAR(255) NOT NULL",
         "organization_code VARCHAR(255) NOT NULL",
+        "scorePerQuestion VARCHAR(255) NOT NULL"
     ];
 
     public const RESULT_TABLE = "results";
