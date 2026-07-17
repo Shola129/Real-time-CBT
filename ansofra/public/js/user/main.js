@@ -658,6 +658,22 @@ async function finalSubmit() {
     "totalQuestions2:",
     currentTotalQuestions
 );
+
+const score = parseFloat(subjectScore) * parseFloat(currentScorePerQuestion);
+const actualScore = parseFloat(totalQuestions) * parseFloat(currentScorePerQuestion);
+const DivActualScore = parseFloat(actualScore) / 2;
+let status ="";
+if(DivActualScore > score){
+    status = "Fail";
+}else if(DivActualScore = score ){
+    status = "Pass";
+}else if(score > DivActualScore && score <= 65){
+    status = "Credit";
+}else if(score > DivActualScore && score > 60 && score <=80){
+  status = "Good";
+}else{
+  status = "Excellent";
+}
     const subjectScoreObject = {
       regNum: regNum,
       department: dept,

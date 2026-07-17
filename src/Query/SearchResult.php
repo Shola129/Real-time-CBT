@@ -17,6 +17,7 @@ class SearchResult{
         if($type=="regNum"){
             $where = [
                 "regNum"=>$this->dto->value,
+                "organization_code"=>$this->dto->organization_code
             ];
 
             $newMig = new Migration(null, $this->table);
@@ -25,6 +26,7 @@ class SearchResult{
         }elseif($type==="fullname"){
             $where = [
                 "fullname"=>$this->dto->value,
+                "organization_code"=>$this->dto->organization_code
             ];
 
             $newMig = new Migration(null, $this->table);
@@ -33,6 +35,7 @@ class SearchResult{
         }else{
             $where = [
                 "department"=>$this->dto->value,
+                "organization_code"=>$this->dto->organization_code
             ];
 
             $newMig = new Migration(null, $this->table);

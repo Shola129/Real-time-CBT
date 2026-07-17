@@ -106,6 +106,9 @@ class Platform{
         "correctAss VARCHAR(255) NOT NULL",
         "role VARCHAR(255) NOT NULL",
         "organization_code VARCHAR(255) NOT NULL",
+        // "semster VARCHAR(255) NOT NULL",
+        // "level VARCHAR(255) NOT NULL",
+        // "session VARCHAR(255) NOT NULL",
     ];
 
     public const USERS_TABLE = "users";
@@ -124,7 +127,8 @@ class Platform{
         "dob VARCHAR(255) NOT NULL",
         "gender VARCHAR(255) NOT NULL",
         "state VARCHAR(255) NOT NULL",
-        "year VARCHAR(255) NOT NULL",
+        "organization_name VARCHAR(255) NOT NULL"
+        // "year VARCHAR(255) NOT NULL",
 
     ];
 

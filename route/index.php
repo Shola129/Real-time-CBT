@@ -89,8 +89,18 @@ elseif($url=== $docRoot.$rootDir ."/user/register" || $url ===$docRoot.$rootDir.
     exit();
 }
 
-elseif($url=== $docRoot.$rootDir ."/user/dashboard" || $url ===$docRoot.$rootDir."/user/dashboard" ."/"){
+elseif($url=== $docRoot.$rootDir ."/user/examination/dashboard" || $url ===$docRoot.$rootDir."/user/dashboard" ."/"){
     require_once __DIR__ ."/../ansofra/public/dashboard.html";
+    exit();
+}
+
+elseif($url === $docRoot . $rootDir . "/examination/auth"){
+    require_once __DIR__ . "/../ansofra/public/account/exam/login.html";
+    exit();
+}
+
+elseif($url === $docRoot . $rootDir ."/user/dashboard"){
+    require_once __DIR__ ."/../ansofra/public/user/index.html";
     exit();
 }
 
@@ -402,6 +412,11 @@ elseif($url === $usersArea . "/verify"){
 
 elseif($url === $usersArea. "/get/department/set/list"){
     require_once __DIR__ . $appController . "/GetDepListController.php";
+    exit();
+}
+
+elseif($url === $usersArea . "/fetch/result"){
+    require_once __DIR__ . $appController . "/FetchResultController.php";
     exit();
 }
 

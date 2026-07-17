@@ -29,7 +29,7 @@ async function getDetail(){
     document.getElementById("organization-code").textContent=response.organization_code;
     await getTotalStudent();
     await getTotalSubject();
-    await getOutStanding();
+    // await getOutStanding();
     await  totalDepartment();
   }
   else{
@@ -82,11 +82,14 @@ async function getTotalStudent(){
       document.getElementById("total-stu").textContent="Student";
       document.getElementById("resultsStatTotalStudents").textContent=response;
       totalStudents=parseFloat(response);
+      resultsStatCompleted(response);
     }
     else{
       document.getElementById("stat-students").textContent=response;
       document.getElementById("total-stu").textContent="Students";
+      document.getElementById("resultsStatTotalStudents").textContent=response;
       totalStudents=0;
+      resultsStatCompleted(response);
     }
   } else {
     document.getElementById("stat-students").textContent= "00";
@@ -1349,7 +1352,7 @@ window.showSection = function(id, navEl){
   }
 });
 
-async function resultsStatCompleted(){
+async function resultsStatCompleted(totalStudents){
   const org_code = document.getElementById("organization-code").textContent.trim();
   const e = {
     status:"completed",
@@ -1366,15 +1369,18 @@ async function resultsStatCompleted(){
   const response = result.response;
   if(result.status=="success"){
       document.getElementById("resultsStatCompleted").textContent=response;
-      ResultsCompleted=parseFloat(response);
+      // ResultsCompleted=parseFloat(response);
+      getOutStanding(totalStudents, response)
   }else{
     document.getElementById("resultsStatCompleted").textContent="0";
-    ResultsCompleted=0;
+    // ResultsCompleted=0;
+    getOutStanding(totalStudents, response)
   }     
 }
 
-function getOutStanding(){
-  const out = totalStudents-ResultsCompleted;
+function getOutStanding(student, completed){
+  const out = parseFloat(student) -  parseFloat(completed);
+  // console.log("out:" + out);
   document.getElementById("resultsStatOutstanding").textContent=out;
 }
 
@@ -1411,7 +1417,7 @@ window.addEventListener("load", async ()=>{
   
   await getLastLogin();
   await setTimeLogin();
-  await resultsStatCompleted();
+  // await resultsStatCompleted();
 })
 // document.addEventListener('DOMContentLoaded', async () => {
   

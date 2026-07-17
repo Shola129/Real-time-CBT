@@ -45,6 +45,9 @@ class EditQuestion{
                 "organization_code"=>$this->dto->organization_code,
                 "role"=>"set",
                 "diagram"=>$diagram ?? 'null',
+                "session"=>$this->dto->session,
+                "level"=>$this->dto->level,
+                "semster"=>$this->dto->semster,
                 // ""=>$this->dto->,
             ];
 

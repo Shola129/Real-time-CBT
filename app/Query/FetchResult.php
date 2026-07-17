@@ -1,12 +1,13 @@
 <?php
 namespace NewdichApp\Query;
+
 use NewdichDto\AnsofraDto;
 use NewdichSchema\Platform;
 use NewdichSchema\Migration;
 
-class Details{
+class FetchResult{
     private $dto;
-    private $table = Platform::USERS_TABLE;
+    private $table = Platform::SAVESCORE_TABLE;
 
     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
@@ -14,13 +15,12 @@ class Details{
 
     public function process(){
         $where = [
-            "email"=>$this->dto->email,
-            "organization_code"=>$this->dto->organization_code,
-            "regNum"=>$this->dto->regNum ?? ''
+            "regNum"=>$this->dto->regNum,
+            "organization_code"=>$this->dto->organization_code
         ];
 
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->get($where, 0, 1);
+        $mig = $newMig->get($where, 0, 50);
         return $mig;
     }
 }

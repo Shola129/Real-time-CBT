@@ -305,6 +305,39 @@
           <label class="form-label">Question ID <span class="fixed-field-badge">Fixed</span></label>
           <input class="form-control" type="text" id="editQ-ID" name="questionID" readonly />
         </div>
+        <div class="form-group">
+          <label class="form-label">Level <span class="fixed-field-badge">Fixed</span></label>
+          <!-- <input class="form-control" type="text" id="editQ-level" name="questionID"  /> -->
+          <select id="editQ-level"  class="form-control" name="level">
+            <option value="" selected disabled>Select level</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="300">300</option>
+            <option value="400">400</option>
+            <option value="500">500</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Semester<span class="fixed-field-badge">Fixed</span></label>
+          <!-- <input class="form-control" type="text" id="editQ-semster" name="questionID"  /> -->
+            <select class="form-control" id="editQ-semster" name="semester">
+              <option value="" selected disabled>Select Semester/Class</option>
+              <option value="First">First</option>
+              <option value="Second">Second</option>
+            </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Session <span class="fixed-field-badge">Fixed</span></label>
+          <!-- <input class="form-control" type="text" id="editQ-session" name="questionID"  /> -->
+          <select class="form-control" id="editQ-session">
+              <option value="" selected disabled> Select Session</option>
+              <option value="2025/2026">2025/2026</option>
+              <option value="2026/2027">2026/2027</option>
+              <option value="2027/2028">2027/2028</option>
+              <option value="2028/2029">2028/2029</option>
+              <option value="2029/2030">2029/2030</option>
+          </select>
+        </div>
         <!-- <input type="hidden" id="editQ-questionID" /> -->
         <div class="modal-divider"></div>
         <div class="form-group">
@@ -701,6 +734,39 @@
                 <label class="form-label">Subject</label>
                 <input class="form-control" type="text" id="questionSubject" placeholder="Algorithms" value="Algorithms" />
               </div>
+              <div class="form-group">
+                <label class="form-label">Session</label>
+                <!-- <input  type="text" id="questionSession" placeholder="Algorithms" value="Algorithms" /> -->
+                <select class="form-control" id="questionSession">
+                  <option value="" selected disabled> Select Session</option>
+                  <option value="2025/2026">2025/2026</option>
+                  <option value="2026/2027">2026/2027</option>
+                  <option value="2027/2028">2027/2028</option>
+                  <option value="2028/2029">2028/2029</option>
+                  <option value="2029/2030">2029/2030</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Part/Semester</label>
+                <!-- <input class="form-control" type="text" id="questionSemester" placeholder="Algorithms" value="Algorithms" /> -->
+                 <select class="form-control" id="questionSemester">
+                  <option value="" selected disabled>Select Semester/Class</option>
+                  <option value="First">First</option>
+                  <option value="Second">Second</option>
+                 </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Level/Class</label>
+                <!-- <input class="form-control" type="text" id="questionLevel" placeholder="Algorithms" value="Algorithms" /> -->
+                 <select id="questionLevel"  class="form-control">
+                    <option value="" selected disabled>Select level</option>
+                    <option value="100">100</option>
+                    <option value="200">200</option>
+                    <option value="300">300</option>
+                    <option value="400">400</option>
+                    <option value="500">500</option>
+                 </select>
+              </div>
             </div>
             <div style="display:flex;justify-content:flex-end;margin-top:18px;">
               <button id="nextToQuestionBtn" class="btn btn-primary">
@@ -715,6 +781,9 @@
           <div class="info-bar">
             <div class="info-tag"><i class="fas fa-sitemap"></i> <span id="displayDept"></span></div>
             <div class="info-tag"><i class="fas fa-book"></i> <span id="displaySubject"></span></div>
+            <div class="info-tag"><span id="displayLevel"></span> Level |</div>
+            <div class="info-tag"><span id="displaySemster"></span> Semester |</div>
+            <div class="info-tag"><span id="displaySession"></span> Session</div>
             <button id="changeDetailsBtn" class="btn btn-sm" style="margin-left:auto;">
               <i class="fas fa-pencil"></i> Change
             </button>
@@ -958,68 +1027,68 @@
           document.getElementById('resultsStatOutstanding').textContent = outstanding;
         }
 
-        // function renderResultsPage(){
-        //   const pageSize = parseInt(document.getElementById('resultsPageSize').value, 10) || 10;
-        //   const totalItems = resultsFilteredList.length;
-        //   const totalPages = Math.max(Math.ceil(totalItems / pageSize), 1);
-        //   if(resultsCurrentPage > totalPages) resultsCurrentPage = totalPages;
-        //   const startIdx = (resultsCurrentPage - 1) * pageSize;
-        //   const endIdx = Math.min(startIdx + pageSize, totalItems);
-        //   const pageItems = resultsFilteredList.slice(startIdx, endIdx);
+        function renderResultsPage(){
+          const pageSize = parseInt(document.getElementById('resultsPageSize').value, 10) || 10;
+          const totalItems = resultsFilteredList.length;
+          const totalPages = Math.max(Math.ceil(totalItems / pageSize), 1);
+          if(resultsCurrentPage > totalPages) resultsCurrentPage = totalPages;
+          const startIdx = (resultsCurrentPage - 1) * pageSize;
+          const endIdx = Math.min(startIdx + pageSize, totalItems);
+          const pageItems = resultsFilteredList.slice(startIdx, endIdx);
 
-        //   let output = '';
-        //   if(pageItems.length){
-        //     for(let i=0; i<pageItems.length; i++){
-        //       const row = pageItems[i];
-        //       output += `
-        //         <tr>
-        //           <td>${startIdx + i + 1}</td>
-        //           <td>${row.fullname || '—'}</td>
-        //           <td>${row.regNum || '—'}</td>
-        //           <td><span class="badge badge-dept">${row.department || '—'}</span></td>
-        //           <td><span class="badge badge-score">${row.overAll || '—'}</span></td>
-        //           <td>${row.createdAt || '—'}</td>
-        //           <td>${row.publish || '—'}</td>
-        //         </tr>
-        //       `;
-        //     }
-        //   } else {
-        //     output = `<tr><td colspan="7" class="notice"><i class="fas fa-inbox"></i> No results to display.</td></tr>`;
-        //   }
-        //   document.getElementById('display-result').innerHTML = output;
+          let output = '';
+          if(pageItems.length){
+            for(let i=0; i<pageItems.length; i++){
+              const row = pageItems[i];
+              output += `
+                <tr>
+                  <td>${startIdx + i + 1}</td>
+                  <td>${row.fullname || '—'}</td>
+                  <td>${row.regNum || '—'}</td>
+                  <td><span class="badge badge-dept">${row.department || '—'}</span></td>
+                  <td><span class="badge badge-score">${row.overAll || '—'}</span></td>
+                  <td>${row.createdAt || '—'}</td>
+                  <td>${row.publish || '—'}</td>
+                </tr>
+              `;
+            }
+          } else {
+            output = `<tr><td colspan="7" class="notice"><i class="fas fa-inbox"></i> No results to display.</td></tr>`;
+          }
+          document.getElementById('display-result').innerHTML = output;
 
-        //   document.getElementById('resultsPageInfo').textContent =
-        //     totalItems ? `Showing ${startIdx + 1}–${endIdx} of ${totalItems}` : 'Showing 0–0 of 0';
-        //   document.getElementById('resultsPrevBtn').disabled = resultsCurrentPage <= 1;
-        //   document.getElementById('resultsNextBtn').disabled = resultsCurrentPage >= totalPages;
-        // }
+          document.getElementById('resultsPageInfo').textContent =
+            totalItems ? `Showing ${startIdx + 1}–${endIdx} of ${totalItems}` : 'Showing 0–0 of 0';
+          document.getElementById('resultsPrevBtn').disabled = resultsCurrentPage <= 1;
+          document.getElementById('resultsNextBtn').disabled = resultsCurrentPage >= totalPages;
+        }
 
-        // document.getElementById('resultsPrevBtn')?.addEventListener('click', ()=>{
-        //   if(resultsCurrentPage > 1){ resultsCurrentPage--; renderResultsPage(); }
-        // });
-        // document.getElementById('resultsNextBtn')?.addEventListener('click', ()=>{
-        //   const pageSize = parseInt(document.getElementById('resultsPageSize').value, 10) || 10;
-        //   const totalPages = Math.max(Math.ceil(resultsFilteredList.length / pageSize), 1);
-        //   if(resultsCurrentPage < totalPages){ resultsCurrentPage++; renderResultsPage(); }
-        // });
-        // document.getElementById('resultsPageSize')?.addEventListener('change', ()=>{
-        //   resultsCurrentPage = 1;
-        //   renderResultsPage();
-        // });
+        document.getElementById('resultsPrevBtn')?.addEventListener('click', ()=>{
+          if(resultsCurrentPage > 1){ resultsCurrentPage--; renderResultsPage(); }
+        });
+        document.getElementById('resultsNextBtn')?.addEventListener('click', ()=>{
+          const pageSize = parseInt(document.getElementById('resultsPageSize').value, 10) || 10;
+          const totalPages = Math.max(Math.ceil(resultsFilteredList.length / pageSize), 1);
+          if(resultsCurrentPage < totalPages){ resultsCurrentPage++; renderResultsPage(); }
+        });
+        document.getElementById('resultsPageSize')?.addEventListener('change', ()=>{
+          resultsCurrentPage = 1;
+          renderResultsPage();
+        });
 
-        // document.getElementById('resultsDeptSearchBtn')?.addEventListener('click', ()=>{
-        //   const dept = document.getElementById('resultsDeptSearchInput').value.trim().toLowerCase();
-        //   if(!dept){ alert('Enter a department to search'); return; }
-        //   resultsFilteredList = resultsFullList.filter(r => (r.department || '').toLowerCase().includes(dept));
-        //   resultsCurrentPage = 1;
-        //   renderResultsPage();
-        // });
-        // document.getElementById('resultsDeptClearBtn')?.addEventListener('click', ()=>{
-        //   document.getElementById('resultsDeptSearchInput').value = '';
-        //   resultsFilteredList = resultsFullList;
-        //   resultsCurrentPage = 1;
-        //   renderResultsPage();
-        // });
+        document.getElementById('resultsDeptSearchBtn')?.addEventListener('click', ()=>{
+          const dept = document.getElementById('resultsDeptSearchInput').value.trim().toLowerCase();
+          if(!dept){ alert('Enter a department to search'); return; }
+          resultsFilteredList = resultsFullList.filter(r => (r.department || '').toLowerCase().includes(dept));
+          resultsCurrentPage = 1;
+          renderResultsPage();
+        });
+        document.getElementById('resultsDeptClearBtn')?.addEventListener('click', ()=>{
+          document.getElementById('resultsDeptSearchInput').value = '';
+          resultsFilteredList = resultsFullList;
+          resultsCurrentPage = 1;
+          renderResultsPage();
+        });
       </script>
 
       <!--  DEPARTMENTS  -->

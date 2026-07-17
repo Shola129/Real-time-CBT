@@ -1,17 +1,17 @@
 async function doLogin() {
     const email  = document.getElementById('email').value.trim();
-    const regNum = document.getElementById('regNum').value;
+    const regNum1 = document.getElementById('regNum').value;
     const alert = document.getElementById('login-alert');
     alert.className = 'alert';
 
-    if (!email || !regNum) {
+    if (!email || !regNum1) {
       alert.textContent = 'Please enter your email and registration number.';
       alert.classList.add('error', 'show');
       return;
     }
 
     else{
-      const e = {email:email, regNum:regNum};
+      const e = {email:email, regNum:regNum1};
 
       const api = await fetch("/cbt/ansofra/api/login", {
           method:"POST",
@@ -24,6 +24,7 @@ async function doLogin() {
       // console.log(response);
       if(result.status==="success"){
         localStorage.setItem("cbt_session_email", email);
+        localStorage.setItem("cbt_session_reg_num", response.regNum);
         localStorage.setItem("cbt_session_org_code", response.organization_code);
         window.location.href = '/cbt/ansofra/user/dashboard';
       }

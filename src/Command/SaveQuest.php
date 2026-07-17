@@ -44,7 +44,10 @@ class SaveQuest{
                 'correctOtp'=>$this->dto->correctOtp ?? 'null',
                 'correctAss'=>$this->dto->correctAss,
                 'role'=>'set',
-                'organization_code'=>$this->dto->organization_code
+                'organization_code'=>$this->dto->organization_code,
+                'semester'=>$this->dto->semster,
+                'level'=>$this->dto->level,
+                'session'=>$this->dto->session
             ];
             // return json_encode([
             //     "status"=>"failed",

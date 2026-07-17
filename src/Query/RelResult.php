@@ -16,7 +16,7 @@ class RelResult{
     public function process(){
         $where = [
             'status'=>$this->dto->status,
-            'orgnization_code'=>$this->dto->orgnization_code
+            'organization_code'=>$this->dto->organization_code
         ];
 
         $newMig = new Migration(null, $this->table);

@@ -1,0 +1,145 @@
+:root {
+  --primary:      #2563EB;
+  --primary-hov:  #1D4ED8;
+  --text:         #0F172A;
+  --text-muted:   #64748B;
+  --border:       #CBD5E1;
+  --radius:       12px;
+  --shadow-card:  0 16px 40px rgba(15,23,42,0.28), 0 4px 10px rgba(15,23,42,0.08);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+/*  FULL-SCREEN ROTATING BACKGROUND  */
+.bg-stage {
+  position: fixed; inset: 0; z-index: 0; overflow: hidden; background: #05070d;
+}
+.bg-slide {
+  position: absolute; inset: 0;
+  opacity: 0; transition: opacity 1.4s ease;
+  background-size: cover; background-position: center;
+  transform: scale(1.05);
+}
+.bg-slide.active { opacity: 1; }
+
+/* Placeholder art — replace each background-image with your own licensed
+   photo of students in a CBT lab / examination hall, e.g.
+   .bg-slide-1 { background-image: url('/assets/cbt-lab-1.jpg'); } */
+.bg-slide-1 { background-image: url("assets/pic3.jpeg");
+    /* radial-gradient(circle at 25% 30%, rgba(37,99,235,0.35), transparent 55%),
+    radial-gradient(circle at 80% 70%, rgba(59,130,246,0.25), transparent 50%),
+    linear-gradient(135deg, #0A0E1A 0%, #111A2E 50%, #0D1424 100%); */
+}
+.bg-slide-2 { background-image: url("assets/pic2.jpeg");
+    /* radial-gradient(circle at 75% 20%, rgba(37,99,235,0.35), transparent 55%),
+    radial-gradient(circle at 20% 80%, rgba(59,130,246,0.22), transparent 50%),
+    linear-gradient(135deg, #0C1120 0%, #15203A 50%, #0A0E1A 100%); */
+}
+.bg-slide-3 { background-image:url("assets/pic.jpeg");
+    /* radial-gradient(circle at 50% 85%, rgba(37,99,235,0.32), transparent 55%),
+    radial-gradient(circle at 15% 15%, rgba(59,130,246,0.2), transparent 50%),
+    linear-gradient(135deg, #090D18 0%, #101B33 50%, #0B0F1C 100%); */
+}
+
+/* Faint academic-themed texture, kept subtle so photos (once added) stay the focus */
+.bg-icons { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.bg-icons i { position: absolute; color: rgba(255,255,255,0.06); }
+.bg-icons i:nth-child(1) { top: 16%; left: 12%; font-size: 52px; }
+.bg-icons i:nth-child(2) { top: 66%; left: 22%; font-size: 36px; }
+.bg-icons i:nth-child(3) { top: 30%; left: 70%; font-size: 44px; }
+.bg-icons i:nth-child(4) { top: 78%; left: 65%; font-size: 32px; }
+
+/* Dark black + blue-tinted overlay */
+.bg-overlay {
+  position: fixed; inset: 0; z-index: 1;
+  background:
+    linear-gradient(rgba(6,9,18,0.68), rgba(6,9,18,0.68)),
+    linear-gradient(135deg, rgba(37,99,235,0.28), rgba(15,23,42,0.05));
+}
+
+/*  FLOATING CARD (top-right on desktop)  */
+.page { position: relative; z-index: 2; min-height: 100vh; }
+
+.entry-card {
+  position: fixed;
+  top: 90px; right: 70px;
+  width: 300px;
+  background: #FFFFFF;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 20px 22px 22px;
+  animation: cardIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
+  animation-delay: 0.1s;
+  opacity: 0;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.entry-heading {
+  font-size: 16px; font-weight: 800; letter-spacing: -0.3px;
+  margin-bottom: 14px; display: flex; align-items: center; gap: 8px;
+}
+.entry-heading i { color: var(--primary); font-size: 14px; }
+
+.entry-alert {
+  display: none; align-items: center; gap: 7px;
+  background: #FEF2F2; border-left: 3px solid #DC2626; color: #B91C1C;
+  border-radius: 8px; padding: 7px 10px; font-size: 11.5px; margin-bottom: 10px;
+}
+.entry-alert.show { display: flex; }
+
+.input-wrap { position: relative; margin-bottom: 12px; }
+.input-wrap i.field-icon {
+  position: absolute; left: 13px; top: 50%; transform: translateY(-50%);
+  color: var(--primary); font-size: 13px;
+}
+.input-wrap input {
+  width: 100%; padding: 11px 12px 11px 36px;
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  font-family: 'Inter', sans-serif; font-size: 13.5px; font-weight: 500;
+  color: var(--text); background: #fff; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.input-wrap input::placeholder { color: #A9B4C4; font-weight: 400; }
+.input-wrap input:focus {
+  border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
+}
+
+.btn-start {
+  width: 100%; padding: 11px; border: none; border-radius: var(--radius);
+  background: var(--primary); color: #fff; font-family: 'Inter', sans-serif;
+  font-size: 13.5px; font-weight: 700; cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: background 0.18s, transform 0.12s;
+}
+.btn-start:hover { background: var(--primary-hov); }
+.btn-start:active { transform: translateY(1px); }
+.btn-start:disabled { opacity: 0.7; cursor: not-allowed; }
+
+.spinner {
+  width: 13px; height: 13px; border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.35); border-top-color: #fff;
+  display: none; animation: spin 0.7s linear infinite;
+}
+.btn-start.loading .spinner { display: inline-block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/*  RESPONSIVE — move card toward center on tablet/mobile  */
+@media (max-width: 760px) {
+  .entry-card {
+    top: 50%; right: auto; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%; max-width: 320px;
+  }
+  @keyframes cardIn {
+    from { opacity: 0; transform: translate(-50%, calc(-50% + 14px)); }
+    to   { opacity: 1; transform: translate(-50%, -50%); }
+  }
+}

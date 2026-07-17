@@ -51,6 +51,7 @@ class InsertData{
                     "phone"=>$this->dto->phone,
                     "organization_code"=>$this->dto->organization_code,
                     "status"=>"active",
+                    "organization_name"=>$this->dto->organization_name
          ];
         $newMig2 = new Migration(null, $this->table);
         $mig2 = $newMig2->saveUniqueMulti($col, $val ,$data);

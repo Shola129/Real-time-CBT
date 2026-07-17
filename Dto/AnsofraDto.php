@@ -79,6 +79,9 @@ class AnsofraDto{
     public $type;
     public $value;
     public $id;
+    public $semster;
+    public $level;
+    // public $session;
     // public $totalQuestions;
     
     public function __construct(array $inData){
