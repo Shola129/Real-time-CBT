@@ -28,7 +28,7 @@ class EditProfile{
             // "dob"=>$this->dto->dob,
             "phone"=>$this->dto->phone,
             // "organization_code"=>$this->dto->organization_code,
-            "status"=>"active",
+            // "status"=>"active",
             // "organization_name"=>$this->dto->organization_name
         ];
 

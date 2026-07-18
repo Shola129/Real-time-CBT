@@ -172,9 +172,9 @@
         department:document.getElementById("profile-department").textContent.trim(),
         state:document.getElementById("profile-state").textContent.trim(),
         role:"user",
-        ID:localStorage.getItem("cbt_session_id")
+        ID:id.substring(8, 9)
       }
-      console.log(e);
+      // console.log(e);
 
       const api = await fetch("/cbt/ansofra/api/edit/profile", {
         method:"POST",
