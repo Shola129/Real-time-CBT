@@ -459,6 +459,11 @@ elseif($url === $usersArea . "/get/available/org"){
     require_once __DIR__ . $appController . "/GetAvailableOrgController.php";
     exit();
 }
+
+elseif($url === $usersArea . "/edit/profile"){
+    require_once __DIR__ . $appController . "/EditProfileController.php";
+    exit();
+}
 // /api endpoints
 // elseif($url === $docRoot . $rootDir . $usersArea."/register" || $url === $usersArea."/register"."/"){
 //     require_once __DIR__ . $appController."/RegisterController.php";

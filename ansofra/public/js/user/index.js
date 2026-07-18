@@ -1,21 +1,21 @@
 /*  SIDEBAR NAV SWITCHING  */
 
   const org_code = localStorage.getItem("cbt_session_org_code");
-  const email = localStorage.getItem("cbt_session_email");
+  const id = localStorage.getItem("cbt_session_id");
   const regNum = localStorage.getItem("cbt_session_reg_num");
-  if(!org_code || !email || !regNum ){
-    window.location.href="/cbt/ansofra/";
+  if(!org_code || !id || !regNum ){
+    // window.location.href="/cbt/ansofra/";
     // return;
   }
-  // document.addEventListener("DOMContentLoaded", async ()=>{
-  //       await getDetails();
-  // });
+  document.addEventListener("DOMContentLoaded", async ()=>{
+        await getDetails();
+  });
 
   async function getDetails(){
     const e = {
         regNum:regNum,
         organization_code:org_code,
-        email:email
+        ID:id.substring(8,9)
     };
     // console.log(e);
 
@@ -44,8 +44,13 @@
         document.getElementById("org-name").textContent=res.organization_name;
         // document.getElementById("").textContent=res.;
         // document.getElementById("").textContent=res.;
+        document.getElementById("edit-email").value=res.email;
+        document.getElementById("edit-name").value=res.fullname;
+        document.getElementById("edit-phone").value=res.phone;
+        // document.getElementById("edit-").value=;
+        // document.getElementById("").value=;
     }else{
-        window.location.href="/cbt/ansofra/";
+        // window.location.href="/cbt/ansofra/";
     }
     avater();
   }
@@ -98,6 +103,8 @@
             // await cal(scorePerQuestions, totalQuestions);
         }
         document.getElementById("resultBody").innerHTML=output;
+    }else{
+        document.getElementById("resultBody").textContent="No result";
     }
   }
 
@@ -143,10 +150,53 @@
     }
   }
 
+
+  async function updateProfile(){
+    const org_code = document.getElementById("profile-organization-code").textContent.trim();
+    const edit_name = document.getElementById("edit-name").value.trim();
+    const edit_email = document.getElementById("edit-email").value.trim();
+    const edit_phone = document.getElementById("edit-phone").value.trim();
+    if(!org_code||!edit_email||!edit_name||!edit_phone){
+        alert("All field require");
+    }else{
+      const e = {
+        fullname:edit_name,
+        email:edit_email,
+        phone:edit_phone,
+        organization_code:org_code,
+        organization_name:document.getElementById("profile-organization-name").textContent.trim(),
+        gender:document.getElementById("profile-gender").textContent.trim(),
+        dob:document.getElementById("profile-dob").textContent.trim(),
+        date_created:document.getElementById("profile-date-created").textContent.trim(),
+        regNum:document.getElementById("profile-reg").textContent.trim(),
+        department:document.getElementById("profile-department").textContent.trim(),
+        state:document.getElementById("profile-state").textContent.trim(),
+        role:"user",
+        ID:localStorage.getItem("cbt_session_id")
+      }
+      console.log(e);
+
+      const api = await fetch("/cbt/ansofra/api/edit/profile", {
+        method:"POST",
+        headers:{"Content-type":"application/json"},
+        body:JSON.stringify(e)
+      });
+
+      const result = await api.json();
+      if(result.status == "success"){
+        alert("Edit success");
+        getDetails();
+      }else{
+        alert("error occur, try again");
+        console.log(result);
+      }
+    }
+  }
+
   const navItems = document.querySelectorAll('.nav-item[data-view]');
   const views = document.querySelectorAll('.view');
 
-  function switchView(viewName) {
+  async function switchView(viewName) {
     views.forEach(v => v.classList.remove('active'));
     const target = document.getElementById('view-' + viewName);
     if (target) target.classList.add('active');
@@ -155,36 +205,50 @@
     navItems.forEach(item => item.classList.toggle('active', item.dataset.view === viewName));
     closeMobileSidebar();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+     if(viewName=="results"){
+     await fetchResult();
+      // console.log(viewName);
+    }else if(viewName=="subjects"){
+      await  subject();
+        console.log();
+    }else if(viewName=="profile"){
+        getDetails();
+        // console.log("profile");
+    }else if(viewName=="settings"){
+      // console.log(viewName);
+    }else if(viewName=="notifications"){
+      // console.log(viewName);
+    }
   }
 
   navItems.forEach(item => {
     item.addEventListener('click', () => switchView(item.dataset.view));
-    if(item.dataset.view=="results"){
-      fetchResult();
-    }else if(item.dataset.view=="subjects"){
-        subject();
-    }else if(item.dataset.view=="profile"){
-        getDetails();
-    }else if(item.dataset.view=="settings"){
+    // if(item.dataset.view=="view-results"){
+    //   fetchResult();
+    // }else if(item.dataset.view=="view-subjects"){
+    //     subject();
+    // }else if(item.dataset.view=="view-profile"){
+    //     getDetails();
+    // }else if(item.dataset.view=="view-settings"){
 
-    }else if(item.dataset.view=="notifications"){
+    // }else if(item.dataset.view=="view-notifications"){
 
-    }
+    // }
   });
 
   document.querySelectorAll('[data-view-link]').forEach(el => {
     el.addEventListener('click', () => switchView(el.dataset.viewLink));
-     if(el.dataset.viewLink=="results"){
-      fetchResult();
-    }else if(el.dataset.viewLink=="subjects"){
-        subject();
-    }else if(el.dataset.viewLink=="profile"){
-        getDetails();
-    }else if(el.dataset.viewLink=="settings"){
+    //  if(el.dataset.viewLink=="results"){
+    //   fetchResult();
+    // }else if(el.dataset.viewLink=="view-subjects"){
+    //     subject();
+    // }else if(el.dataset.viewLink=="view-profile"){
+    //     getDetails();
+    // }else if(el.dataset.viewLink=="view-settings"){
 
-    }else if(el.dataset.viewLink=="notifications"){
+    // }else if(el.dataset.viewLink=="view-notifications"){
 
-    }
+    // }
   });
 
   /*  MOBILE SIDEBAR TOGGLE  */

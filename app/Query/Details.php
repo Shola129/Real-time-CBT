@@ -14,7 +14,7 @@ class Details{
 
     public function process(){
         $where = [
-            "email"=>$this->dto->email,
+            "users_id"=>$this->dto->ID,
             "organization_code"=>$this->dto->organization_code,
             "regNum"=>$this->dto->regNum
         ];
