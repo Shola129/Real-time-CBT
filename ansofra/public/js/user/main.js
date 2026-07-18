@@ -8,7 +8,8 @@ let scorePerQuestion = [];
 let currentScorePerQuestion;
 const idEmail = localStorage.getItem('cbt_session_email');
  const org_code = localStorage.getItem('cbt_session_org_code');
- if(!org_code || !idEmail){
+  const regNum = localStorage.getItem('cbt_session_reg_num');
+ if(!org_code || !idEmail || !regNum){
     window.location.href="/cbt/ansofra/user/login";
  }
 document.getElementById("organization-code").textContent=org_code;
@@ -36,13 +37,14 @@ window.addEventListener('load', () => {
 
 /*    FETCH — candidate profile*/
 async function populateUI() {
-  const e = { email: user, organization_code:org_code}
+  const e = { email: user, organization_code:org_code, regNum:regNum};
   // console.log(e);
     const res    = await fetch('/cbt/ansofra/api/details', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(e),
     });
     const result = await res.json();
+    // console.log(result);
     if (result.status !== 'success' || !result.response?.[0]) {
              window.location.href="/cbt/ansofra/user/login";
               return;
@@ -286,7 +288,7 @@ async function launchExam() {
   document.getElementById('progress-side').style.display     = 'block';
   document.getElementById('q-panel').style.display           = 'block';
 
-  await buildSubjectTabs(department);
+   buildSubjectTabs(department);
   startTimer();
 }
 
@@ -447,7 +449,7 @@ function renderCurrentQuestion() {
 
   updateGrid();
   updateProgress();
-  texting();
+  // texting();
 }
 
 /*    ANSWER & FLAG ACTIONS*/
@@ -652,12 +654,12 @@ async function finalSubmit() {
      currentScorePerQuestion = scorePerQuestion[si];
      currentTotalQuestions = totalQuestions[si];   
     // console.log("scorePerQuestion2: "+scorePerQuestion + "   " + "totalQuestions2: " + totalQuestions)
-    console.log(
-    "scorePerQuestion2:",
-    currentScorePerQuestion,
-    "totalQuestions2:",
-    currentTotalQuestions
-);
+    // console.log(
+//     "scorePerQuestion2:",
+//     currentScorePerQuestion,
+//     "totalQuestions2:",
+//     currentTotalQuestions
+// );
 
 const score = parseFloat(subjectScore) * parseFloat(currentScorePerQuestion);
 const actualScore = parseFloat(totalQuestions) * parseFloat(currentScorePerQuestion);
@@ -684,9 +686,10 @@ if(DivActualScore > score){
       correctAnswers: subjectScore,
       expectedScore: parseFloat(currentTotalQuestions) * parseFloat(currentScorePerQuestion),
       organization_code: org_code,
-      scorePerQuestion: parseFloat(currentScorePerQuestion)
+      scorePerQuestion: parseFloat(currentScorePerQuestion),
+      status:status
     };
-    console.log(subjectScoreObject);
+    // console.log(subjectScoreObject);
 
     const scoresApi = await fetch('/cbt/ansofra/api/save/scores', {
       method: 'POST',
@@ -751,7 +754,7 @@ async function saveResult() {
     body:    JSON.stringify(d),
   });
   const resultApi = await seApi.json();
-  console.log(resultApi);
+  // console.log(resultApi);
   if (resultApi.status === 'success') {
      backToDash();
   }
@@ -825,7 +828,7 @@ function setLaunchError(msg) {
   badge.innerHTML = `<span class="status-dot" style="background:var(--red)"></span>${msg}`;
 }
 
-function texting(){
-  console.log("text");
-  console.log(scorePerQuestion, totalQuestions);
-}
+// function texting(){
+//   console.log("text");
+//   console.log(scorePerQuestion, totalQuestions);
+// }

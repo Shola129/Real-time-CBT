@@ -16,7 +16,7 @@ class Details{
         $where = [
             "email"=>$this->dto->email,
             "organization_code"=>$this->dto->organization_code,
-            "regNum"=>$this->dto->regNum ?? ''
+            "regNum"=>$this->dto->regNum
         ];
 
         $newMig = new Migration(null, $this->table);

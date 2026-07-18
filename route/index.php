@@ -89,7 +89,7 @@ elseif($url=== $docRoot.$rootDir ."/user/register" || $url ===$docRoot.$rootDir.
     exit();
 }
 
-elseif($url=== $docRoot.$rootDir ."/user/examination/dashboard" || $url ===$docRoot.$rootDir."/user/dashboard" ."/"){
+elseif($url=== $docRoot.$rootDir ."/user/examination" || $url ===$docRoot.$rootDir."/user/examination" ."/"){
     require_once __DIR__ ."/../ansofra/public/dashboard.html";
     exit();
 }
@@ -365,7 +365,7 @@ elseif($url === $usersArea . "/details"){
 }
 
 elseif($url === $usersArea . "/getAllSebject"){
-    require_once __DIR__ . $appController . "/getAllSebjectController.php";
+    require_once __DIR__ . $appController . "/GetAllSebjectController.php";
     exit();
 }
 
@@ -439,6 +439,11 @@ elseif($url === $adminArea . "/delete/question"){
     require_once __DIR__ . $srcController . "/DelQuestionController.php";
     exit();
 }
+
+// elseif($url === $usersArea . "/get/subject"){
+//     require_once __DIR__ . $appController . "/GetSubjectController.php";
+//     exit();
+// }
 
 elseif($url === $adminArea . "/del/department"){
     require_once __DIR__ . $srcController . "/DelDeptController.php";

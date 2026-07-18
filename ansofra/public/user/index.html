@@ -28,7 +28,7 @@
       <div class="nav-label">Main</div>
       <button class="nav-item active" data-view="dashboard"><i class="fas fa-grid-2"></i> Dashboard</button>
       <button class="nav-item" data-view="results"><i class="fas fa-chart-simple"></i> My Results</button>
-      <button class="nav-item" data-view="history"><i class="fas fa-clock-rotate-left"></i> Exam History</button>
+      <!-- <button class="nav-item" data-view="history"><i class="fas fa-clock-rotate-left"></i> Exam History</button> -->
       <button class="nav-item" data-view="subjects"><i class="fas fa-book"></i> My Subjects / Courses</button>
     </div>
 
@@ -258,22 +258,23 @@
               <i class="fas fa-search"></i>
               <input type="text" id="subjectSearch" placeholder="Search subjects…"/>
             </div>
-            <select class="select-mini" id="filterDepartment">
+            <button style="width: 65px;height: 30px; border-radius: 10px; background-color: rgb(17, 106, 208); color: white; border: none;" type="button" id="search-subject">Search</button>
+            <!-- <select class="select-mini" id="filterDepartment">
               <option value="">All Departments</option>
               <option value="Computer Science">Computer Science</option>
               <option value="Mathematics">Mathematics</option>
-            </select>
-            <select class="select-mini" id="filterStatus">
+            </select> -->
+            <!-- <select class="select-mini" id="filterStatus">
               <option value="">All Status</option>
               <option value="available">Available</option>
               <option value="upcoming">Upcoming</option>
               <option value="completed">Completed</option>
-            </select>
+            </select> -->
           </div>
         </div>
 
         <div class="subjects-grid" id="subjectsGrid">
-          <div class="subject-card" data-status="available" data-dept="Computer Science">
+          <!-- <div class="subject-card" data-status="available" data-dept="Computer Science">
             <div class="subject-top">
               <div><div class="subject-name">Data Structures &amp; Algorithms</div><div class="subject-code">CSC 201</div></div>
               <span class="badge available">Available</span>
@@ -323,7 +324,7 @@
               <span><i class="fas fa-clock"></i> 45 mins</span>
             </div>
             <button class="btn btn-primary">Start Exam</button>
-          </div>
+          </div> -->
         </div>
 
         <div class="empty-state" id="subjectsEmptyState" style="display:none">
@@ -361,7 +362,7 @@
       </section>
 
       <!--  EXAM HISTORY VIEW  -->
-      <section class="view" id="view-history">
+      <!-- <section class="view" id="view-history">
         <div class="section-title">Exam History</div>
         <div class="section-sub">A complete log of every examination session you've started</div>
         <div class="card" style="padding:0">
@@ -396,7 +397,7 @@
             </table>
           </div>
         </div>
-      </section>
+      </section> -->
 
       <!--  PROFILE VIEW  -->
       <section class="view" id="view-profile">

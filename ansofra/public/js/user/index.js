@@ -7,9 +7,9 @@
     window.location.href="/cbt/ansofra/";
     // return;
   }
-  document.addEventListener("DOMContentLoaded", async ()=>{
-        await getDetails();
-  });
+  // document.addEventListener("DOMContentLoaded", async ()=>{
+  //       await getDetails();
+  // });
 
   async function getDetails(){
     const e = {
@@ -57,9 +57,9 @@
     document.getElementById("avatar-img").textContent=toUpperStr;
     document.getElementById("profile-photo").textContent=toUpperStr;
   }
-setTimeout(()=>{
-  fetchResult();
-}, 2000);
+// setTimeout(()=>{
+//   fetchResult();
+// }, 2000);
   async function fetchResult(){
     const regNum = document.getElementById("profile-reg").textContent.trim();
     const org_code = document.getElementById("profile-organization-code").textContent.trim();
@@ -67,7 +67,7 @@ setTimeout(()=>{
         regNum:regNum,
         organization_code:org_code
     };
-    console.log(e);
+    // console.log(e);
 
     const api = await fetch("/cbt/ansofra/api/fetch/result", {
         method:"POST",
@@ -76,7 +76,7 @@ setTimeout(()=>{
     });
     
     const response = await api.json();
-    console.log(response);
+    // console.log(response);
     if(response.status=="success"){
         const res = response.response;
         let output="";
@@ -92,12 +92,54 @@ setTimeout(()=>{
                     <td>${res[i].saveAt}</td>
                     <td>${res[i].score}</td>
                     <td>${res[i].totalQuestions}</td>
-                    <td></td>
+                    <td>${res[i].status}</td>
                   </tr>
             `;
-            await cal(scorePerQuestions, totalQuestions);
+            // await cal(scorePerQuestions, totalQuestions);
         }
         document.getElementById("resultBody").innerHTML=output;
+    }
+  }
+
+  // setTimeout(()=>{
+  //   subject();
+  // },3000);
+
+  async function subject(){
+    const dept = document.getElementById("profile-department").textContent.trim();
+    const organization_code = document.getElementById("profile-organization-code").textContent.trim();
+    const e = {
+      department :dept,
+      organization_code:organization_code
+    }
+    const api = await fetch("/cbt/ansofra/api/getAllSebject", {
+      method:"POST",
+      headers:{"Content-type":"application/json"},
+      body:JSON.stringify(e)
+    });
+
+    const result = await api.json();
+    const response = result.response;
+    if(result.status=="success"){
+        let output = "";
+        for(let i=0; i<response.length; i++){
+          output +=`
+              <div class="subject-card"s>
+                <div class="subject-top">
+                  <div><div class="subject-name">${response[i].subject}</div><div class="subject-code">${response[i].DepartmentCode}</div></div>
+                  <span class="badge upcoming"></span>
+                </div>
+                <div class="subject-meta">
+                  <span><i class="fas fa-sitemap"></i> ${response[i].department}</span>
+                  <span><i class="fas fa-list-ol"></i> ${response[i].totalQuestions} Questions</span>
+                  <span><i class="fas fa-clock"></i></span>
+                </div>
+              </div>
+          `;
+          document.getElementById("subjectsGrid").innerHTML=output;
+        } 
+    }else{
+      // console.log("all");
     }
   }
 
@@ -108,6 +150,7 @@ setTimeout(()=>{
     views.forEach(v => v.classList.remove('active'));
     const target = document.getElementById('view-' + viewName);
     if (target) target.classList.add('active');
+    // if(viewName)
 
     navItems.forEach(item => item.classList.toggle('active', item.dataset.view === viewName));
     closeMobileSidebar();
@@ -116,10 +159,32 @@ setTimeout(()=>{
 
   navItems.forEach(item => {
     item.addEventListener('click', () => switchView(item.dataset.view));
+    if(item.dataset.view=="results"){
+      fetchResult();
+    }else if(item.dataset.view=="subjects"){
+        subject();
+    }else if(item.dataset.view=="profile"){
+        getDetails();
+    }else if(item.dataset.view=="settings"){
+
+    }else if(item.dataset.view=="notifications"){
+
+    }
   });
 
   document.querySelectorAll('[data-view-link]').forEach(el => {
     el.addEventListener('click', () => switchView(el.dataset.viewLink));
+     if(el.dataset.viewLink=="results"){
+      fetchResult();
+    }else if(el.dataset.viewLink=="subjects"){
+        subject();
+    }else if(el.dataset.viewLink=="profile"){
+        getDetails();
+    }else if(el.dataset.viewLink=="settings"){
+
+    }else if(el.dataset.viewLink=="notifications"){
+
+    }
   });
 
   /*  MOBILE SIDEBAR TOGGLE  */
@@ -146,30 +211,30 @@ setTimeout(()=>{
   const subjectsEmptyState = document.getElementById('subjectsEmptyState');
   const subjectCards = Array.from(document.querySelectorAll('.subject-card'));
 
-  function applySubjectFilters() {
-    const q = subjectSearch.value.trim().toLowerCase();
-    const dept = filterDepartment.value;
-    const status = filterStatus.value;
-    let visibleCount = 0;
+  // function applySubjectFilters() {
+  //   const q = subjectSearch.value.trim().toLowerCase();
+  //   const dept = filterDepartment.value;
+  //   const status = filterStatus.value;
+  //   let visibleCount = 0;
 
-    subjectCards.forEach(card => {
-      const name = card.querySelector('.subject-name').textContent.toLowerCase();
-      const code = card.querySelector('.subject-code').textContent.toLowerCase();
-      const matchesQuery = !q || name.includes(q) || code.includes(q);
-      const matchesDept = !dept || card.dataset.dept === dept;
-      const matchesStatus = !status || card.dataset.status === status;
-      const show = matchesQuery && matchesDept && matchesStatus;
-      card.style.display = show ? '' : 'none';
-      if (show) visibleCount++;
-    });
+  //   subjectCards.forEach(card => {
+  //     const name = card.querySelector('.subject-name').textContent.toLowerCase();
+  //     const code = card.querySelector('.subject-code').textContent.toLowerCase();
+  //     const matchesQuery = !q || name.includes(q) || code.includes(q);
+  //     const matchesDept = !dept || card.dataset.dept === dept;
+  //     const matchesStatus = !status || card.dataset.status === status;
+  //     const show = matchesQuery && matchesDept && matchesStatus;
+  //     card.style.display = show ? '' : 'none';
+  //     if (show) visibleCount++;
+  //   });
 
-    subjectsEmptyState.style.display = visibleCount === 0 ? 'block' : 'none';
-    subjectsGrid.style.display = visibleCount === 0 ? 'none' : 'grid';
-  }
+  //   subjectsEmptyState.style.display = visibleCount === 0 ? 'block' : 'none';
+  //   subjectsGrid.style.display = visibleCount === 0 ? 'none' : 'grid';
+  // }
 
-  subjectSearch.addEventListener('input', applySubjectFilters);
-  filterDepartment.addEventListener('change', applySubjectFilters);
-  filterStatus.addEventListener('change', applySubjectFilters);
+  // subjectSearch.addEventListener('input', applySubjectFilters);
+  // filterDepartment.addEventListener('change', applySubjectFilters);
+  // filterStatus.addEventListener('change', applySubjectFilters);
 
   /*  LOGOUT (placeholder)  */
   document.getElementById('logoutBtn').addEventListener('click', () => {
