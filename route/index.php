@@ -455,6 +455,11 @@ elseif($url === $usersArea . "/get/max/q/score/q"){
     exit();
 }
 
+elseif($url === $usersArea . "/edit/password"){
+    require_once __DIR__ . $appController . "/EditPasswordController.php";
+    exit();
+}
+
 elseif($url === $usersArea . "/get/available/org"){
     require_once __DIR__ . $appController . "/GetAvailableOrgController.php";
     exit();

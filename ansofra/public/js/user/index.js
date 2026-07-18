@@ -193,6 +193,44 @@
     }
   }
 
+  async function changePassword(){
+    const password = document.getElementById('edit-old-pwd').value.trim();
+    const old_password = document.getElementById('edit-pwd').value.trim();
+    const com_password = document.getElementById('com-ped').value.trim();
+    if(!password || !old_password || !com_password){
+      alert("all field require");
+    }else if(password.length < 6){
+      alert("new password not be less than 6 characters");
+    }else if(!password.includes(Number)){
+      alert("new Password must have at least one number");
+    }else if(password != com_password){
+      alert("Password not match");
+    }
+    const  e = {
+      organization_code:document.getElementById('profile-organization-code').textContent.trim(),
+      password:password,
+      old_password:old_password,
+      regNum:document.getElementById('profile-reg').textContent.trim()
+    }
+
+    const api = await fetch("/cbt/ansofra/api/edit/password", {
+        method:"POST",
+        headers:{"Content-type":"application/json"},
+        body:JSON.stringify(e)
+    });
+
+    const result = await api.json();
+    if(result.status=="success"){
+      alert("Password change successfully");
+      document.getElementById("edit-old-pwd").value="";
+      document.getElementById("edit-pwd").value="";
+      document.getElementById("com-pwd").value="";
+    }else{
+      alert("error ocur try again later");
+      console.log(result);
+    }
+  }
+
   const navItems = document.querySelectorAll('.nav-item[data-view]');
   const views = document.querySelectorAll('.view');
 
