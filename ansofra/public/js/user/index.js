@@ -42,6 +42,10 @@
         document.getElementById("profile-date-created").textContent=res.date_created;
         document.getElementById("studentNameDisplay").textContent=res.fullname;
         document.getElementById("org-name").textContent=res.organization_name;
+        document.getElementById("dash-student-name").textContent=res.fullname;
+        document.getElementById("dash-reg-no").textContent=res.regNum;
+        document.getElementById("dash-department").textContent=res.department;
+        document.getElementById("dash-org").textContent=res.organization_name;
         // document.getElementById("").textContent=res.;
         // document.getElementById("").textContent=res.;
         document.getElementById("edit-email").value=res.email;
@@ -61,6 +65,7 @@
     const toUpperStr = str.toUpperCase();
     document.getElementById("avatar-img").textContent=toUpperStr;
     document.getElementById("profile-photo").textContent=toUpperStr;
+    document.getElementById("dash-avatar").textContent=toUpperStr;
   }
 // setTimeout(()=>{
 //   fetchResult();
@@ -70,7 +75,8 @@
     const org_code = document.getElementById("profile-organization-code").textContent.trim();
     const e = {
         regNum:regNum,
-        organization_code:org_code
+        organization_code:org_code,
+        status:"active"
     };
     // console.log(e);
 
@@ -87,9 +93,21 @@
         let output="";
         let scorePerQuestions= "";
         let totalQuestions = "";
+        let publish = "";
         for(let i=0; i<res.length; i++){
-           totalQuestions+=res[i].totalQuestions;
-           scorePerQuestions+=res[i].scorePerQuestion;
+          // publish+=res[i].publish;
+          //  if(publish+=res[i].publish=="inactive"){
+          //   output+=`
+          //       <tr>
+          //           <td>${1+i}</td>
+          //           <td>${res[i].subject}</td>
+          //           <td>-</td>
+          //           <td>-</td>
+          //           <td>-</td>
+          //           <td>-</td>
+          //         </tr>
+          //   `;
+          //  }else if(publish+=res[i].publish=="active"){
             output+=`
                 <tr>
                     <td>${1+i}</td>
@@ -100,12 +118,48 @@
                     <td>${res[i].status}</td>
                   </tr>
             `;
+          //  }
+           totalQuestions+=res[i].totalQuestions;
+           scorePerQuestions+=res[i].scorePerQuestion;
+            // output+=`
+            //     <tr>
+            //         <td>${1+i}</td>
+            //         <td>${res[i].subject}</td>
+            //         <td>${res[i].saveAt}</td>
+            //         <td>${res[i].score}</td>
+            //         <td>${res[i].totalQuestions}</td>
+            //         <td>${res[i].status}</td>
+            //       </tr>
+            // `;
             // await cal(scorePerQuestions, totalQuestions);
         }
         document.getElementById("resultBody").innerHTML=output;
+        getTotal();
     }else{
         document.getElementById("resultBody").textContent="No result";
     }
+  }
+
+  async function getTotal(){
+    const regNum = document.getElementById("profile-reg").textContent.trim();
+    const org_code = document.getElementById("profile-organization-code").textContent.trim();
+    const e = {
+        regNum:regNum,
+        organization_code:org_code,
+        publish:"active"
+    };
+    // console.log(e);
+
+    const api = await fetch("/cbt/ansofra/api/fetch/result/total", {
+        method:"POST",
+        headers:{"Content-type":"application/json"},
+        body:JSON.stringify(e)
+    });
+    
+    const response = await api.json();
+    const res = response.response[0];
+    // console.log(response);
+    document.getElementById("total").textContent= parseFloat(res.overAll) ?? "0";
   }
 
   // setTimeout(()=>{
@@ -256,6 +310,47 @@
       // console.log(viewName);
     }else if(viewName=="notifications"){
       // console.log(viewName);
+    }else if(viewName == "schedule"){
+      getSchedule();
+    }
+  }
+
+  async function getSchedule() {
+    const e = {
+      department:document.getElementById("profile-department").textContent.trim(),
+      organization_code:document.getElementById("profile-organization-code").textContent.trim(),
+      status:'active'
+    }
+
+    // console.log(e);
+
+    const api = await fetch("/cbt/ansofra/api/get/schedule", {
+      method:"POST",
+      headers:{"Content-type":"application/json"},
+      body:JSON.stringify(e)
+    });
+
+    const result = await api.json();
+    // console.log(result);
+    let output = "";
+    const res = result.response;
+    if(result.status=="success"){
+      for (let index = 0; index < res.length; index++) {
+          output+=`
+                <tr>
+                  <td>${index + 1}</td>
+                  <td>${res[index].department}</td>
+                  <td>${res[index].date}</td>
+                  <td>${res[index].start}</td>
+                  <td>${res[index].end}</td>
+                  <td>${res[index].duration}</td>
+                </tr>
+          `;        
+      }
+      document.getElementById("scheduleBody").innerHTML=output;
+    }
+    else{
+       document.getElementById("scheduleBody").textContent="No exam schedule yet";
     }
   }
 

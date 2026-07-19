@@ -1298,19 +1298,76 @@ window.showSection = function(id, navEl){
 
  async function releaseResult(){
   const org_code = document.getElementById("organization-code").textContent.trim();
-  const e = {status:"completed", organization_code:org_code};
+  const e = {
+          status:"completed", 
+          organization_code:org_code};
   const api = await fetch("/cbt/ansofra/apiadmin/release/result", {
     method:"POST",
     headers:{"Content-type":"application/json"},
     body:JSON.stringify(e)
   });
   const result = await api.json();
-  console.log(result);
+  // console.log(result);
   if(result.status==="success"){
+    alert("Publich success");
+    releaseResult2();
+    results();
   }
   else{
     alert("Error while sending result out");
   }
+
+}
+ async function results(){
+          const org_code = document.getElementById("organization-code").textContent;
+          const e ={status:"completed", organization_code:org_code};
+          const api = await fetch("/cbt/ansofra/apiadmin/display/result", {
+              method:"POST",
+              headers:{"Content-type":"apllication/json"},
+              body:JSON.stringify(e)
+          });
+          const result = await api.json();
+          if(result.status=="success"){
+            const response = result.response;
+            let output = "";
+            for (let index = 0; index < response.length; index++) {
+              output+=`
+                    <tr>
+                      <td>${index + 1}</td>
+                      <td>${response[index].fullname}</td>
+                      <td>${response[index].regNum}</td>
+                      <td><span class="badge badge-dept">${response[index].department}</span></td>
+                      <td><span class="badge badge-score">${response[index].overAll}</span></td>
+                      <td>${response[index].createdAt}</td>
+                      <td>${response[index].publish}</td>
+                    </tr>
+                `;
+            }
+            document.getElementById("display-result").innerHTML=output;
+          }
+          else{
+            document.getElementById("display-error").textContent="No result completed yet";
+          }
+        }
+
+ async function releaseResult2(){
+  const org_code = document.getElementById("organization-code").textContent.trim();
+  const e = {
+          status:"completed", 
+          organization_code:org_code};
+  const api = await fetch("/cbt/ansofra/apiadmin/release/result/2", {
+    method:"POST",
+    headers:{"Content-type":"application/json"},
+    body:JSON.stringify(e)
+  });
+  const result = await api.json();
+  // console.log(result);
+  // if(result.status==="success"){
+
+  // }
+  // else{
+  //   alert("Error while sending result out");
+  // }
 }
 
  document.getElementById("resultsDeptSearchBtn").addEventListener("click", async function(){

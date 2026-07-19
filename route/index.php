@@ -287,6 +287,11 @@ elseif($url === $adminArea . "/release/result"){
     exit();
 }
 
+elseif($url === $adminArea . "/release/result/2"){
+    require_once __DIR__ . $srcController . "/RelSubjectController.php";
+    exit();
+}
+
 elseif($url === $adminArea . "/display/result"){
     require_once __DIR__ . $srcController . "/DisResultController.php";
     exit();
@@ -359,6 +364,11 @@ elseif($url === $usersArea . "/login"){
     exit();
 }
 
+elseif($url === $usersArea . "/examination/auth"){
+    require_once __DIR__ . $appController . "/ExamAuthController.php";
+    exit();
+}
+
 elseif($url === $usersArea . "/details"){
     require_once __DIR__ . $appController . "/DetailsController.php";
     exit();
@@ -420,6 +430,11 @@ elseif($url === $usersArea . "/fetch/result"){
     exit();
 }
 
+elseif($url === $usersArea . "/fetch/result/total"){
+    require_once __DIR__ . $appController . "/FetchResultTolController.php";
+    exit();
+}
+
 elseif($url === $adminArea . "/set/question/no/mark/per/answer"){
     require_once __DIR__ . $srcController . "/SetQuestNoMarAnsController.php";
     exit();
@@ -467,6 +482,11 @@ elseif($url === $usersArea . "/get/available/org"){
 
 elseif($url === $usersArea . "/edit/profile"){
     require_once __DIR__ . $appController . "/EditProfileController.php";
+    exit();
+}
+
+elseif($url === $usersArea . "/get/schedule"){
+    require_once __DIR__ . $appController . "/GetScheduleController.php";
     exit();
 }
 // /api endpoints

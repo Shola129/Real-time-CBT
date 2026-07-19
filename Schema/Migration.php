@@ -567,7 +567,7 @@ class Migration{
 
             $sql = "UPDATE `$table` SET " . implode(',', $set)
                 . " WHERE " . implode(' AND ', $conditions)
-                . " LIMIT 1";
+                . " LIMIT 500";
 
             $stmt = $this->conn->prepare($sql);
 

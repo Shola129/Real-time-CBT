@@ -5,17 +5,23 @@ use NewdichMail\Index;
 use NewdichSchema\Platform;
 use NewdichSchema\Migration;
 
-class RelResult{
+class RelSubject{
     private $dto;
-    private $table = Platform::RESULT_TABLE;
-    // private $table2 = Platform::SAVESCORE_TABLE;
+    // private $table = Platform::RESULT_TABLE;
+    private $table2 = Platform::SAVESCORE_TABLE;
 
     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
     }
 
     public function process(){
-       
+        $where1 = [
+                "organization_code"=>$this->dto->organization_code,
+            ];
+
+            $data1 = [
+                "publish"=>"active"
+            ];
         $where = [
             "organization_code"=>$this->dto->organization_code,
         ];
@@ -24,15 +30,10 @@ class RelResult{
             "publish"=>"active"
         ];
 
-            
-        $newMig = new Migration(null, $this->table);
-        $mig = $newMig->edit($data, $where);
-        return $mig;
-            return json_encode([
-                "status"=>"success",
-                "response"=>"save successfully"
-            ], true);
-        }
+         $newMig2 = new Migration(null, $this->table2);
+            $mig2 = $newMig2->edit($data1, $where1);
+        return $mig2;
+    }
 
     // public function process(){
     //     $where = [

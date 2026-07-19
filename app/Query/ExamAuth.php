@@ -5,9 +5,9 @@ use NewdichDto\AnsofraDto;
 use NewdichSchema\Platform;
 use NewdichSchema\Migration;
 
-class FetchResult{
+class ExamAuth{
     private $dto;
-    private $table = Platform::SAVESCORE_TABLE;
+    private $table = Platform::USERS_TABLE;
 
     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
@@ -16,12 +16,10 @@ class FetchResult{
     public function process(){
         $where = [
             "regNum"=>$this->dto->regNum,
-            "organization_code"=>$this->dto->organization_code,
-            "publish"=>$this->dto->status
         ];
 
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->get($where, 0, 50);
+        $mig = $newMig->get($where, 0, 1);
         return $mig;
         // return json_encode([
         //     "status"=>"failed",

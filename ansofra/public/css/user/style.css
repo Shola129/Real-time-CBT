@@ -291,12 +291,35 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 .empty-state h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; }
 .empty-state p { font-size: 13px; color: var(--text-muted); max-width: 380px; margin: 0 auto; line-height: 1.6; }
 
+/* Dashboard — user info card */
+.dashboard-user-card { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; }
+.dashboard-user-card .profile-head { margin-bottom: 0; flex: 1; min-width: 220px; }
+.dashboard-user-meta { display: flex; gap: 18px; flex-wrap: wrap; font-size: 12.5px; color: var(--text-muted); }
+.dashboard-user-meta span { display: inline-flex; align-items: center; gap: 6px; }
+.dashboard-user-meta i { color: var(--text-f); font-size: 11px; }
+
+/* Dashboard — quick actions */
+.quick-actions-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 14px; }
+.quick-action-card {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
+  background: var(--card); border: 1px solid var(--border-s); border-radius: var(--radius-lg);
+  padding: 22px 12px; box-shadow: var(--shadow-sm); transition: transform 0.18s, box-shadow 0.18s, border-color 0.15s;
+  text-align: center;
+}
+.quick-action-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--primary); }
+.quick-action-icon {
+  width: 44px; height: 44px; border-radius: var(--radius); background: var(--primary-tint); color: var(--primary);
+  display: flex; align-items: center; justify-content: center; font-size: 17px;
+}
+.quick-action-label { font-size: 12.5px; font-weight: 600; color: var(--text-2); }
+
 /*  RESPONSIVE  */
 @media (max-width: 1180px) {
   .stats-grid { grid-template-columns: repeat(3, 1fr); }
   .subjects-grid { grid-template-columns: repeat(2, 1fr); }
   .two-col { grid-template-columns: 1fr; }
   .perf-grid { grid-template-columns: repeat(2, 1fr); }
+  .quick-actions-grid { grid-template-columns: repeat(3, 1fr); }
 }
 @media (min-width: 860px) { .search-box.desktop-only { display: flex; } }
 @media (max-width: 860px) {
@@ -315,4 +338,5 @@ table.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
 @media (max-width: 520px) {
   .stats-grid { grid-template-columns: 1fr 1fr; }
   .perf-grid { grid-template-columns: 1fr 1fr; }
+  .quick-actions-grid { grid-template-columns: 1fr 1fr; }
 }

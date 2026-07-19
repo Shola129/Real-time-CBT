@@ -9,6 +9,7 @@ let currentScorePerQuestion;
 const idEmail = localStorage.getItem('cbt_session_email');
  const org_code = localStorage.getItem('cbt_session_org_code');
   const regNum = localStorage.getItem('cbt_session_reg_num');
+   const id = localStorage.getItem("cbt_session_id");
  if(!org_code || !idEmail || !regNum){
     window.location.href="/cbt/ansofra/user/login";
  }
@@ -37,7 +38,12 @@ window.addEventListener('load', () => {
 
 /*    FETCH — candidate profile*/
 async function populateUI() {
-  const e = { email: user, organization_code:org_code, regNum:regNum};
+  const e = { 
+      email: user,
+     organization_code:org_code, 
+     regNum:regNum,
+     ID:id.substring(8, 9)
+    };
   // console.log(e);
     const res    = await fetch('/cbt/ansofra/api/details', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },

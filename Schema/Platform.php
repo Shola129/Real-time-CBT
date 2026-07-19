@@ -205,6 +205,7 @@ class Platform{
         "organization_code VARCHAR(255) NOT NULL",
         "scorePerQuestion VARCHAR(255) NOT NULL",
         "status VARCHAR(255) NOT NULL",
+        "publish VARCHAR(255) NOT NULL"
     ];
 
     public const RESULT_TABLE = "results";
