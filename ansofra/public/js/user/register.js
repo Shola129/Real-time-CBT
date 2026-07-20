@@ -109,7 +109,7 @@
   async function GetAvailableOrg(){
     e = {
         role:"ADMIN",
-        publish:"public"
+        visibility:"public"
     }
     const api = await fetch("/cbt/ansofra/api/get/available/org", {
         method:"POST",

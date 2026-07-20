@@ -25,11 +25,11 @@
       <div class="modal-body">
         <div class="form-group">
           <label class="form-label" for="edit-dept">Department</label>
-          <input class="form-control" type="text" id="edit-dept" placeholder="e.g. Computer Science" name="department" />
+          <input class="form-control" type="text" id="edit-dept" name="department" />
         </div>
         <div class="form-group">
           <label class="form-label" for="edit-name">Department Code</label>
-          <input class="form-control" type="text" id="edit-deptCode" placeholder="CSC" name="DepartmentCode"/>
+          <input class="form-control" type="text" id="edit-deptCode" name="DepartmentCode"/>
         </div>
         <div class="form-group">
           <label class="form-label">Subject Name</label>
@@ -72,18 +72,18 @@
 <div class="modal-backdrop" id="editModal2" onclick="if(event.target===this)closeEditModal()">
   <form id="editSub">
     <div class="modal" role="dialog" aria-modal="true">
-      <div class="modal-header">Edit
+      <div class="modal-header">
         <div class="modal-title"><i class="fas fa-pen-to-square"></i> Add Subject</div>
         <button type="button" class="modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
       </div>
       <div class="modal-body">
         <div class="form-group">
           <label class="form-label" for="edit-dept">Department</label>
-          <input class="form-control" type="text" id="add-dept" placeholder="e.g. Computer Science" name="department" disabled />
+          <input class="form-control" type="text" id="add-dept" name="department" disabled />
         </div>
         <div class="form-group">
           <label class="form-label" for="edit-name">Department Code</label>
-          <input class="form-control" type="text" id="add-deptCode" placeholder="CSC" name="DepartmentCode"disabled/>
+          <input class="form-control" type="text" id="add-deptCode"  name="DepartmentCode"disabled/>
         </div>
         <div class="form-group">
           <label class="form-label">Subject Name</label>
@@ -510,16 +510,16 @@
         </div>
         <div id="dashDeptGrid" class="gallery-grid">
           <div class="gallery-card">
-            <!-- <img src="../public/assets/check-mark-on-list-display-on-virtual-screen.jpg" alt=""> -->
+            <img src="../public/assets/pic.jpeg" alt="">
           </div>
           <div class="gallery-card">
-            <!-- <img src="../public/assets/codeless-google-docs-track-changes-featured-image-1024x667.jpg" alt=""> -->
+            <img src="../public/assets/pic2.jpeg" alt="">
           </div>
           <div class="gallery-card">
-            <!-- <img src="../public/assets/download.webp" alt=""> -->
+            <img src="../public/assets/download.webp" alt="">
           </div>
           <div class="gallery-card">
-            <!-- <img src="../public/assets/electronic-signature-online-contract-concept-businessman-using-laptop-to-e-signing-digital.jpg" alt=""> -->
+            <img src="../public/assets/pic3.jpeg" alt="">
           </div>
         </div>
       </div>
@@ -1104,6 +1104,20 @@
             <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
             <div class="stat-value" id="schStatTotal">0</div>
             <div class="stat-label">Total Scheduled</div>
+          </div>
+        </div>
+        <div class="schedule-stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+            <div class="stat-value" id="schActive">0</div>
+            <div class="stat-label">Total Active</div>
+          </div>
+        </div>
+        <div class="schedule-stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
+            <div class="stat-value" id="schInactive">0</div>
+            <div class="stat-label">Total Inactive</div>
           </div>
         </div>
 

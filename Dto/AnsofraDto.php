@@ -84,6 +84,8 @@ class AnsofraDto{
     // public $id;
     // public $session;
     // public $totalQuestions;
+    public $visibility;
+    public $organization_description;
     
     public function __construct(array $inData){
         $allProp = get_object_vars($this);

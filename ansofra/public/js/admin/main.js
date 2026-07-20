@@ -31,6 +31,8 @@ async function getDetail(){
     await getTotalSubject();
     // await getOutStanding();
     await  totalDepartment();
+    await totalActive();
+    await totalInActive();
   }
   else{
     document.location.href="/cbt/ansofra/";
@@ -768,10 +770,13 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
           </div>`;
           document.getElementById("add-dept").value=response[index].department;
           document.getElementById("add-deptCode").value=response[index].DepartmentCode;
+          // console.log(response[index].department, response[index].DepartmentCode);
           // document.getElementById("add-departmentID").value=response[index].departmentID;
         }
         document.getElementById('dsbDrawerTitle').innerHTML = ` ${department} <span class="badge badge-dept" style="font-size:10px;">${DepartmentCode}</span>`;
         document.getElementById('dsbDrawerBody').innerHTML = output;
+        // document.getElementById("add-dept").value=department;
+        //   document.getElementById("add-deptCode").value=rDepartmentCode;
       }
       else{
         document.getElementById("dsbDrawerBody").innerHTML=`
@@ -1154,6 +1159,9 @@ async function processQuestionData(){
         alert("save successful");
         // renderDeptTable(document.getElementById('deptListSearch')?.value || '');
         await updateDeptStats();
+        // await updateDeptStats();
+        await totalDepartment();
+        // await deptSearchBtn();
         document.getElementById('newDeptName').value  = '';
         document.getElementById('newDeptCode').value  = '';
         document.getElementById('newDeptHOD').value   = '';
@@ -1467,13 +1475,50 @@ document.getElementById('addAnotherQuestionBtn')?.addEventListener('click', () =
   document.getElementById('correctAnswer').value='';
 });
 
+async function totalActive(){
+  const org_code = document.getElementById("organization-code").textContent.trim();
+  const e = {
+    organization_code:org_code,
+    status:"active"
+  }
+
+  const api = await fetch("/cbt/ansofra/apiadmin/get/active/schedule", {
+      method:"POST",
+      headers:{"Content-type":"application/json"},
+      body:JSON.stringify(e)
+  });
+
+  const result = await api.json();
+  // console.log(result);
+  const response = result.response;
+  document.getElementById("schActive").textContent=parseFloat(response);
+}
+async function totalInActive(){
+  const org_code = document.getElementById("organization-code").textContent.trim();
+  const e = {
+    organization_code:org_code,
+    status:"inactive"
+  }
+
+  const api = await fetch("/cbt/ansofra/apiadmin/get/in/active/schedule", {
+      method:"POST",
+      headers:{"Content-type":"application/json"},
+      body:JSON.stringify(e)
+  });
+
+  const result = await api.json();
+  const response = result.response;
+  // console.log(result);
+  document.getElementById("schInactive").textContent=parseFloat(response);
+}
 
 
 window.addEventListener("load", async ()=>{
   getDetail();
   
-  await getLastLogin();
-  await setTimeLogin();
+  // await getLastLogin();
+  // await setTimeLogin();
+  totalActive();
   // await resultsStatCompleted();
 })
 // document.addEventListener('DOMContentLoaded', async () => {

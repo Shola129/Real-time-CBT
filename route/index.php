@@ -465,6 +465,16 @@ elseif($url === $adminArea . "/del/department"){
     exit();
 }
 
+elseif($url === $adminArea . "/get/in/active/schedule"){
+    require_once __DIR__ . $srcController . "/GetActiveSchController.php";
+    exit();
+}
+
+elseif($url === $adminArea . "/get/active/schedule"){
+    require_once __DIR__ . $srcController . "/GetInActiveSchController.php";
+    exit();
+}
+
 elseif($url === $usersArea . "/get/max/q/score/q"){
     require_once __DIR__ . $appController . "/GetQuestNoMarAnsController.php";
     exit();

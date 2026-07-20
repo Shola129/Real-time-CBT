@@ -1,12 +1,12 @@
 <?php
-namespace NewdichApp\Query;
+namespace NewdichSrc\Query;
 use NewdichSchema\Platform;
 use NewdichSchema\Migration;
 use NewdichDto\AnsofraDto;
 
-class GetAvailableOrg{
+class GetInActiveSch{
     private $dto;
-    private $table = Platform::ADMINS_TABLE;
+    private $table = Platform::SETEXAMTIME_TABLE;
 
     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
@@ -14,14 +14,15 @@ class GetAvailableOrg{
 
     public function process(){
         $where = [
-            "role"=>$this->dto->role,
-            "visibility"=>$this->dto->visibility
+            "status"=>$this->dto->status ?? "inactive",
+            'organization_code'=>$this->dto->organization_code,
         ];
 
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->get($where, 0, 5);
+        $mig = $newMig->count($where);
         return $mig;
-        exit();
     }
 }
+
 ?>
+

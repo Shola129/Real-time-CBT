@@ -21,7 +21,13 @@ class validateEmail{
         $newMig = new Migration(null, $this->table);
         $mig = $newMig->get($where, 0, 1);
         $decode = json_decode($mig, true);
-        if($decode['status']==='failed'){
+        if($decode['status']==='success'){
+            return json_encode([
+                        'status'=>'failed',
+                        'response'=>'Email already exist'
+                    ], JSON_PRETTY_PRINT);
+        }
+        else{
             $email = $this->dto->email;
             $name = $this->dto->fullname;
             $otp = $this->dto->otp;
@@ -55,9 +61,6 @@ class validateEmail{
                         'response'=>'Error occur, try again later.'
                     ], JSON_PRETTY_PRINT);
             }
-        }
-        else{
-            return $mig;
         }
     }
 }
