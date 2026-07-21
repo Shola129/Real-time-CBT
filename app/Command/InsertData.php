@@ -34,6 +34,7 @@ class InsertData{
 
     public function process(){
          $col = ["email", "organization_code"];
+         $regNum = $this->generateRegNum();
          $val = [$this->dto->email, $this->dto->organization_code];
          $data = [
                     "email"=>$this->dto->email,
@@ -42,7 +43,7 @@ class InsertData{
                     "role"=>"USER",
                     "department"=>$this->dto->department,
                     "date_created"=>$this->dto->date_created,
-                    "regNum"=>$this->generateRegNum(),
+                    "regNum"=>$regNum,
                     "result"=>$this->dto->result ?? '',
                     'state'=>$this->dto->state ?? '',
                     "gender"=>$this->dto->gender ?? '',
@@ -57,11 +58,12 @@ class InsertData{
         $mig2 = $newMig2->saveUniqueMulti($col, $val ,$data);
         $decodeMig2 = json_decode($mig2, true);
         if($decodeMig2["status"]==="success"){
+            // $regNum1 = $this->regNum;
             $email= $this->dto->email;
             $fullname=$this->dto->fullname;
             $department=$this->dto->department;
             $date_created=$this->dto->date_created;
-            $regNum1=$this->generateRegNum();
+            $regNum=$regNum;
             $state=$this->dto->state;
             $gender=$this->dto->gender;
             $year=$this->dto->year;
@@ -340,7 +342,7 @@ class InsertData{
                                 <!-- MAIN CONTENT -->
                                 <div class='email-body'>
                                     <div class='greeting'>
-                                        <strong>Dear <span id='fullname-display-greeting'>Valued User</span>,</strong>
+                                        <strong>Dear <span id='fullname-display-greeting'>$fullname</span>,</strong>
                                     </div>
 
                                     <div class='message-text'>
@@ -360,11 +362,19 @@ class InsertData{
                                             </div>
                                             <div class='detail-row'>
                                                 <span class='detail-label'>Registration Number:</span>
-                                                <span class='detail-value reg-value' id='regNum-display'>$regNum1</span>
+                                                <span class='detail-value reg-value' id='regNum-display'>$regNum</span>
                                             </div>
                                             <div class='detail-row'>
                                                 <span class='detail-label'>Department:</span>
                                                 <span class='detail-value' id='department-display'>$department</span>
+                                            </div>
+                                            <div class='detail-row'>
+                                                <span class='detail-label'>Organization Name:</span>
+                                                <span class='detail-value' id='year-display'>$org_name</span>
+                                            </div>
+                                            <div class='detail-row'>
+                                                <span class='detail-label'>Organization Code</span>
+                                                <span class='detail-value' id='year-display'>$org_code</span>
                                             </div>
                                             <div class='detail-row'>
                                                 <span class='detail-label'>Year of Study:</span>
@@ -400,9 +410,7 @@ class InsertData{
                                         • Keep your registration number safe for future reference.
                                     </div>
 
-                                    <!-- <div class='action-button'>
-                                        <a href='#' class='dashboard-btn' style='color: white; text-decoration: none;'>🔐 Login to Your Account</a>
-                                    </div> -->
+                                   
 
                                     <!-- Important security note with red accent -->
                                     <div class='important-note'>
@@ -413,7 +421,7 @@ class InsertData{
                                         • This is an automated message — please save this email for reference.
                                     </div>
 
-                                    <!-- additional helpful note -->
+                                  
                                     <div class='footer-note'>
                                         <p>📞 <strong>Need assistance?</strong> Contact our support team at <span style='color:#0a2b4e;'>support@universityportal.com</span></p>
                                         <p style='margin-top: 8px; font-size: 11px;'>✨ Please review your details and confirm accuracy.</p>
@@ -422,7 +430,7 @@ class InsertData{
 
                                 <!-- FOOTER: subtle blue-white pattern -->
                                 <div class='email-footer'>
-                                    <p style='margin-bottom:4px;'>© 2026 Registration Portal — All Rights Reserved</p>
+                                    <p style='margin-bottom:4px;'>© 2026 EdutTest — All Rights Reserved</p>
                                     <p>This is your official registration confirmation.</p>
                                 </div>
                             </div>
@@ -440,8 +448,8 @@ class InsertData{
                 }
                 else{
                         return json_encode([
-                            "status"=>"success",
-                            "response"=>"successfully regsitered",
+                            "status"=>"failed",
+                            "response"=>"unable to send mail.",
                     ], JSON_PRETTY_PRINT);
                     exit();
                 }

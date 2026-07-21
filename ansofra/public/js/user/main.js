@@ -10,8 +10,8 @@ const idEmail = localStorage.getItem('cbt_session_email');
  const org_code = localStorage.getItem('cbt_session_org_code');
   const regNum = localStorage.getItem('cbt_session_reg_num');
    const id = localStorage.getItem("cbt_session_id");
- if(!org_code || !idEmail || !regNum){
-    window.location.href="/cbt/ansofra/user/login";
+ if(!org_code || !id || !regNum){
+    // window.location.href="/cbt/ansofra/user/login";
  }
 document.getElementById("organization-code").textContent=org_code;
 let examState = {
@@ -38,13 +38,12 @@ window.addEventListener('load', () => {
 
 /*    FETCH — candidate profile*/
 async function populateUI() {
-  const e = { 
-      email: user,
+  const e = {
      organization_code:org_code, 
      regNum:regNum,
-     ID:id.substring(8, 9)
+     ID:id
     };
-  // console.log(e);
+  console.log(e);
     const res    = await fetch('/cbt/ansofra/api/details', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(e),
@@ -52,7 +51,7 @@ async function populateUI() {
     const result = await res.json();
     // console.log(result);
     if (result.status !== 'success' || !result.response?.[0]) {
-             window.location.href="/cbt/ansofra/user/login";
+            //  window.location.href="/cbt/ansofra/user/login";
               return;
             //  console.error('Profile error:', result); return; 
     }

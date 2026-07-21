@@ -4,7 +4,7 @@
   const id = localStorage.getItem("cbt_session_id");
   const regNum = localStorage.getItem("cbt_session_reg_num");
   if(!org_code || !id || !regNum ){
-    // window.location.href="/cbt/ansofra/";
+    window.location.href="/cbt/ansofra/";
     // return;
   }
   document.addEventListener("DOMContentLoaded", async ()=>{
@@ -15,9 +15,9 @@
     const e = {
         regNum:regNum,
         organization_code:org_code,
-        ID:id.substring(8,9)
+        ID:id
     };
-    // console.log(e);
+    console.log(e);
 
     const api = await fetch("/cbt/ansofra/api/details", {
         method:"POST",

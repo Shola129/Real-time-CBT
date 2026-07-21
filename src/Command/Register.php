@@ -395,17 +395,7 @@ class Register{
 
                 </div>
 
-                <div class='actions'>
-
-                <a href='Edutext.edu.eg' class='btn primary'>
-                🏠 Go to Dashboard
-                </a>
-
-                // <a href='#' class='btn secondary'>
-                // 📋 Copy Organization Code
-                // </a>
-
-                </div>
+                
 
 
                 </div>

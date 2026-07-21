@@ -8,7 +8,7 @@
   }, 1500);
 
   /*  START EXAMINATION (placeholder — wire to your real endpoint)  */
-  function startExamination() {
+   async function startExamination() {
     const alertBox = document.getElementById('entryAlert');
     const btn = document.getElementById('btn-start');
     const regnum = document.getElementById('inp-regnum').value.trim();
@@ -31,20 +31,22 @@
 
       const result = await api.json();
       const response = result.response[0];
+      console.log(result);
       if(result.status==="success"){
-        localStorage.setItem("cbt_session_id", "e32wiu43"+ response.users_id + "34024");
+        localStorage.setItem("cbt_session_id", response.users_id);
         localStorage.setItem("cbt_session_reg_num", response.regNum);
         localStorage.setItem("cbt_session_org_code", response.organization_code);
-        window.location.href = '/cbt/ansofra/user/dashboard';
+        localStorage.setItem("cbt_session_email", response.email);
+        window.location.href = '/cbt/ansofra/user/examination';
       }
       else if(result.status==="fail"){
-          alert.textContent = 'Invalid registration number. Please try again.';
-          alert.classList.add('error', 'show');
+          alertBox.textContent = 'Invalid registration number. Please try again.';
+          alertBox.classList.add('error', 'show');
           return;
       }
       else{
-          alert.textContent = 'Invalid email. Please try again.';
-          alert.classList.add('error', 'show');
+          alertBox.textContent = 'Invalid registration number. Please try again.';
+          alertBox.classList.add('error', 'show');
           return;
       }
     }
