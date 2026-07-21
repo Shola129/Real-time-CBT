@@ -19,7 +19,7 @@ class GetActiveSch{
         ];
 
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->get($where);
+        $mig = $newMig->count($where);
         return $mig;
     }
 }

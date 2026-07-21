@@ -17,7 +17,7 @@
         organization_code:org_code,
         ID:id
     };
-    console.log(e);
+    // console.log(e);
 
     const api = await fetch("/cbt/ansofra/api/details", {
         method:"POST",
@@ -51,10 +51,11 @@
         document.getElementById("edit-email").value=res.email;
         document.getElementById("edit-name").value=res.fullname;
         document.getElementById("edit-phone").value=res.phone;
+        document.getElementById("currentDateDisplay").textContent=new Date().toDateString();
         // document.getElementById("edit-").value=;
         // document.getElementById("").value=;
     }else{
-        // window.location.href="/cbt/ansofra/";
+        window.location.href="/cbt/ansofra/";
     }
     avater();
   }
@@ -201,6 +202,7 @@
         } 
     }else{
       // console.log("all");
+      document.getElementById("subjectsGrid").textContent="No Subject Available yet";
     }
   }
 

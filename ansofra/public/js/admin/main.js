@@ -533,27 +533,30 @@ async function seacrhDepSch(){
     const org_name = document.getElementById("organization-name").textContent;
     const e = {
           department:dep, 
-          start:start, 
-          end:end, 
-          date:date, 
-          DepartmentCode:departCode, 
-          session:session, 
-          duration:duration,
+          // start:start, 
+          // end:end, 
+          // date:date, 
+          // DepartmentCode:departCode, 
+          // session:session, 
+          // duration:duration,
           organization_code:org_code,
           organization_name:org_name,
-          status:status,
-          timeID:timeID
+          // status:status,
+          // timeID:timeID
         };
+        console.log(e);
     const api = await fetch("/cbt/ansofra/apiadmin/notify/user/of/Exam", {
         method:"POST",
         headers:{"Content-type":'application/json'},
         body:JSON.stringify(e)
     });
     const result = await api.json();
-    console.log(result);
+    // console.log(result);
     if(result.status=="success"){
       alert("Information passed successfully");
       displayScheduledTime();
+      totalActive();
+      totalInActive();
     }
     else{
       alert(result.response);
@@ -644,6 +647,7 @@ document.getElementById("searchStudentRegNo").addEventListener("click", async fu
     });
     const result = await api.json();
     const response = result.response;
+    console.log(result);
     if(result.status==="success"){
         let output ='';
         for(let i=0; i<response.length; i++){
@@ -743,6 +747,8 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
           headers:{"Content-type":'application/json'},
           body:JSON.stringify(e)
       });
+      document.getElementById("add-dept").value=department;
+      document.getElementById("add-deptCode").value=DepartmentCode;
       const result = await api.json();
       // console.log(result);
       if(result.status==="success"){
@@ -768,15 +774,15 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
                <div class="dsb-subject-row">
             </div>
           </div>`;
-          document.getElementById("add-dept").value=response[index].department;
-          document.getElementById("add-deptCode").value=response[index].DepartmentCode;
+          // document.getElementById("add-dept").value=response[index].department;
+          // document.getElementById("add-deptCode").value=response[index].DepartmentCode;
           // console.log(response[index].department, response[index].DepartmentCode);
           // document.getElementById("add-departmentID").value=response[index].departmentID;
         }
         document.getElementById('dsbDrawerTitle').innerHTML = ` ${department} <span class="badge badge-dept" style="font-size:10px;">${DepartmentCode}</span>`;
         document.getElementById('dsbDrawerBody').innerHTML = output;
         // document.getElementById("add-dept").value=department;
-        //   document.getElementById("add-deptCode").value=rDepartmentCode;
+        // document.getElementById("add-deptCode").value=rDepartmentCode;
       }
       else{
         document.getElementById("dsbDrawerBody").innerHTML=`

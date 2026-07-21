@@ -19,7 +19,7 @@ class NotifyUserExam{
         $where = [
             "department"=>$this->dto->department,
             "organization_code"=>$this->dto->organization_code,
-            "role"=>"user",
+            "role"=>"set",
         ];
 
         $data = [

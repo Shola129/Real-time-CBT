@@ -43,7 +43,7 @@ async function populateUI() {
      regNum:regNum,
      ID:id
     };
-  console.log(e);
+  // console.log(e);
     const res    = await fetch('/cbt/ansofra/api/details', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(e),
@@ -168,7 +168,8 @@ async function fetchExamDetails(department, org_code) {
       body: JSON.stringify(e),
     });
     const result = await res.json();
-
+    const response = result.response[0];
+    // console.log(response);
     if (result.status === 'failed' || !result.response?.[0]) {
       setStatus('ended','','background:var(--text-muted)','No exam scheduled yet. You will be notified by email.');
       btnTxt.textContent = 'Exam Not Scheduled'; btn.disabled = true; return;
@@ -177,6 +178,11 @@ async function fetchExamDetails(department, org_code) {
     else if(result.status === 'fail'){
       setStatus('ended','','background:var(--text-muted)','You have attempted or sitting for exam.');
       btnTxt.textContent = 'Exam Attempted already'; btn.disabled = true; return;
+    }
+
+    else if(response.status === "inactive"){
+        setStatus('ended','','background:var(--text-muted)','Examination not available.');
+      btnTxt.textContent = 'Exam Not Available'; btn.disabled = true; return;
     }
 
     const exam         = result.response[0];

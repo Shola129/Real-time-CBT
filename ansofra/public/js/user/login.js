@@ -23,7 +23,7 @@ async function doLogin() {
       const response = result.response[0];
       // console.log(response);
       if(result.status==="success"){
-        localStorage.setItem("cbt_session_id", "e32wiu43"+ response.users_id + "34024");
+        localStorage.setItem("cbt_session_id", response.users_id);
         localStorage.setItem("cbt_session_reg_num", response.regNum);
         localStorage.setItem("cbt_session_org_code", response.organization_code);
         window.location.href = '/cbt/ansofra/user/dashboard';
