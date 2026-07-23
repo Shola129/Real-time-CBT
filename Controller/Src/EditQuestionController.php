@@ -4,8 +4,8 @@ use NewdichDto\AnsofraDto;
 use NewdichMiddleware\Index;
 use NewdichSrc\Command\EditQuestion;
 
-$data = $_POST;
-$file = $_FILES["medial"] ?? "null";
+$data = json_decode(file_get_contents("php://input"), true);
+// $file = $_FILES["medial"] ?? "null";
 $cleanData = [];
 $mid = new Index();
 
@@ -15,7 +15,7 @@ foreach($data as $key=>$val){
 
 $dto = new AnsofraDto($cleanData);
 $logic = new EditQuestion($dto);
-$media = $logic->upload($file);
+// $media = $logic->upload($file);
 $log = $logic->process();
 echo $log;
 exit();

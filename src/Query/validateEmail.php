@@ -51,7 +51,7 @@ class validateEmail{
                 else{
                     return json_encode([
                         'status'=>'failed',
-                        'response'=>'Error(2) occur, try again later.'
+                        'response'=>'Unable to send otp, check your connection or email'
                     ], JSON_PRETTY_PRINT);
                 }
             }

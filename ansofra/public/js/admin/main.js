@@ -1025,7 +1025,7 @@ async function deleteSubjectFromDrawer(subjectID, subject, subCode, org_code, de
         document.getElementById("editQ-optionD").value=response[index].optionD;
         document.getElementById("editQ-optionE").value=response[index].optionE ?? "NULL";
         document.getElementById("editQ-correctAss").value=response[index].correctAss;
-        document.getElementById("editQ-ID").value=response[index].questionID;
+        document.getElementById("editQ-ID").value=response[index].questions_id;
       }
       const container = document.getElementById('questionSetsResultsContainer').innerHTML=output;
        document.getElementById('noQsSetsMsg').style.display="none";
@@ -1038,41 +1038,76 @@ async function deleteSubjectFromDrawer(subjectID, subject, subCode, org_code, de
 
 function openEditQuestion(){
   document.getElementById('editQuestionModal').classList.add('open');
+  document.getElementById("editQ-department").value=response[index].department;
+  document.getElementById("editQ-subject").value=response[index].subject;
+  document.getElementById("editQ-questiontext").value=response[index].questiontext;
+  document.getElementById("editQ-optionA").value=response[index].optionA;
+  document.getElementById("editQ-optionB").value=response[index].optionB;
+  document.getElementById("editQ-optionC").value=response[index].optionC;
+  document.getElementById("editQ-optionD").value=response[index].optionD;
+  document.getElementById("editQ-optionE").value=response[index].optionE ?? "NULL";
+  document.getElementById("editQ-correctAss").value=response[index].correctAss;
+  document.getElementById("editQ-ID").value=response[index].questions_id;
 }
 
 document.getElementById("editQuestionSaveBtn").addEventListener("click", async function(){
-      const dept = document.getElementById("editQ-department").value=response[index].department;
-      const subj = document.getElementById("editQ-subject").value=response[index].subject;
-      const questionText = document.getElementById("editQ-questiontext").value=response[index].questiontext;
-      const optionA = document.getElementById("editQ-optionA").value=response[index].optionA;
-      const optionB =  document.getElementById("editQ-optionB").value=response[index].optionB;
-      const optionC = document.getElementById("editQ-optionC").value=response[index].optionC;
-      const optionD = document.getElementById("editQ-optionD").value=response[index].optionD;
-      const optionE = document.getElementById("editQ-optionE").value=response[index].optionE ?? "NULL";
-      const correctAss = document.getElementById("editQ-correctAss").value=response[index].correctAss;
-      const questionID = document.getElementById("editQ-ID").value=response[index].questionID;
+      const dept = document.getElementById("editQ-department").value;
+      const subj = document.getElementById("editQ-subject").value;
+      const questionText = document.getElementById("editQ-questiontext").value;
+      const optionA = document.getElementById("editQ-optionA").value;
+      const optionB =  document.getElementById("editQ-optionB").value;
+      const optionC = document.getElementById("editQ-optionC").value;
+      const optionD = document.getElementById("editQ-optionD").value;
+      const optionE = document.getElementById("editQ-optionE").value ?? "NULL";
+      const correctAss = document.getElementById("editQ-correctAss").value;
+      const questionID = document.getElementById("editQ-ID").value;
+      
 
-      if (!dept || !subj || !questionText || !optionA || !optionB || !optionC || !optionD || !optionE || !correctAss || !questionID) {
-        console.log("All field require");
-        return;
+      if (!dept || !subj || !questionText || !optionA || !optionB || !correctAss || !questionID) {
+        alert("All field require");
       } else {
        const data = document.getElementById("editQuestionForm");
         const form = new FormData(data);
+        
         // const obj = {};
         // form.forEach((key, val)=>{
         //   obj[key]=val;
         // });
         
         // console.log(obj);
+        const e = {
+          department:dept,
+          subject:subj,
+          questionstext:questionText,
+          optionA:optionA,
+          optionB:optionB,
+          optionC:optionC,
+          optionD:optionD,
+          optionE:optionE ?? "none",
+          correctAss:correctAss,
+          id:questionID
+        }
         const api = await fetch("/cbt/ansofra/apiadmin/edit/question", {
             method:"POST",
-            body:form
+            headers:{"content-type":"application/json"},
+            body:JSON.stringify(e)
         });
 
         const result = await api.json();
+        console.log(result);
         if(result.status=="success"){
           alert("Action perform successful");
           closeEditQuestionModal();
+         document.getElementById("editQ-department").value="";
+       document.getElementById("editQ-subject").value="";
+         document.getElementById("editQ-questiontext").value="";
+        document.getElementById("editQ-optionA").value="";
+         document.getElementById("editQ-optionB").value="";
+      document.getElementById("editQ-optionC").value="";
+        document.getElementById("editQ-optionD").value="";
+        document.getElementById("editQ-optionE").value="" ?? "NULL";
+         document.getElementById("editQ-correctAss").value="";
+         document.getElementById("editQ-ID").value="";
         }else{
           alert("error occur, try again later");
           console.log(result.response);

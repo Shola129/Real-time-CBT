@@ -14,40 +14,35 @@ class EditQuestion{
         $this->dto=$dto;
     }
 
-    public function upload($media){
-        $file = $media ?? "null";
-        $newFile = new Upload($media);
-        $file = $newFile->process();
-        return $file;
-    }
+    // public function upload($media){
+    //     $file = $media ?? "null";
+    //     $newFile = new Upload($media);
+    //     $file = $newFile->process();
+    //     return $file;
+    // }
 
     public function process(){
-        $decodeFile = json_decode($this->upload(), true);
-        $diagram  = $decodeFile["response"][0] ?? 'null';
-        if($decodeFile["status"]=="success"){
+        // $decodeFile = json_decode($this->upload(), true);
+        // $diagram  = $decodeFile["response"][0] ?? 'null';
+        // if($decodeFile["status"]=="success"){
             $where = [
-                "questionID"=>$this->dto->questionID,
-                "organization_code"=>$this->dto->organization_code
+                "questions_id"=>$this->dto->questionID,
+                // "organization_code"=>$this->dto->organization_code
             ];
 
             $data = [
-                "department"=>$this->dto->department,
-                "subject"=>$this->dto->subject,
-                "questionID"=>$this->dto->questionID,
                 "questiontext"=>$this->dto->questionstext,
                 "optionA"=>$this->dto->optionA,
                 "optionB"=>$this->dto->optionB,
-                "optionC"=>$this->dto->optionC,
-                "optionD"=>$this->dto->optionD,
-                "optionE"=>$this->dto->optionE,
+                "optionC"=>$this->dto->optionC ?? "none",
+                "optionD"=>$this->dto->option ?? "none",
+                "optionE"=>$this->dto->optionE ?? "none",
                 "correctAss"=>$this->dto->correctAss,
-                "correctOtp"=>$this->dto->correctOtp,
-                "organization_code"=>$this->dto->organization_code,
-                "role"=>"set",
-                "diagram"=>$diagram ?? 'null',
-                "session"=>$this->dto->session,
-                "level"=>$this->dto->level,
-                "semster"=>$this->dto->semster,
+                "correctOtp"=>$this->dto->correctOtp ?? "none",
+                // "diagram"=>$diagram ?? 'null',
+                // "session"=>$this->dto->session,
+                // "level"=>$this->dto->level,
+                // "semster"=>$this->dto->semster,
                 // ""=>$this->dto->,
             ];
 
@@ -55,10 +50,10 @@ class EditQuestion{
             $mig = $newMig->edit($data, $where);
             return $mig;
             exit();
-        }else{
-            return $this->upload();
-            exit();
-        }
+        // }else{
+        //     return $this->upload();
+        //     exit();
+        // }
     }
 }
 

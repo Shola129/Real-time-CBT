@@ -18,15 +18,15 @@ document.addEventListener("DOMContentLoaded", function(){
     // const username = document.getElementById("f-user").value;
     const phone_num = document.getElementById("phone-num").value;
     const fullname =  document.getElementById("f-name").value;
-    console.log({
-      fullname:fullname,
-      pwd:pwd,
-      email:email,
-      org: portal_name,
-      org_type :organization_type,
-      phone:phone_num,
-      com_pwd:com_pwd,
-  })
+  //   console.log({
+  //     fullname:fullname,
+  //     pwd:pwd,
+  //     email:email,
+  //     org: portal_name,
+  //     org_type :organization_type,
+  //     phone:phone_num,
+  //     com_pwd:com_pwd,
+  // })
     if(!pwd || !com_pwd || !email || !portal_name || !organization_type || !phone_num || !fullname || !organization_description){
         alert("All fields required");
     }else if(pwd!=com_pwd){
@@ -50,15 +50,15 @@ document.addEventListener("DOMContentLoaded", function(){
 
     const response = await api.json();
     if(response.status==="failed"){
-      console.log(response);
+      // console.log(response);
       alert("Error occur try again later");
     }else{
       // alert("account created successfully");
-      document.getElementById("s-success").style.display="flex";
-      document.getElementById("s-reg").style.display="none";
-      localStorage.clear();
-      // setTimeout(()=>{
-      //   window.location.href="/cbt/ansofra/admin/login";
-      // }, 3000)
+      setTimeout(()=>{
+        // window.location.href="/cbt/ansofra/admin/login";
+        document.getElementById("s-success").style.display="flex";
+        document.getElementById("s-reg").style.display="none";
+        localStorage.clear();
+      }, 1500)
     }
   }
