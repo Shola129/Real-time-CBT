@@ -21,7 +21,7 @@ class EditDepartment{
         ];
 
         $where = [
-            'departmentID'=>$this->dto->departmentID,
+            'department_id'=>$this->dto->id,
             'organization_code'=>$this->dto->organization_code
         ];
 

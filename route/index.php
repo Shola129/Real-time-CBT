@@ -475,6 +475,11 @@ elseif($url === $adminArea . "/get/active/schedule"){
     exit();
 }
 
+// elseif($url === $adminArea . "/edit/department"){
+//     require_once __DIR__ . $srcController . "/EditDepartmentController.php";
+//     exit();
+// }
+
 elseif($url === $usersArea . "/get/max/q/score/q"){
     require_once __DIR__ . $appController . "/GetQuestNoMarAnsController.php";
     exit();

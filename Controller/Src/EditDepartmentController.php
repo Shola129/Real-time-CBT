@@ -4,7 +4,7 @@ use NewdichSrc\Command\EditDepartment;
 use NewdichMiddleware\Index;
 use NewdichDto\AnsofraDto;
 
-$data = $_POST;
+$data = json_decode(file_get_contents("php://input"), true);
 $cleanData = [];
 $mid = new Index();
 

@@ -195,6 +195,12 @@ window.closeEditQuestionModal = function(){
   editingIndex = -1;
 } 
 
+window.closeEditDepartmentModal = function(){
+  document.getElementById('editDepartmentModal').classList.remove('open');
+  document.body.style.overflow = '';
+  editingIndex = -1;
+}
+
 // function renderSubjectsByName(searchName) {
 //   const container = document.getElementById('subjectNameSearchResults');
 //   if (!container) return;
@@ -1200,7 +1206,7 @@ async function updateDeptStats(){
               <th>${response[i].HeadOfDepartment}</th>
               <th>${response[i].Description}</th>
               <th>${response[i].Date_Created}</th>
-              <th onclick="openEditDepartment('${response[i].department_id}', '${response[i].organization_code}')" style="background-color:green; color:white">Edit</th>
+              <th onclick="openEditDepartment('${response[i].department_id}', '${response[i].organization_code}', '${response[i].department}', '${response[i].DepartmentCode}', '${response[i].HeadOfDepartment}', '${response[i].Description}')" style="background-color:green; color:white">Edit</th>
               <th onclick="delDepartment('${response[i].department_id}','${response[i].organization_code}')" style="background-color:red; color:white">Del</th>
             <tr>
         `
@@ -1236,7 +1242,7 @@ async function deptSearchBtn(){
                   <th>${response[i].HeadOfDepartment}</th>
                   <th>${response[i].Description}</th>
                   <th>${response[i].Date_Created}</th>
-                  <th onclick="openEditDepartment('${response[i].department_id}', '${response[i].organization_code}')" style="background-color:green; color:white">Edit</th>
+                  <th onclick="openEditDepartment('${response[i].department_id}', '${response[i].organization_code}', '${response[i].department}', '${response[i].DepartmentCode}', '${response[i].HeadOfDepartment}', '${response[i].Description}')" style="background-color:green; color:white">Edit</th>
                   <th onclick="delDepartment('${response[i].department_id}','${response[i].organization_code}')" style="background-color:red; color:white">Del</th>
                 <tr>
             `
@@ -1250,8 +1256,47 @@ async function deptSearchBtn(){
     } 
   };
 
-  function openEditDepartment(){
-      alert("features under developing");
+  function openEditDepartment(id, code, depart, depCode, head, desc){
+      document.getElementById('editDepartmentModal').classList.add('open');
+      document.getElementById('editDept-name').value=depart;
+      document.getElementById('editDept-code').value=depCode;
+      document.getElementById('editDept-hod').value=head;
+      document.getElementById('editDept-desc').value=desc;
+      document.getElementById('edit-id').value=id;
+      // console.log(depart, code);
+      // alert("features under developing");
+  }
+
+  async function editDepartmentSaveBtn(){
+    const depart =  document.getElementById('editDept-name').value.trim();
+     const departCode = document.getElementById('editDept-code').value.trim();
+      const hod = document.getElementById('editDept-hod').value.trim();
+     const descr = document.getElementById('editDept-desc').value.trim();
+     const id =  document.getElementById('edit-id').value.trim();
+     if(!depart || !departCode || !hod || !descr){
+      alert("All field require");
+     }else{
+       const e = {
+        department:depart,
+        DepartmentCode:departCode,
+        id:id,
+        Description:descr,
+       };
+
+       const api = await fetch("/cbt/ansofra/apiadmin/edit/department", {
+            method:"POST",
+            headers:{"Content-type":"application/json"},
+            body:JSON.stringify(e)
+       });
+
+       const result = await api.json();
+       if(result.status === "success"){
+        alert("Edit successfull");
+       }else{
+        alert("Error occur, try again later");
+        console.log(result.response);
+       }
+     }
   }
 
   async function delDepartment(id, org_code){
