@@ -91,12 +91,21 @@
           <div class="error-message" id="IDError">Please enter a valid ID</div>
         </div>
 
-        <div class="form-group">
+        <!-- <div class="form-group">
           <label class="form-label">Password <span class="req">*</span></label>
           <input type="password" id="loginPassword" class="form-control" placeholder="••••••••" name="password"/>
           <div class="error-message" id="passwordError">Password is required</div>
+        </div> -->
+        <div class="form-group">
+          <label class="form-label">Password <span class="req">*</span></label>
+          <div class="input-wrap">
+            <input type="password" id="loginPassword" class="form-control with-r" placeholder="••••••••" name="password"/>
+            <button type="button" class="fi-r" id="tog-login-pass" aria-label="Toggle password visibility">
+              <svg id="eye-login-pass" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="error-message" id="passwordError">Password is required</div>
         </div>
-
         <button id="loginBtn" type="button" class="btn-login" style="margin-top:4px">
           <i class="fas fa-sign-in-alt"></i> Sign In
         </button>
@@ -106,7 +115,7 @@
         <hr/><span>or</span><hr/>
       </div>
       <div class="auth-footer" style="margin-top:0">
-        <a href="/cbt/ansofra/admin/auth/email">Create organization</a>
+        <a href="/cbt/ansofra/admin/auth/email" id="registerLink">Create organization</a>
         &nbsp;·&nbsp;
         <a href="/cbt/asofra/" id="backLink" style="color:var(--text-m);font-weight:500">Back to home</a>
       </div>
@@ -114,6 +123,6 @@
   </div>
 
 </div>
-<script src="../public/js/admin/login.js"></script>
+<script src="../public/js/admin/login.js?v=1.110"></script>
 </body>
 </html>

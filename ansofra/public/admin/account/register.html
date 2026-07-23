@@ -617,6 +617,7 @@ hr.divider-line{margin:20px 0}
 }
 
 .fi-r svg{pointer-events:none}
+
 </style>
 </head>
 <body>
@@ -849,24 +850,26 @@ hr.divider-line{margin:20px 0}
     const visibility = document.getElementById("e-visibility").value;
     const phone_num = document.getElementById("phone-num").value;
     const fullname =  document.getElementById("f-name").value;
-    console.log({
-      fullname:fullname,
-      pwd:pwd,
-      email:email,
-      org: portal_name,
-      org_type :organization_type,
-      phone:phone_num,
-      com_pwd:com_pwd,
-      visibility:visibility,
-      organization_description:organization_description
-  })
+  //   console.log({
+  //     fullname:fullname,
+  //     pwd:pwd,
+  //     email:email,
+  //     org: portal_name,
+  //     org_type :organization_type,
+  //     phone:phone_num,
+  //     com_pwd:com_pwd,
+  //     visibility:visibility,
+  //     organization_description:organization_description
+  // })
     if(!pwd || !com_pwd || !email || !portal_name || !organization_type || !phone_num || !fullname || !organization_description || !visibility){
         alert("All fields required");
-    }else if(pwd!=com_pwd){
+      }else if(pwd!=com_pwd){
         document.getElementById("e-confirm").style.display="block";
-    }else{
-       processData();
-    }
+      }else if(!isValidPassword(pwd)){
+          alert("Password must contain at least one letter, one number, and be at least 6 characters long.");
+      }else{
+        processData();
+      }
   }
 
   async function processData(){
@@ -898,6 +901,35 @@ hr.divider-line{margin:20px 0}
       }, 1200)
     }
   }
+  
+  // Show/hide toggle for password fields
+  function setupPasswordToggle(inputId, btnId, iconId){
+    const input = document.getElementById(inputId);
+    const btn = document.getElementById(btnId);
+    const icon = document.getElementById(iconId);
+    btn.addEventListener("click", function(){
+      if(input.type === "password"){
+        input.type = "text";
+        icon.innerHTML = '<path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.86 21.86 0 0 1 5.06-6.06M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.86 21.86 0 0 1-3.22 4.36M1 1l22 22"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/>';
+      } else {
+        input.type = "password";
+        icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+      }
+    });
+  }
+  setupPasswordToggle("f-pass", "tog-pass", "eye-pass");
+  setupPasswordToggle("f-confirm", "tog-confirm", "eye-confirm");
+
+  // Password rule check: must contain a letter, a number, and be at least 6 characters
+  function isValidPassword(pwd){
+    const hasNumber = /\d/.test(pwd);
+    const hasLetter = /[a-zA-Z]/.test(pwd);
+    const longEnough = pwd.length >= 6;
+    return hasNumber && hasLetter && longEnough;
+  }
+
+  
+
 </script>
 <script src="../public/js/admin/register.js"></script>
 </body>

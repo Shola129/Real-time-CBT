@@ -188,7 +188,7 @@
           output +=`
               <div class="subject-card"s>
                 <div class="subject-top">
-                  <div><div class="subject-name">${response[i].subject}</div><div class="subject-code">${response[i].DepartmentCode}</div></div>
+                  <div><div class="subject-name">${response[i].subject} /<strong><span> ${response[i].subjectCode}</span></strong></div><div class="subject-code">${response[i].DepartmentCode}</div></div>
                   <span class="badge upcoming"></span>
                 </div>
                 <div class="subject-meta">
@@ -228,7 +228,7 @@
         department:document.getElementById("profile-department").textContent.trim(),
         state:document.getElementById("profile-state").textContent.trim(),
         role:"user",
-        ID:id.substring(8, 9)
+        ID:id
       }
       // console.log(e);
 

@@ -224,17 +224,28 @@
         </div>
 
         <!-- STEP 3: Security -->
+         
         <div class="form-section" id="section-3">
           <div class="form-group">
-            <label>Create Password</label>
-            <input type="password" id="inp-pass" placeholder="Minimum 6 characters" oninput="checkStrength(this.value)" name="password"/>
-            <div class="pass-strength"><div class="pass-strength-fill" id="strength-bar"></div></div>
-            <div class="pass-hint" id="strength-label">Enter a password</div>
+          <label>Create Password</label>
+          <div style="position:relative;">
+            <input type="password" id="inp-pass" placeholder="Minimum 6 characters" oninput="checkStrength(this.value)" name="password" style="width:100%;padding-right:34px;box-sizing:border-box;"/>
+            <button type="button" id="tog-inp-pass" aria-label="Toggle password visibility" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:0;line-height:0;">
+              <svg id="eye-inp-pass" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
           </div>
-          <div class="form-group">
-            <label>Confirm Password</label>
-            <input type="password" id="inp-pass2" placeholder="Repeat your password"/>
+          <div class="pass-strength"><div class="pass-strength-fill" id="strength-bar"></div></div>
+          <div class="pass-hint" id="strength-label">Enter a password</div>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <div style="position:relative;">
+            <input type="password" id="inp-pass2" placeholder="Repeat your password" style="width:100%;padding-right:34px;box-sizing:border-box;"/>
+            <button type="button" id="tog-inp-pass2" aria-label="Toggle confirm password visibility" style="position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;padding:0;line-height:0;">
+              <svg id="eye-inp-pass2" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
           </div>
+        </div>
           <div class="terms-row">
             <input type="checkbox" id="inp-terms"/>
             <span>I agree to the <a href="#">Terms of Use</a> and <a href="#">Examination Rules</a> of the EduTest CBT Portal.</span>
@@ -254,6 +265,6 @@
   </div>
 </div>
 <link rel="stylesheet" href="../public/css/user/register.css">
-<script src="../public/js/user/register.js"></script>
+<script src="../public/js/user/register.js?vs=1.0"></script>
 </body>
 </html>

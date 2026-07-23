@@ -438,7 +438,7 @@ class InsertData{
                     </html>
                 ";
                 $newmail = new Index();
-                $mail = $newmail->sendOtp("Welcome On Board", $body, $email);
+                $mail = $newmail->sendOtp("Welcome On Board", $body, $this->dto->email);
                 $decodeMail = json_decode($mail, true);
                 if($decodeMail["status"]==="success"){
                         return json_encode([

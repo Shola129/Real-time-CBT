@@ -63,7 +63,7 @@
 
       const result = await api.json();
       const response = result.response;
-      console.log(result);
+      // console.log(result);
       if (!response || response.length === 0 || result.status=="failed") {
         select.innerHTML = '<option value="">No departments available for this organization</option>';
         return;
@@ -214,8 +214,8 @@
     const pass2 = document.getElementById('inp-pass2').value;
     const terms = document.getElementById('inp-terms').checked;
     if (pass.length<6)  { showAlert('reg-alert','Password must be at least 6 characters.','error'); return; }
+    if (!isValidPassword(pass)) { showAlert('reg-alert','Password must contain at least one letter and one number.','error'); return; }
     if (pass!==pass2)   { showAlert('reg-alert','Passwords do not match.','error'); return; }
-    if (!terms)         { showAlert('reg-alert','You must agree to the terms to continue.','error'); return; }
 
     const orgName   = document.getElementById('inp-org-name').value.trim();
     const orgCode   = document.getElementById('inp-org-code').value.trim();
@@ -250,7 +250,6 @@
     });
 
     const result = await api.json();
-    console.log(result);
     if(result.status==="success"){
       showAlert('reg-success','Account created successfully! Redirecting to login…','success');
       setTimeout(() => window.location.href = '/cbt/ansofra/user/login', 5000);
@@ -259,6 +258,30 @@
         showAlert('reg-alert','The department is not available.','error'); return;
     }
     else{
+       console.log(result);
       showAlert('reg-alert','Error occur while trying to login try agan later','error'); return;
     }
+  }
+  function setupPwToggle(inputId, btnId, iconId){
+    const input = document.getElementById(inputId);
+    const btn = document.getElementById(btnId);
+    const icon = document.getElementById(iconId);
+    btn.addEventListener("click", function(){
+      if(input.type === "password"){
+        input.type = "text";
+        icon.innerHTML = '<path d="M17.94 17.94A10.94 10.94 0 0 1 12 20c-7 0-11-8-11-8a21.86 21.86 0 0 1 5.06-6.06M9.9 4.24A10.94 10.94 0 0 1 12 4c7 0 11 8 11 8a21.86 21.86 0 0 1-3.22 4.36M1 1l22 22"/><path d="M14.12 14.12a3 3 0 1 1-4.24-4.24"/>';
+      } else {
+        input.type = "password";
+        icon.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+      }
+    });
+  }
+  setupPwToggle("inp-pass", "tog-inp-pass", "eye-inp-pass");
+  setupPwToggle("inp-pass2", "tog-inp-pass2", "eye-inp-pass2");
+
+  function isValidPassword(pwd){
+    const hasNumber = /\d/.test(pwd);
+    const hasLetter = /[a-zA-Z]/.test(pwd);
+    const longEnough = pwd.length >= 6;
+    return hasNumber && hasLetter && longEnough;
   }
