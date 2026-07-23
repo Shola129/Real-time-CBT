@@ -26,7 +26,7 @@ class EditQuestion{
         // $diagram  = $decodeFile["response"][0] ?? 'null';
         // if($decodeFile["status"]=="success"){
             $where = [
-                "questions_id"=>$this->dto->questionID,
+                "questions_id"=>$this->dto->id,
                 // "organization_code"=>$this->dto->organization_code
             ];
 
@@ -49,7 +49,10 @@ class EditQuestion{
             $newMig = new Migration(null, $this->table);
             $mig = $newMig->edit($data, $where);
             return $mig;
-            exit();
+            // return json_encode([
+            //     "status"=>"success",
+            //     "response"=>$where
+            // ], true);
         // }else{
         //     return $this->upload();
         //     exit();

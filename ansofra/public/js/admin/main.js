@@ -968,7 +968,8 @@ async function deleteSubjectFromDrawer(subjectID, subject, subCode, org_code, de
  }
 
 
- document.getElementById("searchQuestionSetsBtn").addEventListener("click", async ()=>{
+//  document.getElementById("searchQuestionSetsBtn").addEventListener("click", async ()=>{
+  async function searchQuestionSetsBtn(){
   const dep = document.getElementById("qsSearchDept").value.trim();
   const subject = document.getElementById("qsSearchSubject").value.trim();
   const org_code = document.getElementById("organization-code").textContent.trim();
@@ -1010,22 +1011,33 @@ async function deleteSubjectFromDrawer(subjectID, subject, subCode, org_code, de
             <span class="badge badge-score" style="margin-top:6px;display:inline-flex;">
               ✓ Correct: ${response[index].correctOtp || response[index].correctAss }
             </span>
-            <button style="background-color:green;color: white; width:50px;heigh:50px; border:none; padding: 5px;" onclick="openEditQuestion()">Edit</button>&nbsp&nbsp&nbsp&nbsp&nbsp
+            <button style="background-color:green;color: white; width:50px;heigh:50px; border:none; padding: 5px;" 
+              onclick="openEditQuestion(
+              '${response[index].questions_id}',
+              '${response[index].department}',
+              '${response[index].subject}', 
+              '${response[index].questiontext}',
+              '${response[index].optionA}', 
+              '${response[index].optionB}', 
+              '${response[index].optionC}', 
+              '${response[index].optionD}', 
+              '${response[index].optionE}', 
+              '${response[index].correctAss}')">Edit</button>&nbsp&nbsp&nbsp&nbsp&nbsp
             <button style="background-color:red;color:white; width:50px;heigh:50px; border:none; padding: 5px;" onclick="deleteQuesiton("${response[index].questionID}")">Del</button>
           </div>
           <div>QuestionID: ${response[index].questionID}</div>
         </div>
         `;  
-        document.getElementById("editQ-department").value=response[index].department;
-        document.getElementById("editQ-subject").value=response[index].subject;
-        document.getElementById("editQ-questiontext").value=response[index].questiontext;
-        document.getElementById("editQ-optionA").value=response[index].optionA;
-        document.getElementById("editQ-optionB").value=response[index].optionB;
-        document.getElementById("editQ-optionC").value=response[index].optionC;
-        document.getElementById("editQ-optionD").value=response[index].optionD;
-        document.getElementById("editQ-optionE").value=response[index].optionE ?? "NULL";
-        document.getElementById("editQ-correctAss").value=response[index].correctAss;
-        document.getElementById("editQ-ID").value=response[index].questions_id;
+        // document.getElementById("editQ-department").value=response[index].department;
+        // document.getElementById("editQ-subject").value=response[index].subject;
+        // document.getElementById("editQ-questiontext").value=response[index].questiontext;
+        // document.getElementById("editQ-optionA").value=response[index].optionA;
+        // document.getElementById("editQ-optionB").value=response[index].optionB;
+        // document.getElementById("editQ-optionC").value=response[index].optionC;
+        // document.getElementById("editQ-optionD").value=response[index].optionD;
+        // document.getElementById("editQ-optionE").value=response[index].optionE ?? "NULL";
+        // document.getElementById("editQ-correctAss").value=response[index].correctAss;
+        // document.getElementById("editQ-ID").value=response[index].questions_id;
       }
       const container = document.getElementById('questionSetsResultsContainer').innerHTML=output;
        document.getElementById('noQsSetsMsg').style.display="none";
@@ -1034,20 +1046,20 @@ async function deleteSubjectFromDrawer(subjectID, subject, subCode, org_code, de
          document.getElementById('noQsSetsMsg').style.display="block";
     }
   }
-});
+};
 
-function openEditQuestion(){
+function openEditQuestion(id, depart, subject, questions, optionA, optionB, optionC, optionD, optionE, correctAss){
   document.getElementById('editQuestionModal').classList.add('open');
-  document.getElementById("editQ-department").value=response[index].department;
-  document.getElementById("editQ-subject").value=response[index].subject;
-  document.getElementById("editQ-questiontext").value=response[index].questiontext;
-  document.getElementById("editQ-optionA").value=response[index].optionA;
-  document.getElementById("editQ-optionB").value=response[index].optionB;
-  document.getElementById("editQ-optionC").value=response[index].optionC;
-  document.getElementById("editQ-optionD").value=response[index].optionD;
-  document.getElementById("editQ-optionE").value=response[index].optionE ?? "NULL";
-  document.getElementById("editQ-correctAss").value=response[index].correctAss;
-  document.getElementById("editQ-ID").value=response[index].questions_id;
+  document.getElementById("editQ-department").value=depart;
+  document.getElementById("editQ-subject").value=subject;
+  document.getElementById("editQ-questiontext").value=questions;
+  document.getElementById("editQ-optionA").value=optionA;
+  document.getElementById("editQ-optionB").value=optionB;
+  document.getElementById("editQ-optionC").value=optionC;
+  document.getElementById("editQ-optionD").value=optionD;
+  document.getElementById("editQ-optionE").value=optionE ?? "NULL";
+  document.getElementById("editQ-correctAss").value=correctAss;
+  document.getElementById("editQ-ID").value=id;
 }
 
 document.getElementById("editQuestionSaveBtn").addEventListener("click", async function(){
@@ -1087,6 +1099,12 @@ document.getElementById("editQuestionSaveBtn").addEventListener("click", async f
           correctAss:correctAss,
           id:questionID
         }
+
+        if(correctAss!=optionA || correctAss!=optionB || correctAss !==optionC || correctAss !== optionD || correctAss !== optionE){
+           alert("Answer must be in the option");
+        }
+
+        console.log(e);
         const api = await fetch("/cbt/ansofra/apiadmin/edit/question", {
             method:"POST",
             headers:{"content-type":"application/json"},
@@ -1108,6 +1126,7 @@ document.getElementById("editQuestionSaveBtn").addEventListener("click", async f
         document.getElementById("editQ-optionE").value="" ?? "NULL";
          document.getElementById("editQ-correctAss").value="";
          document.getElementById("editQ-ID").value="";
+         searchQuestionSetsBtn();
         }else{
           alert("error occur, try again later");
           console.log(result.response);

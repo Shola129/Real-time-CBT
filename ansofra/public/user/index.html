@@ -30,7 +30,7 @@
       <button class="nav-item active" data-view="dashboard"><i class="fas fa-grid-2"></i> Dashboard</button>
       <button class="nav-item" data-view="results"><i class="fas fa-chart-simple"></i> My Results</button>
       <!-- <button class="nav-item" data-view="history"><i class="fas fa-clock-rotate-left"></i> Exam History</button> -->
-      <button class="nav-item" data-view="subjects"><i class="fas fa-book"></i> My Subjects / Courses</button>
+      <button class="nav-item" data-view="subjects"><i class="fas fa-book"></i>Courses</button>
       <button class="nav-item" data-view="schedule"><i class="fas fa-calendar-check"></i> Exam Schedule</button>
     </div>
 
@@ -111,7 +111,7 @@
             </button>
             <button class="quick-action-card" data-view-link="subjects">
               <div class="quick-action-icon"><i class="fas fa-book"></i></div>
-              <div class="quick-action-label">My Subjects</div>
+              <div class="quick-action-label">My Courses</div>
             </button>
             <button class="quick-action-card" data-view-link="schedule">
               <div class="quick-action-icon"><i class="fas fa-calendar-check"></i></div>
@@ -142,13 +142,13 @@
       <section class="view" id="view-subjects">
         <div class="section-head-row">
           <div>
-            <div class="section-title">My Subjects / Courses</div>
-            <div class="section-sub" style="margin-bottom:0">All subjects assigned to you this session</div>
+            <div class="section-title"> / Courses</div>
+            <div class="section-sub" style="margin-bottom:0">All Courses assigned to you this session</div>
           </div>
           <div class="toolbar">
             <div class="search-box" style="display:flex">
               <i class="fas fa-search"></i>
-              <input type="text" id="subjectSearch" placeholder="Search subjects…"/>
+              <input type="text" id="subjectSearch" placeholder="Search Courses..."/>
             </div>
             <button style="width: 65px;height: 30px; border-radius: 10px; background-color: rgb(17, 106, 208); color: white; border: none;" type="button" id="search-subject">Search</button>
             <!-- <select class="select-mini" id="filterDepartment">
@@ -221,8 +221,8 @@
 
         <div class="empty-state" id="subjectsEmptyState" style="display:none">
           <div class="icon"><i class="fas fa-book-open"></i></div>
-          <h3>No matching subjects found</h3>
-          <p>No subjects or courses have been assigned to your account yet. Please contact your organization administrator.</p>
+          <h3>No matching Courses found</h3>
+          <p>No Courses or courses have been assigned to your account yet. Please contact your organization administrator.</p>
         </div>
       </section>
 
@@ -236,7 +236,7 @@
               <thead>
                 <tr>
                   <th>S/N</th>
-                  <th>Subject</th>
+                  <th>Course</th>
                   <th>Date</th>
                   <th>Start Time</th>
                   <th>End Time</th>
@@ -296,7 +296,7 @@
             <table class="data-table">
                 <thead>
                   <tr><th>S/N</th>
-                    <th>Subject</th>
+                    <th>Course</th>
                     <th>Date Taken</th>
                     <th>Score</th>
                     <th>Tol.Questions</th>

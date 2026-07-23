@@ -48,7 +48,7 @@
           <input class="form-control" type="number" min="0" step="0.5" id="edit-subject-ScorePerQuestion" placeholder="e.g. 2.5" name="scorePerQuestion" />
         </div>
         <div class="form-group">
-          <label class="form-label">Subject ID</label>
+          <label class="form-label">Course ID</label>
           <input class="form-control" type="text" id="subjectID" placeholder="e.g. Algorithms"  disabled/>
         </div>
         <div class="form-group">
@@ -86,7 +86,7 @@
           <input class="form-control" type="text" id="add-deptCode"  name="DepartmentCode"disabled/>
         </div>
         <div class="form-group">
-          <label class="form-label">Course Name</label>
+          <label class="form-label">Course Title</label>
           <input class="form-control" type="text" id="add-subject" placeholder="e.g. Algorithms" name="subject"/>
         </div>
         <div class="form-group">
@@ -245,7 +245,7 @@
 <div class="modal-backdrop" id="addSubjectModal" onclick="if(event.target===this)closeAddSubjectModal()">
   <div class="modal" role="dialog" aria-modal="true">
     <div class="modal-header">
-      <div class="modal-title"><i class="fas fa-plus-circle"></i> Add Subject</div>
+      <div class="modal-title"><i class="fas fa-plus-circle"></i> Add Course</div>
       <button type="button" class="modal-close" onclick="closeAddSubjectModal()"><i class="fas fa-times"></i></button>
     </div>
     <form id="addSubjectForm">
@@ -260,11 +260,11 @@
         </div>
         <div class="modal-divider"></div>
         <div class="form-group">
-          <label class="form-label">Subject Name</label>
+          <label class="form-label">Course Title</label>
           <input class="form-control" type="text" id="addSub-subjectName" placeholder="e.g. Algorithms" />
         </div>
         <div class="form-group">
-          <label class="form-label">Subject Code</label>
+          <label class="form-label">Course Code</label>
           <input class="form-control" type="text" id="addSub-subjectCode" placeholder="e.g. Algo204 optional" />
         </div>
         <div class="form-group">
@@ -386,7 +386,7 @@
       <div class="dsb-drawer-title" id="dsbDrawerTitle"></div>
       <div class="dsb-drawer-header-actions">
         <button type="button" class="dsb-drawer-add-btn" id="dsbAddSubjectBtn" onclick="openAddSubject2()">
-          <i class="fas fa-plus"></i> Add Subject
+          <i class="fas fa-plus"></i> Add Course
         </button>
         <button type="button" class="modal-close" onclick="closeDsbDrawer()"><i class="fas fa-times"></i></button>
       </div>
@@ -417,7 +417,7 @@
         <i class="fas fa-users ni"></i><span class="nl">Students</span>
       </div>
       <div class="nav-item" onclick="showSection('subjects',this)">
-        <i class="fas fa-book-open ni"></i><span class="nl">Subjects</span>
+        <i class="fas fa-book-open ni"></i><span class="nl">Courses</span>
       </div>
       <div class="nav-item" onclick="showSection('questions',this)">
         <i class="fas fa-circle-question ni"></i><span class="nl">Questions</span>
@@ -434,8 +434,9 @@
     </nav>
 
     <div class="sidebar-footer">
-      &copy; <span id="current-time"></span> Shola Daniel Ekundayo.<br>
-      All rights reserved. &nbsp;<a href="https://www.shola.site">Portfolio</a>
+      &copy; <span id="current-time"></span> Julius Adeleke.<br>
+      All rights reserved. 
+      <!-- &nbsp;<a href="https://www.shola.site">Portfolio</a> -->
     </div>
     <!-- keep sidebar-footer1 in DOM for JS safety, hidden via CSS -->
     <div class="sidebar-footer1"></div>
@@ -572,7 +573,7 @@
           <div class="panel-header" style="background:var(--nav-bg);">
             <span class="panel-title" style="color:#fff;">
               <i class="fas fa-sitemap" style="color:var(--nav-accent);"></i>
-              Departments &amp; Subjects
+              Departments &amp; Course
             </span>
             <span id="dsbTotalBadge" style="font-size:11px;color:rgba(255,255,255,.5);"></span>
           </div>
@@ -588,7 +589,7 @@
             <input type="text" id="subjectNameSearchInput" placeholder="Enter subject name to search…" style="color:#fff;" />
           </div>
           <button class="btn btn-primary" onclick="seacrhSubj(`${document.getElementById('subjectNameSearchInput').value.trim()}`)">
-            <i class="fas fa-magnifying-glass"></i> Search Subject
+            <i class="fas fa-magnifying-glass"></i> Search Course
           </button>
         </div>
         <div id="subjectNameSearchResults" class="subjects-grid" style="margin-bottom:20px;"></div>
@@ -611,7 +612,7 @@
         <!-- Add New Subject -->
         <div class="panel">
           <div class="panel-header">
-            <span class="panel-title"><i class="fas fa-plus-circle"></i> Add New Subject</span>
+            <span class="panel-title"><i class="fas fa-plus-circle"></i> Add New Course</span>
           </div>
           <div class="panel-body">
             <form id="saveSubject">
@@ -625,11 +626,11 @@
                   <input class="form-control" type="text" id="depCode" placeholder="e.g. CSC" />
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Subject Name</label>
+                  <label class="form-label">Course Title</label>
                   <input class="form-control" type="text" placeholder="e.g. Algorithms"  id="subjectName" />
                 </div>
                 <div class="form-group">
-                  <label class="form-label">Subject Code</label>
+                  <label class="form-label">Course Code</label>
                   <input class="form-control" type="text" placeholder="e.g. Algo204 optional"  id="subjectCode" />
                 </div>
                  <div class="form-group">
@@ -668,12 +669,12 @@
                 <input type="text" id="qsSearchDept" class="form-control" placeholder="e.g. Computer Science" />
               </div>
               <div class="form-group">
-                <label class="form-label">Subject</label>
+                <label class="form-label">Course</label>
                 <input type="text" id="qsSearchSubject" class="form-control" placeholder="e.g. Algorithms" />
               </div>
               <div class="form-group" style="justify-content:flex-end;">
                 <label class="form-label">&nbsp;</label>
-                <button id="searchQuestionSetsBtn" class="btn btn-primary">
+                <button type="button" onclick="searchQuestionSetsBtn()" class="btn btn-primary">
                   <i class="fas fa-search"></i> Search Question Sets
                 </button>
               </div>
@@ -699,7 +700,7 @@
                 <input class="form-control" type="text" id="questionDept" placeholder="Computer Science" value="Computer Science" />
               </div>
               <div class="form-group">
-                <label class="form-label">Subject</label>
+                <label class="form-label">Course Title</label>
                 <input class="form-control" type="text" id="questionSubject" placeholder="Algorithms" value="Algorithms" />
               </div>
             </div>
@@ -1162,6 +1163,6 @@
     </div><!-- /content -->
   </div><!-- /main -->
 </div><!-- /app -->
-<script src="../public/js/admin/main.js"></script>
+<script src="../public/js/admin/main.js?v=1.110"></script>
 </body>
 </html>
