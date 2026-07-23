@@ -28,6 +28,10 @@ class EditDepartment{
         $newMig = new Migration(null, $this->table);
         $mig = $newMig->edit($data, $where);
         return $mig;
+        // return json_encode([
+        //     "status"=>"failed",
+        //     "response"=>$where
+        // ], true);
 
     }
 }

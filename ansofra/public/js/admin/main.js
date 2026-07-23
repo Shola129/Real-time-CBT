@@ -1281,6 +1281,8 @@ async function deptSearchBtn(){
         DepartmentCode:departCode,
         id:id,
         Description:descr,
+        HeadOfDepartment:hod,
+        organization_code:document.getElementById("organization-code").textContent.trim()
        };
 
        const api = await fetch("/cbt/ansofra/apiadmin/edit/department", {
@@ -1292,6 +1294,13 @@ async function deptSearchBtn(){
        const result = await api.json();
        if(result.status === "success"){
         alert("Edit successfull");
+        closeEditDepartmentModal();
+        updateDeptStats();
+        document.getElementById('editDept-name').value="";
+        document.getElementById('editDept-code').value="";
+        document.getElementById('editDept-hod').value="";
+        document.getElementById('editDept-desc').value="";
+        document.getElementById('edit-id').value="";
        }else{
         alert("Error occur, try again later");
         console.log(result.response);
