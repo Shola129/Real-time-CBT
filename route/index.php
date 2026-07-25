@@ -257,6 +257,11 @@ elseif($url === $adminArea . "/schedule/exam/time"){
     exit();
 }
 
+elseif($url === $adminArea . '/del/schedule/exam'){
+    require_once  __DIR__ . $srcController . "/DelScheduleExamController.php";
+    exit();
+}
+
 elseif($url === $adminArea . "/list/time/sets"){
     require_once __DIR__ . $srcController . "/ListTimeController.php";
     exit();

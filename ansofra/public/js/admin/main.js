@@ -382,6 +382,11 @@ async function displayScheduledTime(){
                   </button>  
                 </td>
                 <td>${response[index].status}</td>
+                <td>
+                <button onclick="DelSch(
+                '${response[index].exam_time_table_id}',
+                )">Del<button/>
+                <td/>
               </tr>
           `;  
       }
@@ -447,6 +452,11 @@ async function seacrhDepSch(){
                   </button>  
                 </td>
                 <td>${response[index].status}</td>
+                <td>
+                <button onclick="DelSch(
+                '${response[index].exam_time_table_id}',
+                )">Del<button/>
+                <td/>
               </tr>
           `;  
       }
@@ -457,6 +467,25 @@ async function seacrhDepSch(){
        document.getElementById('scheduleTableBody').style.display="none";
        document.getElementById('noScheduleMsg').style.display="block";
    }
+    }
+  }
+
+  async function DelSch(id){
+    const e = {id:id};
+    // console.log(e);
+    const api = await fetch("/cbt/ansofra/apiadmin/del/schedule/exam", {
+        method:"POST",
+        headers:{"Content-type":"application/json"},
+        body:JSON.stringify(e)
+    });
+
+    const result = await api.json();
+    // console.log(result);
+    if(result.status === "success"){
+      alert("Exam TimeTable Delete successful");
+      await displayScheduledTime();
+    }else{
+      alert("something went wrong");
     }
   }
 
