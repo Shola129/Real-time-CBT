@@ -25,7 +25,11 @@ class NotifyUserExam{
         $data = [
             "status"=>"active"
         ];
-
+        $start = $this->dto->start;
+        $end = $this->dto->end;
+        $date = $this->dto->date;
+        $duration = $this->dto->duration;
+        $department = $this->dto->department;
         $newMig = new Migration(null, $this->table);
         $mig = $newMig->edit($data, $where);
         // return $mig;
@@ -37,24 +41,40 @@ class NotifyUserExam{
                 "role"=>"set"
             ];
 
-            $mig2 = $this->newMig->get($where, 0, 2);
+            $newMig2 = new Migration(null, $this->table);
+            $mig2 = $newMig2->get($where, 0, 2);
             $decodeMig2 = json_decode($mig2, true);
             if($decodeMig2["status"]==="success"){
                 $response = $decodeMig2["response"][0];
                 $department = $response["department"];
                 $start = $response["start"];
                 $end = $response["end"];
+                $where = [
+                    "department"=>$this->dto->department,
+                    "organization_code"=>$this->dto->organization_code,
+                    "role"=>"user"
+                    ];
                 $organization_code = $response["organization_code"];
-                $duration = $response["duration"];
-                
-                $mig3 = $this->newMig->get($this->where, 0, 1);
+                // $duration = $response["duration"];
+                $newMig3 = new Migration(null, $this->table2);
+                $mig3 = $newMig3->get($where, 0, 500);
                 $decodeMig3 = json_decode($mig3, true);
                 if($decodeMig3["status"]==="success"){
                     $response = $decodeMig3["response"];
                     foreach($response as $row);
                     $email = $row["email"];
-                    $name = $row["name"];
+                    $name = $row["fullname"];
+                    // $departmentCode = $row["DepartmentCode"];
                      $year = date("Y");
+                     $organization_code = $this->dto->organization_code;
+                     $organization_name = $this->dto->organization_name; 
+                    //  $name = $this->dto->fullname;
+                    $start = $this->dto->start;
+                    $end = $this->dto->end;
+                    $date = $this->dto->date;
+                    $duration = $this->dto->duration;
+                    $department = $this->dto->department;
+                    // $departmentCode = $this->dto->DepartmentCode;
                      $body = "<!DOCTYPE html>
                         <html lang='en'>
                         <head>
@@ -317,13 +337,13 @@ class NotifyUserExam{
                                             </thead>
                                             <tbody>
                                                 <tr>
-                                                    <td>$this->organization_name</td>
-                                                    <td>$this->department</td>
-                                                    <td>$this->departmentCode</td>
-                                                    <td>$this->date</td>
-                                                    <td>$this->start</td>
-                                                    <td>$this->end</td>
-                                                    <td>$this->duration</td>
+                                                    <td>$organization_name</td>
+                                                    <td>$department</td>
+                                                    <td>$departmentCode</td>
+                                                    <td>$date</td>
+                                                    <td>$start</td>
+                                                    <td>$end</td>
+                                                    <td>$duration</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -354,11 +374,18 @@ class NotifyUserExam{
                         $newMail = new Index(); 
                         $mail = $newMail->sendOtp("Time Table", $body, $email);
                         $decodeMail = json_decode($mail, true);
-                        if($decodeMail["status"]==="success"){
-
-                        }else{
-                            
-                        }
+                         if($decodeMail["status"]=="success"){
+                            return json_encode([
+                                'status'=>'success',
+                                'response'=>'Information passed successfully'
+                            ], JSON_PRETTY_PRINT);
+                         }else{
+                                return json_encode([
+                                    'status'=>'failed',
+                                    'response'=>$mail
+                                    // 'response'=>'error occur at our end here try again later'
+                                ], JSON_PRETTY_PRINT);
+                            }
                 }else{
                     return $mig3;
                 }

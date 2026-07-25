@@ -238,7 +238,7 @@
     // };
 
     const data = document.getElementById("formData");
-    const fullname = lastName + " " + midName + " " + firstName;
+    const fullname =firstName + " " + midName + " "  + lastName;
     const form = new FormData(data);
     form.append("fullname", fullname);
     form.append("date_created", new Date().toLocaleTimeString() + '  ' + new Date().toLocaleDateString());

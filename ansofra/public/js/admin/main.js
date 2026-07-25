@@ -1,6 +1,7 @@
 
   let totalStudents = 0;
   let ResultsCompleted = 0;
+  let _currentStudentReg = null;
 const getID = localStorage.getItem('cbt-admin-ID');
 const getEmail = localStorage.getItem('cbt-admin-email');
 const getAuthCode = localStorage.getItem('cbt-admin-auth-code');
@@ -539,18 +540,18 @@ async function seacrhDepSch(){
     const org_name = document.getElementById("organization-name").textContent;
     const e = {
           department:dep, 
-          // start:start, 
-          // end:end, 
-          // date:date, 
-          // DepartmentCode:departCode, 
-          // session:session, 
-          // duration:duration,
+          start:start, 
+          end:end, 
+          date:date, 
+          DepartmentCode:departCode, 
+          session:session, 
+          duration:duration,
           organization_code:org_code,
           organization_name:org_name,
-          // status:status,
-          // timeID:timeID
+          status:status,
+          timeID:timeID
         };
-        console.log(e);
+        // console.log(e);
     const api = await fetch("/cbt/ansofra/apiadmin/notify/user/of/Exam", {
         method:"POST",
         headers:{"Content-type":'application/json'},
@@ -629,6 +630,20 @@ async function getStudentList() {
                       <td><span class="badge badge-dept">${response[i].department}</span></td>
                       <td>${response[i].email}</td>
                       <td>${response[i].role}</td>
+                      <td><button style="background-color:blue; color:white; border: none; padding: 8px; border-raidus: 5px;" onclick="viewStudentDetails(
+                      '${response[i].organization_code}',
+                      '${response[i].users_id}',
+                      '${response[i].regNum}',
+                      '${response[i].fullname}',
+                      '${response[i].phone}',
+                      '${response[i].date_created}',
+                      '${response[i].dob}',
+                      '${response[i].gender}',
+                      '${response[i].state}',
+                      '${response[i].organization_name}',
+                      '${response[i].email}',
+                      '${response[i].department}',
+                      )">View</button></td>
                     </tr>`;
       }
       tbody.innerHTML = display;
@@ -664,6 +679,20 @@ document.getElementById("searchStudentRegNo").addEventListener("click", async fu
                     <td><span class="badge badge-dept">${response[i].department}</span></td>
                     <td>${response[i].email}</td>
                     <td>${response[i].role}</td>
+                    <td><button style="background-color:blue; color:white; border: none; padding: 8px; border-raidus: 5px;" onclick="viewStudentDetails(
+                    '${response[i].organization_code}',
+                    '${response[i].users_id}',
+                    '${response[i].regNum}',
+                    '${response[i].fullname}',
+                    '${response[i].phone}',
+                    '${response[i].date_created}',
+                    '${response[i].dob}',
+                    '${response[i].gender}',
+                    '${response[i].state}',
+                    '${response[i].organization_name}',
+                    '${response[i].email}',
+                    '${response[i].department}',
+                    )">View</button></td>
                   </tr>`;
         }
         tbody.innerHTML = output;
@@ -676,14 +705,19 @@ document.getElementById("searchStudentRegNo").addEventListener("click", async fu
   }
 });
 
-document.getElementById("deptFilter").addEventListener("change", async ()=>{
+async function seacrhStudentDep(){
+// document.getElementById("seacrhStudentDep").addEventListener("change", async ()=>{
   const tbody = document.getElementById('studentTableBody');
   const seletedValue = document.getElementById('deptFilter').value.trim();
   const org_code = document.getElementById('organization-code').textContent.trim();
-  if(seletedValue===''){
-    alert("Select department");
+  if(!seletedValue){
+    alert("No department selected");
   } else {
-    const e = {department:seletedValue, organization_code:org_code};
+    const e = {
+      department:seletedValue,
+      organization_code:org_code}
+       ;
+      //  console.log(e);
     const api = await fetch('/cbt/ansofra/apiadmin/selected/department', {
         method:"POST",
         headers:{'Content-type':'application'}, 
@@ -691,6 +725,7 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
     });
     const result = await api.json();
     const response = result.response;
+    // console.log(result);
     if(result.status==="success"){
         let output ='';
         for(let i=0; i<response.length; i++){
@@ -702,16 +737,102 @@ document.getElementById("deptFilter").addEventListener("change", async ()=>{
                     <td><span class="badge badge-dept">${response[i].department}</span></td>
                     <td>${response[i].email}</td>
                     <td>${response[i].role}</td>
+                    <td><button style="background-color:blue; color:white; border: none; padding: 8px; border-raidus: 5px;" onclick="viewStudentDetails(
+                    '${response[i].organization_code}',
+                    '${response[i].users_id}',
+                    '${response[i].regNum}',
+                    '${response[i].fullname}',
+                    '${response[i].phone}',
+                    '${response[i].date_created}',
+                    '${response[i].dob}',
+                    '${response[i].gender}',
+                    '${response[i].state}',
+                    '${response[i].organization_name}',
+                    '${response[i].email}',
+                    '${response[i].department}',
+                    )">View</button></td>
                   </tr>`;
         }
         tbody.innerHTML = output;
+        // tbody.style.display="flex";
+        document.getElementById("studentCount").style.display="none";
     } else {
       document.getElementById("studentCount").textContent="No record of user found in that department";
       document.getElementById("table-wrap").style.display="none";
       document.getElementById('deptFilter').value="";
     }
   }
-});
+};
+
+
+function viewStudentDetails(
+  org_code, 
+  id, 
+  regNum,
+  fullname,
+  phone,
+  date_created,
+  dob,
+  gender,
+  state,
+  org_name,
+  email,
+  department
+){
+  // console.log(org_code, 
+  // id, 
+  // regNum,
+  // fullname,
+  // phone,
+  // date_created,
+  // dob,
+  // gender,
+  // state,
+  // org_name,
+  // email,
+  // department);
+  document.getElementById('stdDrawerBackdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  /* Avatar initials */
+  const initials = (fullname || '??').split(' ')
+    .map(w => w[0]).join('').substring(0, 2).toUpperCase();
+  document.getElementById('stdAvatar').textContent = initials;
+
+  /* Header */
+  document.getElementById('stdDrawerName').textContent = fullname  || '—';
+  document.getElementById('stdDrawerReg').textContent  = regNum    || '—';
+
+  /* Status chips */
+  document.getElementById('stdChipRole').textContent = "USER"       || 'Student';
+  document.getElementById('stdChipDept').textContent = department || '—';
+
+  /* Personal info */
+  document.getElementById('stdInfoFullname').textContent = fullname   || '—';
+  document.getElementById('stdInfoEmail').textContent    = email      || '—';
+  document.getElementById('stdInfoPhone').textContent    = phone      || '—';
+  document.getElementById('stdInfoGender').textContent   = gender     || '—';
+  document.getElementById('stdInfoDob').textContent      = dob        || '—';
+  document.getElementById('stdInfoState').textContent    = state      || '—';
+
+  /* Academic info */
+  document.getElementById('stdInfoRegNum').textContent   = regNum     || '—';
+  document.getElementById('stdInfoDept').textContent     = department || '—';
+  // document.getElementById('stdInfoYear').textContent     = year       || '—';
+  document.getElementById('stdInfoRole').textContent     = "USER"       || '—';
+
+  /* Account info */
+  document.getElementById('stdInfoCreated').textContent  = date_created   || '—';
+  // document.getElementById('stdInfoLastSeen').textContent = lastSeen  || '—';
+}
+
+function closeStudentDrawer() {
+  document.getElementById('stdDrawerBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+  _currentStudentReg = null;
+}
+
+
+
 
  async function getDepartment(){
   const org_code = document.getElementById("organization-code").textContent.trim();
@@ -982,6 +1103,7 @@ async function deleteSubjectFromDrawer(subjectID, subject, subCode, org_code, de
       subject:subject,
       organization_code:org_code,
     };
+    // console.log(e);
     const api = await fetch("/cbt/ansofra/apiadmin/seacrh/question",{
       method:"POST",
        headers:{"Content-type":'application/json'},
@@ -1626,6 +1748,12 @@ async function totalInActive(){
   document.getElementById("schInactive").textContent=parseFloat(response);
 }
 
+function logout(){
+  localStorage.removeItem("cbt-admin-ID"); 
+  localStorage.removeItem('cbt-admin-email'); 
+  localStorage.removeItem('cbt-admin-auth-code'); 
+  window.location.href="/cbt/ansofra/admin/login"
+}
 
 window.addEventListener("load", async ()=>{
   getDetail();

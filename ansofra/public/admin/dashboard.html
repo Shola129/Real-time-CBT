@@ -462,8 +462,9 @@
         <span class="topbar-badge" id="topbarBadge">Overview</span>
       </div>
       <div class="topbar-right">
-        <button class="btn btn-sm" style="color:var(--text-muted);">
-          <i class="fas fa-bell"></i>
+        <button class="btn btn-sm" style="color:var(--text-muted);background-color: red; color:#fff;" onclick="logout()">
+          <!-- <i class="fas fa-bell"></i> -->
+           logout
         </button>
         <button class="btn btn-sm btn-primary">
           <i class="fas fa-user-circle"></i><span class="btn-label">Admin</span>
@@ -530,7 +531,135 @@
           </div>
         </div>
       </div>
+<!-- ══════════════════════════════════════════════════
+     STUDENT DETAILS DRAWER  (Slide-in from right)
+══════════════════════════════════════════════════ -->
+<div class="std-drawer-backdrop" id="stdDrawerBackdrop" onclick="closeStudentDrawer()">
+  <div class="std-drawer" id="stdDrawer" onclick="event.stopPropagation()">
 
+    <!-- Header -->
+    <div class="std-drawer-header">
+      <div class="std-drawer-header-left">
+        <div class="std-avatar" id="stdAvatar">--</div>
+        <div>
+          <div class="std-drawer-title" id="stdDrawerName">Student Name</div>
+          <div class="std-drawer-reg"   id="stdDrawerReg">—</div>
+        </div>
+      </div>
+      <button class="std-drawer-close" onclick="closeStudentDrawer()" aria-label="Close">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Status bar -->
+    <div class="std-status-bar" id="stdStatusBar">
+      <span class="std-status-chip std-chip-role" id="stdChipRole">—</span>
+      <span class="std-status-chip std-chip-dept" id="stdChipDept">—</span>
+    </div>
+
+    <!-- Body -->
+    <div class="std-drawer-body">
+
+      <!-- ── Info Section ───────────────────────── -->
+      <div class="std-section-label">
+        <i class="fas fa-id-card"></i> Personal Information
+      </div>
+      <div class="std-info-grid">
+        <div class="std-info-item">
+          <div class="std-info-label">Full Name</div>
+          <div class="std-info-val" id="stdInfoFullname">—</div>
+        </div>
+        <div class="std-info-item">
+          <div class="std-info-label">Email Address</div>
+          <div class="std-info-val" id="stdInfoEmail">—</div>
+        </div>
+        <div class="std-info-item">
+          <div class="std-info-label">Phone Number</div>
+          <div class="std-info-val" id="stdInfoPhone">—</div>
+        </div>
+        <div class="std-info-item">
+          <div class="std-info-label">Gender</div>
+          <div class="std-info-val" id="stdInfoGender">—</div>
+        </div>
+        <div class="std-info-item">
+          <div class="std-info-label">Date of Birth</div>
+          <div class="std-info-val" id="stdInfoDob">—</div>
+        </div>
+        <div class="std-info-item">
+          <div class="std-info-label">State of Origin</div>
+          <div class="std-info-val" id="stdInfoState">—</div>
+        </div>
+      </div>
+
+      <div class="std-divider"></div>
+
+      <!-- ── Academic Section ───────────────────── -->
+      <div class="std-section-label">
+        <i class="fas fa-graduation-cap"></i> Academic Details
+      </div>
+      <div class="std-info-grid">
+        <div class="std-info-item">
+          <div class="std-info-label">Registration No.</div>
+          <div class="std-info-val mono" id="stdInfoRegNum">—</div>
+        </div>
+        <div class="std-info-item">
+          <div class="std-info-label">Department</div>
+          <div class="std-info-val" id="stdInfoDept">—</div>
+        </div>
+        <div class="std-info-item">
+          <div class="std-info-label">Examination Year</div>
+          <div class="std-info-val" id="stdInfoYear">—</div>
+        </div>
+        <div class="std-info-item">
+          <div class="std-info-label">Role</div>
+          <div class="std-info-val" id="stdInfoRole">—</div>
+        </div>
+      </div>
+
+      <div class="std-divider"></div>
+
+      <!-- ── Exam Result Section ────────────────── -->
+      <!-- <div class="std-section-label">
+        <i class="fas fa-chart-bar"></i> Exam Result
+      </div>
+      <div id="stdResultArea">
+   
+        <div class="std-result-loading" id="stdResultLoading">
+          <i class="fas fa-circle-notch fa-spin"></i> Loading result…
+        </div>
+      </div> -->
+
+      <div class="std-divider"></div>
+
+      <!-- ── Account Section ────────────────────── -->
+      <div class="std-section-label">
+        <i class="fas fa-clock"></i> Account Information
+      </div>
+      <div class="std-info-grid">
+        <div class="std-info-item">
+          <div class="std-info-label">Date Created</div>
+          <div class="std-info-val" id="stdInfoCreated">—</div>
+        </div>
+        <!-- <div class="std-info-item">
+          <div class="std-info-label">Last Seen</div>
+          <div class="std-info-val" id="stdInfoLastSeen">—</div>
+        </div> -->
+      </div>
+
+    </div><!-- /std-drawer-body -->
+
+    <!-- Footer actions -->
+    <div class="std-drawer-footer">
+      <button class="std-footer-btn std-btn-secondary" onclick="closeStudentDrawer()">
+        <i class="fas fa-times"></i> Close
+      </button>
+      <!-- <button class="std-footer-btn std-btn-danger" id="stdDeleteBtn" onclick="deleteStudent()">
+        <i class="fas fa-trash"></i> Remove Student
+      </button> -->
+    </div>
+
+  </div><!-- /std-drawer -->
+</div><!-- /std-drawer-backdrop -->
       <!--  STUDENTS  -->
       <div id="students" class="page">
         <div class="search-bar">
@@ -545,7 +674,7 @@
             <i class="fas fa-building"></i>
             <input type="text" placeholder="Enter department" id="deptFilter">
           </div>
-          <button id="seacrhStudentDep" class="btn btn-primary btn-sm">
+          <button onclick="seacrhStudentDep()" type="button" class="btn btn-primary btn-sm">
             <i class="fas fa-magnifying-glass"></i> Search
           </button>
         </div>
@@ -560,7 +689,7 @@
               <thead>
                 <tr>
                   <th>S/N</th><th>Reg. No.</th><th>Name</th>
-                  <th>Department</th><th>Email</th><th>Role</th>
+                  <th>Department</th><th>Email</th><th>Role</th><th>Details</th>
                 </tr>
               </thead>
               <tbody id="studentTableBody"></tbody>

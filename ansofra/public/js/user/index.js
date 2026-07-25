@@ -437,5 +437,11 @@
 
   /*  LOGOUT (placeholder)  */
   document.getElementById('logoutBtn').addEventListener('click', () => {
-    console.log('Logout clicked — wire this to your real logout endpoint.');
+    // console.log('Logout clicked — wire this to your real logout endpoint.');
+    // localStorage.clear();
+    localStorage.removeItem('cbt_session_org_code'); 
+    localStorage.removeItem('cbt_session_reg_num'); 
+    localStorage.removeItem('cbt_session_id'); 
+    // localStorage.removeItem('cbt_session'); 
+    window.location.href="/cbt/ansofra/user/dashboard";
   });
