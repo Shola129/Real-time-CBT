@@ -791,7 +791,7 @@ function logout() {
    localStorage.removeItem('cbt_session_reg_num');
    localStorage.removeItem('cbt_session_id');
    localStorage.removeItem('cbt_session_org_code');    
-   window.location.href = '/cbt/ansofra/user/login'; }
+   window.location.href = '/cbt/ansofra/examination/auth'; }
 
 /*    DATE / TIME HELPERS*/
 function buildDatetime(dateStr, timeStr) {

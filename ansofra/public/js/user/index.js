@@ -443,5 +443,5 @@
     localStorage.removeItem('cbt_session_reg_num'); 
     localStorage.removeItem('cbt_session_id'); 
     // localStorage.removeItem('cbt_session'); 
-    window.location.href="/cbt/ansofra/user/dashboard";
+    window.location.href="/cbt/ansofra/user/login";
   });
