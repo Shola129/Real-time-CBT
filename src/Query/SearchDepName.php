@@ -25,7 +25,7 @@ class SearchDepName{
         // ], true);
         
         $newmig = new Migration(null, $this->table);
-        $mig = $newmig->get($where, 0, 1);
+        $mig = $newmig->get($where, 0, 200);
         return $mig;
     }
 }

@@ -19,7 +19,7 @@ class GetDepList{
         ];
 
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->get($where, 0, 50);
+        $mig = $newMig->get($where, 0, 240);
         return $mig;
     }
 }

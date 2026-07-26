@@ -137,6 +137,8 @@ class Platform{
         'exam_time_table_id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY',
         'department VARCHAR(255) NOT NULL',
         'DepartmentCode VARCHAR(255) NOT NULL',
+        'subjectCode VARCHAR(255) NOT NULL',
+        'subject VARCHAR(255) NOT NULL',
         'timeID VARCHAR(255)',
         'date VARCHAR(255) NOT NULL',
         'start VARCHAR(255) NOT NULL',
@@ -144,7 +146,7 @@ class Platform{
         'duration VARCHAR(255) NOT NULL',
         'role VARCHAR(255) NOT NULL',
         "organization_code VARCHAR(255) NOT NULL",
-        "session VARCHAR(255) NOT NULL",
+        // "session VARCHAR(255) NOT NULL",
         "status VARCHAR(255) NOT NULL",
     ];
 
@@ -231,6 +233,10 @@ class Platform{
         "status VARCHAR(255) NOT NULL",
         "startAt VARCHAR(255) NOT NULL",
         "organization_code VARCHAR(255) NOT NULL",
+        "department VARCHAR(255) NOT NULL",
+        // "DepartmentCode VARCHAR(255) NOT NULL",
+        "subject VARCHAR(255) NOT NULL",
+        // "subjectCode VARCHAR(255) NOT NULL"
     ];
 
     // public const QUESTIONDETAILS_TABLE = "question_details";

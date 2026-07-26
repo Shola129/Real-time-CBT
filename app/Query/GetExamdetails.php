@@ -18,6 +18,8 @@ class GetExamdetails{
             'regNum'=>$this->dto->regNum,
             'fullname'=>$this->dto->fullname,
             'organization_code'=>$this->dto->organization_code,
+            'department'=>$this->dto->department,
+            'subject'=>$this->dto->subject
         ];
 
         $newMig1 = new Migration(null, $this->table1);
@@ -60,6 +62,10 @@ class GetExamdetails{
                 'fullname'=>$this->dto->fullname,
                 'startAt'=>date('Y-m-d H:s:i'),
                 'organization_code'=>$this->dto->organization_code,
+                "department"=>$this->dto->department,
+                // "DepartmentCode"=>$this->dto->DepartmentCode,
+                "subject"=>$this->dto->subject,
+                // "subjectCode"=>$this->dto->subjectCode
             ];
 
             $newMig3 = new Migration(null, $this->table1);

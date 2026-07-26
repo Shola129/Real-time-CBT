@@ -1,8 +1,8 @@
 <?php
-namespace NewdichControllerSrc;
+namespace NewdichControllerApp;
 use NewdichDto\AnsofraDto;
 use NewdichMiddleware\Index;
-use NewdichSrc\Command\EditSch;
+use NewdichApp\Query\VerifyUserExam;
 
 $data = json_decode(file_get_contents("php://input"), true);
 $cleanData = [];
@@ -13,9 +13,9 @@ foreach($data as $key=>$val){
 }
 
 $dto = new AnsofraDto($cleanData);
-$logic = new EditSch($dto);
+$logic = new VerifyUserExam($dto);
 $log = $logic->process();
 echo $log;
-exit;
+exit();
 
 ?>

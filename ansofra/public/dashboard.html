@@ -48,6 +48,7 @@
         <div class="profile-avatar" id="sidebar-avatar">--</div>
         <div class="profile-name"   id="sidebar-name">—</div>
         <div class="profile-reg"    id="sidebar-reg">—</div>
+        <div class="profile-reg"    id="sidebar-org-code" hidden>—</div>
         <div id="sidebar-email" hidden>-</div>
         <div class="profile-badge">UTME Candidate</div>
         <div class="profile-details">
@@ -121,7 +122,7 @@
             <span class="arrow">→</span>
           </button>
           <div>
-            <div class="exam-status-badge loading" id="exam-status-badge">
+            <div class="exam-status-badge loading" id="exam-status-badge" style="display: none;">
               <span class="status-dot" style="background:rgba(255,255,255,.3)"></span>
               <span>Loading exam information…</span>
             </div>
@@ -129,7 +130,7 @@
         </div>
 
         <!-- Info cards -->
-        <div class="info-cards">
+        <!-- <div class="info-cards">
           <div class="info-card">
             <div class="ic-icon"><i class="fas fa-id-card"></i></div>
             <div class="ic-label">Registration No.</div>
@@ -153,7 +154,7 @@
             <div class="ic-value" id="next-date" style="font-size:14px;letter-spacing:-.2px">—</div>
             <div class="ic-sub"  id="next-time">—</div>
           </div>
-        </div>
+        </div> -->
 
         <!-- Subjects table -->
         <div class="subjects-section">
@@ -191,8 +192,60 @@
           <div class="question-area" id="question-area"></div>
         </div>
       </div>
+      <!-- ============================================= -->
+<!-- NEW: COURSE TIMETABLE SECTION                 -->
+<!-- ============================================= -->
+<div class="timetable-section">
+    <div class="timetable-header">
+        <div>
+            <h3><i class="fas fa-calendar-alt"></i> Course Timetable</h3>
+            <span class="subtitle">Scheduled courses for your department</span>
+        </div>
+        <div class="timetable-stats">
+            <span class="stat-badge active">
+                <i class="fas fa-play-circle"></i> Active: <span id="active-count">0</span>
+            </span>
+            <span class="stat-badge upcoming">
+                <i class="fas fa-clock"></i> Upcoming: <span id="upcoming-count">0</span>
+            </span>
+            <span class="stat-badge expired">
+                <i class="fas fa-check-circle"></i> Passed: <span id="expired-count">0</span>
+            </span>
+        </div>
+    </div>
+    
+    <div class="table-responsive">
+        <table class="timetable-table">
+           <thead>
+              <tr>
+                  <th>S/N</th>
+                  <th>Course Code</th>
+                  <th>Course Title</th>
+                  <th>Status</th>
+                  <th>Date & Time</th>
+                  <th>Time Remaining</th>
+                  <th>Action</th>  <!-- NEW COLUMN -->
+              </tr>
+          </thead>
+            <tbody id="timetable-body">
+                <tr>
+                    <td colspan="6" style="text-align:center;color:var(--text-m);padding:24px">
+                        Loading course timetables...
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="timetable-footer">
+        <span>Total Courses: <strong id="course-count">0</strong></span>
+        <span class="auto-refresh-hint">
+            <i class="fas fa-sync-alt fa-spin"></i> Auto-refreshes every 60 seconds
+        </span>
+    </div>
+</div>
 
     </div><!-- /main-content -->
+    
   </div><!-- /dash-body -->
 </div><!-- /dashboard-page -->
 
@@ -226,6 +279,7 @@
   </div>
 </div>
 
+
 <!-- SUBMIT MODAL  -->
 <div class="modal-overlay" id="submit-modal">
   <div class="modal">
@@ -240,8 +294,10 @@
     </div>
   </div>
 </div>
+
+
 <link rel="stylesheet" href="../public/css/user/main.css">
 <!-- <script src="../public/js/user/main.js"></script> -->
- <script src="../public/js/user/main.js"></script>
+ <script src="../public/js/user/main.js?vs1.0"></script>
 </body>
 </html>

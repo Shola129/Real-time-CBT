@@ -104,6 +104,8 @@ elseif($url === $docRoot . $rootDir ."/user/dashboard"){
     exit();
 }
 
+
+
 // else($url=== $docRoot.$rootDir ."/" || $url ===$docRoot.$rootDir."/" ."/"){
 
 // }
@@ -440,6 +442,11 @@ elseif($url === $usersArea . "/fetch/result/total"){
     exit();
 }
 
+elseif($url === $usersArea . "/verify/user/examination"){
+    require_once __DIR__ . $appController . "/VerifyUserExamController.php";
+    exit();
+}
+
 elseif($url === $adminArea . "/set/question/no/mark/per/answer"){
     require_once __DIR__ . $srcController . "/SetQuestNoMarAnsController.php";
     exit();
@@ -507,6 +514,11 @@ elseif($url === $usersArea . "/edit/profile"){
 
 elseif($url === $usersArea . "/get/schedule"){
     require_once __DIR__ . $appController . "/GetScheduleController.php";
+    exit();
+}
+
+elseif($url === $usersArea . "/getCourseTimetables"){
+    require_once __DIR__ . $appController . "/GetSubjectTimeTableCOntroller.php";
     exit();
 }
 // /api endpoints

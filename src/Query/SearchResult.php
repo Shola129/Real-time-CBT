@@ -21,7 +21,7 @@ class SearchResult{
             ];
 
             $newMig = new Migration(null, $this->table);
-            $mig = $newMig->get($where, 0, 1);
+            $mig = $newMig->get($where, 0, 200);
             return $mig;
         }elseif($type==="fullname"){
             $where = [
@@ -30,7 +30,7 @@ class SearchResult{
             ];
 
             $newMig = new Migration(null, $this->table);
-            $mig = $newMig->get($where, 0, 1);
+            $mig = $newMig->get($where, 0, 200);
             return $mig;
         }else{
             $where = [
@@ -39,7 +39,7 @@ class SearchResult{
             ];
 
             $newMig = new Migration(null, $this->table);
-            $mig = $newMig->get($where, 0, 1);
+            $mig = $newMig->get($where, 0, 200);
             return $mig;
         }
     }

@@ -125,7 +125,7 @@
       <div class="modal-title"><i class="fas fa-calendar-days"></i> Edit Exam Schedule</div>
       <button type="button" class="modal-close" onclick="closeEditScheduleModal()"><i class="fas fa-times"></i></button>
     </div>
-    <form id="formdata2">
+    <form>
       <div class="modal-body">
         <div class="form-group">
           <label class="form-label">Department</label>
@@ -136,15 +136,22 @@
           <input class="form-control" type="text" id="edit-schedule-department-code"  name="DepartmentCode"/>
         </div>
         <div class="form-group">
+          <label class="form-label">Course Title</label>
+          <input class="form-control" type="text" id="edit-schedule-subject"  name="subject"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Course Code</label>
+          <input class="form-control" type="text" id="edit-schedule-subject-code"  name="subjectCode"/>
+        </div>
+        <!-- <div class="form-group">
             <label class="form-label">Session</label>
-            <!-- <input class="form-control" type="number" id="edit-session" name="session"/> -->
             <select class="form-control" id="edit-session" name="session">
                 <option value="" disabled>Select Session</option>
                 <option value="2026/2027">2026/2027</option>
                 <option value="2027/2028">2027/2028</option>
                 <option value="2028/2029">2028/2029</option>
             </select>
-          </div>
+          </div> -->
         <div class="form-group" hidden>
           <label class="form-label">Time ID</label>
           <span class="form-control" id="timeID"></span>
@@ -174,7 +181,16 @@
             <span class="form-control" id="edit-schedule-status" ></span>
             <!-- <input class="form-control" type="text" id="edit-schedule-status" name="status" hidden/> -->
           </div>
-
+          <div class="form-group">
+            <label class="form-label">Status </label>
+            <select name="" id="edit-schedule-status-2">
+              <option value="" disabled selected>select Status</option>
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+              <option value="Cancel">Cancel</option>
+            </select>
+          </div>
+          <span id="id-sch" hidden></span>
         </div>
       </div>
     </form>
@@ -203,6 +219,14 @@
           <input class="form-control" type="text" id="schedule-department-code" placeholder="e.g. CS" name="DepartmentCode"/>
         </div>
         <div class="form-group">
+          <label class="form-label">Course Title</label>
+          <input class="form-control" type="text" id="schedule-subject" placeholder="e.g. CS" name="subject"/>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Course Code</label>
+          <input class="form-control" type="text" id="schedule-subject-code" placeholder="e.g. CS" name="subjectCode"/>
+        </div>
+        <!-- <div class="form-group">
           <label class="form-label">Session</label>
           <select name="session" id="session"  class="form-control">
             <option value="">Select Session for Exam</option>
@@ -210,8 +234,7 @@
             <option value="2025/2026">2025/2026</option>
             <option value="2026/2027">2026/2027</option>
           </select>
-          <!-- <input class="form-control" type="text" id="schSub" placeholder="e.g. CS" name="DepartmentCode"/> -->
-        </div>
+        </div> -->
         <div class="modal-divider"></div>
         <div class="modal-section-label">Exam Schedule</div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
@@ -1279,6 +1302,7 @@
               <thead>
                 <tr>
                   <th>#</th><th>Department</th><th>Dept. Code</th>
+                  <th>Course Title</th><th>Course Code</th>
                   <th>Time ID</th><th>Date</th><th>Start</th>
                   <th>End</th><th>Duration</th><th>Edit</th><th>Notify</th><th>Status</th><th>Del</th>
                 </tr>
@@ -1297,6 +1321,6 @@
     </div><!-- /content -->
   </div><!-- /main -->
 </div><!-- /app -->
-<script src="../public/js/admin/main.js?v=1.110"></script>
+<script src="../public/js/admin/main.js?v=3.1"></script>
 </body>
 </html>

@@ -20,7 +20,8 @@ class ScheduleExam{
         $where = [
             'department'=>$this->dto->department,
             // 'DepartmentCode'=>$this->dto->DepartmentCode,
-            'organization_code'=>$this->dto->organization_code
+            'organization_code'=>$this->dto->organization_code,
+            'subject'=>$this->dto->subject
         ];
 
         $newMig = new Migration(null, $this->table);
@@ -41,13 +42,17 @@ class ScheduleExam{
                         "organization_code", 
                         "department", 
                         "DepartmentCode", 
-                        "session"
+                        // "session",
+                        "subject",
+                        "subjectCode"
                         ];
                     $val = [
                         $this->dto->organization_code,
                         $this->dto->department,
                         $this->dto->DepartmentCode,
-                        $this->dto->session
+                        // $this->dto->session,
+                        $this->dto->subject,
+                        $this->dto->subjectCode,
                     ];
                     $data = [
                         'organization_code'=>$this->dto->organization_code,
@@ -60,7 +65,9 @@ class ScheduleExam{
                         'timeID'=> "time-ref-". substr($this->dto->otp, 0, 3),
                         'role'=> 'set',
                         'status'=>'inactive',
-                        'session'=>$this->dto->session
+                        // 'session'=>$this->dto->session,
+                        'subjectCode'=>$this->dto->subjectCode,
+                        'subject'=>$this->dto->subject
                     ];
 
                     $newMig3 = new Migration(null, $this->table2);
@@ -75,9 +82,11 @@ class ScheduleExam{
             // }
         }
         else{
+            $course = $this->dto->subject;
+            $department = $this->dto->department;
             return json_encode([
                 "status"=>"failed",
-                "response"=>"Questions are yet to be set for any subject or course under the department"
+                "response"=>"Questions are yet to be set for $course under the $department department"
             ], JSON_PRETTY_PRINT);
             exit();
             // return $mig;

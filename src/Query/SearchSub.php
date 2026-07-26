@@ -19,7 +19,7 @@ class SearchSub{
         ];
 
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->get($where, 0, 1);
+        $mig = $newMig->get($where, 0, 400);
         return $mig;
     }
 }

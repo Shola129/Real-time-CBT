@@ -304,9 +304,10 @@ function openScheduleModal() {
     const startTime =  document.getElementById('schedule-time-start').value.trim();
     const endtime =  document.getElementById('schedule-time-end').value.trim();
     const dura =  document.getElementById('schedule-duration').value.trim();
-    const session = document.getElementById('session').value.trim();
-   
-    if(!depart || !departCode || !date || !startTime || !endtime || !dura){
+    // const session = document.getElementById('session').value.trim();
+    const subject = document.getElementById("schedule-subject").value.trim();
+    const subjectCode = document.getElementById("schedule-subject-code").value.trim();
+    if(!depart || !departCode || !date || !startTime || !endtime || !dura || !subjectCode || !subject){
         alert("All field require");
     }else{
       processScheduledData();
@@ -332,15 +333,18 @@ async function processScheduledData(){
     // console.log(result);
     if(result.status=="success"){
       alert(result.response);
+        displayScheduledTime();
         document.getElementById('schedule-department').value="";
         document.getElementById('schedule-department-code').value="";
         document.getElementById('schedule-date').value="";
         document.getElementById('schedule-time-start').value="";
         document.getElementById('schedule-time-end').value="";
         document.getElementById('schedule-duration').value="";
-        document.getElementById('session').value="";
+        // document.getElementById('session').value="";
+        document.getElementById('schedule-subject').value="";
+        document.getElementById('schedule-subject-code').value="";
         await closeGenericModal('scheduleModal');
-        await displayScheduledTime();
+        // await displayScheduledTime();
         await totalexamSche();
     }
     else{
@@ -366,13 +370,15 @@ async function displayScheduledTime(){
                 <td style="font-weight:600;">${index+1}</td>
                 <td style="font-weight:700;">${response[index].department}</td>
                 <td><span class="badge badge-dept">${response[index].DepartmentCode}</span></td>
+                <td>${response[index].subject}</td>
+                <td>${response[index].subjectCode}</td>
                 <td style="font-size:11px;">${response[index].timeID}</td>
                 <td>${response[index].date}</td>
                 <td>${response[index].start}</td>
                 <td>${response[index].end}</td>
                 <td>${response[index].duration}</td>
                 <td style="display:flex;gap:6px;">
-                  <button class="btn btn-sm btn-info" onclick="openEditScheduleModal('${response[index].timeID}', '${response[index].department}', '${response[index].DepartmentCode}', '${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].session}', '${response[index].organization_code}', '${response[index].date}', '${response[index].status}')">
+                  <button class="btn btn-sm btn-info" onclick="openEditScheduleModal('${response[index].timeID}', '${response[index].department}', '${response[index].DepartmentCode}', '${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].session}', '${response[index].organization_code}', '${response[index].date}', '${response[index].status}', '${response[index].exam_time_table_id}', '${response[index].subject}', '${response[index].subjectCode}')">
                     <i class="fas fa-pen"></i>
                     </button>
                 </td>
@@ -437,12 +443,14 @@ async function seacrhDepSch(){
                 <td style="font-weight:700;">${response[index].department}</td>
                 <td><span class="badge badge-dept">${response[index].DepartmentCode}</span></td>
                 <td style="font-size:11px;">${response[index].timeID}</td>
+                <td>${response[index].subject}</td>
+                <td>${response[index].subjectCode}</td>
                 <td>${response[index].date}</td>
                 <td>${response[index].start}</td>
                 <td>${response[index].end}</td>
                 <td>${response[index].duration}</td>
                 <td style="display:flex;gap:6px;">
-                  <button class="btn btn-sm btn-info" onclick="openEditScheduleModal('${response[index].timeID}', '${response[index].department}', '${response[index].DepartmentCode}', '${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].session}', '${response[index].organization_code}', '${response[index].date}', '${response[index].status}')">
+                  <button class="btn btn-sm btn-info" onclick="openEditScheduleModal('${response[index].timeID}', '${response[index].department}', '${response[index].DepartmentCode}', '${response[index].start}', '${response[index].end}', '${response[index].duration}', '${response[index].session}', '${response[index].organization_code}', '${response[index].date}', '${response[index].status}''${response[index].exam_time_table_id}', '${response[index].subject}', '${response[index].subjectCode}')">
                     <i class="fas fa-pen"></i>
                     </button>
                 </td>
@@ -537,30 +545,73 @@ async function seacrhDepSch(){
   }
 
   async function EditScheduleExam() {
-    const data =  document.getElementById("formdata2");
-     const form = new FormData(data);
-     const org_code = document.getElementById("organization-code").textContent;
+    event.preventDefault();
+    // const data =  document.getElementById("formdata2");
+    //  const form = new FormData(data);
+     const org_code1 = document.getElementById("organization-code").textContent;
      const status = document.getElementById("edit-schedule-status").textContent;
      const timeID = document.getElementById("timeID").textContent;
-     form.append("organization_code", org_code,);
-     form.append("timeID",timeID);
-     form.append("status", status);
-     const obj = {};
-     form.forEach((key, val)=>{
-      obj[key]=val;
-     })
+     const id = document.getElementById('id-sch').textContent;
+    //  form.append("organization_code", org_code,);
+    //  form.append("timeID",timeID);
+    //  form.append("status", status);
+    //  form.append('id-sch',id);
+     const department = document.getElementById("edit-schedule-department").value.trim();
+     const depCode = document.getElementById("edit-schedule-department-code").value.trim();
+     const subject = document.getElementById("edit-schedule-subject").value.trim();
+     const subjectCode = document.getElementById("edit-schedule-subject-code").value.trim();
+     const date  = document.getElementById("edit-schedule-date").value.trim();
+     const start  = document.getElementById("edit-schedule-time-start").value.trim();
+     const end = document.getElementById("edit-schedule-time-end").value.trim();
+    const dur  = document.getElementById("edit-schedule-duration").value.trim();
+    const status1 = document.getElementById("edit-schedule-status-2").value.trim();
+    //  const  = document.getElementById("").value.trim();
+    if( !department||!depCode||!date||!status1||!dur||!start||!end||!subjectCode||!subject||!depCode){
+      alert("All field require");
+    }
+    const e ={
+           department:department, 
+          start:start, 
+          end:end, 
+          date:date, 
+          DepartmentCode:depCode, 
+          // session:session, 
+          duration:dur,
+          organization_code:org_code1,
+          // organization_name:org_name,
+          status:status1,
+          timeID:timeID,
+          subject:subject,
+          subjectCode:subjectCode
+    }
+    // const obj = {};
+    //  form.forEach((key, val)=>{
+    //   obj[key]=val;
+    //  })
+    //  console.log(obj);
     const api = await fetch("/cbt/ansofra/apiadmin/EditSchedule", {
         method:"POST",
-        body:form
+        headers:{"Content-type":"application/json"},
+        body:JSON.stringify(e)
     });
     const result = await api.json();
-    console.log(result);
+          //  console.log(result);
     if(result.status==="success"){
+      alert("Edit done");
       displayScheduledTime();
       document.getElementById('editScheduleModal').style.display="none";
+          department.value = "";
+          depCode.value = "";
+          subject.value = "";
+          subjectCode.value = "";
+          date.value = "";
+          end.value = "";
+          start.value = "";
+          dur.value = "";
+          status.value = "";
     }
     else{
-      alert(result.response);
+      alert("Error occur try again later");
     }
   }
 
@@ -599,7 +650,7 @@ async function seacrhDepSch(){
     }
   }
 
-function openEditScheduleModal(timeid, department, DepartmentCode, start, end, duration, session, organization_code, date, status){
+function openEditScheduleModal(timeid, department, DepartmentCode, start, end, duration, session, organization_code, date, status, id, subject, subCode){
       document.getElementById("timeID").value=timeid;
       document.getElementById('editScheduleModal').classList.add('open');
       document.body.style.overflow = 'hidden';
@@ -609,9 +660,12 @@ function openEditScheduleModal(timeid, department, DepartmentCode, start, end, d
       document.getElementById('edit-schedule-time-start').value=start;
       document.getElementById('edit-schedule-time-end').value=end;
       document.getElementById('edit-schedule-duration').value=duration;
-      document.getElementById('edit-session').value=session;
+      document.getElementById('edit-schedule-subject').value=subject;
+      document.getElementById('edit-schedule-subject-code').value=subCode;
       document.getElementById('timeID').textContent=timeid;
       document.getElementById('edit-schedule-status').textContent=status;
+      document.getElementById('id-sch').textContent=id;
+      // console.log(subject, subCode);
 };
 
 window.closeEditScheduleModal = function() {
@@ -1252,7 +1306,7 @@ document.getElementById("editQuestionSaveBtn").addEventListener("click", async f
         }
 
         if(correctAss!=optionA || correctAss!=optionB || correctAss !==optionC || correctAss !== optionD || correctAss !== optionE){
-           alert("Answer must be in the option");
+           alert("Answer must be in one of the options");
         }
 
         console.log(e);
@@ -1296,7 +1350,11 @@ document.getElementById("saveQuestionBtn").addEventListener("click",()=>{
   const optionD = document.getElementById("optionD").value.trim();
   const optionE = document.getElementById("optionE").value.trim();
   const corr_option = document.getElementById("correctAss").value.trim();
-  if(!dept || !subject || !question || !optionA || !optionB || !optionC || !optionD || !corr_option ){
+  // const e = {
+  //       q:question, c:correctAss, opA:optionA, optB:optionB
+  //     }
+  //     console.log(e);
+  if(!dept || !subject || !question || !optionA || !optionB  ){
       alert("All field required");
   }else{
     processQuestionData();
@@ -1310,36 +1368,63 @@ async function processQuestionData(){
       const sub = document.getElementById("displaySubject").textContent;
       const org_code = document.getElementById("organization-code").textContent;
       const data = document.getElementById("saveQuestion");
-      const form = new FormData(data);
-      form.append('department', dep);
-      form.append('subject', sub);
-      form.append('organization_code', org_code);
-      const obj = {};
-      form.forEach((key, val)=>{
-        obj[key]=val
-      })
-      // console.log(obj);
-      const api = await fetch("/cbt/ansofra/apiadmin/save/questions", {
-          method:"POST",
-          body:form
-      });
-      const result = await api.json();
-      // console.log(result);
-      if(result.status==="success"){
-        alert(result.response);
-        document.getElementById("media").value="";
-        document.getElementById("optionA").value="";
-        document.getElementById("optionB").value="";
-        document.getElementById("optionC").value="";
-        document.getElementById("optionD").value="";
-        document.getElementById("optionE").value="";
-        // document.getElementById("correctAnswer").value="";
-        document.getElementById("correctAss").value="";
-        document.getElementById("questionstext").value="";
+      const media =  document.getElementById("media").value="";
+      const optionA  =     document.getElementById("optionA").value;
+      const optionB  =     document.getElementById("optionB").value;
+      const optionC  =     document.getElementById("optionC").value;
+      const optionD  =     document.getElementById("optionD").value;
+      const optionE  =     document.getElementById("optionE").value;
+          // document.getElementById("correctAnswer").value="";
+      const correctAss  =     document.getElementById("correctAss").value;
+      const question  =     document.getElementById("questionstext").value;
+      // const e = {
+      //   q:question, c:correctAss, opA:optionA, optB:optionB
+      // }
+      // console.log(e);
+      if(!question || !correctAss || !optionA || !optionB ){
+        alert("All field require");
       }
-      else{
-        alert(result.response);
-      }
+      // if(correctAss!=optionA || correctAss!=optionB || correctAss !=optionC || correctAss != optionD || correctAss != optionE){
+      //     const e = {
+      //             q:question, c:correctAss, opA:optionA, optB:optionB, optc:optionC, optD:optionD, optE:optionE
+      //           }
+      //           console.log(e);
+      //      alert("Answer must be in of the options");
+      //   }
+        else{
+            const form = new FormData(data);
+            form.append('department', dep);
+            form.append('subject', sub);
+            form.append('organization_code', org_code);
+            const obj = {};
+            form.forEach((key, val)=>{
+              obj[key]=val
+            })
+            // console.log(obj);
+            const api = await fetch("/cbt/ansofra/apiadmin/save/questions", {
+                method:"POST",
+                body:form
+            });
+            const result = await api.json();
+            // console.log(result);
+            if(result.status==="success"){
+              alert(result.response);
+              document.getElementById("media").value="";
+              document.getElementById("optionA").value="";
+              document.getElementById("optionB").value="";
+              document.getElementById("optionC").value="";
+              document.getElementById("optionD").value="";
+              document.getElementById("optionE").value="";
+              // document.getElementById("correctAnswer").value="";
+              document.getElementById("correctAss").value="";
+              document.getElementById("questionstext").value="";
+            }
+            else{
+              // alert(result.response);
+              alert("error occur try again later");
+            }
+              }
+      
   }
 
    document.getElementById("saveDeptBtn").addEventListener("click", async()=>{
@@ -1354,7 +1439,8 @@ async function processQuestionData(){
     else{
       processDepDataAll();
     }
-  })
+  }
+)
 
    async function processDepDataAll(){
     const data = document.getElementById("departmentform");

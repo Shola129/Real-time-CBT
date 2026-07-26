@@ -14,15 +14,15 @@ class EditSch{
     }
 
     public function process(){
-        $get = [
-            "department"=>$this->dto->department,
-            'organization_code'=>$this->dto->organization_code
+        $where = [
+            "timeID"=>$this->dto->timeID,
+            // 'organization_code'=>$this->dto->organization_code
         ];
 
-        $newMig2 = new Migration(null, $this->table2);
-        $mig2 = $newMig2->get($get, 0, 1);
-        $decodeMig = json_decode($mig2, true);
-        if($decodeMig["status"]==="success"){
+        // $newMig2 = new Migration(null, $this->table2);
+        // $mig2 = $newMig2->get($get, 0, 1);
+        // $decodeMig = json_decode($mig2, true);
+        // if($decodeMig["status"]==="success"){
              $data = [
                 "department"=> $this->dto->department,
                 'DepartmentCode'=> $this->dto->DepartmentCode,
@@ -30,30 +30,37 @@ class EditSch{
                 'start'=> $this->dto->start,
                 'end'=> $this->dto->end,
                 'duration'=> $this->dto->duration,
-                'role'=> 'set',
-                'status'=>$this->dto->status,
-                'session'=>$this->dto->session,
-                'timeID'=>$this->dto->timeID,
-                'organization_code'=>$this->dto->organization_code,
+                'subject'=>$this->dto->subject,
+                'subjectCode'=>$this->dto->subjectCode
+                // 'role'=> 'set',
+                // 'status'=>$this->dto->status,
+                // 'session'=>$this->dto->session,
+                // 'timeID'=>$this->dto->timeID,
+                // 'organization_code'=>$this->dto->organization_code,
             ];
 
-            $where = [
-                'timeID'=>$this->dto->timeID
-            ];
-            // return json_encode([
+            // $where = [
+            //     'timeID'=>$this->dto->timeID
+            // ];
+            // // return json_encode([
             //     "status"=>"failed",
             //     "response"=>$data
             // ], true);
-            $neMig = new Migration(null, $this->table);
-            $mig = $neMig->edit($data, $where);
+            $newMig2 = new Migration(null, $this->table);
+            $mig = $newMig2->edit($data, $where);
             return $mig;
-        }
-        else{
-            return json_encode([
-                'status'=>'failed',
-                'response'=>'Department is found, you can go create that first'
-            ], true);
-        }
+            //  return json_encode([
+            //     'status'=>'failed',
+            //     'response'=>$where
+            //     // 'response'=>'Department is found, you can go create that first'
+            // ], true);
+        // }
+        // else{
+        //     return json_encode([
+        //         'status'=>'failed',
+        //         'response'=>'Department is found, you can go create that first'
+        //     ], true);
+        // }
     }
 }
 

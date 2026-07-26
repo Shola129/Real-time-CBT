@@ -19,7 +19,7 @@ class SchScheduleDep{
         ];
 
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->get($where, 0, 20);
+        $mig = $newMig->get($where, 0, 200);
         return $mig;
      }
 }

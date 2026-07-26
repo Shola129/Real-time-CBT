@@ -1,12 +1,12 @@
 <?php
-namespace NewdichSrc\Query;
+namespace NewdichApp\Query;
+use NewdichDto\AnsofraDto;
 use NewdichSchema\Platform;
 use NewdichSchema\Migration;
-use NewdichDto\AnsofraDto;
 
-class GetAllSub{
+class GetSubjectTimeTable{
     private $dto;
-    private $table = Platform::SETSUBJECTS_TABLE;
+    private $table = Platform::SETEXAMTIME_TABLE;
 
     public function __construct(AnsofraDto $dto){
         $this->dto=$dto;
@@ -14,17 +14,19 @@ class GetAllSub{
 
     public function process(){
         $where = [
-            'department'=>$this->dto->department,
-            // 'departmentID'=>$this->dto->departmentID,
             'organization_code'=>$this->dto->organization_code,
-            'DepartmentCode'=>$this->dto->DepartmentCode
+            'department'=>$this->dto->department,
         ];
 
+
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->get($where, 0, 200);
+        $mig = $newMig->get($where, 0, 100);
         return $mig;
+        // return json_encode([
+        //     "status"=>"fail",
+        //     "respose"=>$where
+        // ], true);
     }
 }
 
 ?>
-

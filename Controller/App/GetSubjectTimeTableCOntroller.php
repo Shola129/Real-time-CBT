@@ -1,21 +1,20 @@
 <?php
-namespace NewdichControllerSrc;
+namespace NewdichControllerApp;
+use NewdichApp\Query\GetSubjectTimeTable;
 use NewdichDto\AnsofraDto;
 use NewdichMiddleware\Index;
-use NewdichSrc\Command\EditSch;
 
 $data = json_decode(file_get_contents("php://input"), true);
-$cleanData = [];
 $mid = new Index();
+$cleanData = [];
 
 foreach($data as $key=>$val){
     $cleanData[$key]=$mid->cleanData($val);
 }
 
 $dto = new AnsofraDto($cleanData);
-$logic = new EditSch($dto);
+$logic = new GetSubjectTimeTable($dto);
 $log = $logic->process();
 echo $log;
-exit;
-
+exit();
 ?>
