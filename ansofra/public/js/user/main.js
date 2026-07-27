@@ -842,7 +842,7 @@ async function finalSubmit() {
 //     currentTotalQuestions
 // );
 
-const score = parseFloat(subjectScore) * parseFloat(currentScorePerQuestion);
+let score = parseFloat(subjectScore) * parseFloat(currentScorePerQuestion);
 const actualScore = parseFloat(totalQuestions) * parseFloat(currentScorePerQuestion);
 const DivActualScore = parseFloat(actualScore) / 2;
 let status ="";
