@@ -583,7 +583,7 @@
     <!-- Body -->
     <div class="std-drawer-body">
 
-      <!-- ── Info Section ───────────────────────── -->
+      <!--  Info Section ───────────────────────── -->
       <div class="std-section-label">
         <i class="fas fa-id-card"></i> Personal Information
       </div>
@@ -616,7 +616,7 @@
 
       <div class="std-divider"></div>
 
-      <!-- ── Academic Section ───────────────────── -->
+      <!--  Academic Section  -->
       <div class="std-section-label">
         <i class="fas fa-graduation-cap"></i> Academic Details
       </div>
@@ -641,7 +641,7 @@
 
       <div class="std-divider"></div>
 
-      <!-- ── Exam Result Section ────────────────── -->
+      <!--  Exam Result Section  -->
       <!-- <div class="std-section-label">
         <i class="fas fa-chart-bar"></i> Exam Result
       </div>
@@ -654,7 +654,7 @@
 
       <div class="std-divider"></div>
 
-      <!-- ── Account Section ────────────────────── -->
+      <!--  Account Section  -->
       <div class="std-section-label">
         <i class="fas fa-clock"></i> Account Information
       </div>
@@ -973,9 +973,165 @@
           </button>
           </div>
         <!-- </div> -->
-        <script>
-         
-        </script>
+        <div class="rsd-backdrop" id="rsdBackdrop" onclick="closeResultDrawer()">
+  <div class="rsd-drawer" id="rsdDrawer" onclick="event.stopPropagation()">
+
+    <!--  Header  -->
+    <div class="rsd-header">
+      <div class="rsd-header-left">
+        <div class="rsd-avatar" id="rsdAvatar">--</div>
+        <div>
+          <div class="rsd-name" id="rsdName">Student Name</div>
+          <div class="rsd-reg"  id="rsdReg">—</div>
+        </div>
+      </div>
+      <button class="rsd-close" onclick="closeResultDrawer()" aria-label="Close drawer">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <!--  Chips  -->
+    <div class="rsd-chips">
+      <span class="rsd-chip rsd-chip-dept" id="rsdChipDept">—</span>
+      <span class="rsd-chip rsd-chip-status" id="rsdChipStatus">—</span>
+    </div>
+
+    <!--  Body  -->
+    <div class="rsd-body">
+
+      <!-- Overall score hero -->
+      <div class="rsd-score-hero" id="rsdScoreHero">
+        <div class="rsd-score-block">
+          <div class="rsd-score-big" id="rsdScoreBig">—</div>
+          <div class="rsd-score-label">Overall Score</div>
+        </div>
+        <div class="rsd-score-meta">
+          <div class="rsd-meta-row">
+            <i class="fas fa-user"></i>
+            <span id="rsdMetaName">—</span>
+          </div>
+          <div class="rsd-meta-row">
+            <i class="fas fa-id-badge"></i>
+            <span id="rsdMetaReg">—</span>
+          </div>
+          <div class="rsd-meta-row">
+            <i class="fas fa-building"></i>
+            <span id="rsdMetaDept">—</span>
+          </div>
+          <div class="rsd-meta-row">
+            <i class="fas fa-calendar-check"></i>
+            <span id="rsdMetaDate">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!--  Summary stat pills ──────────────────── -->
+      <!-- <div class="rsd-summary-row" id="rsdSummaryRow">
+        <div class="rsd-summary-pill">
+          <div class="rsd-sum-val" id="rsdSumSubjects">—</div>
+          <div class="rsd-sum-lbl">Subjects</div>
+        </div>
+        <div class="rsd-summary-pill">
+          <div class="rsd-sum-val" id="rsdSumTotalQ">—</div>
+          <div class="rsd-sum-lbl">Total Questions</div>
+        </div>
+        <div class="rsd-summary-pill">
+          <div class="rsd-sum-val" id="rsdSumCorrect">—</div>
+          <div class="rsd-sum-lbl">Correct Answers</div>
+        </div>
+        <div class="rsd-summary-pill rsd-pill-score">
+          <div class="rsd-sum-val" id="rsdSumPercent">—</div>
+          <div class="rsd-sum-lbl">Percentage</div>
+        </div>
+      </div> -->
+
+      <div class="rsd-divider"></div>
+
+      <!--  Per-subject breakdown  -->
+      <div class="rsd-section-label">
+        <i class="fas fa-list-check"></i> Subject Breakdown
+          <br><br>
+        <table id="">
+              <thead>
+                <tr>
+                  <th>S/N</th>
+                  <th>Subject</th>
+                  <th>Score.</th>
+                  <th>ExpectedScore</th>
+                  <th>CorrectAnswers</th>
+                  <th>Date Submitted</th>
+                  <th>TotalQuestions</th>
+                  <th>ScorePerQuestion</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="display-subject">
+                <tr>
+                  <td>1</td>
+                  <td>John Doe</td>
+                  <td>—</td>
+                  <td>Mathematics</td>
+                  <td></td>
+                  <td>Mar 2026</td>
+                  <td>—</td>
+                  <td>—</td>
+                  <td>—</td>
+                </tr>
+             
+              </tbody>
+            </table>
+      </div>
+
+      <div id="rsdSubjectArea">
+        <div class="rsd-loading">
+          <i class="fas fa-circle-notch fa-spin"></i> Loading subject scores…
+        </div>
+      </div>
+
+      <div class="rsd-divider"></div>
+
+      <!--  Per-question detail (expandable) ────── -->
+      <!-- <div class="rsd-section-label" style="justify-content:space-between;">
+        <span><i class="fas fa-circle-question"></i> Question Attempts</span>
+        <button class="rsd-toggle-btn" id="rsdToggleQBtn" onclick="toggleQuestionDetail()">
+          <i class="fas fa-chevron-down" id="rsdToggleIcon"></i> Show Details
+        </button>
+      </div>
+      <div id="rsdQuestionDetail" style="display:none;">
+        <div class="rsd-loading" id="rsdQLoading">
+          <i class="fas fa-circle-notch fa-spin"></i> Loading question attempts…
+        </div>
+      </div> -->
+
+      <div class="rsd-divider"></div>
+
+      <!--  Publish control ────────────────────── -->
+      <div class="rsd-section-label">
+        <i class="fas fa-paper-plane"></i> Result Publishing
+      </div>
+      <div class="rsd-publish-row">
+        <div class="rsd-publish-status" id="rsdPublishStatus">
+          <i class="fas fa-circle-info"></i> Status: <strong id="rsdPublishLabel">—</strong>
+        </div>
+        <button class="rsd-publish-btn" id="rsdPublishBtn" onclick="publishSingleResult()">
+          <i class="fas fa-paper-plane"></i> Publish Result
+        </button>
+      </div>
+
+    </div><!-- /rsd-body -->
+
+    <!--  Footer  -->
+    <div class="rsd-footer">
+      <button class="rsd-footer-btn rsd-btn-secondary" onclick="closeResultDrawer()">
+        <i class="fas fa-times"></i> Close
+      </button>
+      <!-- <button class="rsd-footer-btn rsd-btn-print" onclick="printStudentResult()">
+        <i class="fas fa-print"></i> Print
+      </button> -->
+    </div>
+
+  </div>
+</div>
         <div class="panel">
           <div class="panel-header">
             <span class="panel-title"><i class="fas fa-chart-simple"></i> Exam Results</span>
@@ -1321,6 +1477,6 @@
     </div><!-- /content -->
   </div><!-- /main -->
 </div><!-- /app -->
-<script src="../public/js/admin/main.js?v=3.1"></script>
+<script src="../public/js/admin/main.js?vs1.0"></script>
 </body>
 </html>

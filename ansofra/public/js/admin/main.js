@@ -1690,17 +1690,30 @@ window.showSection = function(id, navEl){
             const response = result.response;
             let output = "";
             for (let index = 0; index < response.length; index++) {
-              output+=`
-                    <tr>
-                      <td>${index + 1}</td>
-                      <td>${response[index].fullname}</td>
-                      <td>${response[index].regNum}</td>
-                      <td><span class="badge badge-dept">${response[index].department}</span></td>
-                      <td><span class="badge badge-score">${response[index].overAll}</span></td>
-                      <td>${response[index].createdAt}</td>
-                      <td>${response[index].publish}</td>
-                    </tr>
-                `;
+              output += `
+                <tr>
+                  <td>${index + 1}</td>
+                  <td>${response[index].fullname || '—'}</td>
+                  <td>${response[index].regNum   || '—'}</td>
+                  <td><span class="badge badge-dept">${response[index].department || '—'}</span></td>
+                  <td><span class="badge badge-score">${response[index].overAll || '—'}</span></td>
+                  <td>${response[index].createdAt || '—'}</td>
+                  <td>${response[index].publish   || '—'}</td>
+                  <td>
+                    <button class="btn btn-sm btn-info"onclick="openResultDrawer(
+                      '${response[index].regNum}',
+                      '${response[index].department}',
+                      '${response[index].createdAt}',
+                      '${response[index].publish}',
+                      '${response[index].fullname}',
+                      '${response[index].overAll}'
+                      )">
+                      <i class="fas fa-eye"></i> View
+                    </button>
+                  </td>
+                </tr>`;
+    
+    // document.getElementById('display-result').innerHTML = output;
             }
             document.getElementById("display-result").innerHTML=output;
           }
@@ -1878,6 +1891,261 @@ window.addEventListener("load", async ()=>{
   totalActive();
   // await resultsStatCompleted();
 })
+
+
 // document.addEventListener('DOMContentLoaded', async () => {
   
 // });
+
+//  function renderResultsPage() {
+//     // ... existing page-slice logic ...
+//     let output = '';
+//     for (let i = 0; i < pageItems.length; i++) {
+//       const row = pageItems[i];
+
+//       // Escape any single quotes in the row fields
+//       const safe = v => String(v || '').replace(/'/g, "\\'");
+
+//       // Build a JS-safe inline object for the onclick
+//       const rowJson = JSON.stringify(row).replace(/"/g, '&quot;');
+
+//       output += `
+//         <tr>
+//           <td>${startIdx + i + 1}</td>
+//           <td>${fullname || '—'}</td>
+//           <td>${regNum   || '—'}</td>
+//           <td><span class="badge badge-dept">${department || '—'}</span></td>
+//           <td><span class="badge badge-score">${overAll || '—'}</span></td>
+//           <td>${createdAt || '—'}</td>
+//           <td>${publish   || '—'}</td>
+//           <td>
+//             <button
+//               class="btn btn-sm btn-info"
+//               onclick='openResultDrawer(${rowJson})'
+//             >
+//               <i class="fas fa-eye"></i> View
+//             </button>
+//           </td>
+//         </tr>`;
+//     }
+//     document.getElementById('display-result').innerHTML = output;
+//   }
+
+  /*  Publish single result  */
+async function publishSingleResult() {
+  if (!_rsdCurrentRow) return;
+  if (_isPublished(_rsdCurrentRow.publish)) return;
+
+  const btn = document.getElementById('rsdPublishBtn');
+  btn.innerHTML = '<i class="fas fa-spinner fa-pulse"></i> Publishing…';
+  btn.disabled  = true;
+
+  try {
+    const res    = await fetch('/cbt/ansofra/apiadmin/publish/single/result', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ regNum: _rsdCurrentRow.regNum })
+    });
+    const data = await res.json();
+    if (data.status === 'success') {
+      _rsdCurrentRow.publish = 'yes';
+      /* update chip */
+      const chip = document.getElementById('rsdChipStatus');
+      chip.textContent = '✓ Published';
+      chip.className   = 'rsd-chip rsd-chip-status published';
+      /* update label */
+      document.getElementById('rsdPublishLabel').textContent = 'Published';
+      btn.innerHTML   = '<i class="fas fa-check-circle"></i> Already Published';
+      btn.className   = 'rsd-publish-btn already-published';
+      btn.disabled    = false;
+      /* refresh the main result table if it's loaded */
+      if (typeof loadResultsDashboard === 'function') loadResultsDashboard();
+    } else {
+      alert(data.response || 'Could not publish result. Please try again.');
+      btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publish Result';
+      btn.disabled  = false;
+    }
+  } catch (err) {
+    alert('Network error. Please try again.');
+    btn.innerHTML = '<i class="fas fa-paper-plane"></i> Publish Result';
+    btn.disabled  = false;
+  }
+}
+
+function openResultDrawer( regNum, depart, createdAt, publish, fullname, overAll) {
+  // _rsdCurrentRow = row;
+  // _rsdQExpanded  = false;
+  // console.log(regNum, depart, createdAt, publish, fullname, over);
+  // document.getElementById('rsdToggleQBtn').innerHTML =
+  //   '<i class="fas fa-chevron-down" id="rsdToggleIcon"></i> Show Details';
+  // document.getElementById('rsdQuestionDetail').style.display = 'none';
+
+  /* Avatar initials */
+  const initials = (fullname || '??').split(' ')
+    .map(w => w[0]).join('').substring(0, 2).toUpperCase();
+  document.getElementById('rsdAvatar').textContent = initials;
+
+  /* Header */
+  document.getElementById('rsdName').textContent = fullname || '—';
+  document.getElementById('rsdReg').textContent  = regNum   || '—';
+
+  /* Chips */
+  document.getElementById('rsdChipDept').textContent = depart || '—';
+  // console.log(publish);
+  if(publish==="pending"){
+      document.getElementById('rsdChipStatus').textContent= "Unpublished";
+      document.getElementById("rsdPublishLabel").textContent= "Unpublished";
+  }else{
+    document.getElementById('rsdChipStatus').textContent="Published";
+    document.getElementById("rsdPublishLabel").textContent="Published"
+  }
+  // const isPublished = publish;
+  // const chipEl = document.getElementById('rsdChipStatus');
+  // chipEl.textContent = isPublished ? '✓ Published' : '⏳ Pending';
+  // chipEl.className = 'rsd-chip rsd-chip-status ' + (isPublished ? 'published' : 'unpublished');
+
+  /* Score hero */
+  // document.getElementById('rsdScoreBig').textContent   = overAll   || '—';
+  document.getElementById('rsdMetaName').textContent   = fullname  || '—';
+  document.getElementById('rsdMetaReg').textContent    = regNum    || '—';
+  document.getElementById('rsdMetaDept').textContent   = depart|| '—';
+  document.getElementById('rsdMetaDate').textContent   = createdAt || '—';
+
+  /* Publish button state */
+  // const pubBtn = document.getElementById('rsdPublishBtn');
+  // document.getElementById('rsdPublishLabel').textContent = isPublished ? 'Published' : 'Not yet published';
+  // if (isPublished=="Pending") {
+  //   pubBtn.innerHTML = '<i class="fas fa-check-circle"></i> Already Published';
+  //   pubBtn.className = 'rsd-publish-btn already-published';
+  // } else {
+  //   pubBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Publish Result';
+  //   pubBtn.className = 'rsd-publish-btn';
+  // }
+
+  /* Parse subjects */
+  // let subjects = [];
+  // try {
+  //   subjects = JSON.parse(subjectAndScore || '[]');
+  // } catch (_) { subjects = []; }
+
+  /* Summary pills */
+  // const totalQ    = subjects.reduce((s, r) => s + (parseInt(r.totalQuestions)  || 0), 0);
+  // const totalCorr = subjects.reduce((s, r) => s + (parseInt(r.correctAnswers)  || 0), 0);
+  // const pct       = totalQ > 0 ? Math.round((totalCorr / totalQ) * 100) : 0;
+  // document.getElementById('rsdSumSubjects').textContent = subjects.length || '—';
+  // document.getElementById('rsdSumTotalQ').textContent   = totalQ  || '—';
+  // document.getElementById('rsdSumCorrect').textContent  = totalCorr;
+  // document.getElementById('rsdSumPercent').textContent  = totalQ ? pct + '%' : '—';
+
+  /* Render subject cards */
+  _renderSubjectCards(depart, regNum);
+
+  /* Open drawer */
+  document.getElementById('rsdBackdrop').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+/*  Close  */
+function closeResultDrawer() {
+  document.getElementById('rsdBackdrop').classList.remove('open');
+  document.body.style.overflow = '';
+  _rsdCurrentRow = null;
+}
+
+/*  Render subject breakdown cards  */ 
+async function _renderSubjectCards(depart, regNum) {
+  const area = document.getElementById('rsdSubjectArea');
+  const e = {
+    department:depart,
+    regNum:regNum
+  }
+
+  const api = await fetch("/cbt/ansofra/api/get/score/subject", {
+    method:"POST",
+    headers:{"Content-type":"application/json"},
+    body:JSON.stringify(e)
+  });
+
+  const result = await api.json();
+  const response = result.response;
+  if(result.status=="success"){
+      let output = "";
+      for (let index = 0; index < response.length; index++) {
+          output+=`
+            <tr>
+                  <td>${index +1}</td>
+                  <td>${response[index].subject}</td>
+                   <td>${response[index].score}</td>
+                  <td>${response[index].expectedScore}</td>
+                  <td>${response[index].correctAnswers}</td>
+                  <td>${response[index].saveAt}</td>
+                  <td>${response[index].totalQuestions}</td>
+                  <td>${response[index].scorePerQuestion}</td>
+                  <td>${response[index].status}</td>
+                </tr>
+          `;
+      }
+      document.getElementById("display-subject").innerHTML=output;
+
+      totalScore = 0;
+      for (let index = 0; index < response.length; index++) {
+        // const element = array[index];
+        totalScore += parseFloat(response[index].score);
+      }
+
+      document.getElementById("rsdScoreBig").textContent=totalScore;
+  }else{  
+    area.innerHTML = `
+      <div class="rsd-empty">
+        <i class="fas fa-folder-open"></i>
+        No subject breakdown available for this result.
+      </div>`;
+    return;
+  }
+  
+
+//   area.innerHTML = `<div class="rsd-subj-cards">${subjects.map(s => {
+//     const score      = parseFloat(s.score)          || 0;
+//     const correct    = parseInt(s.correctAnswers)    || 0;
+//     const total      = parseInt(s.totalQuestions)    || 0;
+//     const spq        = parseFloat(s.scorePerQuestion || (total > 0 ? score / correct : 0)) || 0;
+//     const expected   = parseFloat(s.expectedScore)   || (total * spq);
+//     const pct        = expected > 0 ? Math.min(Math.round((score / expected) * 100), 100) : 0;
+
+//     return `
+//       <div class="rsd-subj-card">
+//         <div>
+//           <div class="rsd-subj-name">${s.subject || '—'}</div>
+//           <div class="rsd-subj-stats">
+//             <span class="rsd-subj-stat">
+//               <i class="fas fa-circle-question"></i>
+//               ${total} question${total !== 1 ? 's' : ''}
+//             </span>
+//             <span class="rsd-subj-stat">
+//               <i class="fas fa-check"></i>
+//               ${correct} correct
+//             </span>
+//             <span class="rsd-subj-stat">
+//               <i class="fas fa-times"></i>
+//               ${total - correct} wrong
+//             </span>
+//             ${spq > 0 ? `
+//             <span class="rsd-subj-stat">
+//               <i class="fas fa-star-half-stroke"></i>
+//               ${spq} pt/question
+//             </span>` : ''}
+//           </div>
+//           <div class="rsd-progress-wrap">
+//             <div class="rsd-progress-track">
+//               <div class="rsd-progress-fill" style="width:${pct}%"></div>
+//             </div>
+//             <div class="rsd-progress-label">${pct}% of expected score</div>
+//           </div>
+//         </div>
+//         <div class="rsd-subj-score-box">
+//           <div class="rsd-subj-score-num">${score}</div>
+//           <div class="rsd-subj-score-label">score</div>
+//         </div>
+//       </div>`;
+//   }).join('')}</div>`;
+}

@@ -487,10 +487,10 @@ elseif($url === $adminArea . "/get/active/schedule"){
     exit();
 }
 
-// elseif($url === $adminArea . "/edit/department"){
-//     require_once __DIR__ . $srcController . "/EditDepartmentController.php";
-//     exit();
-// }
+elseif($url === $adminArea . "/publish/single/result"){
+    require_once __DIR__ . $srcController . "/PubSingleResultController.php";
+    exit();
+}
 
 elseif($url === $usersArea . "/get/max/q/score/q"){
     require_once __DIR__ . $appController . "/GetQuestNoMarAnsController.php";
@@ -519,6 +519,12 @@ elseif($url === $usersArea . "/get/schedule"){
 
 elseif($url === $usersArea . "/getCourseTimetables"){
     require_once __DIR__ . $appController . "/GetSubjectTimeTableCOntroller.php";
+    exit();
+}
+
+
+elseif($url === $usersArea ."/get/score/subject"){
+    require_once __DIR__ . $appController . "/GetScoreSubjectController.php";
     exit();
 }
 // /api endpoints

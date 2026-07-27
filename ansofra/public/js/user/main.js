@@ -1140,12 +1140,12 @@ function setLaunchError(msg) {
 //   console.log(scorePerQuestion, totalQuestions);
 // }
 
-// =============================================
+
 // NEW: Fetch and validate course timetables
-// =============================================
-// =============================================
+
+
 // FIXED: Fetch and validate course timetables
-// =============================================
+
 async function fetchCourseTimetables(department, org_code) {
     try {
         // Show loading state
@@ -1384,9 +1384,9 @@ async function fetchCourseTimetables(department, org_code) {
 //     }
 // }
 
-// // =============================================
+// 
 // // RENDER TIMETABLE IN HTML
-// // =============================================
+// 
 // function renderTimetable(courses) {
 //     const tbody = document.getElementById('timetable-body');
     
@@ -1448,9 +1448,9 @@ async function fetchCourseTimetables(department, org_code) {
 //     document.getElementById('expired-count').textContent = expired;
 // }
 
-// // =============================================
+// 
 // // UPDATE STATUS BADGES ON DASHBOARD
-// // =============================================
+// 
 function updateStatusBadges(courses) {
     const active = courses.filter(c => c.status === 'active').length;
     const upcoming = courses.filter(c => c.status === 'upcoming').length;
@@ -1461,9 +1461,9 @@ function updateStatusBadges(courses) {
     document.getElementById('expired-count').textContent = expired;
 }
 
-// =============================================
+
 // AUTO-REFRESH TIMETABLE (every 60 seconds)
-// =============================================
+
 function startTimetableAutoRefresh(department, org_code) {
     // Refresh every 60 seconds to update time remaining
     setInterval(() => {
@@ -1471,12 +1471,12 @@ function startTimetableAutoRefresh(department, org_code) {
     }, 60000); // 60,000 milliseconds = 1 minute
 }
 
-// =============================================
+
 // RENDER TIMETABLE IN HTML - WITH START BUTTON
-// =============================================
-// =============================================
+
+
 // RENDER TIMETABLE IN HTML - WITH START BUTTON
-// =============================================
+
 function renderTimetable(courses) {
     const tbody = document.getElementById('timetable-body');
     
@@ -1699,9 +1699,9 @@ function renderTimetable(courses) {
 //     }
 // }
 
-// =============================================
+
 // START EXAM FOR A SPECIFIC COURSE
-// =============================================
+
 // async function startCourseExam(subject, date, startTime, endTime) {
 //     const btn = event?.target?.closest?.('.btn-start-course') || document.querySelector('.btn-start-course');
 //     document.querySelector('.timetable-section').style.display = 'none';
@@ -1814,9 +1814,9 @@ function renderTimetable(courses) {
 //     }
 // }
 
-// =============================================
+
 // START EXAM FOR A SPECIFIC COURSE - FIXED
-// =============================================
+
 async function startCourseExam(subject, date, startTime, endTime, subCode, depart, depCode) {
   const regNum = document.getElementById("sidebar-reg").textContent.trim();
   const org_code = document.getElementById('sidebar-org-code').textContent.trim();
