@@ -19,7 +19,7 @@ class Result{
         ];
 
         $newMig = new Migration(null, $this->table);
-        $mig = $newMig->get(0, 1);
+        $mig = $newMig->get($where,0, 1);
         $decodemig = json_decode($mig, true);
         if($decodemig["status"]==="success"){
             $data = [
