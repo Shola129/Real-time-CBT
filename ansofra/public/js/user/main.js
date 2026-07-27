@@ -843,8 +843,8 @@ async function finalSubmit() {
 // );
 
 let score = parseFloat(subjectScore) * parseFloat(currentScorePerQuestion);
-const actualScore = parseFloat(totalQuestions) * parseFloat(currentScorePerQuestion);
-const DivActualScore = parseFloat(actualScore) / 2;
+let actualScore = parseFloat(totalQuestions) * parseFloat(currentScorePerQuestion);
+let DivActualScore = parseFloat(actualScore) / 2;
 let status ="";
 if(DivActualScore > score){
     status = "Fail";
