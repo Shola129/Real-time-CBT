@@ -492,6 +492,11 @@ elseif($url === $adminArea . "/publish/single/result"){
     exit();
 }
 
+elseif($url === $adminArea . "/resend/user/details"){
+    require_once __DIR__ . $srcController . "/SendDetailController.php";
+    exit();
+}
+
 elseif($url === $usersArea . "/get/max/q/score/q"){
     require_once __DIR__ . $appController . "/GetQuestNoMarAnsController.php";
     exit();
