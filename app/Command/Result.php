@@ -32,7 +32,23 @@ class Result{
             
             $newMig2 = new Migration(null, $this->table);
             $mig2 = $newMig2->edit($data, $where);
-            return $mig2;
+            // return $mig2;
+            $decodemig2 = json_decode($mig2, true);
+            if($decodemig2["status"]==="success"){
+                $where2 = [
+                    'regNum'=>$this->dto->regNum
+                ];
+                $data2 = [
+                    'status'=>'completed',
+                ];
+
+                $newMig2 = new Migration(null, $this->table2);
+                $mig2 = $newMig2->edit($data2, $where2);
+                return $mig2;
+            }
+            else{
+                return $mig;
+            }
         }else{
             $data = [
                 'subject_scores'=>$this->dto->subjectAndScore,

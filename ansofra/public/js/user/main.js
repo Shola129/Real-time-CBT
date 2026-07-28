@@ -71,6 +71,7 @@ async function populateUI() {
     document.getElementById('sb-course').textContent       = p.department || '—';
     document.getElementById('sb-gender').textContent       = p.gender     || '—';
     document.getElementById('sb-phone').textContent        = p.phone      || '—';
+    document.getElementById('sidebar-email').textContent   =p.email;
     // document.getElementById('ic-reg').textContent          = p.regNum;
     document.getElementById('sidebar-org-code').textContent = p.organization_code;
     document.getElementById('hero-name').innerHTML =
@@ -431,11 +432,11 @@ async function launchExam() {
     buildSubjectTabs(department);
     startTimer();
 }
-console.log('📊 Exam Duration:', durationMins, 'minutes');
-console.log('⏱️ Timer Seconds:', examState.timerSeconds);
-console.log('🕐 Start:', startDT.toLocaleString());
-console.log('🕐 End:', endDT.toLocaleString());
-console.log('🕐 Now:', now.toLocaleString());
+// console.log('📊 Exam Duration:', durationMins, 'minutes');
+// console.log('⏱️ Timer Seconds:', examState.timerSeconds);
+// console.log('🕐 Start:', startDT.toLocaleString());
+// console.log('🕐 End:', endDT.toLocaleString());
+// console.log('🕐 Now:', now.toLocaleString());
 /*    BUILD SUBJECT TABS*/
 // async function buildSubjectTabs(department, org_code1) {
 //   const dept = department || document.getElementById('sb-course').textContent.trim();
@@ -843,7 +844,7 @@ async function finalSubmit() {
 // );
 
 let score = parseFloat(subjectScore) * parseFloat(currentScorePerQuestion);
-let actualScore = parseFloat(totalQuestions) * parseFloat(currentScorePerQuestion);
+let actualScore = parseFloat(currentTotalQuestions) * parseFloat(currentScorePerQuestion);
 let DivActualScore = parseFloat(actualScore) / 2;
 let status ="";
 if(DivActualScore > score){
@@ -905,7 +906,7 @@ async function saveResult() {
   const fullname   = document.getElementById('sidebar-name').textContent.trim();
   const department = document.getElementById('sb-course').textContent.trim();
   const email = document.getElementById('sidebar-email').textContent.trim();
-  const e = {regNum:regNum};
+  const e = {regNum:regNum, department:department};
   const api    = await fetch('/cbt/ansofra/api/get/scores/subject', {
     method:  'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -928,6 +929,8 @@ async function saveResult() {
     subjectAndScore: JSON.stringify(response),
     organization_code:org_code,
   };
+
+  // console.log(d);
 
   const seApi = await fetch('/cbt/ansofra/api/save/result', {
     method:  'POST',
@@ -1179,8 +1182,8 @@ async function fetchCourseTimetables(department, org_code) {
         const now = new Date();
         
         // DEBUG: Log the current time to see what's happening
-        console.log('🕐 Current Time:', now.toLocaleString());
-        console.log('📋 Courses Data:', courses);
+        // console.log('🕐 Current Time:', now.toLocaleString());
+        // console.log('📋 Courses Data:', courses);
         
         // Process each course to determine its status
         const processedCourses = courses.map((course, index) => {
@@ -1839,7 +1842,7 @@ async function startCourseExam(subject, date, startTime, endTime, subCode, depar
   const response = result.response;
   // console.log(result);
   if(result.status == "success"){
-    console.log(result);
+    // console.log(result);
     const btn = event?.target?.closest?.('.btn-start-course') || document.querySelector('.btn-start-course');
     if (btn) {
         btn.disabled = true;
@@ -1867,7 +1870,7 @@ async function startCourseExam(subject, date, startTime, endTime, subCode, depar
             body: JSON.stringify(examData),
         });
         const result = await res.json();
-        console.log(result);
+        // console.log(result);
         if (result.status === 'failed' || !result.response?.[0]) {
             alert('No exam data found for this course.');
             if (btn) {
@@ -1881,8 +1884,8 @@ async function startCourseExam(subject, date, startTime, endTime, subCode, depar
         if (result.status === 'fail') {
             alert('You have already attempted or completed the exam.');
             if (btn) {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-play"></i> Start';
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-play"></i> Done';
             }
             return;
         }
@@ -1907,8 +1910,8 @@ async function startCourseExam(subject, date, startTime, endTime, subCode, depar
         if (now >= endDT) {
             alert('This exam has already ended.');
             if (btn) {
-                btn.disabled = false;
-                btn.innerHTML = '<i class="fas fa-play"></i> Start';
+                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-play"></i> Expired';
             }
             return;
         }
@@ -1936,11 +1939,11 @@ async function startCourseExam(subject, date, startTime, endTime, subCode, depar
         }
         
         // Log for debugging
-        console.log('📊 Exam Duration:', durationMins, 'minutes');
-        console.log('⏱️ Timer Seconds:', examState.timerSeconds);
-        console.log('🕐 Start:', startDT.toLocaleString());
-        console.log('🕐 End:', endDT.toLocaleString());
-        console.log('🕐 Now:', now.toLocaleString());
+        // console.log('📊 Exam Duration:', durationMins, 'minutes');
+        // console.log('⏱️ Timer Seconds:', examState.timerSeconds);
+        // console.log('🕐 Start:', startDT.toLocaleString());
+        // console.log('🕐 End:', endDT.toLocaleString());
+        // console.log('🕐 Now:', now.toLocaleString());
         
         // Reset exam state
         examState.currentSubject = 0;
