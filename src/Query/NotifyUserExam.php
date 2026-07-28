@@ -381,10 +381,14 @@ class NotifyUserExam{
                             ], JSON_PRETTY_PRINT);
                          }else{
                                 return json_encode([
-                                    'status'=>'failed',
-                                    'response'=>$mail
-                                    // 'response'=>'error occur at our end here try again later'
+                                    'status'=>'success',
+                                    'response'=>'Information passed successfully'
                                 ], JSON_PRETTY_PRINT);
+                                // return json_encode([
+                                //     'status'=>'failed',
+                                //     'response'=>$mail
+                                //     // 'response'=>'error occur at our end here try again later'
+                                // ], JSON_PRETTY_PRINT);
                             }
                 }else{
                     return $mig3;
