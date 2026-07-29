@@ -15,26 +15,27 @@ class SendDetail{
 
     public function process(){
         $where = [
-            "organization_code"=>$this->dto->organization_code
+            "organization_code"=>$this->dto->organization_code,
+            "email"=>$this->dto->email
         ];
 
         $newMig = new Migration(null, $this->table);
         $mig = $newMig->get($where, 0, 1);
         $decodeMig = json_decode($mig, true);
         if($decodeMig["status"]==="success"){
-            $response = $decodeMig["response"];
-            foreach($response as $row){
-                $email = $row["email"];
-                $fullname = $row["fullname"];
-                $regNum = $row["regNum"];
-                $org_code = $row["organization_code"];
-                $department = $row["department"];
-                $org_name = $row["organization_name"];
-                $gender = $row["gender"];
-                $dob = $row["dob"];
-                $state = $row["state"];
-                $phone = $row["phone"];
-                $date_created = $row["date_created"];        
+            $response = $decodeMig["response"][0];
+            // foreach($response as $row){
+                $email = $response["email"];
+                $fullname = $response["fullname"];
+                $regNum = $response["regNum"];
+                $org_code = $response["organization_code"];
+                $department = $response["department"];
+                $org_name = $response["organization_name"];
+                $gender = $response["gender"];
+                $dob = $response["dob"];
+                $state = $response["state"];
+                $phone = $response["phone"];
+                $date_created = $response["date_created"];        
 
                 $body = "
                     <!DOCTYPE html>
@@ -342,10 +343,6 @@ class SendDetail{
                                                 <span class='detail-value' id='year-display'>$org_code</span>
                                             </div>
                                             <div class='detail-row'>
-                                                <span class='detail-label'>Year of Study:</span>
-                                                <span class='detail-value' id='year-display'>$year</span>
-                                            </div>
-                                            <div class='detail-row'>
                                                 <span class='detail-label'>Date of Birth:</span>
                                                 <span class='detail-value' id='dob-display'>$dob</span>
                                             </div>
@@ -401,7 +398,7 @@ class SendDetail{
                 ";
 
                 $newMail = new Index();
-                $mail = $newMail->sendOtp("Reminder", $body, $email);
+                $mail = $newMail->sendOtp("User Detail", $body, $email);
                 $decodeMail = json_decode($mail, true);
                 if($decodeMail["status"]==="success"){
                         return json_encode([
@@ -415,12 +412,12 @@ class SendDetail{
                             "response"=>"unable to send mail.",
                     ], JSON_PRETTY_PRINT);
                     exit();
-                }
+                // }
             }
         }else{
             return json_encode([
                 "status"=>"failed",
-                "response"=>"user found or yet to register with organization code"
+                "response"=>"Email not found"
             ], JSON_PRETTY_PRINT);
         }
     }

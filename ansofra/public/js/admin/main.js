@@ -546,19 +546,30 @@ async function seacrhDepSch(){
 
   async function ResendUserDetails() {
       const org_code = document.getElementById("organization-code").textContent.trim();
+      const email = document.getElementById("resend-email").value.trim();
+      if(!email || !org_code){
+        alert("Email field must not be empty");
+      }else{
+          const e ={
+        organization_code:org_code,
+        email:email
+      };
+      console.log(e);
       const api = await fetch("/cbt/ansofra/apiadmin/resend/user/details", {
           method:"POST",
           headers:{"Content-type":"application/json"},
-          body:JSON.stringify({organization_code:org_code})
+          body:JSON.stringify(e)
       });
 
       const result = await api.json();
       if(result.status === "success"){
-          alert("All user details have resend successfully");
+          alert("User details have resend successfully");
       }else{
         alert("Error occur");
         console.log(result.response);
       }
+      }
+      
   }
 
   async function EditScheduleExam() {
