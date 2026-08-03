@@ -1,149 +1,330 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>EduTest CBT Admin — Dashboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-<link rel="stylesheet" href="../public/css/admin/main.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EduTest CBT Admin — Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <link rel="stylesheet" href="../public/css/admin/main.css" />
+  </head>
+  <body>
+    <div
+      class="sidebar-overlay"
+      id="sidebarOverlay"
+      onclick="closeSidebar()"
+    ></div>
 
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
-
-<!-- MODAL 1 — Edit Subject -->
-<div class="modal-backdrop" id="editModal3" onclick="if(event.target===this)closeEditModal1()">
-  <form id="editSub">
-    <div class="modal" role="dialog" aria-modal="true">
-      <div class="modal-header">
-        <div class="modal-title"><i class="fas fa-pen-to-square"></i> Edit Course</div>
-        <button type="button" class="modal-close" onclick="closeEditModal1()"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label" for="edit-dept">Department</label>
-          <input class="form-control" type="text" id="edit-dept" name="department" />
+    <!-- MODAL 1 — Edit Subject -->
+    <div
+      class="modal-backdrop"
+      id="editModal3"
+      onclick="if (event.target === this) closeEditModal1();"
+    >
+      <form id="editSub">
+        <div class="modal" role="dialog" aria-modal="true">
+          <div class="modal-header">
+            <div class="modal-title">
+              <i class="fas fa-pen-to-square"></i> Edit Course
+            </div>
+            <button
+              type="button"
+              class="modal-close"
+              onclick="closeEditModal1()"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="form-label" for="edit-dept">Department</label>
+              <input
+                class="form-control"
+                type="text"
+                id="edit-dept"
+                name="department"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="edit-name">Department Code</label>
+              <input
+                class="form-control"
+                type="text"
+                id="edit-deptCode"
+                name="DepartmentCode"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Course Title</label>
+              <input
+                class="form-control"
+                type="text"
+                id="edit-subject"
+                placeholder="e.g. Algorithms"
+                name="subject"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Course Code</label>
+              <input
+                class="form-control"
+                type="text"
+                id="edit-subject-code"
+                placeholder="e.g. Algo405"
+                name="subject"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label"
+                >Total Questions
+                <span style="color: var(--text-faint); font-size: 10px"
+                  >per exam</span
+                ></label
+              >
+              <input
+                class="form-control"
+                type="number"
+                min="1"
+                id="edit-subject-TotalQuestions"
+                placeholder="e.g. 40"
+                name="totalQuestions"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Score Per Question</label>
+              <input
+                class="form-control"
+                type="number"
+                min="0"
+                step="0.5"
+                id="edit-subject-ScorePerQuestion"
+                placeholder="e.g. 2.5"
+                name="scorePerQuestion"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Course ID</label>
+              <input
+                class="form-control"
+                type="text"
+                id="subjectID"
+                placeholder="e.g. Algorithms"
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Organization Code</label>
+              <input class="form-control" type="text" id="org-code" disabled />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Date Created</label>
+              <input
+                class="form-control"
+                type="text"
+                id="edit-subject-date-created"
+                disabled
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-sm"
+              onclick="closeEditModal1()"
+            >
+              <i class="fas fa-times"></i> Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary btn-sm"
+              onclick="saveEditSubject()"
+            >
+              <i class="fas fa-save"></i> Save Changes
+            </button>
+          </div>
         </div>
-        <div class="form-group">
-          <label class="form-label" for="edit-name">Department Code</label>
-          <input class="form-control" type="text" id="edit-deptCode" name="DepartmentCode"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Course Title</label>
-          <input class="form-control" type="text" id="edit-subject" placeholder="e.g. Algorithms" name="subject"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Course Code</label>
-          <input class="form-control" type="text" id="edit-subject-code" placeholder="e.g. Algo405" name="subject"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Total Questions <span style="color:var(--text-faint);font-size:10px;">per exam</span></label>
-          <input class="form-control" type="number" min="1" id="edit-subject-TotalQuestions" placeholder="e.g. 40" name="totalQuestions" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Score Per Question</label>
-          <input class="form-control" type="number" min="0" step="0.5" id="edit-subject-ScorePerQuestion" placeholder="e.g. 2.5" name="scorePerQuestion" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Course ID</label>
-          <input class="form-control" type="text" id="subjectID" placeholder="e.g. Algorithms"  disabled/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Organization Code</label>
-          <input class="form-control" type="text" id="org-code"disabled/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Date Created</label>
-          <input class="form-control" type="text" id="edit-subject-date-created"disabled/>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-sm" onclick="closeEditModal1()"><i class="fas fa-times"></i> Cancel</button>
-        <button type="button" class="btn btn-primary btn-sm" onclick="saveEditSubject()"><i class="fas fa-save"></i> Save Changes</button>
-      </div>
+      </form>
     </div>
-  </form>
-</div>
 
-
-<div class="modal-backdrop" id="editModal2" onclick="if(event.target===this)closeEditModal()">
-  <form id="editSub">
-    <div class="modal" role="dialog" aria-modal="true">
-      <div class="modal-header">
-        <div class="modal-title"><i class="fas fa-pen-to-square"></i> Add Course</div>
-        <button type="button" class="modal-close" onclick="closeEditModal()"><i class="fas fa-times"></i></button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label" for="edit-dept">Department</label>
-          <input class="form-control" type="text" id="add-dept" name="department" disabled />
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="edit-name">Department Code</label>
-          <input class="form-control" type="text" id="add-deptCode"  name="DepartmentCode"disabled/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Course Title</label>
-          <input class="form-control" type="text" id="add-subject" placeholder="e.g. Algorithms" name="subject"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Course Code</label>
-          <input class="form-control" type="text" id="add-subject-code" placeholder="e.g. Algo405" name="subject"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Total Questions <span style="color:var(--text-faint);font-size:10px;">per exam</span></label>
-          <input class="form-control" type="number" min="1" id="add-subject-TotalQuestions" placeholder="e.g. 40" name="totalQuestions" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Score Per Question</label>
-          <input class="form-control" type="number" min="0" step="0.5" id="add-subject-ScorePerQuestion" placeholder="e.g. 2.5" name="scorePerQuestion" />
-        </div>
-        <!-- <div class="form-group">
+    <div
+      class="modal-backdrop"
+      id="editModal2"
+      onclick="if (event.target === this) closeEditModal();"
+    >
+      <form id="editSub">
+        <div class="modal" role="dialog" aria-modal="true">
+          <div class="modal-header">
+            <div class="modal-title">
+              <i class="fas fa-pen-to-square"></i> Add Course
+            </div>
+            <button
+              type="button"
+              class="modal-close"
+              onclick="closeEditModal()"
+            >
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="form-label" for="edit-dept">Department</label>
+              <input
+                class="form-control"
+                type="text"
+                id="add-dept"
+                name="department"
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="edit-name">Department Code</label>
+              <input
+                class="form-control"
+                type="text"
+                id="add-deptCode"
+                name="DepartmentCode"
+                disabled
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Course Title</label>
+              <input
+                class="form-control"
+                type="text"
+                id="add-subject"
+                placeholder="e.g. Algorithms"
+                name="subject"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Course Code</label>
+              <input
+                class="form-control"
+                type="text"
+                id="add-subject-code"
+                placeholder="e.g. Algo405"
+                name="subject"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label"
+                >Total Questions
+                <span style="color: var(--text-faint); font-size: 10px"
+                  >per exam</span
+                ></label
+              >
+              <input
+                class="form-control"
+                type="number"
+                min="1"
+                id="add-subject-TotalQuestions"
+                placeholder="e.g. 40"
+                name="totalQuestions"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Score Per Question</label>
+              <input
+                class="form-control"
+                type="number"
+                min="0"
+                step="0.5"
+                id="add-subject-ScorePerQuestion"
+                placeholder="e.g. 2.5"
+                name="scorePerQuestion"
+              />
+            </div>
+            <!-- <div class="form-group">
           <label class="form-label">Subject ID</label>
           <input class="form-control" type="text" id="add-subjectID" placeholder="e.g. Algorithms"  disabled/>
         </div> -->
-        <!-- <div class="form-group">
+            <!-- <div class="form-group">
           <label class="form-label">Organization Code</label>
           <input class="form-control" type="text" id="org-code"disabled/>
         </div> -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-sm" onclick="closeEditModal()"><i class="fas fa-times"></i> Cancel</button>
-        <button type="button" class="btn btn-primary btn-sm" onclick="saveSubject2()"><i class="fas fa-save"></i> Save Changes</button>
-      </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-sm" onclick="closeEditModal()">
+              <i class="fas fa-times"></i> Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary btn-sm"
+              onclick="saveSubject2()"
+            >
+              <i class="fas fa-save"></i> Save Changes
+            </button>
+          </div>
+        </div>
+      </form>
     </div>
-  </form>
-</div>
 
-<!-- MODAL 2 — Edit Schedule Exam -->
-<div class="modal-backdrop" id="editScheduleModal" onclick="if(event.target===this)closeEditScheduleModal()">
-  <div class="modal" role="dialog" aria-modal="true">
-    <div class="modal-header">
-      <div class="modal-title"><i class="fas fa-calendar-days"></i> Edit Exam Schedule</div>
-      <button type="button" class="modal-close" onclick="closeEditScheduleModal()"><i class="fas fa-times"></i></button>
-    </div>
-    <form>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">Department</label>
-          <input class="form-control" type="text" id="edit-schedule-department"  name="department"/>
+    <!-- MODAL 2 — Edit Schedule Exam -->
+    <div
+      class="modal-backdrop"
+      id="editScheduleModal"
+      onclick="if (event.target === this) closeEditScheduleModal();"
+    >
+      <div class="modal" role="dialog" aria-modal="true">
+        <div class="modal-header">
+          <div class="modal-title">
+            <i class="fas fa-calendar-days"></i> Edit Exam Schedule
+          </div>
+          <button
+            type="button"
+            class="modal-close"
+            onclick="closeEditScheduleModal()"
+          >
+            <i class="fas fa-times"></i>
+          </button>
         </div>
-        <div class="form-group">
-          <label class="form-label">Department Code</label>
-          <input class="form-control" type="text" id="edit-schedule-department-code"  name="DepartmentCode"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Course Title</label>
-          <input class="form-control" type="text" id="edit-schedule-subject"  name="subject"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Course Code</label>
-          <input class="form-control" type="text" id="edit-schedule-subject-code"  name="subjectCode"/>
-        </div>
-        <!-- <div class="form-group">
+        <form>
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="form-label">Department</label>
+              <input
+                class="form-control"
+                type="text"
+                id="edit-schedule-department"
+                name="department"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Department Code</label>
+              <input
+                class="form-control"
+                type="text"
+                id="edit-schedule-department-code"
+                name="DepartmentCode"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Course Title</label>
+              <input
+                class="form-control"
+                type="text"
+                id="edit-schedule-subject"
+                name="subject"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Course Code</label>
+              <input
+                class="form-control"
+                type="text"
+                id="edit-schedule-subject-code"
+                name="subjectCode"
+              />
+            </div>
+            <!-- <div class="form-group">
             <label class="form-label">Session</label>
             <select class="form-control" id="edit-session" name="session">
                 <option value="" disabled>Select Session</option>
@@ -152,81 +333,151 @@
                 <option value="2028/2029">2028/2029</option>
             </select>
           </div> -->
-        <div class="form-group" hidden>
-          <label class="form-label">Time ID</label>
-          <span class="form-control" id="timeID"></span>
-          <!-- <input class="form-control" type="text" id="timeID"  name="timeID" hidden/> -->
-        </div>
-        <div class="modal-divider"></div>
-        <div class="modal-section-label">Exam Schedule</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-          <div class="form-group">
-            <label class="form-label">Date</label>
-            <input class="form-control" type="date" id="edit-schedule-date" name="date" />
+            <div class="form-group" hidden>
+              <label class="form-label">Time ID</label>
+              <span class="form-control" id="timeID"></span>
+              <!-- <input class="form-control" type="text" id="timeID"  name="timeID" hidden/> -->
+            </div>
+            <div class="modal-divider"></div>
+            <div class="modal-section-label">Exam Schedule</div>
+            <div
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px"
+            >
+              <div class="form-group">
+                <label class="form-label">Date</label>
+                <input
+                  class="form-control"
+                  type="date"
+                  id="edit-schedule-date"
+                  name="date"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Start Time</label>
+                <input
+                  class="form-control"
+                  type="time"
+                  id="edit-schedule-time-start"
+                  name="start"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">End Time</label>
+                <input
+                  class="form-control"
+                  type="time"
+                  id="edit-schedule-time-end"
+                  name="end"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Duration (min)</label>
+                <input
+                  class="form-control"
+                  type="text"
+                  id="edit-schedule-duration"
+                  name="duration"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Status </label>
+                <span class="form-control" id="edit-schedule-status"></span>
+                <!-- <input class="form-control" type="text" id="edit-schedule-status" name="status" hidden/> -->
+              </div>
+              <div class="form-group">
+                <label class="form-label">Status </label>
+                <select name="" id="edit-schedule-status-2">
+                  <option value="" disabled selected>select Status</option>
+                  <option value="Active">Active</option>
+                  <option value="Inactive">Inactive</option>
+                  <option value="Cancel">Cancel</option>
+                </select>
+              </div>
+              <span id="id-sch" hidden></span>
+            </div>
           </div>
-          <div class="form-group">
-            <label class="form-label">Start Time</label>
-            <input class="form-control" type="time" id="edit-schedule-time-start" name="start" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">End Time</label>
-            <input class="form-control" type="time" id="edit-schedule-time-end" name="end"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Duration (min)</label>
-            <input class="form-control" type="text" id="edit-schedule-duration" name="duration"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Status </label>
-            <span class="form-control" id="edit-schedule-status" ></span>
-            <!-- <input class="form-control" type="text" id="edit-schedule-status" name="status" hidden/> -->
-          </div>
-          <div class="form-group">
-            <label class="form-label">Status </label>
-            <select name="" id="edit-schedule-status-2">
-              <option value="" disabled selected>select Status</option>
-              <option value="Active">Active</option>
-              <option value="Inactive">Inactive</option>
-              <option value="Cancel">Cancel</option>
-            </select>
-          </div>
-          <span id="id-sch" hidden></span>
+        </form>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-sm"
+            onclick="closeEditScheduleModal()"
+          >
+            <i class="fas fa-times"></i> Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            onclick="EditScheduleExam()"
+          >
+            <i class="fas fa-save"></i> Save Changes
+          </button>
         </div>
       </div>
-    </form>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-sm" onclick="closeEditScheduleModal()"><i class="fas fa-times"></i> Cancel</button>
-      <button type="button" class="btn btn-primary btn-sm" onclick="EditScheduleExam()"><i class="fas fa-save"></i> Save Changes</button>
     </div>
-  </div>
-</div>
 
-<!-- MODAL 3 — Schedule New Exam -->
-<div class="modal-backdrop" id="scheduleModal" onclick="if(event.target===this)closeGenericModal('scheduleModal')">
-  <div class="modal" role="dialog" aria-modal="true">
-    <div class="modal-header">
-      <div class="modal-title"><i class="fas fa-calendar-plus"></i> Schedule New Exam</div>
-      <button type="button" class="modal-close" onclick="closeGenericModal('scheduleModal')"><i class="fas fa-times"></i></button>
-    </div>
-    <form id="formdata">
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">Department</label>
-          <input class="form-control" type="text" id="schedule-department" placeholder="e.g. Computer Science" name="department"/>
+    <!-- MODAL 3 — Schedule New Exam -->
+    <div
+      class="modal-backdrop"
+      id="scheduleModal"
+      onclick="if (event.target === this) closeGenericModal('scheduleModal');"
+    >
+      <div class="modal" role="dialog" aria-modal="true">
+        <div class="modal-header">
+          <div class="modal-title">
+            <i class="fas fa-calendar-plus"></i> Schedule New Exam
+          </div>
+          <button
+            type="button"
+            class="modal-close"
+            onclick="closeGenericModal('scheduleModal')"
+          >
+            <i class="fas fa-times"></i>
+          </button>
         </div>
-        <div class="form-group">
-          <label class="form-label">Department Code</label>
-          <input class="form-control" type="text" id="schedule-department-code" placeholder="e.g. CS" name="DepartmentCode"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Course Title</label>
-          <input class="form-control" type="text" id="schedule-subject" placeholder="e.g. CS" name="subject"/>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Course Code</label>
-          <input class="form-control" type="text" id="schedule-subject-code" placeholder="e.g. CS" name="subjectCode"/>
-        </div>
-        <!-- <div class="form-group">
+        <form id="formdata">
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="form-label">Department</label>
+              <input
+                class="form-control"
+                type="text"
+                id="schedule-department"
+                placeholder="e.g. Computer Science"
+                name="department"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Department Code</label>
+              <input
+                class="form-control"
+                type="text"
+                id="schedule-department-code"
+                placeholder="e.g. CS"
+                name="DepartmentCode"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Course Title</label>
+              <input
+                class="form-control"
+                type="text"
+                id="schedule-subject"
+                placeholder="e.g. CS"
+                name="subject"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Course Code</label>
+              <input
+                class="form-control"
+                type="text"
+                id="schedule-subject-code"
+                placeholder="e.g. CS"
+                name="subjectCode"
+              />
+            </div>
+            <!-- <div class="form-group">
           <label class="form-label">Session</label>
           <select name="session" id="session"  class="form-control">
             <option value="">Select Session for Exam</option>
@@ -235,162 +486,391 @@
             <option value="2026/2027">2026/2027</option>
           </select>
         </div> -->
-        <div class="modal-divider"></div>
-        <div class="modal-section-label">Exam Schedule</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
-          <div class="form-group">
-            <label class="form-label">Date</label>
-            <input class="form-control" type="date" id="schedule-date" name="date" />
+            <div class="modal-divider"></div>
+            <div class="modal-section-label">Exam Schedule</div>
+            <div
+              style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px"
+            >
+              <div class="form-group">
+                <label class="form-label">Date</label>
+                <input
+                  class="form-control"
+                  type="date"
+                  id="schedule-date"
+                  name="date"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Start Time</label>
+                <input
+                  class="form-control"
+                  type="time"
+                  id="schedule-time-start"
+                  name="start"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">End Time</label>
+                <input
+                  class="form-control"
+                  type="time"
+                  id="schedule-time-end"
+                  name="end"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Duration (min)</label>
+                <input
+                  class="form-control"
+                  type="number"
+                  id="schedule-duration"
+                  placeholder="90"
+                  min="1"
+                  name="duration"
+                />
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <label class="form-label">Start Time</label>
-            <input class="form-control" type="time" id="schedule-time-start" name="start" />
-          </div>
-          <div class="form-group">
-            <label class="form-label">End Time</label>
-            <input class="form-control" type="time" id="schedule-time-end" name="end"/>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Duration (min)</label>
-            <input class="form-control" type="number" id="schedule-duration" placeholder="90" min="1" name="duration"/>
-          </div>
+        </form>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-sm"
+            onclick="closeGenericModal('scheduleModal')"
+          >
+            <i class="fas fa-times"></i> Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            onclick="saveScheduledExam()"
+          >
+            <i class="fas fa-calendar-check"></i> Schedule Exam
+          </button>
         </div>
       </div>
-    </form>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-sm" onclick="closeGenericModal('scheduleModal')"><i class="fas fa-times"></i> Cancel</button>
-      <button type="button" class="btn btn-primary btn-sm" onclick="saveScheduledExam()"><i class="fas fa-calendar-check"></i> Schedule Exam</button>
     </div>
-  </div>
-</div>
 
-<!-- MODAL 4 — Add Subject (from Department drawer) -->
-<div class="modal-backdrop" id="addSubjectModal" onclick="if(event.target===this)closeAddSubjectModal()">
-  <div class="modal" role="dialog" aria-modal="true">
-    <div class="modal-header">
-      <div class="modal-title"><i class="fas fa-plus-circle"></i> Add Course</div>
-      <button type="button" class="modal-close" onclick="closeAddSubjectModal()"><i class="fas fa-times"></i></button>
+    <!-- MODAL 4 — Add Subject (from Department drawer) -->
+    <div
+      class="modal-backdrop"
+      id="addSubjectModal"
+      onclick="if (event.target === this) closeAddSubjectModal();"
+    >
+      <div class="modal" role="dialog" aria-modal="true">
+        <div class="modal-header">
+          <div class="modal-title">
+            <i class="fas fa-plus-circle"></i> Add Course
+          </div>
+          <button
+            type="button"
+            class="modal-close"
+            onclick="closeAddSubjectModal()"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <form id="addSubjectForm">
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="form-label"
+                >Department <span class="fixed-field-badge">Fixed</span></label
+              >
+              <input
+                class="form-control"
+                type="text"
+                id="addSub-department"
+                name="department"
+                readonly
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label"
+                >Department Code
+                <span class="fixed-field-badge">Fixed</span></label
+              >
+              <input
+                class="form-control"
+                type="text"
+                id="addSub-departmentCode"
+                name="DepartmentCode"
+                readonly
+              />
+            </div>
+            <div class="modal-divider"></div>
+            <div class="form-group">
+              <label class="form-label">Course Title</label>
+              <input
+                class="form-control"
+                type="text"
+                id="addSub-subjectName"
+                placeholder="e.g. Algorithms"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Course Code</label>
+              <input
+                class="form-control"
+                type="text"
+                id="addSub-subjectCode"
+                placeholder="e.g. Algo204 optional"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label"
+                >Total Questions
+                <span style="color: var(--text-faint); font-size: 10px"
+                  >per exam</span
+                ></label
+              >
+              <input
+                class="form-control"
+                type="number"
+                min="1"
+                id="addSub-TotalQuestions"
+                placeholder="e.g. 40"
+                name="totalQuestions"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Score Per Question</label>
+              <input
+                class="form-control"
+                type="number"
+                min="0"
+                step="0.5"
+                id="addSub-ScorePerQuestion"
+                placeholder="e.g. 2.5"
+                name="scorePerQuestion"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-sm"
+              onclick="closeAddSubjectModal()"
+            >
+              <i class="fas fa-times"></i> Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary btn-sm"
+              id="addSubjectSaveBtn"
+            >
+              <i class="fas fa-save"></i> Save Subject
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-    <form id="addSubjectForm">
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">Department <span class="fixed-field-badge">Fixed</span></label>
-          <input class="form-control" type="text" id="addSub-department" name="department" readonly />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Department Code <span class="fixed-field-badge">Fixed</span></label>
-          <input class="form-control" type="text" id="addSub-departmentCode" name="DepartmentCode" readonly />
-        </div>
-        <div class="modal-divider"></div>
-        <div class="form-group">
-          <label class="form-label">Course Title</label>
-          <input class="form-control" type="text" id="addSub-subjectName" placeholder="e.g. Algorithms" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Course Code</label>
-          <input class="form-control" type="text" id="addSub-subjectCode" placeholder="e.g. Algo204 optional" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Total Questions <span style="color:var(--text-faint);font-size:10px;">per exam</span></label>
-          <input class="form-control" type="number" min="1" id="addSub-TotalQuestions" placeholder="e.g. 40" name="totalQuestions" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Score Per Question</label>
-          <input class="form-control" type="number" min="0" step="0.5" id="addSub-ScorePerQuestion" placeholder="e.g. 2.5" name="scorePerQuestion" />
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-sm" onclick="closeAddSubjectModal()"><i class="fas fa-times"></i> Cancel</button>
-        <button type="button" class="btn btn-primary btn-sm" id="addSubjectSaveBtn"><i class="fas fa-save"></i> Save Subject</button>
-      </div>
-    </form>
-  </div>
-</div>
 
-<!-- MODAL 5 — Edit Question (from Question Sets search) -->
-<div class="modal-backdrop" id="editQuestionModal" onclick="if(event.target===this)closeEditQuestionModal()">
-  <div class="modal" role="dialog" aria-modal="true">
-    <div class="modal-header">
-      <div class="modal-title"><i class="fas fa-pen-to-square"></i> Edit Question</div>
-      <button type="button" class="modal-close" onclick="closeEditQuestionModal()"><i class="fas fa-times"></i></button>
+    <!-- MODAL 5 — Edit Question (from Question Sets search) -->
+    <div
+      class="modal-backdrop"
+      id="editQuestionModal"
+      onclick="if (event.target === this) closeEditQuestionModal();"
+    >
+      <div class="modal" role="dialog" aria-modal="true">
+        <div class="modal-header">
+          <div class="modal-title">
+            <i class="fas fa-pen-to-square"></i> Edit Question
+          </div>
+          <button
+            type="button"
+            class="modal-close"
+            onclick="closeEditQuestionModal()"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <form id="editQuestionForm">
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="form-label"
+                >Department <span class="fixed-field-badge">Fixed</span></label
+              >
+              <input
+                class="form-control"
+                type="text"
+                id="editQ-department"
+                readonly
+                name="department"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label"
+                >Course <span class="fixed-field-badge">Fixed</span></label
+              >
+              <input
+                class="form-control"
+                type="text"
+                id="editQ-subject"
+                readonly
+                name="subject"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label"
+                >Question ID <span class="fixed-field-badge">Fixed</span></label
+              >
+              <input
+                class="form-control"
+                type="text"
+                id="editQ-ID"
+                name="questionID"
+                readonly
+              />
+            </div>
+            <!-- <input type="hidden" id="editQ-questionID" /> -->
+            <div class="modal-divider"></div>
+            <div class="form-group">
+              <label class="form-label">Question Text</label>
+              <textarea
+                class="form-control"
+                id="editQ-questiontext"
+                name="questionstext"
+                placeholder="Type the question here…"
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Answer Options</label>
+            </div>
+            <div class="options-grid">
+              <label class="form-label">opt A</label>
+              <input
+                class="form-control"
+                type="text"
+                id="editQ-optionA"
+                placeholder="Option A"
+                name="optionA"
+              />
+              <label class="form-label">opt B</label>
+              <input
+                class="form-control"
+                type="text"
+                id="editQ-optionB"
+                placeholder="Option B"
+                name="optionB"
+              />
+              <label class="form-label">opt C</label>
+              <input
+                class="form-control"
+                type="text"
+                id="editQ-optionC"
+                placeholder="Option C"
+                name="optionC"
+              />
+              <label class="form-label">opt D</label>
+              <input
+                class="form-control"
+                type="text"
+                id="editQ-optionD"
+                placeholder="Option D"
+                name="optionD"
+              />
+              <label class="form-label">opt E</label>
+              <input
+                class="form-control"
+                type="text"
+                id="editQ-optionE"
+                placeholder="Option E"
+                name="optionE"
+              />
+            </div>
+            <div class="form-group" style="max-width: 260px">
+              <label class="form-label">Correct Answer</label>
+              <input
+                class="form-control"
+                type="text"
+                id="editQ-correctAss"
+                name="correctAss"
+                placeholder="Enter correct answer"
+              />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-sm"
+              onclick="closeEditQuestionModal()"
+            >
+              <i class="fas fa-times"></i> Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary btn-sm"
+              id="editQuestionSaveBtn"
+            >
+              <i class="fas fa-save"></i> Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-    <form id="editQuestionForm">
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label">Department <span class="fixed-field-badge">Fixed</span></label>
-          <input class="form-control" type="text" id="editQ-department" readonly name="department">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Course <span class="fixed-field-badge">Fixed</span></label>
-          <input class="form-control" type="text" id="editQ-subject" readonly name="subject" />
-        </div>
-         <div class="form-group">
-          <label class="form-label">Question ID <span class="fixed-field-badge">Fixed</span></label>
-          <input class="form-control" type="text" id="editQ-ID" name="questionID" readonly />
-        </div>
-        <!-- <input type="hidden" id="editQ-questionID" /> -->
-        <div class="modal-divider"></div>
-        <div class="form-group">
-          <label class="form-label">Question Text</label>
-          <textarea class="form-control" id="editQ-questiontext" name="questionstext" placeholder="Type the question here…"></textarea>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Answer Options</label>
-        </div>
-        <div class="options-grid">
-          <label class="form-label">opt A</label>
-          <input class="form-control" type="text" id="editQ-optionA" placeholder="Option A" name="optionA" />
-           <label class="form-label">opt B</label>          
-          <input class="form-control" type="text" id="editQ-optionB" placeholder="Option B" name="optionB" />
-           <label class="form-label">opt C</label>
-          <input class="form-control" type="text" id="editQ-optionC" placeholder="Option C" name="optionC" />
-          <label class="form-label">opt D</label>          
-          <input class="form-control" type="text" id="editQ-optionD" placeholder="Option D" name="optionD" />
-           <label class="form-label">opt E</label>          
-          <input class="form-control" type="text" id="editQ-optionE" placeholder="Option E" name="optionE" />
-        </div>
-        <div class="form-group" style="max-width:260px;">
-          <label class="form-label">Correct Answer</label>
-          <input class="form-control" type="text" id="editQ-correctAss" name="correctAss" placeholder="Enter correct answer" />
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-sm" onclick="closeEditQuestionModal()"><i class="fas fa-times"></i> Cancel</button>
-        <button type="button" class="btn btn-primary btn-sm" id="editQuestionSaveBtn"><i class="fas fa-save"></i> Save Changes</button>
-      </div>
-    </form>
-  </div>
-</div>
 
-<!-- MODAL 6 — Edit Department -->
-<div class="modal-backdrop" id="editDepartmentModal" onclick="if(event.target===this)closeEditDepartmentModal()">
-  <div class="modal" role="dialog" aria-modal="true">
-    <div class="modal-header">
-      <div class="modal-title"><i class="fas fa-pen-to-square"></i> Edit Department</div>
-      <button type="button" class="modal-close" onclick="closeEditDepartmentModal()"><i class="fas fa-times"></i></button>
-    </div>
-    <form id="editDepartmentForm">
-      <div class="modal-body">
-        <input type="hidden" id="editDept-originalCode" />
-        <div class="form-group">
-          <label class="form-label">Department Name</label>
-          <input class="form-control" type="text" id="editDept-name" placeholder="e.g. Computer Science" />
+    <!-- MODAL 6 — Edit Department -->
+    <div
+      class="modal-backdrop"
+      id="editDepartmentModal"
+      onclick="if (event.target === this) closeEditDepartmentModal();"
+    >
+      <div class="modal" role="dialog" aria-modal="true">
+        <div class="modal-header">
+          <div class="modal-title">
+            <i class="fas fa-pen-to-square"></i> Edit Department
+          </div>
+          <button
+            type="button"
+            class="modal-close"
+            onclick="closeEditDepartmentModal()"
+          >
+            <i class="fas fa-times"></i>
+          </button>
         </div>
-        <div class="form-group">
-          <label class="form-label">Department Code</label>
-          <input class="form-control" type="text" id="editDept-code" placeholder="e.g. CS" style="text-transform:uppercase;" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Head of Department</label>
-          <input class="form-control" type="text" id="editDept-hod" placeholder="e.g. Dr. Smith" />
-        </div>
-        <div class="form-group">
-          <label class="form-label">Description</label>
-          <input class="form-control" type="text" id="editDept-desc" placeholder="Short description (optional)" />
-        </div>
-        <input type="text" id="edit-id" hidden disabled>
-        <div class="modal-divider"></div>
-        <!-- <div class="form-group">
+        <form id="editDepartmentForm">
+          <div class="modal-body">
+            <input type="hidden" id="editDept-originalCode" />
+            <div class="form-group">
+              <label class="form-label">Department Name</label>
+              <input
+                class="form-control"
+                type="text"
+                id="editDept-name"
+                placeholder="e.g. Computer Science"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Department Code</label>
+              <input
+                class="form-control"
+                type="text"
+                id="editDept-code"
+                placeholder="e.g. CS"
+                style="text-transform: uppercase"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Head of Department</label>
+              <input
+                class="form-control"
+                type="text"
+                id="editDept-hod"
+                placeholder="e.g. Dr. Smith"
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Description</label>
+              <input
+                class="form-control"
+                type="text"
+                id="editDept-desc"
+                placeholder="Short description (optional)"
+              />
+            </div>
+            <input type="text" id="edit-id" hidden disabled />
+            <div class="modal-divider"></div>
+            <!-- <div class="form-group">
           <label class="form-label">Total Questions <span style="color:var(--text-faint);font-size:10px;">per exam</span></label>
           <input class="form-control" type="number" min="1" id="editDept-totalQuestions" placeholder="e.g. 40" />
         </div>
@@ -398,251 +878,328 @@
           <label class="form-label">Score Per Question</label>
           <input class="form-control" type="number" min="0" step="0.5" id="editDept-scorePerQuestion" placeholder="e.g. 2.5" />
         </div> -->
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-sm" onclick="closeEditDepartmentModal()"><i class="fas fa-times"></i> Cancel</button>
-        <button type="button" class="btn btn-primary btn-sm" onclick="editDepartmentSaveBtn()" ><i class="fas fa-save"></i> Save Changes</button>
-      </div>
-    </form>
-  </div>
-</div>
-
-<!-- Subjects Drawer -->
-<div class="dsb-drawer-backdrop" id="dsbDrawerBackdrop" onclick="closeDsbDrawer()">
-  <div class="dsb-drawer" onclick="event.stopPropagation()">
-    <div class="dsb-drawer-header">
-      <div class="dsb-drawer-title" id="dsbDrawerTitle"></div>
-      <div class="dsb-drawer-header-actions">
-        <button type="button" class="dsb-drawer-add-btn" id="dsbAddSubjectBtn" onclick="openAddSubject2()">
-          <i class="fas fa-plus"></i> Add Course
-        </button>
-        <button type="button" class="modal-close" onclick="closeDsbDrawer()"><i class="fas fa-times"></i></button>
-      </div>
-    </div>
-    <div class="dsb-drawer-body" id="dsbDrawerBody"></div>
-  </div>
-</div>
-
-
-<div class="app">
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-icon"><i class="fas fa-pen-nib"></i></div>
-      <div class="brand-text">
-        <div class="brand-name">EduTest CBT</div>
-        <div class="brand-sub">Admin Portal</div>
-      </div>
-      <button class="sidebar-close" onclick="closeSidebar()"><i class="fas fa-times"></i></button>
-    </div>
-
-    <nav class="sidebar-nav">
-      <div class="nav-item active" onclick="showSection('dashboard',this)">
-        <i class="fas fa-chart-pie ni"></i><span class="nl">Dashboard</span>
-      </div>
-      <div class="nav-item" onclick="showSection('students',this)">
-        <i class="fas fa-users ni"></i><span class="nl">Students</span>
-      </div>
-      <div class="nav-item" onclick="showSection('subjects',this)">
-        <i class="fas fa-book-open ni"></i><span class="nl">Courses</span>
-      </div>
-      <div class="nav-item" onclick="showSection('questions',this)">
-        <i class="fas fa-circle-question ni"></i><span class="nl">Questions</span>
-      </div>
-      <div class="nav-item" onclick="showSection('results',this)">
-        <i class="fas fa-file-lines ni"></i><span class="nl">Results</span>
-      </div>
-      <div class="nav-item" onclick="showSection('departments',this)">
-        <i class="fas fa-building ni"></i><span class="nl">Departments</span>
-      </div>
-      <div class="nav-item" onclick="showSection('schedule',this)">
-        <i class="fas fa-calendar-days ni"></i><span class="nl">Schedule Exam</span>
-      </div>
-    </nav>
-
-    <div class="sidebar-footer">
-      &copy; <span id="current-time"></span> Julius Adeleke.<br>
-      All rights reserved. 
-      <!-- &nbsp;<a href="https://www.shola.site">Portfolio</a> -->
-    </div>
-    <!-- keep sidebar-footer1 in DOM for JS safety, hidden via CSS -->
-    <div class="sidebar-footer1"></div>
-  </aside>
-
-  <script>document.getElementById("current-time").textContent=new Date().getFullYear();</script>
-
-  <!-- MAIN -->
-  <div class="main">
-
-    <!-- TOPBAR -->
-    <div class="topbar">
-      <div class="topbar-left">
-        <button class="hamburger" onclick="openSidebar()">
-          <span></span><span></span><span></span>
-        </button>
-        <span class="page-title" id="pageTitle">Dashboard</span>
-        <span class="topbar-badge" id="topbarBadge">Overview</span>
-      </div>
-      <div class="topbar-right">
-        <button class="btn btn-sm" style="color:var(--text-muted);background-color: red; color:#fff;" onclick="logout()">
-          <!-- <i class="fas fa-bell"></i> -->
-           logout
-        </button>
-        <button class="btn btn-sm btn-primary">
-          <i class="fas fa-user-circle"></i><span class="btn-label">Admin</span>
-        </button>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-sm"
+              onclick="closeEditDepartmentModal()"
+            >
+              <i class="fas fa-times"></i> Cancel
+            </button>
+            <button
+              type="button"
+              class="btn btn-primary btn-sm"
+              onclick="editDepartmentSaveBtn()"
+            >
+              <i class="fas fa-save"></i> Save Changes
+            </button>
+          </div>
+        </form>
       </div>
     </div>
 
-    <!-- CONTENT -->
-    <div class="content">
-
-      <!--  DASHBOARD  -->
-      <div id="dashboard" class="page active">
-        <div class="stat-grid">
-          <!-- Profile Card -->
-          <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-user-shield"></i></div>
-            <div class="stat-value">Personal Info</div>
-            <div><strong>Org. Name:</strong>  <span id="organization-name"></span></div>
-            <div><strong>Org. Code:</strong>  <span id="organization-code"></span></div>
-            <div><strong>ID:</strong> <span id="profile-id">ADMIN/00CBT/123456</span></div>
-            <div><strong>Name:</strong> <span id="profile-name">John Fin</span></div>
-            <div><strong>Email:</strong> <span id="profile-email">johnfin@gmail.com</span></div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-graduation-cap"></i></div>
-            <div class="stat-value" id="stat-students"></div>
-            <div class="stat-label" id="total-stu">Total Students</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-book"></i></div>
-            <div class="stat-value" id="stat-subjects">—</div>
-            <div class="stat-label" id="total-sub">Subjects</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-building-columns"></i></div>
-            <div class="stat-value" id="stat-depts">—</div>
-            <div class="stat-label" id="total-dep">Departments</div>
+    <!-- Subjects Drawer -->
+    <div
+      class="dsb-drawer-backdrop"
+      id="dsbDrawerBackdrop"
+      onclick="closeDsbDrawer()"
+    >
+      <div class="dsb-drawer" onclick="event.stopPropagation()">
+        <div class="dsb-drawer-header">
+          <div class="dsb-drawer-title" id="dsbDrawerTitle"></div>
+          <div class="dsb-drawer-header-actions">
+            <button
+              type="button"
+              class="dsb-drawer-add-btn"
+              id="dsbAddSubjectBtn"
+              onclick="openAddSubject2()"
+            >
+              <i class="fas fa-plus"></i> Add Course
+            </button>
+            <button
+              type="button"
+              class="modal-close"
+              onclick="closeDsbDrawer()"
+            >
+              <i class="fas fa-times"></i>
+            </button>
           </div>
         </div>
-
-        <div class="enrolment-bar">
-          <i class="fas fa-clock"></i>
-          Last Login: <strong id="last-login">—</strong>
-          &nbsp;&nbsp;·&nbsp;&nbsp;
-          <i class="fas fa-eye"></i>
-          Last seen: <strong id="last-seen-display">—</strong>
-        </div>
-
-        <div class="section-header">
-          <div class="section-title"><i class="fas fa-images"></i> Gallery</div>
-        </div>
-        <div id="dashDeptGrid" class="gallery-grid">
-          <div class="gallery-card">
-            <img src="../public/assets/pic.jpeg" alt="">
-          </div>
-          <div class="gallery-card">
-            <img src="../public/assets/pic2.jpeg" alt="">
-          </div>
-          <div class="gallery-card">
-            <img src="../public/assets/download.webp" alt="">
-          </div>
-          <div class="gallery-card">
-            <img src="../public/assets/pic3.jpeg" alt="">
-          </div>
-        </div>
+        <div class="dsb-drawer-body" id="dsbDrawerBody"></div>
       </div>
-<!-- ══════════════════════════════════════════════════
+    </div>
+
+    <div class="app">
+      <!-- SIDEBAR -->
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-brand">
+          <div class="brand-icon"><i class="fas fa-pen-nib"></i></div>
+          <div class="brand-text">
+            <div class="brand-name">EduTest CBT</div>
+            <div class="brand-sub">Admin Portal</div>
+          </div>
+          <button class="sidebar-close" onclick="closeSidebar()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <nav class="sidebar-nav">
+          <div class="nav-item active" onclick="showSection('dashboard', this)">
+            <i class="fas fa-chart-pie ni"></i><span class="nl">Dashboard</span>
+          </div>
+          <div class="nav-item" onclick="showSection('students', this)">
+            <i class="fas fa-users ni"></i><span class="nl">Students</span>
+          </div>
+          <div class="nav-item" onclick="showSection('subjects', this)">
+            <i class="fas fa-book-open ni"></i><span class="nl">Courses</span>
+          </div>
+          <div class="nav-item" onclick="showSection('questions', this)">
+            <i class="fas fa-circle-question ni"></i
+            ><span class="nl">Questions</span>
+          </div>
+          <div class="nav-item" onclick="showSection('results', this)">
+            <i class="fas fa-file-lines ni"></i><span class="nl">Results</span>
+          </div>
+          <div class="nav-item" onclick="showSection('departments', this)">
+            <i class="fas fa-building ni"></i
+            ><span class="nl">Departments</span>
+          </div>
+          <div class="nav-item" onclick="showSection('schedule', this)">
+            <i class="fas fa-calendar-days ni"></i
+            ><span class="nl">Schedule Exam</span>
+          </div>
+        </nav>
+
+        <div class="sidebar-footer">
+          &copy; <span id="current-time"></span> Shola Dnaiel Ekundayo.<br />
+          All rights reserved. &nbsp;<a href="https://www.shola.site"
+            >Portfolio</a
+          >
+        </div>
+        <!-- keep sidebar-footer1 in DOM for JS safety, hidden via CSS -->
+        <div class="sidebar-footer1"></div>
+      </aside>
+
+      <script>
+        document.getElementById("current-time").textContent =
+          new Date().getFullYear();
+      </script>
+
+      <!-- MAIN -->
+      <div class="main">
+        <!-- TOPBAR -->
+        <div class="topbar">
+          <div class="topbar-left">
+            <button class="hamburger" onclick="openSidebar()">
+              <span></span><span></span><span></span>
+            </button>
+            <span class="page-title" id="pageTitle">Dashboard</span>
+            <span class="topbar-badge" id="topbarBadge">Overview</span>
+          </div>
+          <div class="topbar-right">
+            <button
+              class="btn btn-sm"
+              style="
+                color: var(--text-muted);
+                background-color: red;
+                color: #fff;
+              "
+              onclick="logout()"
+            >
+              <!-- <i class="fas fa-bell"></i> -->
+              logout
+            </button>
+            <button class="btn btn-sm btn-primary">
+              <i class="fas fa-user-circle"></i
+              ><span class="btn-label">Admin</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CONTENT -->
+        <div class="content">
+          <!--  DASHBOARD  -->
+          <div id="dashboard" class="page active">
+            <div class="stat-grid">
+              <!-- Profile Card -->
+              <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-user-shield"></i></div>
+                <div class="stat-value">Personal Info</div>
+                <div>
+                  <strong>Org. Name:</strong>
+                  <span id="organization-name"></span>
+                </div>
+                <div>
+                  <strong>Org. Code:</strong>
+                  <span id="organization-code"></span>
+                </div>
+                <div>
+                  <strong>ID:</strong>
+                  <span id="profile-id">ADMIN/00CBT/123456</span>
+                </div>
+                <div>
+                  <strong>Name:</strong> <span id="profile-name">John Fin</span>
+                </div>
+                <div>
+                  <strong>Email:</strong>
+                  <span id="profile-email">johnfin@gmail.com</span>
+                </div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="stat-value" id="stat-students"></div>
+                <div class="stat-label" id="total-stu">Total Students</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon"><i class="fas fa-book"></i></div>
+                <div class="stat-value" id="stat-subjects">—</div>
+                <div class="stat-label" id="total-sub">Subjects</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-building-columns"></i>
+                </div>
+                <div class="stat-value" id="stat-depts">—</div>
+                <div class="stat-label" id="total-dep">Departments</div>
+              </div>
+            </div>
+
+            <div class="enrolment-bar">
+              <i class="fas fa-clock"></i>
+              Last Login: <strong id="last-login">—</strong>
+              &nbsp;&nbsp;·&nbsp;&nbsp;
+              <i class="fas fa-eye"></i>
+              Last seen: <strong id="last-seen-display">—</strong>
+            </div>
+
+            <div class="section-header">
+              <div class="section-title">
+                <i class="fas fa-images"></i> Gallery
+              </div>
+            </div>
+            <div id="dashDeptGrid" class="gallery-grid">
+              <div class="gallery-card">
+                <img src="../public/assets/pic.jpeg" alt="" />
+              </div>
+              <div class="gallery-card">
+                <img src="../public/assets/pic2.jpeg" alt="" />
+              </div>
+              <div class="gallery-card">
+                <img src="../public/assets/download.webp" alt="" />
+              </div>
+              <div class="gallery-card">
+                <img src="../public/assets/pic3.jpeg" alt="" />
+              </div>
+            </div>
+          </div>
+          <!-- ══════════════════════════════════════════════════
      STUDENT DETAILS DRAWER  (Slide-in from right)
 ══════════════════════════════════════════════════ -->
-<div class="std-drawer-backdrop" id="stdDrawerBackdrop" onclick="closeStudentDrawer()">
-  <div class="std-drawer" id="stdDrawer" onclick="event.stopPropagation()">
+          <div
+            class="std-drawer-backdrop"
+            id="stdDrawerBackdrop"
+            onclick="closeStudentDrawer()"
+          >
+            <div
+              class="std-drawer"
+              id="stdDrawer"
+              onclick="event.stopPropagation()"
+            >
+              <!-- Header -->
+              <div class="std-drawer-header">
+                <div class="std-drawer-header-left">
+                  <div class="std-avatar" id="stdAvatar">--</div>
+                  <div>
+                    <div class="std-drawer-title" id="stdDrawerName">
+                      Student Name
+                    </div>
+                    <div class="std-drawer-reg" id="stdDrawerReg">—</div>
+                  </div>
+                </div>
+                <button
+                  class="std-drawer-close"
+                  onclick="closeStudentDrawer()"
+                  aria-label="Close"
+                >
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
 
-    <!-- Header -->
-    <div class="std-drawer-header">
-      <div class="std-drawer-header-left">
-        <div class="std-avatar" id="stdAvatar">--</div>
-        <div>
-          <div class="std-drawer-title" id="stdDrawerName">Student Name</div>
-          <div class="std-drawer-reg"   id="stdDrawerReg">—</div>
-        </div>
-      </div>
-      <button class="std-drawer-close" onclick="closeStudentDrawer()" aria-label="Close">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
+              <!-- Status bar -->
+              <div class="std-status-bar" id="stdStatusBar">
+                <span class="std-status-chip std-chip-role" id="stdChipRole"
+                  >—</span
+                >
+                <span class="std-status-chip std-chip-dept" id="stdChipDept"
+                  >—</span
+                >
+              </div>
 
-    <!-- Status bar -->
-    <div class="std-status-bar" id="stdStatusBar">
-      <span class="std-status-chip std-chip-role" id="stdChipRole">—</span>
-      <span class="std-status-chip std-chip-dept" id="stdChipDept">—</span>
-    </div>
+              <!-- Body -->
+              <div class="std-drawer-body">
+                <!--  Info Section ───────────────────────── -->
+                <div class="std-section-label">
+                  <i class="fas fa-id-card"></i> Personal Information
+                </div>
+                <div class="std-info-grid">
+                  <div class="std-info-item">
+                    <div class="std-info-label">Full Name</div>
+                    <div class="std-info-val" id="stdInfoFullname">—</div>
+                  </div>
+                  <div class="std-info-item">
+                    <div class="std-info-label">Email Address</div>
+                    <div class="std-info-val" id="stdInfoEmail">—</div>
+                  </div>
+                  <div class="std-info-item">
+                    <div class="std-info-label">Phone Number</div>
+                    <div class="std-info-val" id="stdInfoPhone">—</div>
+                  </div>
+                  <div class="std-info-item">
+                    <div class="std-info-label">Gender</div>
+                    <div class="std-info-val" id="stdInfoGender">—</div>
+                  </div>
+                  <div class="std-info-item">
+                    <div class="std-info-label">Date of Birth</div>
+                    <div class="std-info-val" id="stdInfoDob">—</div>
+                  </div>
+                  <div class="std-info-item">
+                    <div class="std-info-label">State of Origin</div>
+                    <div class="std-info-val" id="stdInfoState">—</div>
+                  </div>
+                </div>
 
-    <!-- Body -->
-    <div class="std-drawer-body">
+                <div class="std-divider"></div>
 
-      <!--  Info Section ───────────────────────── -->
-      <div class="std-section-label">
-        <i class="fas fa-id-card"></i> Personal Information
-      </div>
-      <div class="std-info-grid">
-        <div class="std-info-item">
-          <div class="std-info-label">Full Name</div>
-          <div class="std-info-val" id="stdInfoFullname">—</div>
-        </div>
-        <div class="std-info-item">
-          <div class="std-info-label">Email Address</div>
-          <div class="std-info-val" id="stdInfoEmail">—</div>
-        </div>
-        <div class="std-info-item">
-          <div class="std-info-label">Phone Number</div>
-          <div class="std-info-val" id="stdInfoPhone">—</div>
-        </div>
-        <div class="std-info-item">
-          <div class="std-info-label">Gender</div>
-          <div class="std-info-val" id="stdInfoGender">—</div>
-        </div>
-        <div class="std-info-item">
-          <div class="std-info-label">Date of Birth</div>
-          <div class="std-info-val" id="stdInfoDob">—</div>
-        </div>
-        <div class="std-info-item">
-          <div class="std-info-label">State of Origin</div>
-          <div class="std-info-val" id="stdInfoState">—</div>
-        </div>
-      </div>
+                <!--  Academic Section  -->
+                <div class="std-section-label">
+                  <i class="fas fa-graduation-cap"></i> Academic Details
+                </div>
+                <div class="std-info-grid">
+                  <div class="std-info-item">
+                    <div class="std-info-label">Registration No.</div>
+                    <div class="std-info-val mono" id="stdInfoRegNum">—</div>
+                  </div>
+                  <div class="std-info-item">
+                    <div class="std-info-label">Department</div>
+                    <div class="std-info-val" id="stdInfoDept">—</div>
+                  </div>
+                  <div class="std-info-item">
+                    <div class="std-info-label">Examination Year</div>
+                    <div class="std-info-val" id="stdInfoYear">—</div>
+                  </div>
+                  <div class="std-info-item">
+                    <div class="std-info-label">Role</div>
+                    <div class="std-info-val" id="stdInfoRole">—</div>
+                  </div>
+                </div>
 
-      <div class="std-divider"></div>
+                <div class="std-divider"></div>
 
-      <!--  Academic Section  -->
-      <div class="std-section-label">
-        <i class="fas fa-graduation-cap"></i> Academic Details
-      </div>
-      <div class="std-info-grid">
-        <div class="std-info-item">
-          <div class="std-info-label">Registration No.</div>
-          <div class="std-info-val mono" id="stdInfoRegNum">—</div>
-        </div>
-        <div class="std-info-item">
-          <div class="std-info-label">Department</div>
-          <div class="std-info-val" id="stdInfoDept">—</div>
-        </div>
-        <div class="std-info-item">
-          <div class="std-info-label">Examination Year</div>
-          <div class="std-info-val" id="stdInfoYear">—</div>
-        </div>
-        <div class="std-info-item">
-          <div class="std-info-label">Role</div>
-          <div class="std-info-val" id="stdInfoRole">—</div>
-        </div>
-      </div>
-
-      <div class="std-divider"></div>
-
-      <!--  Exam Result Section  -->
-      <!-- <div class="std-section-label">
+                <!--  Exam Result Section  -->
+                <!-- <div class="std-section-label">
         <i class="fas fa-chart-bar"></i> Exam Result
       </div>
       <div id="stdResultArea">
@@ -652,114 +1209,195 @@
         </div>
       </div> -->
 
-      <div class="std-divider"></div>
+                <div class="std-divider"></div>
 
-      <!--  Account Section  -->
-      <div class="std-section-label">
-        <i class="fas fa-clock"></i> Account Information
-      </div>
-      <div class="std-info-grid">
-        <div class="std-info-item">
-          <div class="std-info-label">Date Created</div>
-          <div class="std-info-val" id="stdInfoCreated">—</div>
-        </div>
-        <!-- <div class="std-info-item">
+                <!--  Account Section  -->
+                <div class="std-section-label">
+                  <i class="fas fa-clock"></i> Account Information
+                </div>
+                <div class="std-info-grid">
+                  <div class="std-info-item">
+                    <div class="std-info-label">Date Created</div>
+                    <div class="std-info-val" id="stdInfoCreated">—</div>
+                  </div>
+                  <!-- <div class="std-info-item">
           <div class="std-info-label">Last Seen</div>
           <div class="std-info-val" id="stdInfoLastSeen">—</div>
         </div> -->
-      </div>
+                </div>
+              </div>
+              <!-- /std-drawer-body -->
 
-    </div><!-- /std-drawer-body -->
-
-    <!-- Footer actions -->
-    <div class="std-drawer-footer">
-      <button class="std-footer-btn std-btn-secondary" onclick="closeStudentDrawer()">
-        <i class="fas fa-times"></i> Close
-      </button>
-      <!-- <button class="std-footer-btn std-btn-danger" id="stdDeleteBtn" onclick="deleteStudent()">
+              <!-- Footer actions -->
+              <div class="std-drawer-footer">
+                <button
+                  class="std-footer-btn std-btn-secondary"
+                  onclick="closeStudentDrawer()"
+                >
+                  <i class="fas fa-times"></i> Close
+                </button>
+                <!-- <button class="std-footer-btn std-btn-danger" id="stdDeleteBtn" onclick="deleteStudent()">
         <i class="fas fa-trash"></i> Remove Student
       </button> -->
-    </div>
-
-  </div><!-- /std-drawer -->
-</div><!-- /std-drawer-backdrop -->
-      <!--  STUDENTS  -->
-      <div id="students" class="page">
-        <div class="search-bar">
-          <div class="search-field">
-            <i class="fas fa-id-card"></i>
-            <input type="text" id="regSearch" placeholder="Search by reg. number…" />
-          </div>
-          <button id="searchStudentRegNo" class="btn btn-primary btn-sm">
-            <i class="fas fa-magnifying-glass"></i> Search
-          </button>
-          <div class="search-field">
-            <i class="fas fa-building"></i>
-            <input type="text" placeholder="Enter department" id="deptFilter">
-          </div>
-          <button onclick="seacrhStudentDep()" type="button" class="btn btn-primary btn-sm">
-            <i class="fas fa-magnifying-glass"></i> Search
-          </button>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title"><i class="fas fa-users"></i> Student Register</span>
-            <span id="studentCount" style="font-size:12px;color:var(--text-muted);"></span>
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <div class="search-field">
-                <span> Resend User Details</span>
-                <span><input type="email" id="resend-email" placeholder="example@gmai.com"></span>
-               <button style="width: 100px; height: 40px; border: none; background-color: chartreuse;  border-radius: 5px;" onclick="ResendUserDetails()" type="button">Resend Details</button>
               </div>
+            </div>
+            <!-- /std-drawer -->
           </div>
-          <!-- <div style="float: right;"> <button style="width: 100px; height: 40px; border: none; background-color: chartreuse; margin-top: -100px; border-radius: 5px;" onclick="ResendUserDetails()" type="button">Resend Details</button></div> -->
-          <div class="table-wrap" id="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>S/N</th><th>Reg. No.</th><th>Name</th>
-                  <th>Department</th><th>Email</th><th>Role</th><th>Details</th>
-                </tr>
-              </thead>
-              <tbody id="studentTableBody"></tbody>
-            </table>
-          </div>
-          <div id="noResultMsg" class="notice" style="display:none;">
-            <i class="fas fa-user-slash"></i> No students match your search.
-          </div>
-        </div>
-      </div>
+          <!-- /std-drawer-backdrop -->
+          <!--  STUDENTS  -->
+          <div id="students" class="page">
+            <div class="search-bar">
+              <div class="search-field">
+                <i class="fas fa-id-card"></i>
+                <input
+                  type="text"
+                  id="regSearch"
+                  placeholder="Search by reg. number…"
+                />
+              </div>
+              <button id="searchStudentRegNo" class="btn btn-primary btn-sm">
+                <i class="fas fa-magnifying-glass"></i> Search
+              </button>
+              <div class="search-field">
+                <i class="fas fa-building"></i>
+                <input
+                  type="text"
+                  placeholder="Enter department"
+                  id="deptFilter"
+                />
+              </div>
+              <button
+                onclick="seacrhStudentDep()"
+                type="button"
+                class="btn btn-primary btn-sm"
+              >
+                <i class="fas fa-magnifying-glass"></i> Search
+              </button>
+            </div>
 
-      <!--  SUBJECTS  -->
-      <div id="subjects" class="page">
-        <div class="panel" style="border:2px solid var(--nav-bg);margin-bottom:24px;">
-          <div class="panel-header" style="background:var(--nav-bg);">
-            <span class="panel-title" style="color:#fff;">
-              <i class="fas fa-sitemap" style="color:var(--nav-accent);"></i>
-              Departments &amp; Course
-            </span>
-            <span id="dsbTotalBadge" style="font-size:11px;color:rgba(255,255,255,.5);"></span>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title"
+                  ><i class="fas fa-users"></i> Student Register</span
+                >
+                <span
+                  id="studentCount"
+                  style="font-size: 12px; color: var(--text-muted)"
+                ></span>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="search-field">
+                  <span> Resend User Details</span>
+                  <span
+                    ><input
+                      type="email"
+                      id="resend-email"
+                      placeholder="example@gmai.com"
+                  /></span>
+                  <button
+                    style="
+                      width: 100px;
+                      height: 40px;
+                      border: none;
+                      background-color: chartreuse;
+                      border-radius: 5px;
+                    "
+                    onclick="ResendUserDetails()"
+                    type="button"
+                  >
+                    Resend Details
+                  </button>
+                </div>
+              </div>
+              <!-- <div style="float: right;"> <button style="width: 100px; height: 40px; border: none; background-color: chartreuse; margin-top: -100px; border-radius: 5px;" onclick="ResendUserDetails()" type="button">Resend Details</button></div> -->
+              <div class="table-wrap" id="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>S/N</th>
+                      <th>Reg. No.</th>
+                      <th>Name</th>
+                      <th>Department</th>
+                      <th>Email</th>
+                      <th>Role</th>
+                      <th>Details</th>
+                    </tr>
+                  </thead>
+                  <tbody id="studentTableBody"></tbody>
+                </table>
+              </div>
+              <div id="noResultMsg" class="notice" style="display: none">
+                <i class="fas fa-user-slash"></i> No students match your search.
+              </div>
+            </div>
           </div>
-          <div class="panel-body">
-            <div class="dsb-dept-grid" id="dsbDeptGrid"></div>
-          </div>
-        </div>
 
-        <!-- Search by subject name -->
-        <div class="search-bar" style="background:var(--nav-bg);border-color:rgba(255,255,255,0.1);">
-          <div class="search-field" style="flex:2;background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);">
-            <i class="fas fa-book" style="color:var(--nav-accent);"></i>
-            <input type="text" id="subjectNameSearchInput" placeholder="Enter subject name to search…" style="color:#fff;" />
-          </div>
-          <button class="btn btn-primary" onclick="seacrhSubj(`${document.getElementById('subjectNameSearchInput').value.trim()}`)">
-            <i class="fas fa-magnifying-glass"></i> Search Course
-          </button>
-        </div>
-        <div id="subjectNameSearchResults" class="subjects-grid" style="margin-bottom:20px;"></div>
+          <!--  SUBJECTS  -->
+          <div id="subjects" class="page">
+            <div
+              class="panel"
+              style="border: 2px solid var(--nav-bg); margin-bottom: 24px"
+            >
+              <div class="panel-header" style="background: var(--nav-bg)">
+                <span class="panel-title" style="color: #fff">
+                  <i
+                    class="fas fa-sitemap"
+                    style="color: var(--nav-accent)"
+                  ></i>
+                  Departments &amp; Course
+                </span>
+                <span
+                  id="dsbTotalBadge"
+                  style="font-size: 11px; color: rgba(255, 255, 255, 0.5)"
+                ></span>
+              </div>
+              <div class="panel-body">
+                <div class="dsb-dept-grid" id="dsbDeptGrid"></div>
+              </div>
+            </div>
 
-        <!-- Filter by department -->
-        <!-- <div class="search-bar">
+            <!-- Search by subject name -->
+            <div
+              class="search-bar"
+              style="
+                background: var(--nav-bg);
+                border-color: rgba(255, 255, 255, 0.1);
+              "
+            >
+              <div
+                class="search-field"
+                style="
+                  flex: 2;
+                  background: rgba(255, 255, 255, 0.08);
+                  border-color: rgba(255, 255, 255, 0.15);
+                "
+              >
+                <i class="fas fa-book" style="color: var(--nav-accent)"></i>
+                <input
+                  type="text"
+                  id="subjectNameSearchInput"
+                  placeholder="Enter subject name to search…"
+                  style="color: #fff"
+                />
+              </div>
+              <button
+                class="btn btn-primary"
+                onclick="
+                  seacrhSubj(
+                    `${document.getElementById('subjectNameSearchInput').value.trim()}`,
+                  )
+                "
+              >
+                <i class="fas fa-magnifying-glass"></i> Search Course
+              </button>
+            </div>
+            <div
+              id="subjectNameSearchResults"
+              class="subjects-grid"
+              style="margin-bottom: 20px"
+            ></div>
+
+            <!-- Filter by department -->
+            <!-- <div class="search-bar">
           <div class="search-field" style="flex:1;">
             <i class="fas fa-sitemap"></i>
             <input type="text" id="deptSearchInput" placeholder="Enter department…" />
@@ -773,267 +1411,463 @@
           <i class="fas fa-book-open"></i> No subjects found for this department.
         </div> -->
 
-        <!-- Add New Subject -->
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title"><i class="fas fa-plus-circle"></i> Add New Course</span>
-          </div>
-          <div class="panel-body">
-            <form id="saveSubject">
-              <div class="form-row">
-                <div class="form-group">
-                  <label class="form-label">Department</label>
-                  <input type="text" class="form-control" id="newDeptSelect">
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Department Code</label>
-                  <input class="form-control" type="text" id="depCode" placeholder="e.g. CSC" />
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Course Title</label>
-                  <input class="form-control" type="text" placeholder="e.g. Algorithms"  id="subjectName" />
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Course Code</label>
-                  <input class="form-control" type="text" placeholder="e.g. Algo204 optional"  id="subjectCode" />
-                </div>
-                 <div class="form-group">
-                  <label class="form-label">Total Questions <span style="color:var(--text-faint);font-size:10px;">per exam</span></label>
-                  <input class="form-control" type="number" min="1" id="TotalQuestions" placeholder="e.g. 40" name="totalQuestions" />
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Score Per Question</label>
-                  <input class="form-control" type="number" min="0" step="0.5" id="ScorePerQuestion" placeholder="e.g. 2.5" name="scorePerQuestion" />
-                </div>
-                <div class="form-group" style="justify-content:flex-end;">
-                  <label class="form-label">&nbsp;</label>
-                  <button type="button" id="saveSubjectBtn" class="btn btn-primary">
-                    <i class="fas fa-save"></i> Save Subject
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-
-      <!--  QUESTIONS  -->
-      <div id="questions" class="page">
-        <div class="panel" style="border:2px solid var(--nav-bg);" id="panel">
-          <div class="panel-header" style="background:var(--nav-bg);">
-            <span class="panel-title" style="color:#fff;">
-              <i class="fas fa-magnifying-glass" style="color:var(--nav-accent);"></i>
-              Search Question Sets
-            </span>
-          </div>
-          <div class="panel-body">
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Department</label>
-                <input type="text" id="qsSearchDept" class="form-control" placeholder="e.g. Computer Science" />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Course</label>
-                <input type="text" id="qsSearchSubject" class="form-control" placeholder="e.g. Algorithms" />
-              </div>
-              <div class="form-group" style="justify-content:flex-end;">
-                <label class="form-label">&nbsp;</label>
-                <button type="button" onclick="searchQuestionSetsBtn()" class="btn btn-primary">
-                  <i class="fas fa-search"></i> Search Question Sets
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div id="questionSetsResultsContainer" style="margin-bottom:24px;"></div>
-        <div id="noQsSetsMsg" class="notice" style="display:none;">
-          <i class="fas fa-inbox"></i> No question sets found for this department &amp; subject.
-        </div>
-
-        <!-- Step 1 -->
-        <div id="questionStep1" class="panel">
-          <div class="panel-header">
-            <span class="panel-title"><i class="fas fa-sliders"></i> Exam Setup</span>
-          </div>
-          <div class="panel-body">
-            <div class="step-title"><span class="step-badge">1</span> Choose exam details</div>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label">Department</label>
-                <input class="form-control" type="text" id="questionDept" placeholder="Computer Science" value="Computer Science" />
-              </div>
-              <div class="form-group">
-                <label class="form-label">Course Title</label>
-                <input class="form-control" type="text" id="questionSubject" placeholder="Algorithms" value="Algorithms" />
-              </div>
-            </div>
-            <div style="display:flex;justify-content:flex-end;margin-top:18px;">
-              <button id="nextToQuestionBtn" class="btn btn-primary">
-                Next: Add Questions <i class="fas fa-arrow-right"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Step 2 -->
-        <div id="questionStep2" style="display:none;">
-          <div class="info-bar">
-            <div class="info-tag"><i class="fas fa-sitemap"></i> <span id="displayDept"></span></div>
-            <div class="info-tag"><i class="fas fa-book"></i> <span id="displaySubject"></span></div>
-            <button id="changeDetailsBtn" class="btn btn-sm" style="margin-left:auto;">
-              <i class="fas fa-pencil"></i> Change
-            </button>
-          </div>
-
-          <form id="saveQuestion">
+            <!-- Add New Subject -->
             <div class="panel">
               <div class="panel-header">
-                <span class="panel-title"><i class="fas fa-circle-question"></i> Enter Question</span>
+                <span class="panel-title"
+                  ><i class="fas fa-plus-circle"></i> Add New Course</span
+                >
               </div>
               <div class="panel-body">
-                <div class="step-title"><span class="step-badge" style="background:var(--success);"></span> Question details</div>
-                <div class="form-group" style="margin-bottom:14px;">
-                  <label class="form-label">Question Text</label>
-                  <textarea id="questionstext" class="form-control" placeholder="Type the question here…" name="questiontext"></textarea>
+                <form id="saveSubject">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label">Department</label>
+                      <input
+                        type="text"
+                        class="form-control"
+                        id="newDeptSelect"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Department Code</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="depCode"
+                        placeholder="e.g. CSC"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Course Title</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        placeholder="e.g. Algorithms"
+                        id="subjectName"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Course Code</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        placeholder="e.g. Algo204 optional"
+                        id="subjectCode"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label"
+                        >Total Questions
+                        <span style="color: var(--text-faint); font-size: 10px"
+                          >per exam</span
+                        ></label
+                      >
+                      <input
+                        class="form-control"
+                        type="number"
+                        min="1"
+                        id="TotalQuestions"
+                        placeholder="e.g. 40"
+                        name="totalQuestions"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Score Per Question</label>
+                      <input
+                        class="form-control"
+                        type="number"
+                        min="0"
+                        step="0.5"
+                        id="ScorePerQuestion"
+                        placeholder="e.g. 2.5"
+                        name="scorePerQuestion"
+                      />
+                    </div>
+                    <div class="form-group" style="justify-content: flex-end">
+                      <label class="form-label">&nbsp;</label>
+                      <button
+                        type="button"
+                        id="saveSubjectBtn"
+                        class="btn btn-primary"
+                      >
+                        <i class="fas fa-save"></i> Save Subject
+                      </button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!--  QUESTIONS  -->
+          <div id="questions" class="page">
+            <div
+              class="panel"
+              style="border: 2px solid var(--nav-bg)"
+              id="panel"
+            >
+              <div class="panel-header" style="background: var(--nav-bg)">
+                <span class="panel-title" style="color: #fff">
+                  <i
+                    class="fas fa-magnifying-glass"
+                    style="color: var(--nav-accent)"
+                  ></i>
+                  Search Question Sets
+                </span>
+              </div>
+              <div class="panel-body">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Department</label>
+                    <input
+                      type="text"
+                      id="qsSearchDept"
+                      class="form-control"
+                      placeholder="e.g. Computer Science"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Course</label>
+                    <input
+                      type="text"
+                      id="qsSearchSubject"
+                      class="form-control"
+                      placeholder="e.g. Algorithms"
+                    />
+                  </div>
+                  <div class="form-group" style="justify-content: flex-end">
+                    <label class="form-label">&nbsp;</label>
+                    <button
+                      type="button"
+                      onclick="searchQuestionSetsBtn()"
+                      class="btn btn-primary"
+                    >
+                      <i class="fas fa-search"></i> Search Question Sets
+                    </button>
+                  </div>
                 </div>
-                <div class="form-group" style="margin-bottom:14px;">
-                  <label class="form-label">Upload image (optional)</label>
-                  <input type="file" name="media[]" id="media" multiple style="font-size:13px;font-family:inherit;">
+              </div>
+            </div>
+
+            <div
+              id="questionSetsResultsContainer"
+              style="margin-bottom: 24px"
+            ></div>
+            <div id="noQsSetsMsg" class="notice" style="display: none">
+              <i class="fas fa-inbox"></i> No question sets found for this
+              department &amp; subject.
+            </div>
+
+            <!-- Step 1 -->
+            <div id="questionStep1" class="panel">
+              <div class="panel-header">
+                <span class="panel-title"
+                  ><i class="fas fa-sliders"></i> Exam Setup</span
+                >
+              </div>
+              <div class="panel-body">
+                <div class="step-title">
+                  <span class="step-badge">1</span> Choose exam details
                 </div>
-                <div class="form-group" style="margin-bottom:8px;">
-                  <label class="form-label">Answer Options</label>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Department</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      id="questionDept"
+                      placeholder="Computer Science"
+                      value="Computer Science"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Course Title</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      id="questionSubject"
+                      placeholder="Algorithms"
+                      value="Algorithms"
+                    />
+                  </div>
                 </div>
-                <div class="options-grid">
-                  <input class="form-control" type="text" id="optionA" placeholder="Option A" name="optionA"/>
-                  <input class="form-control" type="text" id="optionB" placeholder="Option B" name="optionB"/>
-                  <input class="form-control" type="text" id="optionC" placeholder="Option C" name="optionC"/>
-                  <input class="form-control" type="text" id="optionD" placeholder="Option D" name="optionD"/>
-                  <input class="form-control" type="text" id="optionE" placeholder="Option E" name="optionE"/>
-                </div>
-                <div class="form-group" style="max-width:260px;margin-bottom:20px;">
-                  <label class="form-label">Correct Answer</label>
-                  <input type="text" id="correctAss" name="correctAss" class="form-control" placeholder="Enter correct answer">
-                </div>
-                <div style="display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;">
-                  <button id="saveQuestionBtn" class="btn btn-primary" type="button">
-                    <i class="fas fa-cloud-upload-alt"></i> Save Question
+                <div
+                  style="
+                    display: flex;
+                    justify-content: flex-end;
+                    margin-top: 18px;
+                  "
+                >
+                  <button id="nextToQuestionBtn" class="btn btn-primary">
+                    Next: Add Questions <i class="fas fa-arrow-right"></i>
                   </button>
                 </div>
               </div>
             </div>
-          </form>
-        </div>
-      </div>
 
-      <!--  RESULTS  -->
-      <div id="results" class="page">
+            <!-- Step 2 -->
+            <div id="questionStep2" style="display: none">
+              <div class="info-bar">
+                <div class="info-tag">
+                  <i class="fas fa-sitemap"></i> <span id="displayDept"></span>
+                </div>
+                <div class="info-tag">
+                  <i class="fas fa-book"></i> <span id="displaySubject"></span>
+                </div>
+                <button
+                  id="changeDetailsBtn"
+                  class="btn btn-sm"
+                  style="margin-left: auto"
+                >
+                  <i class="fas fa-pencil"></i> Change
+                </button>
+              </div>
 
-        <!-- Results overview stats -->
-        <div class="results-stats-grid">
-          <div class="results-stat-card">
-            <div class="results-stat-icon total"><i class="fas fa-graduation-cap"></i></div>
-            <div>
-              <div class="results-stat-val" id="resultsStatTotalStudents">—</div>
-              <div class="results-stat-lbl">Total Students</div>
+              <form id="saveQuestion">
+                <div class="panel">
+                  <div class="panel-header">
+                    <span class="panel-title"
+                      ><i class="fas fa-circle-question"></i> Enter
+                      Question</span
+                    >
+                  </div>
+                  <div class="panel-body">
+                    <div class="step-title">
+                      <span
+                        class="step-badge"
+                        style="background: var(--success)"
+                      ></span>
+                      Question details
+                    </div>
+                    <div class="form-group" style="margin-bottom: 14px">
+                      <label class="form-label">Question Text</label>
+                      <textarea
+                        id="questionstext"
+                        class="form-control"
+                        placeholder="Type the question here…"
+                        name="questiontext"
+                      ></textarea>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 14px">
+                      <label class="form-label">Upload image (optional)</label>
+                      <input
+                        type="file"
+                        name="media[]"
+                        id="media"
+                        multiple
+                        style="font-size: 13px; font-family: inherit"
+                      />
+                    </div>
+                    <div class="form-group" style="margin-bottom: 8px">
+                      <label class="form-label">Answer Options</label>
+                    </div>
+                    <div class="options-grid">
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="optionA"
+                        placeholder="Option A"
+                        name="optionA"
+                      />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="optionB"
+                        placeholder="Option B"
+                        name="optionB"
+                      />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="optionC"
+                        placeholder="Option C"
+                        name="optionC"
+                      />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="optionD"
+                        placeholder="Option D"
+                        name="optionD"
+                      />
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="optionE"
+                        placeholder="Option E"
+                        name="optionE"
+                      />
+                    </div>
+                    <div
+                      class="form-group"
+                      style="max-width: 260px; margin-bottom: 20px"
+                    >
+                      <label class="form-label">Correct Answer</label>
+                      <input
+                        type="text"
+                        id="correctAss"
+                        name="correctAss"
+                        class="form-control"
+                        placeholder="Enter correct answer"
+                      />
+                    </div>
+                    <div
+                      style="
+                        display: flex;
+                        gap: 10px;
+                        justify-content: flex-end;
+                        flex-wrap: wrap;
+                      "
+                    >
+                      <button
+                        id="saveQuestionBtn"
+                        class="btn btn-primary"
+                        type="button"
+                      >
+                        <i class="fas fa-cloud-upload-alt"></i> Save Question
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
-          <div class="results-stat-card">
-            <div class="results-stat-icon done"><i class="fas fa-circle-check"></i></div>
-            <div>
-              <div class="results-stat-val" id="resultsStatCompleted">—</div>
-              <div class="results-stat-lbl">Completed Exam</div>
+
+          <!--  RESULTS  -->
+          <div id="results" class="page">
+            <!-- Results overview stats -->
+            <div class="results-stats-grid">
+              <div class="results-stat-card">
+                <div class="results-stat-icon total">
+                  <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div>
+                  <div class="results-stat-val" id="resultsStatTotalStudents">
+                    —
+                  </div>
+                  <div class="results-stat-lbl">Total Students</div>
+                </div>
+              </div>
+              <div class="results-stat-card">
+                <div class="results-stat-icon done">
+                  <i class="fas fa-circle-check"></i>
+                </div>
+                <div>
+                  <div class="results-stat-val" id="resultsStatCompleted">
+                    —
+                  </div>
+                  <div class="results-stat-lbl">Completed Exam</div>
+                </div>
+              </div>
+              <div class="results-stat-card">
+                <div class="results-stat-icon pending">
+                  <i class="fas fa-hourglass-half"></i>
+                </div>
+                <div>
+                  <div class="results-stat-val" id="resultsStatOutstanding">
+                    —
+                  </div>
+                  <div class="results-stat-lbl">Outstanding (Yet to Sit)</div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="results-stat-card">
-            <div class="results-stat-icon pending"><i class="fas fa-hourglass-half"></i></div>
-            <div>
-              <div class="results-stat-val" id="resultsStatOutstanding">—</div>
-              <div class="results-stat-lbl">Outstanding (Yet to Sit)</div>
+
+            <!-- Search by department (students who have completed exam) -->
+            <div class="search-bar">
+              <!-- <div> -->
+              <div class="search-field" style="flex: 2">
+                <i class="fas fa-building"></i>
+                <select id="regSearch-type">
+                  <option value="" disabled selected>Select seacrh type</option>
+                  <option value="regNum">Registration Number</option>
+                  <option value="fullname">Name</option>
+                  <option value="Department">Department</option>
+                </select>
+                <input
+                  type="text"
+                  id="input-search"
+                  placeholder="Enter department, registration number, fullname to search for"
+                />
+              </div>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <!-- <input type="text" id="reregistration_numbergSearch-type" placeholder="Search by reg. number…" /> -->
+              <!-- </div> -->
+              <!-- <i class="fas fa-building"></i> -->
+              <button id="resultsDeptSearchBtn" class="btn btn-primary btn-sm">
+                <i class="fas fa-magnifying-glass"></i> Search
+              </button>
+              <button id="resultsDeptClearBtn" class="btn btn-sm">
+                <i class="fas fa-rotate-left"></i> Clear
+              </button>
             </div>
-          </div>
-        </div>
+            <!-- </div> -->
+            <div
+              class="rsd-backdrop"
+              id="rsdBackdrop"
+              onclick="closeResultDrawer()"
+            >
+              <div
+                class="rsd-drawer"
+                id="rsdDrawer"
+                onclick="event.stopPropagation()"
+              >
+                <!--  Header  -->
+                <div class="rsd-header">
+                  <div class="rsd-header-left">
+                    <div class="rsd-avatar" id="rsdAvatar">--</div>
+                    <div>
+                      <div class="rsd-name" id="rsdName">Student Name</div>
+                      <div class="rsd-reg" id="rsdReg">—</div>
+                    </div>
+                  </div>
+                  <button
+                    class="rsd-close"
+                    onclick="closeResultDrawer()"
+                    aria-label="Close drawer"
+                  >
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
 
-        <!-- Search by department (students who have completed exam) -->
-        <div class="search-bar">
-          <!-- <div> -->
-          <div class="search-field" style="flex:2;">
-            
-          <i class="fas fa-building"></i>
-            <select id="regSearch-type">
-              <option value="" disabled selected>Select seacrh type</option>
-              <option value="regNum">Registration Number</option>
-              <option value="fullname">Name </option>
-              <option value="Department">Department</option>
-            </select>
-            <input type="text" id="input-search" placeholder="Enter department, registration number, fullname to search for" />
-          </div>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <!-- <input type="text" id="reregistration_numbergSearch-type" placeholder="Search by reg. number…" /> -->
-          <!-- </div> -->
-            <!-- <i class="fas fa-building"></i> -->
-             <button id="resultsDeptSearchBtn" class="btn btn-primary btn-sm">
-            <i class="fas fa-magnifying-glass"></i> Search
-          </button>
-          <button id="resultsDeptClearBtn" class="btn btn-sm">
-            <i class="fas fa-rotate-left"></i> Clear
-          </button>
-          </div>
-        <!-- </div> -->
-        <div class="rsd-backdrop" id="rsdBackdrop" onclick="closeResultDrawer()">
-  <div class="rsd-drawer" id="rsdDrawer" onclick="event.stopPropagation()">
+                <!--  Chips  -->
+                <div class="rsd-chips">
+                  <span class="rsd-chip rsd-chip-dept" id="rsdChipDept">—</span>
+                  <span class="rsd-chip rsd-chip-status" id="rsdChipStatus"
+                    >—</span
+                  >
+                </div>
 
-    <!--  Header  -->
-    <div class="rsd-header">
-      <div class="rsd-header-left">
-        <div class="rsd-avatar" id="rsdAvatar">--</div>
-        <div>
-          <div class="rsd-name" id="rsdName">Student Name</div>
-          <div class="rsd-reg"  id="rsdReg">—</div>
-        </div>
-      </div>
-      <button class="rsd-close" onclick="closeResultDrawer()" aria-label="Close drawer">
-        <i class="fas fa-times"></i>
-      </button>
-    </div>
+                <!--  Body  -->
+                <div class="rsd-body">
+                  <!-- Overall score hero -->
+                  <div class="rsd-score-hero" id="rsdScoreHero">
+                    <div class="rsd-score-block">
+                      <div class="rsd-score-big" id="rsdScoreBig">—</div>
+                      <div class="rsd-score-label">Overall Score</div>
+                    </div>
+                    <div class="rsd-score-meta">
+                      <div class="rsd-meta-row">
+                        <i class="fas fa-user"></i>
+                        <span id="rsdMetaName">—</span>
+                      </div>
+                      <div class="rsd-meta-row">
+                        <i class="fas fa-id-badge"></i>
+                        <span id="rsdMetaReg">—</span>
+                      </div>
+                      <div class="rsd-meta-row">
+                        <i class="fas fa-building"></i>
+                        <span id="rsdMetaDept">—</span>
+                      </div>
+                      <div class="rsd-meta-row">
+                        <i class="fas fa-calendar-check"></i>
+                        <span id="rsdMetaDate">—</span>
+                      </div>
+                    </div>
+                  </div>
 
-    <!--  Chips  -->
-    <div class="rsd-chips">
-      <span class="rsd-chip rsd-chip-dept" id="rsdChipDept">—</span>
-      <span class="rsd-chip rsd-chip-status" id="rsdChipStatus">—</span>
-    </div>
-
-    <!--  Body  -->
-    <div class="rsd-body">
-
-      <!-- Overall score hero -->
-      <div class="rsd-score-hero" id="rsdScoreHero">
-        <div class="rsd-score-block">
-          <div class="rsd-score-big" id="rsdScoreBig">—</div>
-          <div class="rsd-score-label">Overall Score</div>
-        </div>
-        <div class="rsd-score-meta">
-          <div class="rsd-meta-row">
-            <i class="fas fa-user"></i>
-            <span id="rsdMetaName">—</span>
-          </div>
-          <div class="rsd-meta-row">
-            <i class="fas fa-id-badge"></i>
-            <span id="rsdMetaReg">—</span>
-          </div>
-          <div class="rsd-meta-row">
-            <i class="fas fa-building"></i>
-            <span id="rsdMetaDept">—</span>
-          </div>
-          <div class="rsd-meta-row">
-            <i class="fas fa-calendar-check"></i>
-            <span id="rsdMetaDate">—</span>
-          </div>
-        </div>
-      </div>
-
-      <!--  Summary stat pills ──────────────────── -->
-      <!-- <div class="rsd-summary-row" id="rsdSummaryRow">
+                  <!--  Summary stat pills ──────────────────── -->
+                  <!-- <div class="rsd-summary-row" id="rsdSummaryRow">
         <div class="rsd-summary-pill">
           <div class="rsd-sum-val" id="rsdSumSubjects">—</div>
           <div class="rsd-sum-lbl">Subjects</div>
@@ -1052,53 +1886,51 @@
         </div>
       </div> -->
 
-      <div class="rsd-divider"></div>
+                  <div class="rsd-divider"></div>
 
-      <!--  Per-subject breakdown  -->
-         <div><i class="fas fa-list-check"></i> Subject Breakdown</div>
-      <div class="rsd-section-label">
-          
-        <table id="">
-              <thead>
-                <tr>
-                  <th>S/N</th>
-                  <th>Subject</th>
-                  <th>Score.</th>
-                  <th>ExpectedScore</th>
-                  <th>CorrectAnswers</th>
-                  <th>Date Submitted</th>
-                  <th>TotalQuestions</th>
-                  <th>ScorePerQuestion</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody id="display-subject">
-                <tr>
-                  <td>1</td>
-                  <td>John Doe</td>
-                  <td>—</td>
-                  <td>Mathematics</td>
-                  <td></td>
-                  <td>Mar 2026</td>
-                  <td>—</td>
-                  <td>—</td>
-                  <td>—</td>
-                </tr>
-             
-              </tbody>
-            </table>
-      </div>
+                  <!--  Per-subject breakdown  -->
+                  <div><i class="fas fa-list-check"></i> Subject Breakdown</div>
+                  <div class="rsd-section-label">
+                    <table id="">
+                      <thead>
+                        <tr>
+                          <th>S/N</th>
+                          <th>Subject</th>
+                          <th>Score.</th>
+                          <th>ExpectedScore</th>
+                          <th>CorrectAnswers</th>
+                          <th>Date Submitted</th>
+                          <th>TotalQuestions</th>
+                          <th>ScorePerQuestion</th>
+                          <th>Status</th>
+                        </tr>
+                      </thead>
+                      <tbody id="display-subject">
+                        <tr>
+                          <td>1</td>
+                          <td>John Doe</td>
+                          <td>—</td>
+                          <td>Mathematics</td>
+                          <td></td>
+                          <td>Mar 2026</td>
+                          <td>—</td>
+                          <td>—</td>
+                          <td>—</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
 
-      <!-- <div id="rsdSubjectArea">
+                  <!-- <div id="rsdSubjectArea">
         <div class="rsd-loading">
           <i class="fas fa-circle-notch fa-spin"></i> Loading subject scores…
         </div>
       </div> -->
 
-      <div class="rsd-divider"></div>
+                  <div class="rsd-divider"></div>
 
-      <!--  Per-question detail (expandable) ────── -->
-      <!-- <div class="rsd-section-label" style="justify-content:space-between;">
+                  <!--  Per-question detail (expandable) ────── -->
+                  <!-- <div class="rsd-section-label" style="justify-content:space-between;">
         <span><i class="fas fa-circle-question"></i> Question Attempts</span>
         <button class="rsd-toggle-btn" id="rsdToggleQBtn" onclick="toggleQuestionDetail()">
           <i class="fas fa-chevron-down" id="rsdToggleIcon"></i> Show Details
@@ -1110,60 +1942,67 @@
         </div>
       </div> -->
 
-      <div class="rsd-divider"></div>
+                  <div class="rsd-divider"></div>
 
-      <!--  Publish control ────────────────────── -->
-      <div class="rsd-section-label">
-        <i class="fas fa-paper-plane"></i> Result Publishing
-      </div>
-      <div class="rsd-publish-row">
-        <div class="rsd-publish-status" id="rsdPublishStatus">
-          <i class="fas fa-circle-info"></i> Status: <strong id="rsdPublishLabel">—</strong>
-        </div>
-        <button class="rsd-publish-btn" id="rsdPublishBtn" onclick="publishSingleResult()">
-          <i class="fas fa-paper-plane"></i> Publish Result
-        </button>
-      </div>
+                  <!--  Publish control ────────────────────── -->
+                  <div class="rsd-section-label">
+                    <i class="fas fa-paper-plane"></i> Result Publishing
+                  </div>
+                  <div class="rsd-publish-row">
+                    <div class="rsd-publish-status" id="rsdPublishStatus">
+                      <i class="fas fa-circle-info"></i> Status:
+                      <strong id="rsdPublishLabel">—</strong>
+                    </div>
+                    <button
+                      class="rsd-publish-btn"
+                      id="rsdPublishBtn"
+                      onclick="publishSingleResult()"
+                    >
+                      <i class="fas fa-paper-plane"></i> Publish Result
+                    </button>
+                  </div>
+                </div>
+                <!-- /rsd-body -->
 
-    </div><!-- /rsd-body -->
-
-    <!--  Footer  -->
-    <div class="rsd-footer">
-      <button class="rsd-footer-btn rsd-btn-secondary" onclick="closeResultDrawer()">
-        <i class="fas fa-times"></i> Close
-      </button>
-      <!-- <button class="rsd-footer-btn rsd-btn-print" onclick="printStudentResult()">
+                <!--  Footer  -->
+                <div class="rsd-footer">
+                  <button
+                    class="rsd-footer-btn rsd-btn-secondary"
+                    onclick="closeResultDrawer()"
+                  >
+                    <i class="fas fa-times"></i> Close
+                  </button>
+                  <!-- <button class="rsd-footer-btn rsd-btn-print" onclick="printStudentResult()">
         <i class="fas fa-print"></i> Print
       </button> -->
-    </div>
-
-  </div>
-</div>
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title"><i class="fas fa-chart-simple"></i> Exam Results</span>
-            <button onclick="releaseResult()">
-              <i class="fas fa-paper-plane"></i> Publish All Results
-            </button>
-          </div>
-          <div >
-
-          </div>
-          <div class="table-wrap">
-            <table id="display-error">
-              <thead>
-                <tr>
-                  <th>S/N</th>
-                  <th>Student</th>
-                  <th>Reg. No.</th>
-                  <th>Department</th>
-                  <th>Score</th>
-                  <th>Date Submitted</th>
-                  <th>Publish</th>
-                </tr>
-              </thead>
-              <tbody id="display-result">
-                <!-- <tr>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title"
+                  ><i class="fas fa-chart-simple"></i> Exam Results</span
+                >
+                <button onclick="releaseResult()">
+                  <i class="fas fa-paper-plane"></i> Publish All Results
+                </button>
+              </div>
+              <div></div>
+              <div class="table-wrap">
+                <table id="display-error">
+                  <thead>
+                    <tr>
+                      <th>S/N</th>
+                      <th>Student</th>
+                      <th>Reg. No.</th>
+                      <th>Department</th>
+                      <th>Score</th>
+                      <th>Date Submitted</th>
+                      <th>Publish</th>
+                    </tr>
+                  </thead>
+                  <tbody id="display-result">
+                    <!-- <tr>
                   <td>1</td><td>John Doe</td><td>—</td>
                   <td><span class="badge badge-dept">Mathematics</span></td>
                   <td><span class="badge badge-score">85%</span></td>
@@ -1181,11 +2020,11 @@
                   <td><span class="badge badge-score">78%</span></td>
                   <td>Mar 2026</td><td>—</td>
                 </tr> -->
-              </tbody>
-            </table>
-          </div>
-          <!-- Pagination -->
-          <!-- <div class="pagination-bar">
+                  </tbody>
+                </table>
+              </div>
+              <!-- Pagination -->
+              <!-- <div class="pagination-bar">
             <div class="pagination-info" id="resultsPageInfo">Showing 0–0 of 0</div>
             <div class="pagination-controls">
               <select class="page-size-select" id="resultsPageSize">
@@ -1198,166 +2037,225 @@
               <button type="button" class="pagination-btn" id="resultsNextBtn">Next <i class="fas fa-chevron-right"></i></button>
             </div>
           </div> -->
-        </div>
-      </div>
+            </div>
+          </div>
 
-     
-
-      <!-- Results dashboard — new, additive only. Reuses the same endpoints as results()
+          <!-- Results dashboard — new, additive only. Reuses the same endpoints as results()
            above but adds client-side pagination, department search and summary stats
            without altering the original results() function. -->
-      <script>
-        let resultsFullList = [];
-        let resultsFilteredList = [];
-        let resultsCurrentPage = 1;
-        let resultsTotalStudents = 0;
+          <script>
+            let resultsFullList = [];
+            let resultsFilteredList = [];
+            let resultsCurrentPage = 1;
+            let resultsTotalStudents = 0;
 
-        async function loadResultsDashboard(){
-          const org_code = document.getElementById("organization-code").textContent;
+            async function loadResultsDashboard() {
+              const org_code =
+                document.getElementById("organization-code").textContent;
 
-          try{
-            const totalStuApi = await fetch('/cbt/ansofra/apiadmin/TotalStudents', {
-                method:'POST',
-                headers:{"Content-type":"application/json"},
-                body:JSON.stringify({role:'user', organization_code:org_code})
-            });
-            const totalStuResult = await totalStuApi.json();
-            resultsTotalStudents = (totalStuResult.status==="success") ? (Number(totalStuResult.response)||0) : 0;
-          }catch(err){ resultsTotalStudents = 0; }
+              try {
+                const totalStuApi = await fetch(
+                  "/cbt/ansofra/apiadmin/TotalStudents",
+                  {
+                    method: "POST",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify({
+                      role: "user",
+                      organization_code: org_code,
+                    }),
+                  },
+                );
+                const totalStuResult = await totalStuApi.json();
+                resultsTotalStudents =
+                  totalStuResult.status === "success"
+                    ? Number(totalStuResult.response) || 0
+                    : 0;
+              } catch (err) {
+                resultsTotalStudents = 0;
+              }
 
-          try{
-            const e = {status:"completed", organization_code:org_code};
-            const api = await fetch("/cbt/ansofra/apiadmin/display/result", {
-                method:"POST",
-                headers:{"Content-type":"application/json"},
-                body:JSON.stringify(e)
-            });
-            const result = await api.json();
-            resultsFullList = (result.status==="success") ? result.response : [];
-          }catch(err){ resultsFullList = []; }
+              try {
+                const e = { status: "completed", organization_code: org_code };
+                const api = await fetch(
+                  "/cbt/ansofra/apiadmin/display/result",
+                  {
+                    method: "POST",
+                    headers: { "Content-type": "application/json" },
+                    body: JSON.stringify(e),
+                  },
+                );
+                const result = await api.json();
+                resultsFullList =
+                  result.status === "success" ? result.response : [];
+              } catch (err) {
+                resultsFullList = [];
+              }
 
-          resultsFilteredList = resultsFullList;
-          resultsCurrentPage = 1;
-          updateResultsStats();
-          renderResultsPage();
-        }
+              resultsFilteredList = resultsFullList;
+              resultsCurrentPage = 1;
+              updateResultsStats();
+              renderResultsPage();
+            }
 
-        function updateResultsStats(){
-          const completed = resultsFullList.length;
-          const outstanding = Math.max(resultsTotalStudents - completed, 0);
-          document.getElementById('resultsStatTotalStudents').textContent = resultsTotalStudents || '0';
-          document.getElementById('resultsStatCompleted').textContent = completed;
-          document.getElementById('resultsStatOutstanding').textContent = outstanding;
-        }
+            function updateResultsStats() {
+              const completed = resultsFullList.length;
+              const outstanding = Math.max(resultsTotalStudents - completed, 0);
+              document.getElementById("resultsStatTotalStudents").textContent =
+                resultsTotalStudents || "0";
+              document.getElementById("resultsStatCompleted").textContent =
+                completed;
+              document.getElementById("resultsStatOutstanding").textContent =
+                outstanding;
+            }
 
-        // function renderResultsPage(){
-        //   const pageSize = parseInt(document.getElementById('resultsPageSize').value, 10) || 10;
-        //   const totalItems = resultsFilteredList.length;
-        //   const totalPages = Math.max(Math.ceil(totalItems / pageSize), 1);
-        //   if(resultsCurrentPage > totalPages) resultsCurrentPage = totalPages;
-        //   const startIdx = (resultsCurrentPage - 1) * pageSize;
-        //   const endIdx = Math.min(startIdx + pageSize, totalItems);
-        //   const pageItems = resultsFilteredList.slice(startIdx, endIdx);
+            // function renderResultsPage(){
+            //   const pageSize = parseInt(document.getElementById('resultsPageSize').value, 10) || 10;
+            //   const totalItems = resultsFilteredList.length;
+            //   const totalPages = Math.max(Math.ceil(totalItems / pageSize), 1);
+            //   if(resultsCurrentPage > totalPages) resultsCurrentPage = totalPages;
+            //   const startIdx = (resultsCurrentPage - 1) * pageSize;
+            //   const endIdx = Math.min(startIdx + pageSize, totalItems);
+            //   const pageItems = resultsFilteredList.slice(startIdx, endIdx);
 
-        //   let output = '';
-        //   if(pageItems.length){
-        //     for(let i=0; i<pageItems.length; i++){
-        //       const row = pageItems[i];
-        //       output += `
-        //         <tr>
-        //           <td>${startIdx + i + 1}</td>
-        //           <td>${row.fullname || '—'}</td>
-        //           <td>${row.regNum || '—'}</td>
-        //           <td><span class="badge badge-dept">${row.department || '—'}</span></td>
-        //           <td><span class="badge badge-score">${row.overAll || '—'}</span></td>
-        //           <td>${row.createdAt || '—'}</td>
-        //           <td>${row.publish || '—'}</td>
-        //         </tr>
-        //       `;
-        //     }
-        //   } else {
-        //     output = `<tr><td colspan="7" class="notice"><i class="fas fa-inbox"></i> No results to display.</td></tr>`;
-        //   }
-        //   document.getElementById('display-result').innerHTML = output;
+            //   let output = '';
+            //   if(pageItems.length){
+            //     for(let i=0; i<pageItems.length; i++){
+            //       const row = pageItems[i];
+            //       output += `
+            //         <tr>
+            //           <td>${startIdx + i + 1}</td>
+            //           <td>${row.fullname || '—'}</td>
+            //           <td>${row.regNum || '—'}</td>
+            //           <td><span class="badge badge-dept">${row.department || '—'}</span></td>
+            //           <td><span class="badge badge-score">${row.overAll || '—'}</span></td>
+            //           <td>${row.createdAt || '—'}</td>
+            //           <td>${row.publish || '—'}</td>
+            //         </tr>
+            //       `;
+            //     }
+            //   } else {
+            //     output = `<tr><td colspan="7" class="notice"><i class="fas fa-inbox"></i> No results to display.</td></tr>`;
+            //   }
+            //   document.getElementById('display-result').innerHTML = output;
 
-        //   document.getElementById('resultsPageInfo').textContent =
-        //     totalItems ? `Showing ${startIdx + 1}–${endIdx} of ${totalItems}` : 'Showing 0–0 of 0';
-        //   document.getElementById('resultsPrevBtn').disabled = resultsCurrentPage <= 1;
-        //   document.getElementById('resultsNextBtn').disabled = resultsCurrentPage >= totalPages;
-        // }
+            //   document.getElementById('resultsPageInfo').textContent =
+            //     totalItems ? `Showing ${startIdx + 1}–${endIdx} of ${totalItems}` : 'Showing 0–0 of 0';
+            //   document.getElementById('resultsPrevBtn').disabled = resultsCurrentPage <= 1;
+            //   document.getElementById('resultsNextBtn').disabled = resultsCurrentPage >= totalPages;
+            // }
 
-        // document.getElementById('resultsPrevBtn')?.addEventListener('click', ()=>{
-        //   if(resultsCurrentPage > 1){ resultsCurrentPage--; renderResultsPage(); }
-        // });
-        // document.getElementById('resultsNextBtn')?.addEventListener('click', ()=>{
-        //   const pageSize = parseInt(document.getElementById('resultsPageSize').value, 10) || 10;
-        //   const totalPages = Math.max(Math.ceil(resultsFilteredList.length / pageSize), 1);
-        //   if(resultsCurrentPage < totalPages){ resultsCurrentPage++; renderResultsPage(); }
-        // });
-        // document.getElementById('resultsPageSize')?.addEventListener('change', ()=>{
-        //   resultsCurrentPage = 1;
-        //   renderResultsPage();
-        // });
+            // document.getElementById('resultsPrevBtn')?.addEventListener('click', ()=>{
+            //   if(resultsCurrentPage > 1){ resultsCurrentPage--; renderResultsPage(); }
+            // });
+            // document.getElementById('resultsNextBtn')?.addEventListener('click', ()=>{
+            //   const pageSize = parseInt(document.getElementById('resultsPageSize').value, 10) || 10;
+            //   const totalPages = Math.max(Math.ceil(resultsFilteredList.length / pageSize), 1);
+            //   if(resultsCurrentPage < totalPages){ resultsCurrentPage++; renderResultsPage(); }
+            // });
+            // document.getElementById('resultsPageSize')?.addEventListener('change', ()=>{
+            //   resultsCurrentPage = 1;
+            //   renderResultsPage();
+            // });
 
-        // document.getElementById('resultsDeptSearchBtn')?.addEventListener('click', ()=>{
-        //   const dept = document.getElementById('resultsDeptSearchInput').value.trim().toLowerCase();
-        //   if(!dept){ alert('Enter a department to search'); return; }
-        //   resultsFilteredList = resultsFullList.filter(r => (r.department || '').toLowerCase().includes(dept));
-        //   resultsCurrentPage = 1;
-        //   renderResultsPage();
-        // });
-        // document.getElementById('resultsDeptClearBtn')?.addEventListener('click', ()=>{
-        //   document.getElementById('resultsDeptSearchInput').value = '';
-        //   resultsFilteredList = resultsFullList;
-        //   resultsCurrentPage = 1;
-        //   renderResultsPage();
-        // });
-      </script>
+            // document.getElementById('resultsDeptSearchBtn')?.addEventListener('click', ()=>{
+            //   const dept = document.getElementById('resultsDeptSearchInput').value.trim().toLowerCase();
+            //   if(!dept){ alert('Enter a department to search'); return; }
+            //   resultsFilteredList = resultsFullList.filter(r => (r.department || '').toLowerCase().includes(dept));
+            //   resultsCurrentPage = 1;
+            //   renderResultsPage();
+            // });
+            // document.getElementById('resultsDeptClearBtn')?.addEventListener('click', ()=>{
+            //   document.getElementById('resultsDeptSearchInput').value = '';
+            //   resultsFilteredList = resultsFullList;
+            //   resultsCurrentPage = 1;
+            //   renderResultsPage();
+            // });
+          </script>
 
-      <!--  DEPARTMENTS  -->
-      <div id="departments" class="page">
-        <div class="dept-stat-row">
-          <div class="dept-stat-mini">
-            <div class="dept-stat-mini-icon"><i class="fas fa-building"></i></div>
-            <div>
-              <div class="dept-stat-mini-val" id="deptTotalCount">0</div>
-              <div class="dept-stat-mini-lbl">Total Departments</div>
+          <!--  DEPARTMENTS  -->
+          <div id="departments" class="page">
+            <div class="dept-stat-row">
+              <div class="dept-stat-mini">
+                <div class="dept-stat-mini-icon">
+                  <i class="fas fa-building"></i>
+                </div>
+                <div>
+                  <div class="dept-stat-mini-val" id="deptTotalCount">0</div>
+                  <div class="dept-stat-mini-lbl">Total Departments</div>
+                </div>
+              </div>
+              <div class="dept-stat-mini">
+                <div class="dept-stat-mini-icon">
+                  <i class="fas fa-user-tie"></i>
+                </div>
+                <div>
+                  <div class="dept-stat-mini-val" id="deptHODCount">0</div>
+                  <div class="dept-stat-mini-lbl">HODs Assigned</div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="dept-stat-mini">
-            <div class="dept-stat-mini-icon"><i class="fas fa-user-tie"></i></div>
-            <div>
-              <div class="dept-stat-mini-val" id="deptHODCount">0</div>
-              <div class="dept-stat-mini-lbl">HODs Assigned</div>
-            </div>
-          </div>
-        </div>
 
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title"><i class="fas fa-plus-circle"></i> Create Department</span>
-          </div>
-          <div class="panel-body">
-            <form id="departmentform">
-              <div class="form-row">
-                
-                <div class="form-group">
-                  <label class="form-label">Department Name <span style="color:var(--danger);font-size:10px;">*</span></label>
-                  <input class="form-control" type="text" id="newDeptName" placeholder="e.g. Computer Science" name="department" />
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Department Code <span style="color:var(--danger);font-size:10px;">*</span></label>
-                  <input class="form-control" type="text" id="newDeptCode" placeholder="e.g. CS" style="text-transform:uppercase;" name="DepartmentCode" />
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Head of Department</label>
-                  <input class="form-control" type="text" id="newDeptHOD" placeholder="e.g. Dr. Smith" name="HeadOfDepartment" />
-                </div>
-                <div class="form-group">
-                  <label class="form-label">Description</label>
-                  <input class="form-control" type="text" id="newDeptDesc" placeholder="Short description (optional)" name="Description" />
-                </div>
-                <!-- <div class="form-group">
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title"
+                  ><i class="fas fa-plus-circle"></i> Create Department</span
+                >
+              </div>
+              <div class="panel-body">
+                <form id="departmentform">
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label class="form-label"
+                        >Department Name
+                        <span style="color: var(--danger); font-size: 10px"
+                          >*</span
+                        ></label
+                      >
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="newDeptName"
+                        placeholder="e.g. Computer Science"
+                        name="department"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label"
+                        >Department Code
+                        <span style="color: var(--danger); font-size: 10px"
+                          >*</span
+                        ></label
+                      >
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="newDeptCode"
+                        placeholder="e.g. CS"
+                        style="text-transform: uppercase"
+                        name="DepartmentCode"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Head of Department</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="newDeptHOD"
+                        placeholder="e.g. Dr. Smith"
+                        name="HeadOfDepartment"
+                      />
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label">Description</label>
+                      <input
+                        class="form-control"
+                        type="text"
+                        id="newDeptDesc"
+                        placeholder="Short description (optional)"
+                        name="Description"
+                      />
+                    </div>
+                    <!-- <div class="form-group">
                   <label class="form-label">Total Questions <span style="color:var(--text-faint);font-size:10px;">per exam</span></label>
                   <input class="form-control" type="number" min="1" id="newDeptTotalQuestions" placeholder="e.g. 40" name="totalQuestions" />
                 </div>
@@ -1365,125 +2263,202 @@
                   <label class="form-label">Score Per Question</label>
                   <input class="form-control" type="number" min="0" step="0.5" id="newDeptScorePerQuestion" placeholder="e.g. 2.5" name="scorePerQuestion" />
                 </div> -->
+                  </div>
+                </form>
+                <div
+                  style="
+                    display: flex;
+                    justify-content: flex-end;
+                    margin-top: 16px;
+                    gap: 10px;
+                    flex-wrap: wrap;
+                  "
+                >
+                  <button id="clearDeptBtn" class="btn btn-sm">
+                    <i class="fas fa-rotate-left"></i> Clear
+                  </button>
+                  <button id="saveDeptBtn" class="btn btn-primary">
+                    <i class="fas fa-save"></i> Save Department
+                  </button>
+                </div>
               </div>
-            </form>
-            <div style="display:flex;justify-content:flex-end;margin-top:16px;gap:10px;flex-wrap:wrap;">
-              <button id="clearDeptBtn" class="btn btn-sm"><i class="fas fa-rotate-left"></i> Clear</button>
-              <button id="saveDeptBtn" class="btn btn-primary"><i class="fas fa-save"></i> Save Department</button>
+            </div>
+
+            <div class="search-bar">
+              <div class="search-field" style="flex: 1">
+                <i class="fas fa-magnifying-glass"></i>
+                <input
+                  type="text"
+                  id="deptListSearch"
+                  placeholder="Search by department code…"
+                />
+              </div>
+              <button
+                id="deptSearchBtn"
+                class="btn btn-primary btn-sm"
+                onclick="deptSearchBtn()"
+              >
+                <i class="fas fa-search"></i> Search
+              </button>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title"
+                  ><i class="fas fa-building-columns"></i> Department List</span
+                >
+                <span
+                  id="deptCount"
+                  style="font-size: 12px; color: var(--text-muted)"
+                ></span>
+              </div>
+              <div class="table-wrap" id="displayAnyErr">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>S/N</th>
+                      <th>Department Name</th>
+                      <th>Code</th>
+                      <th>Head of Department</th>
+                      <th>Description</th>
+                      <th>Date Created</th>
+                      <th>Edit</th>
+                      <th>Del</th>
+                    </tr>
+                  </thead>
+                  <tbody id="deptTableBody"></tbody>
+                </table>
+              </div>
+              <div id="noDeptMsg" class="notice" style="display: none">
+                <i class="fas fa-building-circle-xmark"></i> No departments
+                found. Create one above.
+              </div>
+            </div>
+          </div>
+
+          <!--  SCHEDULE EXAM  -->
+          <div id="schedule" class="page">
+            <div
+              style="
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 22px;
+                flex-wrap: wrap;
+                gap: 10px;
+              "
+            >
+              <div class="section-title">
+                <i class="fas fa-calendar-days"></i> Scheduled Exams
+              </div>
+              <button class="btn btn-primary" onclick="openScheduleModal()">
+                <i class="fas fa-calendar-plus"></i> Schedule New Exam
+              </button>
+            </div>
+
+            <div class="schedule-stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-value" id="schStatTotal">0</div>
+                <div class="stat-label">Total Scheduled</div>
+              </div>
+            </div>
+            <div class="schedule-stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-value" id="schActive">0</div>
+                <div class="stat-label">Total Active</div>
+              </div>
+            </div>
+            <div class="schedule-stats-grid">
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-value" id="schInactive">0</div>
+                <div class="stat-label">Total Inactive</div>
+              </div>
+            </div>
+
+            <div class="search-bar">
+              <div class="search-field" style="flex: 2">
+                <i class="fas fa-magnifying-glass"></i>
+                <input
+                  type="text"
+                  id="schSearchInput"
+                  placeholder="Search by department…"
+                />
+              </div>
+              <div class="search-field" style="flex: none; padding: 0">
+                <button
+                  id="schStatusFilter"
+                  class="btn btn-primary"
+                  onclick="seacrhDepSch()"
+                  style="
+                    border-radius: var(--radius-md);
+                    border: none;
+                    margin: 0;
+                    padding: 8px 14px;
+                  "
+                >
+                  <i class="fas fa-search"></i> Search
+                </button>
+              </div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <span class="panel-title"
+                  ><i class="fas fa-table-list"></i> Exam Schedule List</span
+                >
+                <span
+                  id="schTableCount"
+                  style="font-size: 12px; color: var(--text-muted)"
+                ></span>
+              </div>
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Department</th>
+                      <th>Dept. Code</th>
+                      <th>Course Title</th>
+                      <th>Course Code</th>
+                      <th>Time ID</th>
+                      <th>Date</th>
+                      <th>Start</th>
+                      <th>End</th>
+                      <th>Duration</th>
+                      <th>Edit</th>
+                      <th>Notify</th>
+                      <th>Status</th>
+                      <th>Del</th>
+                    </tr>
+                  </thead>
+                  <tbody id="scheduleTableBody"></tbody>
+                </table>
+              </div>
+              <div id="noScheduleMsg" class="sch-empty" style="display: none">
+                <i class="fas fa-calendar-xmark"></i>
+                No exams scheduled yet.<br />
+                <small
+                  >Click <strong>"Schedule New Exam"</strong> to get
+                  started.</small
+                >
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="search-bar">
-          <div class="search-field" style="flex:1;">
-            <i class="fas fa-magnifying-glass"></i>
-            <input type="text" id="deptListSearch" placeholder="Search by department code…" />
-          </div>
-          <button id="deptSearchBtn" class="btn btn-primary btn-sm" onclick="deptSearchBtn()">
-            <i class="fas fa-search"></i> Search
-          </button>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title"><i class="fas fa-building-columns"></i> Department List</span>
-            <span id="deptCount" style="font-size:12px;color:var(--text-muted);"></span>
-          </div>
-          <div class="table-wrap" id="displayAnyErr">
-            <table>
-              <thead>
-                <tr>
-                  <th>S/N</th>
-                  <th>Department Name</th>
-                  <th>Code</th>
-                  <th>Head of Department</th>
-                  <th>Description</th>
-                  <th>Date Created</th>
-                  <th>Edit</th>
-                  <th>Del</th>
-                </tr>
-              </thead>
-              <tbody id="deptTableBody"></tbody>
-            </table>
-          </div>
-          <div id="noDeptMsg" class="notice" style="display:none;">
-            <i class="fas fa-building-circle-xmark"></i> No departments found. Create one above.
-          </div>
-        </div>
+        <!-- /content -->
       </div>
-
-      <!--  SCHEDULE EXAM  -->
-      <div id="schedule" class="page">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px;">
-          <div class="section-title"><i class="fas fa-calendar-days"></i> Scheduled Exams</div>
-          <button class="btn btn-primary" onclick="openScheduleModal()">
-            <i class="fas fa-calendar-plus"></i> Schedule New Exam
-          </button>
-        </div>
-
-        <div class="schedule-stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
-            <div class="stat-value" id="schStatTotal">0</div>
-            <div class="stat-label">Total Scheduled</div>
-          </div>
-        </div>
-        <div class="schedule-stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
-            <div class="stat-value" id="schActive">0</div>
-            <div class="stat-label">Total Active</div>
-          </div>
-        </div>
-        <div class="schedule-stats-grid">
-          <div class="stat-card">
-            <div class="stat-icon"><i class="fas fa-calendar-check"></i></div>
-            <div class="stat-value" id="schInactive">0</div>
-            <div class="stat-label">Total Inactive</div>
-          </div>
-        </div>
-
-        <div class="search-bar">
-          <div class="search-field" style="flex:2;">
-            <i class="fas fa-magnifying-glass"></i>
-            <input type="text" id="schSearchInput" placeholder="Search by department…"/>
-          </div>
-          <div class="search-field" style="flex:none;padding:0;">
-            <button id="schStatusFilter" class="btn btn-primary" onclick="seacrhDepSch()" style="border-radius:var(--radius-md);border:none;margin:0;padding:8px 14px;">
-              <i class="fas fa-search"></i> Search
-            </button>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title"><i class="fas fa-table-list"></i> Exam Schedule List</span>
-            <span id="schTableCount" style="font-size:12px;color:var(--text-muted);"></span>
-          </div>
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>#</th><th>Department</th><th>Dept. Code</th>
-                  <th>Course Title</th><th>Course Code</th>
-                  <th>Time ID</th><th>Date</th><th>Start</th>
-                  <th>End</th><th>Duration</th><th>Edit</th><th>Notify</th><th>Status</th><th>Del</th>
-                </tr>
-              </thead>
-              <tbody id="scheduleTableBody"></tbody>
-            </table>
-          </div>
-          <div id="noScheduleMsg" class="sch-empty" style="display:none;">
-            <i class="fas fa-calendar-xmark"></i>
-            No exams scheduled yet.<br>
-            <small>Click <strong>"Schedule New Exam"</strong> to get started.</small>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /content -->
-  </div><!-- /main -->
-</div><!-- /app -->
-<script src="../public/js/admin/main.js?vs1.0"></script>
-</body>
+      <!-- /main -->
+    </div>
+    <!-- /app -->
+    <script src="../public/js/admin/main.js?vs1.0"></script>
+  </body>
 </html>
